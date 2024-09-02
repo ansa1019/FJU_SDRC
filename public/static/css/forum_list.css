@@ -1,0 +1,85 @@
+.breadcrumb,
+.breadcrumb a {
+    text-decoration: none;
+    color: #6c757d;
+    font-size: var(--fs-16);
+}
+
+.class-title {
+    font-weight: bold;
+    font-size: var(--fs-32);
+}
+.article-title {
+    font-weight: bold;
+    font-size: var(--fs-22);
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+.article-title > a {
+    text-decoration: none;
+    color: var(--ct-title-1);
+    font-size: var(--fs-22);
+}
+.article-abs {
+    color: var(--ct-sub-1);
+    line-height: var(--fs-30);
+    font-weight: lighter;
+    font-size: var(--fs-18);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.4; /* 设置固定的行高，根据需要调整值 */
+    min-height: 2.8em; /* 1.2 * 3 = 3.6，每行高度乘以固定行数 */
+    overflow: hidden;
+}
+.article-img {
+    object-fit: cover;
+    aspect-ratio: 4/3;
+    width: 185px;
+    height: 100%;
+}
+/* 類別標籤 */
+#article_class_tabs .nav-link.active {
+    background-color: var(--ct-sub-3);
+    color: var(--ct-title-1);
+    border: var(--ct-sub-3) 0.08rem solid;
+    font-size: var(--fs-17);
+}
+#article_class_tabs .nav-link.active > i {
+    color: white;
+}
+
+#article_class_tabs .nav-link {
+    color: var(--ct-sub-1);
+    background-color: white;
+    border: var(--ct-sub-3) 0.1rem solid;
+    font-size: var(--fs-17);
+    margin-right: calc(1rem * 0.1);
+    margin-top: calc(1rem * 0.1);
+    margin-bottom: calc(1rem * 0.1);
+    padding-top: 0.15rem;
+    padding-bottom: 0.15rem;
+}
+
+@media screen and (max-width: 425px) {
+    #article_class_tabs .nav-link,
+    #article_class_tabs .nav-link.active {
+        font-size: var(--fs-16) !important;
+    }
+
+    .countdown {
+        font-size: var(--fs-24) !important;
+        padding: 0.75rem 0.5rem !important;
+    }
+}
+
+/* .ck-editor__editable[role="textbox"] {
+    min-height: 150px;
+    max-height: 200px;
+    line-height: 0.75rem;
+    overflow: auto;
+} */

@@ -1,0 +1,1926 @@
+$(document).ready(function () {
+    $("#articleSortTreatment").on("change", function () {
+        var selectedValue = $(this).val();
+        var category = $("#category").text();
+        window.location.href =
+            ArticleRoute + "/" + category + "/" + selectedValue;
+    });
+
+    $("#articleSortKnowledge").on("change", function () {
+        var selectedValue = $(this).val();
+        var category = $("#category").text();
+        window.location.href =
+            ArticleRoute + "/" + category + "/" + selectedValue;
+    });
+
+    $("#articleSortSearch").on("change", function () {
+        var selectedValue = $(this).val();
+        var searchText = $("#searchText").text().trim();
+        window.location.href =
+            searchArticleRoute + "/" + searchText + "/" + selectedValue;
+    });
+
+    Element.prototype.documentOffsetTop = function () {
+        return (
+            this.offsetTop +
+            (this.offsetParent ? this.offsetParent.documentOffsetTop() : 0)
+        );
+    };
+
+    if (window.location.href.indexOf("#comment_") > -1) {
+        var foc = document.getElementById(window.location.href.split("#")[1]);
+        var top = foc.documentOffsetTop() - window.innerHeight / 2;
+        window.scrollTo(0, top);
+        foc.style.backgroundColor = "#ffd089";
+    }
+});
+
+//是否讀過此文章
+if ($("#is_click").text() == 0) {
+    var token = $("#jwt_token").text();
+    var article_id = $("#article_id").text();
+    const apiIP = document.getElementById("app").getAttribute("data-api-ip");
+    var myHeaders = new Headers();
+    myHeaders.append("Authorization", "Bearer " + token);
+
+    var formdata = new FormData();
+    formdata.append("element", "click");
+
+    var requestOptions = {
+        method: "PATCH",
+        headers: myHeaders,
+        body: formdata,
+        redirect: "follow",
+    };
+
+    fetch(
+        apiIP + "api/content/PostMetadataHandler/" + article_id + "/",
+        requestOptions
+    ).then((response) => {
+        if (response.ok) {
+            console.log("is_click");
+        }
+    });
+}
+
+const myModal = new bootstrap.Modal("#create_modal", {
+    focus: false,
+});
+
+//文字編輯器樣式
+var toolbarOptions = [
+    [
+        {
+            font: [],
+        },
+    ],
+    [
+        {
+            header: [1, 2, 3, false],
+        },
+    ], // custom dropdown
+
+    ["bold", "italic", "underline", "strike"], // toggled buttons
+    ["blockquote", "code-block"],
+
+    [
+        {
+            list: "ordered",
+        },
+        {
+            list: "bullet",
+        },
+    ],
+    [
+        {
+            color: [],
+        },
+        {
+            background: [],
+        },
+    ], // dropdown with defaults from theme
+    [
+        {
+            align: [],
+        },
+    ],
+    ["link", "image"],
+];
+
+//新增用文字編輯器
+var quill = new Quill("#editor-container", {
+    modules: {
+        toolbar: toolbarOptions,
+    },
+    theme: "snow", // or 'bubble'
+});
+
+//修改用文字編輯器
+var patch_quill = new Quill("#patch-editor-container", {
+    modules: {
+        toolbar: toolbarOptions,
+    },
+    theme: "snow", // or 'bubble'
+});
+
+//取文字編輯器內容
+function get_content() {
+    tinymce.activeEditor.dom.addClass(
+        tinymce.activeEditor.dom.select("img"),
+        "w-100"
+    );
+
+    let content = tinymce.get("editor").getContent();
+    console.log(content);
+}
+
+// 使用 Day.js
+// const now_today = dayjs().format("YYYY-MM-DD");
+$("#article_date").html(now_today);
+
+$("#content_tabs > li > a").click(function () {
+    var target = $(this).attr("href");
+    $("html, body").animate(
+        {
+            scrollTop: $(target).offset().top - 100,
+        },
+        300
+    );
+    return false;
+});
+
+// 使用者文章按讚
+function treatment_like(obj) {
+    var token = $("#jwt_token").text();
+    if (token != "") {
+        if ($(obj).parents().eq(1).attr("id") != null) {
+            var article_id = $(obj)
+                .parents()
+                .eq(1)
+                .attr("id")
+                .replace("article_id_", "");
+        } else {
+            var article_id = $(obj)
+                .parents()
+                .find(".article_content")
+                .attr("id")
+                .replace("article_id_", "");
+        }
+        const apiIP = document
+            .getElementById("app")
+            .getAttribute("data-api-ip");
+
+        var myHeaders = new Headers();
+        myHeaders.append("Authorization", "Bearer " + token);
+
+        var formdata = new FormData();
+        formdata.append("element", "like");
+
+        var requestOptions = {
+            method: "PATCH",
+            headers: myHeaders,
+            body: formdata,
+            redirect: "follow",
+        };
+
+        fetch(
+            apiIP + "api/content/PostMetadataHandler/" + article_id + "/",
+            requestOptions
+        ).then((response) => {
+            if (response.ok) {
+                $.ajax({
+                    url: treatmentArticleUpdateRoute + "/" + article_id + "/",
+                    method: "GET",
+                    dataType: "json",
+                    success: function (article) {
+                        console.log(article);
+                        var content = $("#article_id_" + article["id"]);
+                        var like = content.find("#like").empty();
+                        var likeHtml = `<i class="fas fa-heart ${
+                            article["like"]["in_user"][0] == 1
+                                ? "ct-txt-2"
+                                : "ct-sub-1"
+                        } me-1"></i>`;
+                        content
+                            .find("#like_count")
+                            .text(article["like"]["count"]);
+                        like.append(likeHtml);
+
+                        var formdata2 = new FormData();
+                        formdata2.append("author", article_id);
+                        // 後端會將 # 依序替換成 貼文標題、按讚數、留言數
+                        formdata2.append(
+                            "content",
+                            "您發布的貼文 # 已有 # 人按讚、 # 人留言! 快去看看吧~"
+                        );
+                        var requestOptions2 = {
+                            method: "POST",
+                            headers: myHeaders,
+                            body: formdata2,
+                            redirect: "follow",
+                        };
+
+                        fetch(
+                            apiIP + "api/notifications/notifications/",
+                            requestOptions2
+                        );
+                    },
+                    error: function (error) {
+                        console.error("Ajax request failed:", error);
+                    },
+                });
+            }
+        });
+    } else {
+        Swal.fire({
+            title: "無法留言",
+            html: "請先登入!",
+            icon: "error",
+            showConfirmButton: false,
+            timer: 2500,
+        });
+    }
+}
+
+// 官方文章按讚
+function knowledge_like(obj) {
+    var token = $("#jwt_token").text();
+    if (token != "") {
+        if ($(obj).parents().eq(1).attr("id") != null) {
+            var article_id = $(obj)
+                .parents()
+                .eq(1)
+                .attr("id")
+                .replace("article_id_", "");
+        } else {
+            var article_id = $(obj)
+                .parents()
+                .find(".article_content")
+                .attr("id")
+                .replace("article_id_", "");
+        }
+        const apiIP = document
+            .getElementById("app")
+            .getAttribute("data-api-ip");
+
+        var myHeaders = new Headers();
+        myHeaders.append("Authorization", "Bearer " + token);
+
+        var formdata = new FormData();
+        formdata.append("element", "like");
+
+        var requestOptions = {
+            method: "PATCH",
+            headers: myHeaders,
+            body: formdata,
+            redirect: "follow",
+        };
+
+        fetch(
+            apiIP + "api/content/PostMetadataHandler/" + article_id + "/",
+            requestOptions
+        ).then((response) => {
+            if (response.ok) {
+                $.ajax({
+                    url: knowledgeArticleUpdateRoute + "/" + article_id + "/",
+                    method: "GET",
+                    dataType: "json",
+                    success: function (article) {
+                        console.log(article);
+                        var content = $("#article_id_" + article["id"]);
+                        var like = content.find("#like").empty();
+                        var likeHtml = `<i class="fas fa-heart ${
+                            article["like"]["in_user"][0] == 1
+                                ? "ct-txt-2"
+                                : "ct-sub-1"
+                        } me-1"></i>`;
+                        content
+                            .find("#like_count")
+                            .text(article["like"]["count"]);
+                        like.append(likeHtml);
+
+                        var formdata2 = new FormData();
+                        formdata2.append("author", article_id);
+                        // 後端會將 # 依序替換成 貼文標題、按讚數、留言數
+                        formdata2.append(
+                            "content",
+                            "您發布的貼文 # 已有 # 人按讚、 # 人留言! 快去看看吧~"
+                        );
+                        var requestOptions2 = {
+                            method: "POST",
+                            headers: myHeaders,
+                            body: formdata2,
+                            redirect: "follow",
+                        };
+
+                        fetch(
+                            apiIP + "api/notifications/notifications/",
+                            requestOptions2
+                        );
+                    },
+                    error: function (error) {
+                        console.error("Ajax request failed:", error);
+                    },
+                });
+            }
+        });
+    } else {
+        Swal.fire({
+            title: "無法留言",
+            html: "請先登入!",
+            icon: "error",
+            showConfirmButton: false,
+            timer: 2500,
+        });
+    }
+}
+
+// 所有文章按讚
+function search_like(obj) {
+    var token = $("#jwt_token").text();
+    if ($(obj).parents().eq(1).attr("id") != null) {
+        var article_id = $(obj)
+            .parents()
+            .eq(1)
+            .attr("id")
+            .replace("article_id_", "");
+    } else {
+        var article_id = $(obj)
+            .parents()
+            .find(".article_content")
+            .attr("id")
+            .replace("article_id_", "");
+    }
+    const apiIP = document.getElementById("app").getAttribute("data-api-ip");
+
+    var myHeaders = new Headers();
+    myHeaders.append("Authorization", "Bearer " + token);
+
+    var formdata = new FormData();
+    formdata.append("element", "like");
+
+    var requestOptions = {
+        method: "PATCH",
+        headers: myHeaders,
+        body: formdata,
+        redirect: "follow",
+    };
+
+    fetch(
+        apiIP + "api/content/PostMetadataHandler/" + article_id + "/",
+        requestOptions
+    ).then((response) => {
+        if (response.ok) {
+            $.ajax({
+                url: searchArticleUpdateRoute + "/" + article_id + "/",
+                method: "GET",
+                dataType: "json",
+                success: function (article) {
+                    console.log(article);
+                    var content = $("#article_id_" + article["id"]);
+                    var like = content.find("#like").empty();
+                    var likeHtml = `<i class="fas fa-heart ${
+                        article["like"]["in_user"][0] == 1
+                            ? "ct-txt-2"
+                            : "ct-sub-1"
+                    } me-1"></i>`;
+                    content.find("#like_count").text(article["like"]["count"]);
+                    like.append(likeHtml);
+
+                    var formdata2 = new FormData();
+                    formdata2.append("author", article_id);
+                    // 後端會將 # 依序替換成 貼文標題、按讚數、留言數
+                    formdata2.append(
+                        "content",
+                        "您發布的貼文 # 已有 # 人按讚、 # 人留言! 快去看看吧~"
+                    );
+                    var requestOptions2 = {
+                        method: "POST",
+                        headers: myHeaders,
+                        body: formdata2,
+                        redirect: "follow",
+                    };
+
+                    fetch(
+                        apiIP + "api/notifications/notifications/",
+                        requestOptions2
+                    );
+                },
+                error: function (error) {
+                    console.error("Ajax request failed:", error);
+                },
+            });
+        }
+    });
+}
+
+// 使用者文章分享
+function treatment_share(obj) {
+    $("#input_link").val(location.href); //點擊分享 將當前網址填入shareModal內
+    let fb_link = "https://www.facebook.com/sharer/sharer.php?u=";
+    let line_link = "http://line.naver.jp/R/msg/text/?";
+    $(".fb_share").attr("href", fb_link + location.href);
+    $(".line_share").attr("href", line_link + location.href);
+
+    var token = $("#jwt_token").text();
+    if ($(obj).parents().eq(1).attr("id") != null) {
+        var article_id = $(obj)
+            .parents()
+            .eq(1)
+            .attr("id")
+            .replace("article_id_", "");
+    } else {
+        var article_id = $(obj)
+            .parents()
+            .find(".article_content")
+            .attr("id")
+            .replace("article_id_", "");
+    }
+    const apiIP = document.getElementById("app").getAttribute("data-api-ip");
+
+    var myHeaders = new Headers();
+    myHeaders.append("Authorization", "Bearer " + token);
+
+    var formdata = new FormData();
+    formdata.append("element", "share");
+
+    var requestOptions = {
+        method: "PATCH",
+        headers: myHeaders,
+        body: formdata,
+        redirect: "follow",
+    };
+
+    fetch(
+        apiIP + "api/content/PostMetadataHandler/" + article_id + "/",
+        requestOptions
+    ).then((response) => {
+        if (response.ok) {
+            $.ajax({
+                url: treatmentArticleUpdateRoute + "/" + article_id + "/",
+                method: "GET",
+                dataType: "json",
+                success: function (article) {
+                    console.log(article);
+                    var content = $("#article_id_" + article["id"]);
+                    var share = content.find("#share").empty();
+                    var shareHtml = `<i class="fas fa-share ${
+                        article["share"]["in_user"][0] == 1
+                            ? "ct-txt-2"
+                            : "ct-sub-1"
+                    } me-1"></i>`;
+                    content
+                        .find("#share_count")
+                        .text(article["share"]["count"]);
+                    share.append(shareHtml);
+                },
+                error: function (error) {
+                    console.error("Ajax request failed:", error);
+                },
+            });
+        }
+    });
+}
+
+// 官方文章分享
+function knowledge_share(obj) {
+    $("#input_link").val(location.href); //點擊分享 將當前網址填入shareModal內
+    let fb_link = "https://www.facebook.com/sharer/sharer.php?u=";
+    let line_link = "http://line.naver.jp/R/msg/text/?";
+    $(".fb_share").attr("href", fb_link + location.href);
+    $(".line_share").attr("href", line_link + location.href);
+
+    var token = $("#jwt_token").text();
+    if ($(obj).parents().eq(1).attr("id") != null) {
+        var article_id = $(obj)
+            .parents()
+            .eq(1)
+            .attr("id")
+            .replace("article_id_", "");
+    } else {
+        var article_id = $(obj)
+            .parents()
+            .find(".article_content")
+            .attr("id")
+            .replace("article_id_", "");
+    }
+    const apiIP = document.getElementById("app").getAttribute("data-api-ip");
+
+    var myHeaders = new Headers();
+    myHeaders.append("Authorization", "Bearer " + token);
+
+    var formdata = new FormData();
+    formdata.append("element", "share");
+
+    var requestOptions = {
+        method: "PATCH",
+        headers: myHeaders,
+        body: formdata,
+        redirect: "follow",
+    };
+
+    fetch(
+        apiIP + "api/content/PostMetadataHandler/" + article_id + "/",
+        requestOptions
+    ).then((response) => {
+        if (response.ok) {
+            $.ajax({
+                url: knowledgeArticleUpdateRoute + "/" + article_id + "/",
+                method: "GET",
+                dataType: "json",
+                success: function (article) {
+                    console.log(article);
+                    var content = $("#article_id_" + article["id"]);
+                    var share = content.find("#share").empty();
+                    var shareHtml = `<i class="fas fa-share ${
+                        article["share"]["in_user"][0] == 1
+                            ? "ct-txt-2"
+                            : "ct-sub-1"
+                    } me-1"></i>`;
+                    content
+                        .find("#share_count")
+                        .text(article["share"]["count"]);
+                    share.append(shareHtml);
+                },
+                error: function (error) {
+                    console.error("Ajax request failed:", error);
+                },
+            });
+        }
+    });
+}
+
+// 所有文章分享
+function search_share(obj) {
+    var token = $("#jwt_token").text();
+    if ($(obj).parents().eq(1).attr("id") != null) {
+        var article_id = $(obj)
+            .parents()
+            .eq(1)
+            .attr("id")
+            .replace("article_id_", "");
+    } else {
+        var article_id = $(obj)
+            .parents()
+            .find(".article_content")
+            .attr("id")
+            .replace("article_id_", "");
+    }
+    const apiIP = document.getElementById("app").getAttribute("data-api-ip");
+
+    var myHeaders = new Headers();
+    myHeaders.append("Authorization", "Bearer " + token);
+
+    var formdata = new FormData();
+    formdata.append("element", "share");
+
+    var requestOptions = {
+        method: "PATCH",
+        headers: myHeaders,
+        body: formdata,
+        redirect: "follow",
+    };
+
+    fetch(
+        apiIP + "api/content/PostMetadataHandler/" + article_id + "/",
+        requestOptions
+    ).then((response) => {
+        if (response.ok) {
+            $.ajax({
+                url: searchArticleUpdateRoute + "/" + article_id + "/",
+                method: "GET",
+                dataType: "json",
+                success: function (article) {
+                    console.log(article);
+                    var content = $("#article_id_" + article["id"]);
+                    var share = content.find("#share").empty();
+                    var shareHtml = `<i class="fas fa-share ${
+                        article["share"]["in_user"][0] == 1
+                            ? "ct-txt-2"
+                            : "ct-sub-1"
+                    } me-1"></i>`;
+                    content
+                        .find("#share_count")
+                        .text(article["share"]["count"]);
+                    share.append(shareHtml);
+                },
+                error: function (error) {
+                    console.error("Ajax request failed:", error);
+                },
+            });
+        }
+    });
+}
+
+function copy_sharelink() {
+    const select = (DOM) => document.querySelector(DOM);
+    select("#input_link").select(); //選取連結文字
+    document.execCommand("copy"); //複製文字
+    //當複製時，顯示'已複製'文字
+    $("#copylink_btn").html("Copied");
+    setTimeout(() => {
+        window.getSelection().removeAllRanges(); //remove selection from page
+        $("#copylink_btn").html("複製連結");
+    }, 3000);
+    // navigator.clipboard.writeText(select("#input_link").value).then(() => {
+    //     //當複製時，顯示'已複製'文字
+    //     $("#copylink_btn").html("Copied");
+    //     setTimeout(() => {
+    //         window.getSelection().removeAllRanges(); //remove selection from page
+    //         $("#copylink_btn").html("複製連結");
+    //     }, 3000);
+    // });
+}
+
+// 使用者文章收藏
+function treatment_collect(obj) {
+    var token = $("#jwt_token").text();
+    if ($(obj).parents().eq(1).attr("id") != null) {
+        var article_id = $(obj)
+            .parents()
+            .eq(1)
+            .attr("id")
+            .replace("article_id_", "");
+    } else {
+        var article_id = $(obj)
+            .parents()
+            .find(".article_content")
+            .attr("id")
+            .replace("article_id_", "");
+    }
+    const apiIP = document.getElementById("app").getAttribute("data-api-ip");
+
+    var myHeaders = new Headers();
+    myHeaders.append("Authorization", "Bearer " + token);
+
+    var formdata = new FormData();
+    formdata.append("element", "bookmark");
+
+    var requestOptions = {
+        method: "PATCH",
+        headers: myHeaders,
+        body: formdata,
+        redirect: "follow",
+    };
+
+    fetch(
+        apiIP + "api/content/PostMetadataHandler/" + article_id + "/",
+        requestOptions
+    ).then((response) => {
+        if (response.ok) {
+            $.ajax({
+                url: treatmentArticleUpdateRoute + "/" + article_id + "/",
+                method: "GET",
+                dataType: "json",
+                success: function (article) {
+                    console.log(article);
+                    var content = $("#article_id_" + article["id"]);
+                    var collect = content.find("#collect").empty();
+                    var collectHtml = `<i class="far fa-bookmark ${
+                        article["bookmark"]["in_user"][0] == 1
+                            ? "fas ct-txt-2"
+                            : "far ct-sub-1"
+                    } me-1"></i>`;
+                    collect.append(collectHtml);
+                },
+                error: function (error) {
+                    console.error("Ajax request failed:", error);
+                },
+            });
+        }
+    });
+}
+
+// 官方文章收藏
+function knowledge_collect(obj) {
+    var token = $("#jwt_token").text();
+    if ($(obj).parents().eq(1).attr("id") != null) {
+        var article_id = $(obj)
+            .parents()
+            .eq(1)
+            .attr("id")
+            .replace("article_id_", "");
+    } else {
+        var article_id = $(obj)
+            .parents()
+            .find(".article_content")
+            .attr("id")
+            .replace("article_id_", "");
+    }
+    const apiIP = document.getElementById("app").getAttribute("data-api-ip");
+
+    var myHeaders = new Headers();
+    myHeaders.append("Authorization", "Bearer " + token);
+
+    var formdata = new FormData();
+    formdata.append("element", "bookmark");
+
+    var requestOptions = {
+        method: "PATCH",
+        headers: myHeaders,
+        body: formdata,
+        redirect: "follow",
+    };
+
+    fetch(
+        apiIP + "api/content/PostMetadataHandler/" + article_id + "/",
+        requestOptions
+    ).then((response) => {
+        if (response.ok) {
+            $.ajax({
+                url: knowledgeArticleUpdateRoute + "/" + article_id + "/",
+                method: "GET",
+                dataType: "json",
+                success: function (article) {
+                    console.log(article);
+                    var content = $("#article_id_" + article["id"]);
+                    var collect = content.find("#collect").empty();
+                    var collectHtml = `<i class="far fa-bookmark ${
+                        article["bookmark"]["in_user"][0] == 1
+                            ? "fas ct-txt-2"
+                            : "far ct-sub-1"
+                    } me-1"></i>`;
+                    collect.append(collectHtml);
+                },
+                error: function (error) {
+                    console.error("Ajax request failed:", error);
+                },
+            });
+        }
+    });
+}
+
+// 所有文章收藏
+function search_collect(obj) {
+    var token = $("#jwt_token").text();
+    if ($(obj).parents().eq(1).attr("id") != null) {
+        var article_id = $(obj)
+            .parents()
+            .eq(1)
+            .attr("id")
+            .replace("article_id_", "");
+    } else {
+        var article_id = $(obj)
+            .parents()
+            .find(".article_content")
+            .attr("id")
+            .replace("article_id_", "");
+    }
+    const apiIP = document.getElementById("app").getAttribute("data-api-ip");
+
+    var myHeaders = new Headers();
+    myHeaders.append("Authorization", "Bearer " + token);
+
+    var formdata = new FormData();
+    formdata.append("element", "bookmark");
+
+    var requestOptions = {
+        method: "PATCH",
+        headers: myHeaders,
+        body: formdata,
+        redirect: "follow",
+    };
+
+    fetch(
+        apiIP + "api/content/PostMetadataHandler/" + article_id + "/",
+        requestOptions
+    ).then((response) => {
+        if (response.ok) {
+            $.ajax({
+                url: searchArticleUpdateRoute + "/" + article_id + "/",
+                method: "GET",
+                dataType: "json",
+                success: function (article) {
+                    console.log(article);
+                    var content = $("#article_id_" + article["id"]);
+                    var collect = content.find("#collect").empty();
+                    var collectHtml = `<i class="far fa-bookmark ${
+                        article["bookmark"]["in_user"][0] == 1
+                            ? "fas ct-txt-2"
+                            : "far ct-sub-1"
+                    } me-1"></i>`;
+                    collect.append(collectHtml);
+                },
+                error: function (error) {
+                    console.error("Ajax request failed:", error);
+                },
+            });
+        }
+    });
+}
+
+// 話題追蹤按鈕
+function topic_follow(obj) {
+    let follow_topic = (
+        "#" + $(obj).parents().eq(0).find("#searchText").text()
+    ).trim();
+    console.log(follow_topic);
+
+    var token = $("#jwt_token").text();
+    const apiIP = document.getElementById("app").getAttribute("data-api-ip");
+    var myHeaders = new Headers();
+    myHeaders.append("Authorization", "Bearer " + token);
+
+    var formdata = new FormData();
+    formdata.append("hashtag", follow_topic);
+
+    var requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: formdata,
+        redirect: "follow",
+    };
+
+    fetch(apiIP + "api/userprofile/subscribeHashtag/", requestOptions).then(
+        (response) => {
+            if (response.ok) {
+                window.location.reload();
+            }
+        }
+    );
+}
+
+// 作者追蹤按鈕
+function follow(obj, type) {
+    if (type == "author") {
+        //追蹤作者
+        let follow_author = $("#article_author").html();
+        console.log(follow_author);
+        //後端處理
+        var token = $("#jwt_token").text();
+        const apiIP = document
+            .getElementById("app")
+            .getAttribute("data-api-ip");
+        var myHeaders = new Headers();
+        myHeaders.append("Authorization", "Bearer " + token);
+
+        var formdata = new FormData();
+        formdata.append("subscribe", follow_author);
+
+        var requestOptions = {
+            method: "POST",
+            headers: myHeaders,
+            body: formdata,
+            redirect: "follow",
+        };
+
+        fetch(apiIP + "api/userprofile/subscribe/", requestOptions).then(
+            (response) => {
+                if (response.ok) {
+                    window.location.reload();
+                }
+            }
+        );
+    }
+}
+
+//編輯留言按鈕
+// let edit_cmt_obj = "";
+// function edit_comment(obj) {
+//     edit_cmt_obj = $(obj).parents().eq(3).find(".comment_content").eq(0);
+//     $(edit_cmt_obj).attr("contenteditable", "true"); //開啟可編輯
+//     $(edit_cmt_obj).focus(); //亮起可編輯區域
+// }
+
+// //當編輯留言離開焦點時，儲存更新當前文字內容
+// $(document).on("blur", ".comment_content", function () {
+//     $(edit_cmt_obj).html($(this).html()); //更新留言內容
+//     $(edit_cmt_obj).attr("contenteditable", "false"); //取消可編輯
+
+//     //後端回傳資料 更新留言內容
+//     let cmt_id = $(edit_cmt_obj).parent().attr("id"); //留言id
+//     let cmt_content = $(this).html(); //留言內容
+//     console.log(cmt_id, cmt_content); //該留言id & 內容
+// });
+
+//療心室-票選活動 投票
+function vote(obj) {
+    let select_item = $('input[name="vote_item"]:checked')
+        .map(function () {
+            return this.value;
+        })
+        .get()
+        .join(",");
+    console.log(select_item);
+}
+
+// //療心室-票選活動 倒數計時
+// $(".countdown")._countTime("2023-08-03 12:30:00", {
+//     isActive: true,
+//     str: {
+//         title: "活動截止：",
+//         day: "日",
+//     },
+// });
+
+//修改聊療的資料
+function getValue(button, type) {
+    if (type == "patch") {
+        var id = button.parentNode.parentNode.id.replace("article_id_", "");
+        var title = document.getElementById("input_patch_title");
+        var article_id = document.getElementById("article_id");
+        var selectTreat = document.getElementById("patch_treat_class");
+        var hashtags = document.getElementById("patch_input_topic");
+        var category = $(button)
+            .parents()
+            .eq(2)
+            .find("#category")
+            .text()
+            .trim();
+        var selectIdentity = document.getElementById("patch_id_type");
+        var identity = $(button)
+            .parents()
+            .eq(2)
+            .find("#identity")
+            .text()
+            .trim();
+
+        console.log($(button).parents().eq(2).find("#category").text());
+        console.log(
+            $(button).parents().eq(2).find("#article_id_title").text().trim()
+        );
+        console.log($(button).parents().eq(1).find("#html").text());
+        console.log(identity);
+        console.log($(button).parents().eq(2).find("#hashtags").text());
+
+        for (var i = 0; i < selectTreat.options.length; i++) {
+            if (selectTreat.options[i].value === category) {
+                selectTreat.selectedIndex = i;
+                break;
+            }
+        }
+
+        for (var i = 0; i < selectIdentity.options.length; i++) {
+            if (selectIdentity.options[i].value === identity) {
+                selectIdentity.selectedIndex = i;
+                break;
+            }
+        }
+
+        title.value = $(button)
+            .parents()
+            .eq(2)
+            .find("#article_id_title")
+            .text()
+            .trim();
+        article_id.value = id;
+        hashtags.value = $(button)
+            .parents()
+            .eq(2)
+            .find("#hashtags")
+            .text()
+            .replace(",", "");
+        patch_quill.clipboard.dangerouslyPasteHTML(
+            $(button).parents().eq(1).find("#html").text()
+        );
+    }
+    if (type == "post") {
+        quill.clipboard.dangerouslyPasteHTML(
+            $(button).parents().eq(0).find("#html").text()
+        );
+    }
+}
+
+//新增聊療
+function postdata(obj, type) {
+    const apiIP = document.getElementById("app").getAttribute("data-api-ip");
+    var html = quill.root.innerHTML;
+    var content = quill.getContents();
+    var token = $("#jwt_token").text();
+    var id_type = document.getElementById("id_type").value;
+    var title = $("#input_new_title").val();
+    var category = document.getElementById("treat_class").value;
+    const randomInteger = Math.floor(Math.random() * 4) + 1;
+    const Hashtags = $("#create_input_topic")
+        .val()
+        .match(/#[^\s#]+/g);
+    var myHeaders = new Headers();
+
+    myHeaders.append("Authorization", "Bearer " + token);
+
+    var formdata = new FormData();
+    formdata.append("title", title);
+    formdata.append("category", category);
+    formdata.append("identity", id_type);
+    formdata.append(
+        "content",
+        JSON.stringify({
+            delta: content,
+            html: html,
+        })
+    );
+    formdata.append("hashtag", Hashtags);
+    formdata.append("is_official", 0);
+    formdata.append("is_temporary", 0);
+
+    if (type == "temporary") {
+        if (title == "") {
+            alert("標題未填");
+        } else {
+            var article_id = $(obj)
+                .parents()
+                .eq(1)
+                .find("#temporary_id")
+                .text();
+            formdata.append("id", article_id);
+            console.log(article_id);
+            console.log(apiIP);
+            console.log(token);
+            console.log(category);
+            console.log(id_type);
+            console.log(content);
+            console.log(html);
+            console.log(Hashtags);
+
+            var requestOptions = {
+                method: "PATCH",
+                headers: myHeaders,
+                body: formdata,
+                redirect: "follow",
+            };
+
+            fetch(apiIP + "api/content/textEditorPost/", requestOptions)
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error("Network response was not ok.");
+                    }
+                    return response.json();
+                })
+                .then((data) => {
+                    var formdata2 = new FormData();
+                    formdata2.append("post", data["id"]);
+                    if (id_type != "匿名") {
+                        formdata2.append(
+                            "content_subscribe",
+                            "您追蹤的作者 " +
+                                id_type +
+                                " 已發布一則新貼文! 快去看看吧~"
+                        );
+                    }
+                    // 後端會將 # 替換成 #tag名稱
+                    formdata2.append(
+                        "content_hashtag",
+                        "您追蹤的hashtag # 已發布一則新貼文! 快去看看吧~"
+                    );
+                    var requestOptions2 = {
+                        method: "POST",
+                        headers: myHeaders,
+                        body: formdata2,
+                        redirect: "follow",
+                    };
+
+                    fetch(
+                        apiIP + "api/notifications/notifications/",
+                        requestOptions2
+                    );
+                    window.location.reload();
+                })
+                .catch((error) => {
+                    alert("標題重複");
+                });
+        }
+    } else {
+        fetch("/get-image/發文預設圖片_" + randomInteger + ".png")
+            .then((response) => {
+                if (response.ok) {
+                    return response.blob();
+                }
+                throw new Error("Network response was not ok.");
+            })
+            .then((blob) => {
+                // formdata.append("index_image", blob, 'image.png');
+                articleImage = blob;
+            });
+
+        if (title == "") {
+            alert("標題未填");
+        } else {
+            console.log(apiIP);
+            console.log(token);
+            console.log(category);
+            console.log(id_type);
+            console.log(content);
+            console.log(html);
+            console.log(Hashtags);
+
+            var requestOptions = {
+                method: "POST",
+                headers: myHeaders,
+                body: formdata,
+                redirect: "follow",
+            };
+
+            fetch("/get-image/發文預設圖片_" + randomInteger + ".png")
+                .then((response) => {
+                    if (response.ok) {
+                        return response.blob();
+                    }
+                    throw new Error("Network response was not ok.");
+                })
+                .then((blob) => {
+                    formdata.append("index_image", blob, "image.png");
+                    fetch(apiIP + "api/content/textEditorPost/", requestOptions)
+                        .then((response) => {
+                            if (!response.ok) {
+                                throw new Error("Network response was not ok.");
+                            }
+                            return response.json();
+                        })
+                        .then((data) => {
+                            var formdata2 = new FormData();
+                            formdata2.append("post", data["id"]);
+                            if (id_type != "匿名") {
+                                formdata2.append(
+                                    "content_subscribe",
+                                    "您追蹤的作者 " +
+                                        id_type +
+                                        " 已發布一則新貼文! 快去看看吧~"
+                                );
+                            }
+                            // 後端會將 # 替換成 #tag名稱
+                            formdata2.append(
+                                "content_hashtag",
+                                "您追蹤的hashtag # 已發布一則新貼文! 快去看看吧~"
+                            );
+                            var requestOptions2 = {
+                                method: "POST",
+                                headers: myHeaders,
+                                body: formdata2,
+                                redirect: "follow",
+                            };
+
+                            fetch(
+                                apiIP + "api/notifications/notifications/",
+                                requestOptions2
+                            );
+                            window.location.reload();
+                        })
+                        .catch((error) => {
+                            alert("標題重複");
+                        });
+                });
+        }
+    }
+}
+
+//新增官方文章
+function official_postdata(obj, type) {
+    const apiIP = document.getElementById("app").getAttribute("data-api-ip");
+    var html = quill.root.innerHTML;
+    var content = quill.getContents();
+    var token = $("#jwt_token").text();
+    var id_type = document.getElementById("id_type").value;
+    var title = $("#input_new_title").val();
+    var category = document.getElementById("treat_class").value;
+    const randomInteger = Math.floor(Math.random() * 4) + 1;
+    const Hashtags = $("#create_input_topic")
+        .val()
+        .match(/#[^\s#]+/g);
+    var myHeaders = new Headers();
+
+    myHeaders.append("Authorization", "Bearer " + token);
+
+    var formdata = new FormData();
+    formdata.append("title", title);
+    formdata.append("category", category);
+    formdata.append("identity", id_type);
+    formdata.append(
+        "content",
+        JSON.stringify({
+            delta: content,
+            html: html,
+        })
+    );
+    formdata.append("hashtag", Hashtags);
+    formdata.append("is_official", 1);
+    formdata.append("is_temporary", 0);
+
+    if (type == "temporary") {
+        if (title == "") {
+            alert("標題未填");
+        } else {
+            var article_id = $(obj)
+                .parents()
+                .eq(1)
+                .find("#temporary_id")
+                .text();
+            formdata.append("id", article_id);
+            console.log(article_id);
+            console.log(apiIP);
+            console.log(token);
+            console.log(category);
+            console.log(id_type);
+            console.log(content);
+            console.log(html);
+            console.log(Hashtags);
+
+            var requestOptions = {
+                method: "PATCH",
+                headers: myHeaders,
+                body: formdata,
+                redirect: "follow",
+            };
+
+            fetch(apiIP + "api/content/textEditorPost/", requestOptions)
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error("Network response was not ok.");
+                    }
+                    return response.json();
+                })
+                .then((data) => {
+                    var formdata2 = new FormData();
+                    formdata2.append("post", data["id"]);
+                    if (id_type != "匿名") {
+                        formdata2.append(
+                            "content_subscribe",
+                            "您追蹤的作者 " +
+                                id_type +
+                                " 已發布一則新貼文! 快去看看吧~"
+                        );
+                    }
+                    // 後端會將 # 替換成 #tag名稱
+                    formdata2.append(
+                        "content_hashtag",
+                        "您追蹤的hashtag # 已發布一則新貼文! 快去看看吧~"
+                    );
+                    var requestOptions2 = {
+                        method: "POST",
+                        headers: myHeaders,
+                        body: formdata2,
+                        redirect: "follow",
+                    };
+
+                    fetch(
+                        apiIP + "api/notifications/notifications/",
+                        requestOptions2
+                    );
+                    window.location.reload();
+                })
+                .catch((error) => {
+                    alert("標題重複");
+                });
+        }
+    } else {
+        fetch("/get-image/發文預設圖片_" + randomInteger + ".png")
+            .then((response) => {
+                if (response.ok) {
+                    return response.blob();
+                }
+                throw new Error("Network response was not ok.");
+            })
+            .then((blob) => {
+                // formdata.append("index_image", blob, 'image.png');
+                articleImage = blob;
+            });
+
+        if (title == "") {
+            alert("標題未填");
+        } else {
+            console.log(apiIP);
+            console.log(token);
+            console.log(category);
+            console.log(id_type);
+            console.log(content);
+            console.log(html);
+            console.log(Hashtags);
+
+            var requestOptions = {
+                method: "POST",
+                headers: myHeaders,
+                body: formdata,
+                redirect: "follow",
+            };
+
+            fetch("/get-image/發文預設圖片_" + randomInteger + ".png")
+                .then((response) => {
+                    if (response.ok) {
+                        return response.blob();
+                    }
+                    throw new Error("Network response was not ok.");
+                })
+                .then((blob) => {
+                    formdata.append("index_image", blob, "image.png");
+                    fetch(apiIP + "api/content/textEditorPost/", requestOptions)
+                        .then((response) => {
+                            if (!response.ok) {
+                                throw new Error("Network response was not ok.");
+                            }
+                            return response.json();
+                        })
+                        .then((data) => {
+                            var formdata2 = new FormData();
+                            formdata2.append("post", data["id"]);
+                            if (id_type != "匿名") {
+                                formdata2.append(
+                                    "content_subscribe",
+                                    "您追蹤的作者 " +
+                                        id_type +
+                                        " 已發布一則新貼文! 快去看看吧~"
+                                );
+                            }
+                            // 後端會將 # 替換成 #tag名稱
+                            formdata2.append(
+                                "content_hashtag",
+                                "您追蹤的hashtag # 已發布一則新貼文! 快去看看吧~"
+                            );
+                            var requestOptions2 = {
+                                method: "POST",
+                                headers: myHeaders,
+                                body: formdata2,
+                                redirect: "follow",
+                            };
+
+                            fetch(
+                                apiIP + "api/notifications/notifications/",
+                                requestOptions2
+                            );
+                            window.location.reload();
+                        })
+                        .catch((error) => {
+                            alert("標題重複");
+                        });
+                });
+        }
+    }
+}
+
+//修改聊療
+function patchData() {
+    const apiIP = document.getElementById("app").getAttribute("data-api-ip");
+    var article_id = document.getElementById("article_id").value;
+    var content = patch_quill.getContents();
+    var html = patch_quill.root.innerHTML;
+    var token = $("#jwt_token").text();
+    var title = $("#input_patch_title").val();
+    const Hashtags = $("#patch_input_topic")
+        .val()
+        .match(/#[^\s#]+/g);
+    var category = document.getElementById("patch_treat_class").value;
+    var id_type = document.getElementById("patch_id_type").value;
+    var myHeaders = new Headers();
+
+    myHeaders.append("Authorization", "Bearer " + token);
+
+    var formdata = new FormData();
+    formdata.append("title", title);
+    formdata.append("category", category);
+    formdata.append("identity", id_type);
+    formdata.append(
+        "content",
+        JSON.stringify({
+            delta: content,
+            html: html,
+        })
+    );
+    formdata.append("hashtag", Hashtags);
+    formdata.append("id", article_id);
+    formdata.append("is_official", 0);
+    formdata.append("is_temporary", 0);
+
+    console.log(article_id);
+    console.log(title);
+    console.log(content);
+    console.log(html);
+    console.log(category);
+
+    var requestOptions = {
+        method: "PATCH",
+        headers: myHeaders,
+        body: formdata,
+        redirect: "follow",
+    };
+
+    fetch(
+        apiIP + "api/content/textEditorPost/" + article_id + "/",
+        requestOptions
+    ).then((response) => {
+        if (!response.ok) {
+            alert("標題重複");
+        } else {
+            window.location.reload();
+        }
+    });
+}
+
+//修改官方文章
+function official_patchData() {
+    const apiIP = document.getElementById("app").getAttribute("data-api-ip");
+    var article_id = document.getElementById("article_id").value;
+    var content = patch_quill.getContents();
+    var html = patch_quill.root.innerHTML;
+    var token = $("#jwt_token").text();
+    var title = $("#input_patch_title").val();
+    const Hashtags = $("#patch_input_topic")
+        .val()
+        .match(/#[^\s#]+/g);
+    var category = document.getElementById("patch_treat_class").value;
+    var id_type = document.getElementById("patch_id_type").value;
+    var myHeaders = new Headers();
+
+    myHeaders.append("Authorization", "Bearer " + token);
+
+    var formdata = new FormData();
+    formdata.append("title", title);
+    formdata.append("category", category);
+    formdata.append("identity", id_type);
+    formdata.append(
+        "content",
+        JSON.stringify({
+            delta: content,
+            html: html,
+        })
+    );
+    formdata.append("hashtag", Hashtags);
+    formdata.append("id", article_id);
+    formdata.append("is_official", 1);
+    formdata.append("is_temporary", 0);
+
+    console.log(article_id);
+    console.log(title);
+    console.log(content);
+    console.log(html);
+    console.log(category);
+
+    var requestOptions = {
+        method: "PATCH",
+        headers: myHeaders,
+        body: formdata,
+        redirect: "follow",
+    };
+
+    fetch(
+        apiIP + "api/content/textEditorPost/" + article_id + "/",
+        requestOptions
+    ).then((response) => {
+        if (!response.ok) {
+            alert("標題重複");
+        } else {
+            window.location.reload();
+        }
+    });
+}
+
+//暫存聊療
+function temporaryData(obj, type) {
+    const apiIP = document.getElementById("app").getAttribute("data-api-ip");
+    var html = quill.root.innerHTML;
+    var content = quill.getContents();
+    var token = $("#jwt_token").text();
+    var id_type = document.getElementById("id_type").value;
+    var title = $("#input_new_title").val();
+    var category = document.getElementById("treat_class").value;
+    const randomInteger = Math.floor(Math.random() * 4) + 1;
+    const Hashtags = $("#create_input_topic")
+        .val()
+        .match(/#[^\s#]+/g);
+    var myHeaders = new Headers();
+
+    myHeaders.append("Authorization", "Bearer " + token);
+
+    var formdata = new FormData();
+    formdata.append("title", title);
+    formdata.append("category", category);
+    formdata.append("identity", id_type);
+    formdata.append(
+        "content",
+        JSON.stringify({
+            delta: content,
+            html: html,
+        })
+    );
+    formdata.append("hashtag", Hashtags);
+    formdata.append("is_official", 0);
+    formdata.append("is_temporary", 1);
+
+    fetch("/get-image/發文預設圖片_" + randomInteger + ".png")
+        .then((response) => {
+            if (response.ok) {
+                return response.blob();
+            }
+            throw new Error("Network response was not ok.");
+        })
+        .then((blob) => {
+            // formdata.append("index_image", blob, 'image.png');
+            articleImage = blob;
+        });
+
+    if (type == "temporary") {
+        if (title == "") {
+            alert("標題未填");
+        } else {
+            var article_id = $(obj)
+                .parents()
+                .eq(1)
+                .find("#temporary_id")
+                .text();
+            formdata.append("id", article_id);
+            console.log(article_id);
+            console.log(apiIP);
+            console.log(token);
+            console.log(category);
+            console.log(id_type);
+            console.log(content);
+            console.log(html);
+            console.log(Hashtags);
+
+            var requestOptions = {
+                method: "PATCH",
+                headers: myHeaders,
+                body: formdata,
+                redirect: "follow",
+            };
+
+            fetch(
+                apiIP + "api/content/textEditorPost/" + article_id + "/",
+                requestOptions
+            ).then((response) => {
+                if (!response.ok) {
+                    alert("標題重複");
+                } else {
+                    window.location.reload();
+                }
+            });
+        }
+    } else {
+        if (title == "") {
+            alert("標題未填");
+        } else {
+            console.log(apiIP);
+            console.log(token);
+            console.log(category);
+            console.log(id_type);
+            console.log(content);
+            console.log(html);
+            console.log(Hashtags);
+
+            var requestOptions = {
+                method: "POST",
+                headers: myHeaders,
+                body: formdata,
+                redirect: "follow",
+            };
+
+            fetch("/get-image/發文預設圖片_" + randomInteger + ".png")
+                .then((response) => {
+                    if (response.ok) {
+                        return response.blob();
+                    }
+                    throw new Error("Network response was not ok.");
+                })
+                .then((blob) => {
+                    formdata.append("index_image", blob, "image.png");
+                    fetch(
+                        apiIP + "api/content/textEditorPost/",
+                        requestOptions
+                    ).then((response) => {
+                        if (!response.ok) {
+                            alert("標題重複");
+                        } else {
+                            window.location.reload();
+                        }
+                    });
+                });
+        }
+    }
+}
+
+//暫存官方文章
+function official_temporaryData(obj, type) {
+    const apiIP = document.getElementById("app").getAttribute("data-api-ip");
+    var html = quill.root.innerHTML;
+    var content = quill.getContents();
+    var token = $("#jwt_token").text();
+    var id_type = document.getElementById("id_type").value;
+    var title = $("#input_new_title").val();
+    var category = document.getElementById("treat_class").value;
+    const randomInteger = Math.floor(Math.random() * 4) + 1;
+    const Hashtags = $("#create_input_topic")
+        .val()
+        .match(/#[^\s#]+/g);
+    var myHeaders = new Headers();
+
+    myHeaders.append("Authorization", "Bearer " + token);
+
+    var formdata = new FormData();
+    formdata.append("title", title);
+    formdata.append("category", category);
+    formdata.append("identity", id_type);
+    formdata.append(
+        "content",
+        JSON.stringify({
+            delta: content,
+            html: html,
+        })
+    );
+    formdata.append("hashtag", Hashtags);
+    formdata.append("is_official", 1);
+    formdata.append("is_temporary", 1);
+
+    fetch("/get-image/發文預設圖片_" + randomInteger + ".png")
+        .then((response) => {
+            if (response.ok) {
+                return response.blob();
+            }
+            throw new Error("Network response was not ok.");
+        })
+        .then((blob) => {
+            // formdata.append("index_image", blob, 'image.png');
+            articleImage = blob;
+        });
+
+    if (type == "temporary") {
+        if (title == "") {
+            alert("標題未填");
+        } else {
+            var article_id = $(obj)
+                .parents()
+                .eq(1)
+                .find("#temporary_id")
+                .text();
+            formdata.append("id", article_id);
+            console.log(article_id);
+            console.log(apiIP);
+            console.log(token);
+            console.log(category);
+            console.log(id_type);
+            console.log(content);
+            console.log(html);
+            console.log(Hashtags);
+
+            var requestOptions = {
+                method: "PATCH",
+                headers: myHeaders,
+                body: formdata,
+                redirect: "follow",
+            };
+
+            fetch(
+                apiIP + "api/content/textEditorPost/" + article_id + "/",
+                requestOptions
+            ).then((response) => {
+                if (!response.ok) {
+                    alert("標題重複");
+                } else {
+                    window.location.reload();
+                }
+            });
+        }
+    } else {
+        if (title == "") {
+            alert("標題未填");
+        } else {
+            console.log(apiIP);
+            console.log(token);
+            console.log(category);
+            console.log(id_type);
+            console.log(content);
+            console.log(html);
+            console.log(Hashtags);
+
+            var requestOptions = {
+                method: "POST",
+                headers: myHeaders,
+                body: formdata,
+                redirect: "follow",
+            };
+
+            fetch("/get-image/發文預設圖片_" + randomInteger + ".png")
+                .then((response) => {
+                    if (response.ok) {
+                        return response.blob();
+                    }
+                    throw new Error("Network response was not ok.");
+                })
+                .then((blob) => {
+                    formdata.append("index_image", blob, "image.png");
+                    fetch(
+                        apiIP + "api/content/textEditorPost/",
+                        requestOptions
+                    ).then((response) => {
+                        if (!response.ok) {
+                            alert("標題重複");
+                        } else {
+                            window.location.reload();
+                        }
+                    });
+                });
+        }
+    }
+}
+
+//刪除文章
+function delArticle(button) {
+    var id =
+        button.parentNode.parentNode.parentNode.parentNode.parentNode.id.replace(
+            "article_id_",
+            ""
+        );
+    var token = $("#jwt_token").text();
+    const apiIP = document.getElementById("app").getAttribute("data-api-ip");
+    var myHeaders = new Headers();
+
+    myHeaders.append("Authorization", "Bearer " + token);
+
+    var requestOptions = {
+        method: "DELETE",
+        headers: myHeaders,
+        redirect: "follow",
+    };
+
+    fetch(
+        apiIP + "api/content/textEditorPost/" + id + "/",
+        requestOptions
+    ).then((response) => {
+        if (response.ok) {
+            var category = $("#category").text();
+            window.location.href = ArticleRoute + "/" + category;
+        }
+    });
+}
+
+function generateHashtag(obj) {
+    // 獲取輸入框中的值
+    let input = obj.value;
+    const output = input.match(/#[^\s#]+/g);
+    Hashtags = output;
+    console.log(Hashtags); //輸出["#ABC", "#qwe"]
+}
+
+//使用者文章留言=
+function createArticleComment(button) {
+    if (banlist["comment"] == true) {
+        var token = $("#jwt_token").text();
+        if (token != "") {
+            var comment = document.getElementById("comment").value;
+            var article_id = $("#article_id").text();
+            var nickname = $("#nickname").text();
+            var updated_at = $("updated_at").text();
+            const apiIP = document
+                .getElementById("app")
+                .getAttribute("data-api-ip");
+            var formdata = new FormData();
+            formdata.append("post", article_id);
+            formdata.append("body", comment);
+            if ($("#anony_enable").prop("checked")) {
+                formdata.append("identity", "匿名");
+            } else {
+                formdata.append("identity", nickname);
+            }
+            console.log(article_id);
+            console.log(comment);
+
+            var myHeaders = new Headers();
+            myHeaders.append("Authorization", "Bearer " + token);
+
+            var requestOptions = {
+                method: "POST",
+                headers: myHeaders,
+                body: formdata,
+                redirect: "follow",
+            };
+
+            fetch(
+                apiIP + "api/content/textEditorPostComment/",
+                requestOptions
+            ).then((response) => {
+                if (response.ok) {
+                    var taskFormdata = new FormData();
+                    taskFormdata.append("task_title", "每日回覆");
+
+                    var taskRequestOptions = {
+                        method: "POST",
+                        headers: myHeaders,
+                        body: taskFormdata,
+                        redirect: "follow",
+                    };
+
+                    fetch(apiIP + "api/task/taskRecord/", taskRequestOptions);
+
+                    var formdata2 = new FormData();
+                    formdata2.append("author", article_id);
+                    // 後端會將 # 依序替換成 貼文標題、按讚數、留言數
+                    formdata2.append(
+                        "content",
+                        "您發布的貼文 # 已有 # 人按讚、 # 則留言! 快去看看吧~"
+                    );
+                    var requestOptions2 = {
+                        method: "POST",
+                        headers: myHeaders,
+                        body: formdata2,
+                        redirect: "follow",
+                    };
+
+                    fetch(
+                        apiIP + "api/notifications/notifications/",
+                        requestOptions2
+                    );
+
+                    window.location.reload();
+                }
+            });
+        } else {
+            Swal.fire({
+                title: "無法留言",
+                html: "請先登入!",
+                icon: "error",
+                showConfirmButton: false,
+                timer: 2500,
+            });
+        }
+    } else {
+        banerror(banlist["comment"]);
+    }
+}
+
+//使用者文章留言修改
+function patchArticleComment(obj) {
+    comment_id = $(obj).parents().eq(2).attr("id").replace("comment_", "");
+    var token = $("#jwt_token").text();
+    var article_id = $("#article_id").text();
+    const apiIP = document.getElementById("app").getAttribute("data-api-ip");
+    var formdata = new FormData();
+    formdata.append("post", article_id);
+
+    var myHeaders = new Headers();
+    myHeaders.append("Authorization", "Bearer " + token);
+    console.log($(obj).parents().eq(2).find(".comment_content").eq(0));
+    edit_cmt_obj = $(obj).parents().eq(2).find(".comment_content").eq(0);
+    $(edit_cmt_obj).attr("contenteditable", "true"); //開啟可編輯
+    $(edit_cmt_obj).focus();
+    $(".edit_check_btn").show(); //顯示編輯完成提交按鈕，是個假按鈕、不會觸發動作，單純讓使用者有作提交動作
+    $(edit_cmt_obj).on("blur", function () {
+        $(".edit_check_btn").hide(); //隱藏編輯完成提交按鈕
+        var editedContent = $(this).text(); // 取得編輯後的內容
+        formdata.append("body", editedContent);
+
+        var requestOptions = {
+            method: "PATCH",
+            headers: myHeaders,
+            body: formdata,
+            redirect: "follow",
+        };
+
+        fetch(
+            apiIP + "api/content/textEditorPostComment/" + comment_id + "/",
+            requestOptions
+        ).then((response) => {
+            if (response.ok) {
+                window.location.reload();
+            }
+        });
+    });
+}
+
+//使用者文章留言刪除
+function delArticleComment(obj) {
+    // console.log($(obj).parents())
+    var comment_id = $(obj).parents().eq(5).attr("id").replace("comment_", "");
+    var token = $("#jwt_token").text();
+    const apiIP = document.getElementById("app").getAttribute("data-api-ip");
+    var myHeaders = new Headers();
+
+    myHeaders.append("Authorization", "Bearer " + token);
+
+    var requestOptions = {
+        method: "DELETE",
+        headers: myHeaders,
+        redirect: "follow",
+    };
+
+    fetch(
+        apiIP + "api/content/textEditorPostComment/" + comment_id + "/",
+        requestOptions
+    ).then((response) => {
+        if (response.ok) {
+            window.location.reload();
+        }
+    });
+}
+
+//搜尋文章
+function searchArticle(event) {
+    if (event.key === "Enter") {
+        var searchText = event.target.value;
+        window.location.href = searchArticleRoute + "/" + searchText;
+    }
+}
+
+// //點擊分享 將當前網址填入shareModal內
+// $("#shareModal").on("show.bs.modal", function (e) {
+//     $("#input_link").val(location.href);
+// });
+
+// //分享文章 複製連結
+// select("#copylink_btn").addEventListener("click", () => {
+//     const select = (DOM) => document.querySelector(DOM);
+//     select("#input_link").select(); //選取連結文字
+//     navigator.clipboard.writeText(select("#input_link").value).then(() => {
+//         //當複製時，顯示'已複製'文字
+//         $("#copylink_btn").html("Copied");
+//         setTimeout(() => {
+//             window.getSelection().removeAllRanges(); //remove selection from page
+//             $("#copylink_btn").html("複製連結");
+//         }, 3000);
+//     });
+// });

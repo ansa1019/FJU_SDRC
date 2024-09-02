@@ -1,0 +1,163 @@
+.carousel .carousel-item {
+    height: 100%;
+}
+
+.carousel-item img {
+    height: 100%;
+    object-fit: cover;
+    max-height: 400px;
+}
+
+.content {
+    padding: 3rem 8vw;
+}
+.card {
+    border: none !important;
+}
+.card-body {
+    padding-left: 1px !important;
+    padding-right: 1px !important;
+}
+.card-temp-1 {
+    width: 18vw;
+    /* max-width: 18vw;
+    min-width: 185px; */
+}
+.card-temp-2 {
+    width: 18vw;
+    max-width: 18vw;
+    min-width: 150px;
+}
+.card-temp-3 {
+    width: 15vw;
+    height: 15vw;
+    max-width: 18vw;
+    max-height: 18vw;
+    min-width: 120px;
+    min-height: 120px;
+    margin-bottom: 2.25rem;
+}
+.card-img-top2 {
+    border-radius: 100%;
+    object-fit: cover;
+    height: 90% !important;
+    width: 90% !important;
+    margin: auto;
+    /* border: 0.25rem #909090; */
+}
+@media screen and (max-width: 426px) {
+    .carousel-item img {
+        max-height: 230px !important;
+    }
+    .content {
+        padding: 1.5rem 0 !important;
+    }
+    .card-temp-1 {
+        width: 68vw;
+        max-width: 80vw !important;
+    }
+    .card-temp-2 {
+        min-width: 185px !important;
+    }
+}
+
+@media screen and (min-width: 426px) and (max-width: 1024px) {
+    .carousel-item img {
+        max-height: 300px !important;
+    }
+    .content {
+        padding: 1.5rem 4vw !important;
+    }
+    .card-temp-1 {
+        width: 100% !important;
+        max-width: 32vw !important;
+        min-width: 185px !important;
+    }
+}
+
+@media screen and (min-width: 1024px) and (max-width: 1440px) {
+    .carousel-item img {
+        max-height: 375px !important;
+    }
+    .content {
+        padding: 2.25rem 6vw !important;
+    }
+    .card-temp-1 {
+        /* width: 100% !important; */
+        max-width: 17vw !important;
+        min-width: 185px !important;
+    }
+}
+
+#card-yearmon,
+#card-day {
+    font-size: var(--fs-18);
+    color: var(--ct-sub-1);
+}
+
+#card-date {
+    font-size: var(--fs-46);
+    font-weight: bolder;
+    color: var(--ct-color-2);
+}
+
+.content-title {
+    font-size: var(--fs-20);
+    font-weight: bold;
+    color: var(--ct-title-1);
+}
+
+.content-sub-title {
+    font-size: var(--fs-16);
+    color: var(--ct-sub-1);
+}
+
+.card-img-top {
+    min-height: calc(9.5rem - 0.5vw) !important;
+    max-height: calc(9.5rem - 0.5vw) !important;
+    height: 100% !important;
+    object-fit: cover;
+    /* aspect-ratio: 4/3; */
+}
+
+#popular_topic_tabs button {
+    font-size: var(--fs-20);
+}
+
+.card-title {
+    font-size: var(--fs-20);
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.card-text {
+    font-size: var(--fs-16);
+    line-height: var(--fs-22);
+    letter-spacing: 1px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.4; /* 设置固定的行高，根据需要调整值 */
+}
+.card-temp-1 p.card-text {
+    min-height: 4.2em; /* 1.2 * 3 = 3.6，每行高度乘以固定行数 */
+    overflow: hidden;
+}
+#popular_topic_tabs button {
+    color: var(--ct-title-1);
+    font-size: var(--fs-16);
+    margin-left: 0;
+    margin-right: 5px;
+}
+
+/* 用戶頭貼 1:1圓形 */
+.article_author img {
+    width: 25px;
+    height: 25px;
+    object-fit: cover;
+    border-radius: 50%;
+}
