@@ -247,7 +247,7 @@ $(document).ready(function () {
         var identity = data["identity"];
         var msg = data["message"];
         var user_image = data["user_image"];
-        if (user != data["user"] && !blacklist.includes(data["user"])) {
+        if (user != data["user"] && !blacklist["chat"].includes(data["user"])) {
             show_msg("other", "chat-room2", id, identity, msg, user_image); //接收訊息
         }
     };
@@ -257,7 +257,7 @@ $(document).ready(function () {
         var identity = data["identity"];
         var msg = data["message"];
         var user_image = data["user_image"];
-        if (user != data["user"] && !blacklist.includes(data["user"])) {
+        if (user != data["user"] && !blacklist["chat"].includes(data["user"])) {
             show_msg("other", "chat-room3", id, identity, msg, user_image); //接收訊息
         }
     };
@@ -267,7 +267,7 @@ $(document).ready(function () {
         var identity = data["identity"];
         var msg = data["message"];
         var user_image = data["user_image"];
-        if (user != data["user"] && !blacklist.includes(data["user"])) {
+        if (user != data["user"] && !blacklist["chat"].includes(data["user"])) {
             show_msg("other", "chat-room4", id, identity, msg, user_image); //接收訊息
         }
     };
@@ -277,7 +277,7 @@ $(document).ready(function () {
         var identity = data["identity"];
         var msg = data["message"];
         var user_image = data["user_image"];
-        if (user != data["user"] && !blacklist.includes(data["user"])) {
+        if (user != data["user"] && !blacklist["chat"].includes(data["user"])) {
             show_msg("other", "chat-room5", id, identity, msg, user_image); //接收訊息
         }
     };
@@ -287,7 +287,7 @@ $(document).ready(function () {
         var identity = data["identity"];
         var msg = data["message"];
         var user_image = data["user_image"];
-        if (user != data["user"] && !blacklist.includes(data["user"])) {
+        if (user != data["user"] && !blacklist["chat"].includes(data["user"])) {
             show_msg("other", "chat-room6", id, identity, msg, user_image); //接收訊息
         }
     };
