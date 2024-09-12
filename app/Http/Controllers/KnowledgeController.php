@@ -38,7 +38,7 @@ class KnowledgeController extends Controller
                 'Authorization' => 'Bearer ' . $token,
                 'Content-Type' => 'application/json',
             ])->post(env('API_IP') . 'api/userdetail/postStoraged/', $formdata);
-            $postStorageds = $addpostStoraged->json();
+            $postStorageds = ApiHelper::getAuthenticatedRequest($token, env('API_IP') . 'api/userdetail/postStoraged/')->json();
         }
 
         if ($response['temporary_article'] != []) {
@@ -115,7 +115,7 @@ class KnowledgeController extends Controller
                 'Authorization' => 'Bearer ' . $token,
                 'Content-Type' => 'application/json',
             ])->post(env('API_IP') . 'api/userdetail/postStoraged/', $formdata);
-            $postStorageds = $addpostStoraged->json();
+            $postStorageds = ApiHelper::getAuthenticatedRequest($token, env('API_IP') . 'api/userdetail/postStoraged/')->json();
         }
 
         $response['article_title'] = $response['title'];
