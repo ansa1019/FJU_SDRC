@@ -1080,7 +1080,7 @@ function postdata(obj, type) {
                 });
         }
     } else {
-        fetch("/get-image/發文預設圖片_" + randomInteger + ".png")
+        fetch("/get-image/img_" + randomInteger + ".png")
             .then((response) => {
                 if (response.ok) {
                     return response.blob();
@@ -1110,7 +1110,7 @@ function postdata(obj, type) {
                 redirect: "follow",
             };
 
-            fetch("/get-image/發文預設圖片_" + randomInteger + ".png")
+            fetch("/get-image/img_" + randomInteger + ".png")
                 .then((response) => {
                     if (response.ok) {
                         return response.blob();
@@ -1262,7 +1262,7 @@ function official_postdata(obj, type) {
                 });
         }
     } else {
-        fetch("/get-image/發文預設圖片_" + randomInteger + ".png")
+        fetch("/get-image/img_" + randomInteger + ".png")
             .then((response) => {
                 if (response.ok) {
                     return response.blob();
@@ -1292,7 +1292,7 @@ function official_postdata(obj, type) {
                 redirect: "follow",
             };
 
-            fetch("/get-image/發文預設圖片_" + randomInteger + ".png")
+            fetch("/get-image/img_" + randomInteger + ".png")
                 .then((response) => {
                     if (response.ok) {
                         return response.blob();
@@ -1493,7 +1493,7 @@ function temporaryData(obj, type) {
     formdata.append("is_official", 0);
     formdata.append("is_temporary", 1);
 
-    fetch("/get-image/發文預設圖片_" + randomInteger + ".png")
+    fetch("/get-image/img_" + randomInteger + ".png")
         .then((response) => {
             if (response.ok) {
                 return response.blob();
@@ -1561,7 +1561,7 @@ function temporaryData(obj, type) {
                 redirect: "follow",
             };
 
-            fetch("/get-image/發文預設圖片_" + randomInteger + ".png")
+            fetch("/get-image/img_" + randomInteger + ".png")
                 .then((response) => {
                     if (response.ok) {
                         return response.blob();
@@ -1617,7 +1617,7 @@ function official_temporaryData(obj, type) {
     formdata.append("is_official", 1);
     formdata.append("is_temporary", 1);
 
-    fetch("/get-image/發文預設圖片_" + randomInteger + ".png")
+    fetch("/get-image/img_" + randomInteger + ".png")
         .then((response) => {
             if (response.ok) {
                 return response.blob();
@@ -1685,7 +1685,7 @@ function official_temporaryData(obj, type) {
                 redirect: "follow",
             };
 
-            fetch("/get-image/發文預設圖片_" + randomInteger + ".png")
+            fetch("/get-image/img_" + randomInteger + ".png")
                 .then((response) => {
                     if (response.ok) {
                         return response.blob();

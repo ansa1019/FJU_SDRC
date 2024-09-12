@@ -88,15 +88,6 @@
                                         class="form-control input_underline" />
                                 </div>
                             </div>
-                            <div class="row g-3 mb-2 align-items-center">
-                                <div class="col-auto">
-                                    <label for="gift_comment" class="col-form-label">留言(非必填)</label>
-                                </div>
-                                <div class="col">
-                                    <input type="text" id="gift_comment" name="gift_comment"
-                                        class="form-control input_underline" />
-                                </div>
-                            </div>
                             <div class="row g-3 mb-2 mt-4" style="font-size: var(--fs-18)">
                                 <button type="submit" class="col-auto px-4 btn btn-outline-c2 rounded-pill">確認</button>
                             </div>
