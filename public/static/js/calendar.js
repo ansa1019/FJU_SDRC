@@ -151,8 +151,8 @@ $(document).ready(function () {
         $("#event-reminder").show();
     });
 
-    // 監聽單選按鈕的變更事件來禁用或啟用相關欄位
-    $("input[name='has_mc_type'], input[name='has_loc_type'], input[name='has_blood_type'], input[name='has_loc_type1']").on("change", function () {
+     // 監聽單選按鈕的變更事件來禁用或啟用相關欄位
+     $("input[name='has_mc_type'], input[name='has_loc_type'], input[name='has_blood_type'], input[name='has_loc_type1']").on("change", function () {
         var isNoMc = $("input[name='has_mc_type']:checked").val() === "沒有";
         $("input[name='mc_amount'], input[name='pain_level']").prop("disabled", isNoMc);
 
@@ -166,11 +166,10 @@ $(document).ready(function () {
         $("input[name='loc_amount4'], input[name='loc_color4']").prop("disabled", isNoLoc1);
     });
 
-    $('#daily_form').submit(calendarValidate);
-});
-
-//載入月曆資料
-function getCalendarEvents() {
+    $('#daily_form').submit(calendarValidate);  
+    });
+    //載入月曆資料
+    function getCalendarEvents() {
     var content = {};
     subPersonalCalendar.forEach((data) => {
         if (data.calendar.type == "menstruation") {
@@ -188,7 +187,6 @@ function getCalendarEvents() {
                 } else if (data.dict.hasOwnProperty("mc_more")) {
                     menstruationDescription += "月經量：量多" + "<br/>";
                 }
-
                 if (data.dict.hasOwnProperty("pain_less")) {
                     menstruationDescription += "經痛程度：輕微" + "<br/>";
                 } else if (data.dict.hasOwnProperty("pain_normal")) {
@@ -199,21 +197,17 @@ function getCalendarEvents() {
             } else {
                 menstruationDescription += "是否來月經：否<br/>";
             }
-
             var menstruationSymptom = "症狀：";
-
             for (var j = 0; j < menstruationSymptoms.length; j++) {
                 var symptom = menstruationSymptoms[j];
                 if (data.dict.hasOwnProperty(symptom)) {
                     menstruationSymptom += data.dict[symptom] + "、";
                 }
             }
-
             if (menstruationSymptom !== "症狀：") {
                 menstruationSymptom = menstruationSymptom.slice(0, -1);
                 menstruationDescription += menstruationSymptom + "<br/>";
             }
-
             if (data.dict.hasOwnProperty("noRoommate")) {
                 menstruationDescription += "是否同房：否<br/>";
             } else if (data.dict.hasOwnProperty("roommateContraception")) {
@@ -244,7 +238,6 @@ function getCalendarEvents() {
                 ) {
                     menstruationDescription += "惡露量：量多" + "<br/>";
                 }
-
                 if (data.dict.hasOwnProperty("miscarriagePeriodLoc_red")) {
                     menstruationDescription += "惡露顏色：鮮紅色" + "<br/>";
                 } else if (
@@ -255,9 +248,7 @@ function getCalendarEvents() {
             } else {
                 menstruationDescription += "是否惡露：否<br/>";
             }
-
             var miscarriagePeriodSymptomDescription = "症狀：";
-
             for (var j = 0; j < miscarriagePeriodSymptoms.length; j++) {
                 var symptom = miscarriagePeriodSymptoms[j];
                 if (data.dict.hasOwnProperty(symptom)) {
@@ -265,7 +256,6 @@ function getCalendarEvents() {
                         data.dict[symptom] + "、";
                 }
             }
-
             if (miscarriagePeriodSymptomDescription !== "症狀：") {
                 miscarriagePeriodSymptomDescription =
                     miscarriagePeriodSymptomDescription.slice(0, -1);
@@ -282,7 +272,6 @@ function getCalendarEvents() {
                 String(data.calendar.type) + String(data.calendar.id);
             content["name"] = "懷孕期";
             content["date"] = data.dict.pregnancyPeriod;
-
             if (data.dict.hasOwnProperty("has_blood")) {
                 menstruationDescription += "是否出血：是<br/>";
                 if (data.dict.hasOwnProperty("blood_less")) {
@@ -292,7 +281,6 @@ function getCalendarEvents() {
                 } else if (data.dict.hasOwnProperty("blood_more")) {
                     menstruationDescription += "出血量：量多" + "<br/>";
                 }
-
                 if (data.dict.hasOwnProperty("blood_pink")) {
                     menstruationDescription += "出血顏色：粉紅色" + "<br/>";
                 } else if (data.dict.hasOwnProperty("blood_red")) {
@@ -303,16 +291,13 @@ function getCalendarEvents() {
             } else {
                 menstruationDescription += "是否出血：否<br/>";
             }
-
             var pregnancySymptomDescription = "症狀：";
-
             for (var j = 0; j < pregnancySymptoms.length; j++) {
                 var symptom = pregnancySymptoms[j];
                 if (data.dict.hasOwnProperty(symptom)) {
                     pregnancySymptomDescription += data.dict[symptom] + "、";
                 }
             }
-
             if (pregnancySymptomDescription !== "症狀：") {
                 pregnancySymptomDescription = pregnancySymptomDescription.slice(
                     0,
@@ -321,7 +306,6 @@ function getCalendarEvents() {
                 menstruationDescription +=
                     pregnancySymptomDescription + "<br/>";
             }
-
             content["description"] =
                 "狀態：" + content["name"] + "<br/>" + menstruationDescription;
             content["type"] = content["name"];
@@ -332,7 +316,6 @@ function getCalendarEvents() {
                 String(data.calendar.type) + String(data.calendar.id);
             content["name"] = "產後期";
             content["date"] = data.dict.postpartumPeriod;
-
             if (data.dict.hasOwnProperty("postpartumPeriodHas_loc1")) {
                 menstruationDescription += "是否惡露：是<br/>";
                 if (data.dict.hasOwnProperty("postpartumPeriodLoc_less")) {
@@ -346,7 +329,6 @@ function getCalendarEvents() {
                 ) {
                     menstruationDescription += "惡露量：量多" + "<br/>";
                 }
-
                 if (data.dict.hasOwnProperty("postpartumPeriodLoc_red")) {
                     menstruationDescription += "惡露顏色：鮮紅色" + "<br/>";
                 } else if (
@@ -357,21 +339,17 @@ function getCalendarEvents() {
             } else {
                 menstruationDescription += "是否惡露：否<br/>";
             }
-
             var postpartumPeriodSymptom = "症狀：";
-
             for (var j = 0; j < postpartumSymptoms.length; j++) {
                 var symptom = postpartumSymptoms[j];
                 if (data.dict.hasOwnProperty(symptom)) {
                     postpartumPeriodSymptom += data.dict[symptom] + "、";
                 }
             }
-
             if (postpartumPeriodSymptom !== "症狀：") {
                 postpartumPeriodSymptom = postpartumPeriodSymptom.slice(0, -1);
                 menstruationDescription += postpartumPeriodSymptom + "<br/>";
             }
-
             content["description"] =
                 "狀態：" + content["name"] + "<br/>" + menstruationDescription;
             content["type"] = content["name"];
@@ -382,7 +360,6 @@ function getCalendarEvents() {
                 String(data.calendar.type) + String(data.calendar.id);
             content["name"] = "更年期";
             content["date"] = data.dict.menopausePeriod;
-
             var menopauseSymptomDescription = "症狀：";
             for (var j = 0; j < menopauseSymptoms.length; j++) {
                 var symptom = menopauseSymptoms[j];
@@ -390,7 +367,6 @@ function getCalendarEvents() {
                     menopauseSymptomDescription += data.dict[symptom] + "、";
                 }
             }
-
             if (menopauseSymptomDescription !== "症狀：") {
                 menopauseSymptomDescription = menopauseSymptomDescription.slice(
                     0,
@@ -399,7 +375,6 @@ function getCalendarEvents() {
                 menstruationDescription +=
                     menopauseSymptomDescription + "<br/>";
             }
-
             content["description"] =
                 "狀態：" + content["name"] + "<br/>" + menstruationDescription;
             content["type"] = content["name"];
@@ -412,7 +387,6 @@ function getCalendarEvents() {
     });
     refreshEvents(calendarEvents);
 }
-
 //更新載入月曆事件
 function refreshEvents(events_data) {
     jQuery.each(events_data, function (date, val) {
@@ -424,7 +398,6 @@ function refreshEvents(events_data) {
     });
     showEvents(current);
 }
-
 // 前端顯示日期事件
 function showEvents(eventDate) {
     var date = dayjs(eventDate).format("YYYY-MM-DD");
@@ -441,11 +414,9 @@ function showEvents(eventDate) {
     if (calendarEvents.hasOwnProperty(date)) {
         $(".subtitle").html("1 event"); // 前端badge標籤 顯示事件數量
         $("#event-content").html(calendarEvents[date].name); // 前端事件內文 顯示內容
-
         /* 原先事件為list格式 已改成單事件(先保留原始code) */
         // Number of events
         // elements.subtitle.textContent = events[id].length + " " + (events[id].length > 1 ? "events" : "event");
-
         // var div;
         // var close;
         // For each event
@@ -473,7 +444,6 @@ function showEvents(eventDate) {
         $(".subtitle").html("No events"); // 若無日期事件資料，則前端badge標籤 顯示事件數量
     }
 }
-
 function modal_type(type) {
     //記錄會員的身體狀態，預設是"生理期" (ex:生理期=daily_type_1;小產期=daily_type_2...)
     var daily_id = $(".daily_type").not(".d-none").attr("id");
@@ -538,7 +508,6 @@ function close_modal() {
     $('#daily_modal input[type="checkbox"]').prop("checked", false);
     $('#daily_modal input[type="radio"]').prop("checked", false);
 }
-
 //初次使用月曆記錄
 function first_daily_set() {
     let selected_item = $("#health_type").find(":selected").val();
@@ -573,7 +542,6 @@ function first_daily_set() {
     open_modal(selected_item);
     //後端處理 儲存setting_json資料
 }
-
 //初次紀錄modal 生理狀態select change 前端切換成相對應表單
 // select後 會將會員初次設置的生理狀態 記錄在 daily_id 變數
 function daily_select_type() {
@@ -584,7 +552,6 @@ function daily_select_type() {
     $('#daily_modal input[type="checkbox"]').prop("checked", false);
     $('#daily_modal input[type="radio"]').prop("checked", false);
 }
-
 // 資料防呆檢查
 function calendarValidate() {
     let daily_id = $(".daily_type").not(".d-none").attr("id"); // 取得是哪個時期的 div id
