@@ -1,5 +1,5 @@
 @extends('layouts.masterpage')
-@section('title', '優德莎莉 專屬月曆')
+@section('title', '莎莉聊療吧 - 優德莎莉')
 @section('content')
     <style>
         #calendar {

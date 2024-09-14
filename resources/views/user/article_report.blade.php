@@ -1,5 +1,5 @@
 @extends('layouts.masterpage')
-@section('title', '優德莎莉 文章管理')
+@section('title', '莎莉聊療吧 - 優德莎莉 文章管理')
 @section('content')
     <!-- 引用 ag-grid表格與複選套件 -->
     <script src="https://cdn.jsdelivr.net/npm/ag-grid-community/dist/ag-grid-community.min.js"></script>
