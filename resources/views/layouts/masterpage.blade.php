@@ -54,7 +54,7 @@
     </script>
 
 
-    <title>@yield('title', '優德莎莉')</title>
+    <title>@yield('title', '莎莉聊療吧 - 優德莎莉')</title>
     <style>
         #calendar {
             font-size: var(--fs-18);
