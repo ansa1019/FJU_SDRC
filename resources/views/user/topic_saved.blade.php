@@ -28,11 +28,15 @@
                                             class="fas fa-user p-1 text-white"></i></span>
                                     <!--收藏的發文者-->
                                     <a href="{{ Route('searchArticle') . '/' . substr($sub, 1, strlen($sub)) }}"
-                                        class="topic_title">{{ $sub }}</a>
+                                        class="topic_title" style="text-decoration: none; color: inherit;">
+                                        {{ str_replace('#', '', $sub) }}
+                                    </a>
+
+
                                     <!--該發文者的文章資訊-->
                                     <span class="topic_info">{{ $article_num[$sub] }}篇文章</span>
-                                    <!--該發文者的近期發文資訊-->
-                                    <span class="topic_news">有{{ $article_num[$sub . '_new_article'] }}篇新文章</span>
+                                    {{-- <!--該發文者的近期發文資訊-->
+                                    <span class="topic_news">有{{ $article_num[$sub . '_new_article'] }}篇新文章</span> --}}
                                 </div>
                                 <div class="col-auto">
                                     {{-- <button type="button" class="btn" onclick="notfiy_saved_btn(this)"><i
