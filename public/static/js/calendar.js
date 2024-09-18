@@ -153,21 +153,25 @@ $(document).ready(function () {
 
      // 監聽單選按鈕的變更事件來禁用或啟用相關欄位
      $("input[name='has_mc_type'], input[name='has_loc_type'], input[name='has_blood_type'], input[name='has_loc_type1']").on("change", function () {
-        var isNoMc = $("input[name='has_mc_type']:checked").val() === "沒有";
-        $("input[name='mc_amount'], input[name='pain_level']").prop("disabled", isNoMc);
-
-        var isNoLoc = $("input[name='has_loc_type']:checked").val() === "沒有";
-        $("input[name='loc_amount'], input[name='loc_color']").prop("disabled", isNoLoc);
-
-        var isNoBlood = $("input[name='has_blood_type']:checked").val() === "沒有";
-        $("input[name='blood_amount'], input[name='blood_color']").prop("disabled", isNoBlood);
-
-        var isNoLoc1 = $("input[name='has_loc_type1']:checked").val() === "沒有";
-        $("input[name='loc_amount4'], input[name='loc_color4']").prop("disabled", isNoLoc1);
+        console.log("change");
+        var isChecked = $(this).prop("checked") && $(this).val() === "沒有";
+        // 判斷是否要禁用或啟用輸入欄位
+        $( "input[name='mc_amount'], input[name='pain_level'], input[name='loc_amount'], input[name='loc_color'], input[name='blood_amount'], input[name='blood_color'], input[name='loc_amount4'], input[name='loc_color4']").prop("disabled", isChecked);
     });
-
-    $('#daily_form').submit(calendarValidate);  
+    // 監聽單選按鈕的點擊事件來實現點擊兩次取消選擇的功能
+    $("input[type='radio']").on("click", function () {
+        if ($(this).data("checked")) {
+            $(this).prop("checked", false);
+            $(this).data("checked", false);
+            data.dict["pain_level"] = null; 
+        } else {
+            $(this).data("checked", true);
+            data.dict["pain_level"] = $(this).val(); 
+        }
     });
+    $('#daily_form').submit(calendarValidate);
+    });  
+    
     //載入月曆資料
     function getCalendarEvents() {
     var content = {};
@@ -556,41 +560,69 @@ function daily_select_type() {
 function calendarValidate() {
     let daily_id = $(".daily_type").not(".d-none").attr("id"); // 取得是哪個時期的 div id
     let daily_index = daily_id.replace("daily_type_", "");
-    let emptyFields = new Set(); // 使用 Set 確保每個欄位只出現一次
-    let uncheckedFields = new Set();
+    let emptyFields = [];
+    let uncheckedFields = [];
+    let checked_list = [];
 
     // 檢查所有文本輸入框是否為空且沒有被禁用
-    $(`#${daily_id} input[type='text']:enabled`).each(function (index, element) {
-        // 針對「其他」的欄位，只有當相應的選項被勾選時才進行驗證
-        if ($(element).attr("id") === `type${daily_index}_q3_other`) {
-            let otherCheckbox = $(`#${daily_id} input[type="checkbox"][value="其他"]`);
-            if (otherCheckbox.prop("checked") && $(element).val() === "") {
-                emptyFields.add(chineseLabels[$(element).attr("name")] || $(element).attr("name"));
+    $(`#${daily_id} input[type='text']`).each(function (index, element) {
+        if (!$(element).prop("disabled") && $(element).val() === "") {
+            // 如果值為空且輸入欄位沒有被禁用
+            if ($(element).attr("id") == `type${daily_index}_q3_other`) {
+                var checkbox = $(`#${daily_id} input[type="checkbox"][value="其他"]`);
+                if (checkbox.prop("checked")) {
+                    emptyFields.push(chineseLabels[$(element).attr("name")] || $(element).attr("name"));
+                }
+            } else {
+                emptyFields.push(chineseLabels[$(element).attr("name")] || $(element).attr("name"));
             }
-        } else if ($(element).val() === "") {
-            emptyFields.add(chineseLabels[$(element).attr("name")] || $(element).attr("name"));
         }
     });
 
     // 檢查所有單選按鈕是否有選擇且沒有被禁用
-    $(`#${daily_id} input[type='radio']:enabled`).each(function () {
-        var radioName = $(this).attr("name");
-        if ($(`input[name="${radioName}"]:checked`).length === 0) {
-            uncheckedFields.add(chineseLabels[radioName] || radioName);
+    $(`#${daily_id} input[type='radio']`).each(function (index, element) {
+        if (!$(element).prop("disabled")) {
+            if (index === 0) {
+                firstInputName = $(element).attr("name");
+                checked_list.push($(element).prop("checked"));
+            } else if (index === $(`#${daily_id} input[type='radio']`).length - 1) {
+                checked_list.push($(element).prop("checked"));
+                if (!checked_list.includes(true)) {
+                    uncheckedFields.push(chineseLabels[firstInputName] || firstInputName);
+                }
+            } else {
+                if (firstInputName == $(element).attr("name")) {
+                    checked_list.push($(element).prop("checked"));
+                } else {
+                    if (!checked_list.includes(true)) {
+                        uncheckedFields.push(chineseLabels[firstInputName] || firstInputName);
+                    }
+                    firstInputName = $(element).attr("name");
+                    checked_list = [];
+                    checked_list.push($(element).prop("checked"));
+                }
+            }
         }
     });
 
     // 生成警示信息
-    if (emptyFields.size > 0 || uncheckedFields.size > 0) {
+    if (emptyFields.length > 0 || uncheckedFields.length > 0) {
         let errorMessage = "存在未填寫或未選擇的項目，請進行填寫或選擇:\n";
-        if (emptyFields.size > 0) {
-            errorMessage += "- " + Array.from(emptyFields).join("\n- ") + "\n";
+        if (emptyFields.length > 0) {
+            errorMessage += "- " + emptyFields.join("\n- ") + "\n";
         }
-        if (uncheckedFields.size > 0) {
-            errorMessage += "- " + Array.from(uncheckedFields).filter(item => item !== '經痛程度').join("\n- ");
+        if (uncheckedFields.length > 0) {
+            errorMessage += "- " + uncheckedFields.filter(item => item !== '經痛程度').join("\n- ");
         }
         alert(errorMessage);
         return false;
+    } else {
+        // 將單選按鈕的 name 屬性設置為其 id 屬性值
+        $(this)
+            .find("input[type=radio]")
+            .each(function () {
+                $(this).attr("name", $(this).attr("id"));
+            });
+        return true;
     }
-    return true;
-}
+};

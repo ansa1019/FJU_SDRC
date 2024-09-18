@@ -3,18 +3,6 @@ $(document).ready(function () {
     $("#card-date").text(dayjs().format("D"));
     $("#card-yearmon").text(dayjs().format("YYYY.M"));
     $("#card-day").text(dayjs().locale('zh-tw').format("dddd"));
-    // 監聽所有具有相關屬性的單選按鈕的變更事件
-    $(
-        "input[name='has_mc_type'], input[name='has_loc_type'], input[name='has_blood_type'], input[name='has_loc_type1']"
-    ).on("change", function () {
-        console.log("change");
-        var isChecked = $(this).prop("checked") && $(this).val() === "沒有";
-        // 判斷是否要禁用或啟用輸入欄位
-        $(
-            "input[name='mc_amount'], input[name='pain_level'], input[name='loc_amount'], input[name='loc_color'], input[name='blood_amount'], input[name='blood_color'], input[name='loc_amount4'], input[name='loc_color4']"
-        ).prop("disabled", isChecked);
-    });
-    $('#daily_form').submit(calendarValidate);
 });
 
 $(".datepicker").datepicker({
