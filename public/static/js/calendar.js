@@ -607,16 +607,21 @@ function calendarValidate() {
 
     // 生成警示信息
     if (emptyFields.length > 0 || uncheckedFields.length > 0) {
-        let errorMessage = "存在未填寫或未選擇的項目，請進行填寫或選擇:\n";
+        let errorMessage = "存在未填寫或未選擇的項目，請進行填寫或選擇:\n";    
         if (emptyFields.length > 0) {
             errorMessage += "- " + emptyFields.join("\n- ") + "\n";
-        }
+        }   
+        // 完全排除經痛程度的檢查，不管月經是否為"有"
         if (uncheckedFields.length > 0) {
-            errorMessage += "- " + uncheckedFields.filter(item => item !== '經痛程度').join("\n- ");
+            let filteredUncheckedFields = uncheckedFields.filter(item => item !== '經痛程度');
+            
+            // 如果篩選後還有未選擇的項目，則顯示警示訊息
+            if (filteredUncheckedFields.length > 0) {
+                errorMessage += "- " + filteredUncheckedFields.join("\n- ");
+                alert(errorMessage);
+                return false;
+            }
         }
-        alert(errorMessage);
-        return false;
-    } else {
         // 將單選按鈕的 name 屬性設置為其 id 屬性值
         $(this)
             .find("input[type=radio]")
