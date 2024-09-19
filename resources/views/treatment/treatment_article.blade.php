@@ -20,15 +20,18 @@
 
     <div class="container-xxl">
         <p style="display: none" id='article_id'>{{ $id }}</p>
-        <p style="display: none" id='article_category'>{{ $category['0']['name'] }}</p>
+        <p style="display: none" id='article_category'>{{ $maincate . '/' . $category['0']['name'] }}</p>
         <p style="display: none" id='nickname'>{{ $nickname }}</p>
         <p style="display: none" id='is_click'>{{ $is_click }}</p>
         <div class="row pt-3 px-md-5">
             <div class="col-12 my-2">
                 <nav class="mb-4">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="#">療心室</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">{{ $category['0']['name'] }}</li>
+                        <li class="breadcrumb-item"><a href="{{ route('treatment_qa',$category['0']['name']) }}" class="ct-title-1 text-decoration-none mx-2"
+                            id='article_category'>療心室</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">
+                            <a href="{{ route('treatment_qa', $category['0']['name']) }}" class="ct-title-1 text-decoration-none mx-2"
+                                id='article_category'>{{ $category['0']['name'] }}</a></li>
                         <!-- <li class="breadcrumb-item active" aria-current="page">{{ $article_title }}</li> -->
                     </ol>
                 </nav>
@@ -210,10 +213,10 @@
                         <div class="mt-4" id="comments_list">
                             <!-- 留言 1F -->
                             @foreach ($comments as $comment)
-                            @php
-                                $blacklist = session('blacklist', []);
-                                $blacklistedCommentIds = $blacklist['comment'] ?? [];
-                            @endphp
+                                @php
+                                    $blacklist = session('blacklist', []);
+                                    $blacklistedCommentIds = $blacklist['comment'] ?? [];
+                                @endphp
                                 @if (!in_array($comment['id'], $blacklistedCommentIds))
                                     <div class="col-12 my-1 border-bottom" id="comment_{{ $comment['id'] }}">
                                         <div class="col-12 d-flex justify-content-between align-items-center">
@@ -237,12 +240,12 @@
                                                     </button>
                                                     <!--當使用者正在編輯留言時 顯示提交按鈕-->
                                                     <!-- <button class="btn btn-sm p-0 edit_check_btn" data-bs-toggle="tooltip" data-bs-title="提交">
-                                                                                                                        <i class="fas fa-check ct-sub-1 me-1"></i>
-                                                                                                                    </button> -->
+                                                                                                                            <i class="fas fa-check ct-sub-1 me-1"></i>
+                                                                                                                        </button> -->
                                                     <button class="btn btn-primary btn-sm edit_check_btn mx-1">提交</button>
                                                 @endif
-                                                <div class="dropdown d-inline" data-bs-toggle="tooltip" data-bs-title="檢舉/刪除"
-                                                    data-bs-placement="top">
+                                                <div class="dropdown d-inline" data-bs-toggle="tooltip"
+                                                    data-bs-title="檢舉/刪除" data-bs-placement="top">
                                                     <button class="btn btn-sm dropdown-toggle" type="button"
                                                         data-bs-toggle="dropdown">
                                                         <i class="fas fa-exclamation-circle ct-sub-1 me-1"></i>
@@ -272,7 +275,7 @@
                                         <!--當使用者正在編輯留言時 顯示提交按鈕 -->
                                         <!-- <button class="btn btn-primary btn-sm edit_check_btn">提交</button> -->
                                     </div>
-                                @endif    
+                                @endif
                             @endforeach
                         </div>
                     </div>
