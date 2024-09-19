@@ -105,7 +105,7 @@ Route::patch('/UserEditpassword', [App\Http\Controllers\Auth\UserInfoController:
 //     Mail::to("test@gmail.com")->send(new OrderShipped());
 // });
 
-Route::post('/sendchkmail', [App\Http\Controllers\Auth\UserInfoController::class, 'sendchkmail'])->name('setUserimage');
+Route::post('/sendchkmail', [App\Http\Controllers\Auth\UserInfoController::class, 'sendchkmail'])->name('sendchkmail');
 Route::post('/setUserimage', [App\Http\Controllers\Auth\JWTsAuthController::class, 'setUserimage'])->name('setUserimage');
 Route::post('/setBanlist', [App\Http\Controllers\Auth\JWTsAuthController::class, 'setBanlist'])->name('setBanlist');
 Route::post('/setBlacklist', [App\Http\Controllers\Auth\JWTsAuthController::class, 'setBlacklist'])->name('setBlacklist');
