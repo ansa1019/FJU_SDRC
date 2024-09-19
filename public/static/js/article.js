@@ -949,6 +949,7 @@ function getValue(button, type) {
                 break;
             }
         }
+        console.log("Category value:", category);
 
         for (var i = 0; i < selectIdentity.options.length; i++) {
             if (selectIdentity.options[i].value === identity) {
