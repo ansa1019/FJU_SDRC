@@ -35,7 +35,9 @@
                         <div id="postStoraged_不分類收藏" class="col-auto text-center mb-3 postStoraged">
                             <!--分類圖片-->
                             <a href="{{ route('article_saved_collect') . '/不分類收藏' }}">
-                                <img src="https://placehold.co/180x130" class="rounded mx-auto d-block" alt="所有收藏" />
+                                <img src="{{ asset('static/img/img_' . rand(1, 4) . '.png') }}"
+                                    class="rounded mx-auto d-block" alt="所有收藏" />
+
                             </a>
                             <!--分類名稱-->
                             <div class="row">
@@ -51,8 +53,8 @@
 
                                     <!--分類圖片-->
                                     <a href="{{ route('article_saved_collect') . '/' . $postStoraged['storage_name'] }}">
-                                        <img src="https://placehold.co/180x130" class="rounded mx-auto d-block"
-                                            alt="{{ $postStoraged['storage_name'] }}" />
+                                        <img src="{{ asset('static/img/img_' . rand(1, 4) . '.png') }}"
+                                            class="rounded mx-auto d-block" alt="{{ $postStoraged['storage_name'] }}" />
                                     </a>
                                     <!--分類名稱-->
                                     <div class="row">

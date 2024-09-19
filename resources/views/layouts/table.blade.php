@@ -44,7 +44,7 @@
     <!-- jsCalendar -->
     <link rel="stylesheet" type="text/css" href="{{ asset('static/jsCalendar-master/source/jsCalendar.css') }}" />
 
-    <title>優德莎莉</title>
+    <title>莎莉聊療吧 - 優德莎莉</title>
     <style>
         #calendar {
             font-size: var(--fs-18);

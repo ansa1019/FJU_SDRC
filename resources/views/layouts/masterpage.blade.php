@@ -2,7 +2,7 @@
 <html lang="en" style="height: 100%">
 
 <head>
-    <link rel="icon" href="static/img/us-icon.ico" type="image/x-icon" />
+    <link rel="icon" href="{{ asset('static/img/logo.ico') }}" type="image/x-icon" />
     <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -54,7 +54,7 @@
     </script>
 
 
-    <title>@yield('title', '優德莎莉')</title>
+    <title>@yield('title', '莎莉聊療吧 - 優德莎莉')</title>
     <style>
         #calendar {
             font-size: var(--fs-18);
