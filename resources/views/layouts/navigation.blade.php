@@ -176,7 +176,7 @@
         var id = $(this).attr('id').split("_")[1];
         var href = this.href;
         var notifications = @json(session('notifications'));
-        notify.send(
+        usersocket.send(
             JSON.stringify({
                 action: "read",
                 id: id,
