@@ -99,9 +99,13 @@ class RouteController extends Controller
         return view('user/topic_saved', ['sidebar' => 'user', 'title' => 'article', 'web_name' => 'topic_saved', 'nickname' => Session::get('nickname', '')]);
     }
 
-    public function common_qa()
+    public function privacy()
     {
-        return view('about/common_qa', ['sidebar' => 'None', 'title' => 'None', 'web_name' => 'None', 'nickname' => Session::get('nickname', '')]);
+        return view('about/privacy', ['sidebar' => 'None', 'title' => 'None', 'web_name' => 'None', 'nickname' => Session::get('nickname', '')]);
+    }
+    public function tos()
+    {
+        return view('about/tos', ['sidebar' => 'None', 'title' => 'None', 'web_name' => 'None', 'nickname' => Session::get('nickname', '')]);
     }
 
     public function notifications()
