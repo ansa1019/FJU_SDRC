@@ -171,13 +171,16 @@
                                 </div>
                                 <div class="col">
                                     <select class="form-select" id="birth_plan" name='birth_plan'>
-                                        <option value="有-正在嘗試自然受孕" {{ $family_planning == '有-正在嘗試自然受孕' ? 'selected' : '' }}>
+                                        <option value="有-正在嘗試自然受孕"
+                                            {{ $family_planning == '有-正在嘗試自然受孕' ? 'selected' : '' }}>
                                             有-正在嘗試自然受孕</option>
-                                        <option value="有-正在進行人工受孕療程"{{ $family_planning == '有-正在進行人工受孕療程' ? 'selected' : '' }}>
+                                        <option
+                                            value="有-正在進行人工受孕療程"{{ $family_planning == '有-正在進行人工受孕療程' ? 'selected' : '' }}>
                                             有-正在進行人工受孕療程</option>
                                         <option value="無-未來有懷孕需求" {{ $family_planning == '無-未來有懷孕需求' ? 'selected' : '' }}>
                                             無-未來有懷孕需求</option>
-                                        <option value="無-未來沒有懷孕需求" {{ $family_planning == '無-未來沒有懷孕需求' ? 'selected' : '' }}>
+                                        <option value="無-未來沒有懷孕需求"
+                                            {{ $family_planning == '無-未來沒有懷孕需求' ? 'selected' : '' }}>
                                             無-未來沒有懷孕需求</option>
                                     </select>
                                 </div>
@@ -310,7 +313,227 @@
     </div>
 
     <!--重設密碼modal-->
+    <!-- 重設密碼 modal -->
     <div class="modal fade" id="pwdModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">
+                        <i class="bi bi-lock-fill ct-txt-1 me-2"></i>設定密碼
+                    </h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="font-size: var(--fs-18)">
+                    <div class="row d-flex justify-content-center py-3">
+                        <div class="col-md col-lg-8">
+                            <form method="POST" action="{{ route('UserEditpassword') }}" enctype="multipart/form-data"
+                                id="passwordForm">
+                                @csrf
+                                @method('PATCH')
+
+                                <div id="step1">
+                                    <div class="row g-3 mb-3 align-items-start">
+                                        <div class="col-4">
+                                            <label for="old_password" class="col-form-label">舊密碼</label>
+                                        </div>
+                                        <div class="col">
+                                            <input type="password" id="old_password" name="old_password"
+                                                placeholder="請輸入舊密碼" class="form-control"
+                                                value="{{ old('old_password') }}">
+                                            @if ($errors->has('old_password'))
+                                                <span class="ct-txt-2 text-danger" style="font-size: var(--fs-16)">
+                                                    {{ $errors->first('old_password') }}
+                                                </span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="row g-3 my-4 align-items-center">
+                                        <button type="button" class="btn btn-c2 rounded-pill px-4 mx-1 col-auto"
+                                            onclick="validateOldPassword()">下一步</button>
+                                    </div>
+                                </div>
+
+                                <div id="step2" style="display: none;">
+                                    <div class="row g-3 mb-3 align-items-start">
+                                        <div class="col-4">
+                                            <label for="new_password" class="col-form-label">新密碼</label>
+                                        </div>
+                                        <div class="col">
+                                            <input type="password" id="new_password" name="new_password"
+                                                placeholder="須包含英文大小寫，至少8個字元" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="row g-3 mb-3 align-items-start">
+                                        <div class="col-4">
+                                            <label for="check_password" class="col-form-label">確認新密碼</label>
+                                        </div>
+                                        <div class="col">
+                                            <input type="password" id="check_password" name="check_password"
+                                                class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="row g-3 my-4 align-items-center">
+                                        <button type="submit"
+                                            class="btn btn-c2 rounded-pill px-4 mx-1 col-auto">完成</button>
+                                        <button type="button" class="btn col-auto mx-1"
+                                            data-bs-dismiss="modal">取消</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function validateOldPassword() {
+            const oldPassword = document.getElementById('old_password').value;
+
+            fetch('{{ route('UserEditpassword') }}', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        old_password: oldPassword,
+                        action: 'step1'
+                    })
+                })
+
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // 如果舊密碼正確，顯示新密碼步驟
+                        document.getElementById('step1').style.display = 'none';
+                        document.getElementById('step2').style.display = 'block';
+                    } else {
+                        // 如果舊密碼錯誤，顯示錯誤訊息
+                        const errorSpan = document.createElement('span');
+                        errorSpan.className = 'ct-txt-2 text-danger';
+                        errorSpan.style.fontSize = 'var(--fs-16)';
+                        errorSpan.innerText = '舊密碼不正確';
+                        const oldPasswordContainer = document.querySelector('#old_password').parentElement;
+                        // 清除之前的錯誤訊息（如果存在）
+                        const existingError = oldPasswordContainer.querySelector('.ct-txt-2.text-danger');
+                        if (existingError) {
+                            existingError.remove();
+                        }
+                        oldPasswordContainer.appendChild(errorSpan);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+
+        document.getElementById('passwordForm').addEventListener('submit', function(event) {
+            const newPassword = document.getElementById('new_password').value;
+            const checkPassword = document.getElementById('check_password').value;
+
+            // 檢查新密碼和確認新密碼是否相同
+            if (newPassword !== checkPassword) {
+                event.preventDefault(); // 防止表單提交
+
+                const errorSpan = document.createElement('span');
+                errorSpan.className = 'ctxt-2 text-danger';
+                errorSpan.style.fontSize = 'var(--fs-16)';
+                errorSpan.innerText = '新密碼與確認新密碼不相符';
+                const newPasswordContainer = document.querySelector('#new_password').parentElement;
+
+                // 清除之前的錯誤訊息（如果存在）
+                const existingError = newPasswordContainer.querySelector('.ctxt-2.text-danger');
+                if (existingError) {
+                    existingError.remove();
+                }
+                newPasswordContainer.appendChild(errorSpan);
+
+                return; // 返回，不進行後續處理
+            }
+        });
+    </script>
+
+
+
+
+
+
+
+    {{-- <div class="modal fade" id="pwdModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">
+                        <i class="bi bi-lock-fill ct-txt-1 me-2"></i>設定密碼
+                    </h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="font-size: var(--fs-18)">
+                    <div class="row d-flex justify-content-center py-3">
+                        <div class="col-md col-lg-8">
+                            <form method="POST" action="{{ route('UserEditpassword') }}" enctype="multipart/form-data">
+                                @csrf
+                                @method('PATCH')
+
+                                <!-- 顯示錯誤訊息 -->
+                                @if (session('error'))
+                                    <div class="alert alert-danger">
+                                        {{ session('error') }}
+                                    </div>
+                                @endif
+
+                                <div class="row g-3 mb-3 align-items-start">
+                                    <div class="col-4">
+                                        <label for="old_password" class="col-form-label">舊密碼</label>
+                                    </div>
+                                    <div class="col">
+                                        <input type="password" id="old_password" name="old_password"
+                                            placeholder="請輸入舊密碼" class="form-control">
+                                        @if ($errors->any())
+                                            <span class="ct-txt-2 text-danger" style="font-size: var(--fs-16)">
+                                                {{ $errors->first('old_password') ?? session('error') }}
+                                            </span>
+                                        @endif
+                                    </div>
+                                </div>
+
+                                <div class="row g-3 mb-3 align-items-start">
+                                    <div class="col-4">
+                                        <label for="new_password" class="col-form-label">新密碼</label>
+                                    </div>
+                                    <div class="col">
+                                        <input type="password" id="new_password" name="new_password"
+                                            placeholder="須包含英文大小寫，至少8個字元" class="form-control" />
+                                        <span class="ct-txt-2 d-none" id="new_pwd_alert"
+                                            style="font-size: var(--fs-16)">＊新密碼須包含英文大小寫，至少8個字元</span>
+                                    </div>
+                                </div>
+                                <div class="row g-3 mb-3 align-items-start">
+                                    <div class="col-4">
+                                        <label for="check_password" class="col-form-label">確認新密碼</label>
+                                    </div>
+                                    <div class="col">
+                                        <input type="password" id="check_password" name="check_password"
+                                            class="form-control" />
+                                        <span class="ct-txt-2 d-none" id="check_pwd_alert"
+                                            style="font-size: var(--fs-16)">＊請重新確認新密碼</span>
+                                    </div>
+                                </div>
+                                <div class="row g-3 my-4 align-items-center">
+                                    <button type="submit" class="btn btn-c2 rounded-pill px-4 mx-1 col-auto">完成</button>
+                                    <button type="button" class="btn col-auto mx-1" data-bs-dismiss="modal">取消</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> --}}
+
+    {{-- <div class="modal fade" id="pwdModal" tabindex="-1">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -367,5 +590,5 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 @endsection

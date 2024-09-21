@@ -17,36 +17,74 @@ use Illuminate\Support\Facades\Validator;
 
 class UserInfoController extends Controller
 {
+    private function verifyPbkdf2Password($inputPassword, $hashedPassword)
+    {
+        // 解析返回的密碼格式
+        list($algorithm, $iterations, $salt, $hash) = explode('$', $hashedPassword);
+
+        // 使用相同的鹽值和迭代次數來哈希輸入的密碼
+        $inputHash = base64_encode(hash_pbkdf2("sha256", $inputPassword, $salt, (int) $iterations, 32, true));
+
+        // 將生成的哈希值與儲存的哈希值進行比對
+        return hash_equals($inputHash, $hash);
+    }
+
+
     public function UserEditpassword(Request $request)
     {
-
-
-        // 获取用户提供的旧密码和新密码
-        $formData = [
-            'oldPassword' => $request->input('old_password'),
-            'password' => $request->input('new_password')
-        ];
-
-        $newpassword = $request->input('new_password');
         $token = Session::get('jwt_token');
+
         // 請求用戶的資料
         $UserProfileresponse = ApiHelper::getAuthenticatedRequest($token, env('API_IP') . 'api/auth/user_config/');
-
         $UserPorfile = $UserProfileresponse->json();
         $userid = intval($UserPorfile[0]['id']);
-        //更改用戶密碼
-        $editUserProfileresponse = ApiHelper::editAuthenticatedRequest($token, env('API_IP') . 'api/auth/user_config/', $formData, $userid);
-        // dd($editUserProfileresponse->json());
+        $currentPassword = $UserPorfile[0]['password'];
 
-        if ($editUserProfileresponse->status() == 200) {
-            // 密码成功更改
-            return redirect()->route('user_login')->with('successful', '密碼更改成功，請重新登入');
-        } else {
-            // 密码更改失败
-            dd('error');
-            return redirect('user_info')->with('error', '密碼更改失敗');
+        if ($request->isMethod('post')) {
+            // 獲取舊密碼
+            $oldPassword = $request->input('old_password');
+
+            // 驗證舊密碼
+            if (!$this->verifyPbkdf2Password($oldPassword, $currentPassword)) {
+                // 返回舊密碼不正確的錯誤訊息
+                return response()->json(['success' => false, 'message' => '舊密碼不正確']);
+            }
+
+            // 如果舊密碼正確，返回成功訊息
+            return response()->json(['success' => true]);
         }
+
+        if ($request->isMethod('patch')) {
+            // 獲取新密碼和確認新密碼
+            $newPassword = $request->input('new_password');
+            $checkPassword = $request->input('check_password');
+
+            // 檢查新密碼和確認新密碼是否相同
+            if ($newPassword !== $checkPassword) {
+                // 返回新密碼不符的錯誤訊息
+                return response()->json(['success' => false, 'message' => '新密碼與確認新密碼不相符']);
+            }
+
+            // 更新用戶密碼的邏輯
+            $editUserProfileresponse = ApiHelper::editAuthenticatedRequest($token, env('API_IP') . 'api/auth/user_config/', ['password' => $newPassword], $userid);
+
+            if ($editUserProfileresponse->status() == 200) {
+                return redirect()->route('user_login')->with('successful', '密碼更改成功，請重新登入');
+            } else {
+                return back()->withErrors(['error' => '密碼更改失敗'])->withInput();
+            }
+        }
+
+        // 預設回到舊密碼輸入表單
+        return view('auth.change_password');
     }
+
+
+
+
+
+
+
 
 
     public function UserInfoEdit(Request $request)
