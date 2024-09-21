@@ -314,10 +314,11 @@
                 </div>
             </div>
         </div>
+    </div>
 
-        @include('layouts.bookmark')
+    @include('layouts.bookmark')
 
-        <script>
+    <script>
             var token = $("#jwt_token").text();
             var socketIP = document
                 .getElementById("app")
@@ -350,4 +351,4 @@
                 })
             });
         </script>
-    @endsection
+@endsection
