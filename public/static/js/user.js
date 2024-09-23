@@ -95,13 +95,14 @@ $(document).ready(function () {
 });
 
 /* 會員資料 上傳圖片 */
+/* 會員資料 上傳圖片 */
 if ($("#user_image")) {
     $("#user_image").on("change", (event) => {
         var input = document.getElementById("user_image");
 
         if (input.files.length > 0) {
             const file = input.files[0]; // 獲取上傳的檔案
-            const validImageTypes = ['image/jpeg', 'image/png', 'image/gif']; // 允許的圖片類型
+            const validImageTypes = ["image/jpeg", "image/png", "image/gif"]; // 允許的圖片類型
 
             // 檢查檔案類型是否為允許的圖片類型
             if (!validImageTypes.includes(file.type)) {
@@ -109,6 +110,19 @@ if ($("#user_image")) {
                     position: "center",
                     icon: "error",
                     title: "請上傳有效的圖片檔案！",
+                    showConfirmButton: false,
+                    timer: 1500,
+                });
+                return; // 停止後續操作
+            }
+
+            // 檢查圖片大小是否超過 5MB
+            const maxSize = 5 * 1024 * 1024; // 5MB
+            if (file.size > maxSize) {
+                Swal.fire({
+                    position: "center",
+                    icon: "error",
+                    title: "圖片大小不得超過 5MB！",
                     showConfirmButton: false,
                     timer: 1500,
                 });
@@ -132,44 +146,69 @@ if ($("#user_image")) {
             };
 
             fetch(apiIP + "api/userprofile/profile/" + authorizationId + "/", requestOptions)
-                .then((response) => response.json())
-                .then(function (data) {
-                    // 更新預覽圖片
-                    if ($(".preview").hasClass("d-flex")) {
-                        $(".preview").removeClass("d-flex").addClass("d-none");
-                        $("#image_preview img").removeClass("d-none").addClass("d-flex");
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error("Network response was not ok");
                     }
-                    $("#image_preview img").attr("src", data[0]["user_image"]);
-                    $("#topbar-nav-tabs img").attr("src", data[0]["user_image"]);
+                    return response.json();
+                })
+                .then(function (data) {
+                    console.log("Fetch response data: ", data); // 打印 fetch 回應資料
 
-                    // 更新頭像
-                    $.ajax({
-                        type: "POST",
-                        url: "/setUserimage",
-                        dataType: "json",
-                        data: { user_image: [data[0]["user_image"]] },
-                        success: function (result) {
-                            Swal.fire({
-                                position: "center",
-                                icon: "success",
-                                title: "修改頭像成功!",
-                                showConfirmButton: false,
-                                timer: 1500,
-                            });
-                        },
-                        error: function (result) {
-                            Swal.fire({
-                                position: "center",
-                                icon: "error",
-                                title: "修改頭像失敗!",
-                                showConfirmButton: false,
-                                timer: 1500,
-                            });
-                        },
-                    });
+                    // 確保 user_image 存在於返回的第一個對象
+                    let userImage = data[0] && data[0]["user_image"] ? data[0]["user_image"] : null;
+                    if (userImage) {
+                        // 更新預覽圖片
+                        if ($(".preview").hasClass("d-flex")) {
+                            $(".preview").removeClass("d-flex").addClass("d-none");
+                            $("#image_preview img").removeClass("d-none").addClass("d-flex");
+                        }
+                        $("#image_preview img").attr("src", userImage);
+                        $("#topbar-nav-tabs img").attr("src", userImage);
+
+                        // 更新頭像，傳遞正確的圖片路徑
+                        $.ajax({
+                            type: "POST",
+                            url: "/setUserimage", // 確保此 URL 是正確的
+                            dataType: "json",
+                            data: { user_image: userImage }, // 確保這裡傳遞的資料是正確的
+                            success: function (result) {
+                                Swal.fire({
+                                    position: "center",
+                                    icon: "success",
+                                    title: "修改頭像成功!",
+                                    showConfirmButton: false,
+                                    timer: 1500,
+                                });
+                            },
+                            error: function (result) {
+                                console.log("Ajax error: ", result); // 打印完整的錯誤對象
+                                console.log("Status: ", result.status); // 打印狀態碼
+                                console.log("Response Text: ", result.responseText); // 打印完整的錯誤訊息
+                        
+                                Swal.fire({
+                                    position: "center",
+                                    icon: "error",
+                                    title: "修改頭像失敗!",
+                                    showConfirmButton: false,
+                                    timer: 1500,
+                                });
+                            },
+                        });
+                    } else {
+                        // 如果沒有獲取到正確的圖片，顯示錯誤訊息
+                        console.log("Image update failed, no valid user image in response.");
+                        Swal.fire({
+                            position: "center",
+                            icon: "error",
+                            title: "無法獲取正確的用戶圖片！",
+                            showConfirmButton: false,
+                            timer: 1500,
+                        });
+                    }
                 })
                 .catch(function (err) {
-                    console.log(err);
+                    console.log("Fetch error: ", err); // 打印具體的 fetch 錯誤
                     Swal.fire({
                         position: "center",
                         icon: "error",
@@ -183,48 +222,57 @@ if ($("#user_image")) {
 }
 
 
+
+
 // /* 會員資料 上傳圖片 */
 // if ($("#user_image")) {
 //     $("#user_image").on("change", (event) => {
 //         var input = document.getElementById("user_image");
 
 //         if (input.files.length > 0) {
-//             const apiIP = document
-//                 .getElementById("app")
-//                 .getAttribute("data-api-ip");
-//             var authorizationId =
-//                 document.getElementsByName("profile_id")[0].value;
-//             const fileList = event.target.files;
+//             const file = input.files[0]; // 獲取上傳的檔案
+//             const validImageTypes = ['image/jpeg', 'image/png', 'image/gif']; // 允許的圖片類型
+
+//             // 檢查檔案類型是否為允許的圖片類型
+//             if (!validImageTypes.includes(file.type)) {
+//                 Swal.fire({
+//                     position: "center",
+//                     icon: "error",
+//                     title: "請上傳有效的圖片檔案！",
+//                     showConfirmButton: false,
+//                     timer: 1500,
+//                 });
+//                 return; // 停止後續操作
+//             }
+
+//             const apiIP = document.getElementById("app").getAttribute("data-api-ip");
+//             var authorizationId = document.getElementsByName("profile_id")[0].value;
 //             var myHeaders = new Headers();
 //             myHeaders.append("Authorization", "Bearer " + token);
+
+//             // 使用 FormData 上傳圖片
 //             var formdata = new FormData();
-//             formdata.append("user_image", fileList[0], "image.png");
+//             formdata.append("user_image", file, "image.png");
+
 //             var requestOptions = {
-//                 method: "PATCH", // method
+//                 method: "PATCH",
 //                 headers: myHeaders,
 //                 body: formdata,
 //                 redirect: "follow",
 //             };
 
-//             fetch(
-//                 apiIP + "api/userprofile/profile/" + authorizationId + "/",
-//                 requestOptions
-//             )
-//                 .then((response) => {
-//                     return response.json();
-//                 })
+//             fetch(apiIP + "api/userprofile/profile/" + authorizationId + "/", requestOptions)
+//                 .then((response) => response.json())
 //                 .then(function (data) {
+//                     // 更新預覽圖片
 //                     if ($(".preview").hasClass("d-flex")) {
-//                         $(".preview").removeClass("d-flex");
-//                         $(".preview").addClass("d-none");
-//                         $("#image_preview img").removeClass("d-none");
-//                         $("#image_preview img").addClass("d-flex");
+//                         $(".preview").removeClass("d-flex").addClass("d-none");
+//                         $("#image_preview img").removeClass("d-none").addClass("d-flex");
 //                     }
 //                     $("#image_preview img").attr("src", data[0]["user_image"]);
-//                     $("#topbar-nav-tabs img").attr(
-//                         "src",
-//                         data[0]["user_image"]
-//                     );
+//                     $("#topbar-nav-tabs img").attr("src", data[0]["user_image"]);
+
+//                     // 更新頭像
 //                     $.ajax({
 //                         type: "POST",
 //                         url: "/setUserimage",
@@ -263,6 +311,8 @@ if ($("#user_image")) {
 //         }
 //     });
 // }
+
+
 
 let datepick_pos_top = null;
 
