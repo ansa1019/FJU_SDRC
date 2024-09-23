@@ -4,7 +4,7 @@
             <a href="{{ url('/') }}" class="">優德莎莉官網</a>
         </div>
         <div class="col-4 col-md-2 col-lg-auto mb-2">
-            <a href="{{ url('/tos') }}" class="">使用者條款</a>
+            <a href="{{ url('/tos') }}" class="">服務條款</a>
         </div>
         <div class="col-4 col-md-2 col-lg-auto mb-2">
             <a href="{{ url('/privacy') }}" class="">隱私權政策</a>
