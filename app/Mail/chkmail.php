@@ -8,15 +8,17 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class Sendchkmail extends Mailable
+class chkmail extends Mailable
 {
     use Queueable, SerializesModels;
-    public $user_name;
-    public $verification_code;
+
+    public string $user_name;
+    public string $verification_code;
+
     /**
      * Create a new message instance.
      */
-    public function __construct($user_name, $verification_code)
+    public function __construct(string $user_name, string $verification_code)
     {
         $this->user_name = $user_name;
         $this->verification_code = $verification_code;

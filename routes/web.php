@@ -109,7 +109,7 @@ Route::match(['post', 'patch'], '/UserEditpassword', [App\Http\Controllers\Auth\
 //     Mail::to("test@gmail.com")->send(new OrderShipped());
 // });
 
-Route::post('/sendchkmail', [App\Http\Controllers\Auth\UserInfoController::class, 'sendchkmail'])->name('sendchkmail');
+Route::post('/chkmail', [App\Http\Controllers\Auth\UserInfoController::class, 'chkmail'])->name('chkmail');
 Route::post('/setUserimage', [App\Http\Controllers\Auth\JWTsAuthController::class, 'setUserimage'])->name('setUserimage');
 Route::post('/setBanlist', [App\Http\Controllers\Auth\JWTsAuthController::class, 'setBanlist'])->name('setBanlist');
 Route::post('/setBlacklist', [App\Http\Controllers\Auth\JWTsAuthController::class, 'setBlacklist'])->name('setBlacklist');

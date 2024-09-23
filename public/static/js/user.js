@@ -899,7 +899,7 @@ $("#chk_sub_btn").on("click", function () {
                     ).padStart(6, "0");
                     $.ajax({
                         type: "POST",
-                        url: "/sendchkmail",
+                        url: "/chkmail",
                         dataType: "json",
                         data: {
                             user_name: email,

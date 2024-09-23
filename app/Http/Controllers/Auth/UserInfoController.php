@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Mail\Sendchkmail;
+use App\Mail\chkmail;
 use App\Helpers\ApiHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\RouteController;
@@ -529,10 +529,10 @@ class UserInfoController extends Controller
             return redirect()->route('user_login');
         }
     }
-    public function sendchkmail(Request $request)
+    public function chkmail(Request $request)
     {
         try {
-            $mail = new Sendchkmail(
+            $mail = new chkmail(
                 $request->user_name, // 用戶暱稱
                 $request->verification_code
             );
