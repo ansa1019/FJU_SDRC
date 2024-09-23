@@ -17,7 +17,7 @@
                     <!-- 麵包屑 網頁導覽列-->
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="#">知識圖書館</a></li>
-                        <li class="breadcrumb-item"><a href="{{ url('/knowledge_library/' . $category . '/' . $subcategory) }}">查看{{ $category }} / {{ $subcategory }}</a>
+                        <li class="breadcrumb-item"><a href="{{ url('/knowledge_library/' . $category . '/' . $subcategory) }}">{{ $category }}</a>
 
                         </li>
                         <li class="breadcrumb-item active" aria-current="page">{{ $subcategory }}</li>
