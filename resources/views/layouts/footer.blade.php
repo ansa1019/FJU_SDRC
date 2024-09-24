@@ -28,14 +28,15 @@
         </div>
         <div class="col-12 px-5 d-flex flex-wrap justify-content-between">
             <div class="mb-2"> 
-                客服電話：0800-588-668&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;&nbsp;營業時間：AM 9:30 ~ PM 6:00
+                客服電話：<a href="tel:0800588668" style="text-decoration: none; color: inherit;">0800-588-668</a>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;&nbsp;營業時間：AM 9:30 ~ PM 6:00
             </div>
         </div>
         <div class="col-12 px-5 d-flex flex-wrap justify-content-between">
             <div class="mb-2"> 
-                客服信箱：service.uterusally@gmail.com&emsp;&emsp;&emsp;地址：新北市新莊區新北大道3段222號8樓
+                客服信箱：<a href="mailto:service.uterusally@gmail.com" style="text-decoration: none; color: inherit;">service.uterusally@gmail.com</a>&emsp;&emsp;&emsp;地址：<a href="https://www.google.com/maps/search/?api=1&query=新北市新莊區新北大道3段222號8樓" target="_blank" style="text-decoration: none; color: inherit;">新北市新莊區新北大道3段222號8樓</a>
             </div>
         </div>
     </div>
+</div>
 
 </footer>
