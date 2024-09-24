@@ -19,7 +19,7 @@
                         <div class="row d-flex justify-content-center pb-2">
                             <div id="postStoraged_不分類收藏" class="col-auto text-center mb-3 postStoraged">
                                 <!--分類圖片-->
-                                <img src="https://placehold.co/180x130" class="rounded mx-auto d-block"
+                                <img src="{{ asset('static/img/img_' . rand(1, 4) . '.png') }}" class="rounded mx-auto d-block"
                                     alt="不分類收藏" />
                                 <!--分類名稱-->
                                 <div class="row">
@@ -49,7 +49,7 @@
                                         <div id="postStoraged_{{ $postStoraged['storage_name'] }}"
                                             class="col-auto text-center mb-3 postStoraged">
                                             <!--分類圖片-->
-                                            <img src="https://placehold.co/180x130" class="rounded mx-auto d-block"
+                                            <img src="{{ asset('static/img/img_' . rand(1, 4) . '.png') }}" class="rounded mx-auto d-block"
                                                 alt="{{ $postStoraged['storage_name'] }}" />
                                             <!--分類名稱-->
                                             <div class="row">

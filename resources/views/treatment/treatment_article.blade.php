@@ -27,8 +27,8 @@
             <div class="col-12 my-2">
                 <nav class="mb-4">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{ route('treatment_qa',$category['0']['name']) }}" class="ct-title-1 text-decoration-none mx-2"
-                            id='article_category'>療心室</a></li>
+                        {{-- <li class="breadcrumb-item"><a href="{{ route('treatment_qa',$category['0']['name']) }}" class="ct-title-1 text-decoration-none mx-2"
+                            id='article_category'>{{$category['0']['name'] }}</a></li> --}}
                         <li class="breadcrumb-item active" aria-current="page">
                             <a href="{{ route('treatment_qa', $category['0']['name']) }}" class="ct-title-1 text-decoration-none mx-2"
                                 id='article_category'>{{ $category['0']['name'] }}</a></li>
@@ -314,10 +314,11 @@
                 </div>
             </div>
         </div>
+    </div>
 
-        @include('layouts.bookmark')
+    @include('layouts.bookmark')
 
-        <script>
+    <script>
             var token = $("#jwt_token").text();
             var socketIP = document
                 .getElementById("app")
@@ -350,4 +351,4 @@
                 })
             });
         </script>
-    @endsection
+@endsection

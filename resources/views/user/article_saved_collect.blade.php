@@ -32,10 +32,35 @@
                                     <p style="display:none" id='identity'>{{ $article['identity'] }}
                                     <p style="display:none" id='hashtags'>{{ $article['hashtag'] }}
                                     </p>
+                                    {{-- <h5 class="article-title" id="article_id_title">
+                                        <a href="{{ 
+                                            in_array($article['category'][0]['name'], ['備孕調理', '婦科保健', '小產調理', '懷孕知識', '日常保健']) 
+                                                ? route('knowledge_article', ['id' => $article['id']]) 
+                                                : route('TreatmentArticleGet', ['id' => $article['id']]) 
+                                        }}">
+                                            {{ $article['title'] }}
+                                        </a>
+                                    </h5> --}}
+                                    
                                     <h5 class="article-title" id="article_id_title">
+                                        <a href="{{ 
+                                            in_array($article['category'][0]['name'], ['備孕調理', '婦科保健', '小產調理', '懷孕知識', '日常保健']) 
+                                                ? route('knowledge_article', ['id' => $article['id']]) 
+                                                : route('TreatmentArticleGet', ['id' => $article['id']]) 
+                                        }}" 
+                                        onclick="console.log('{{ $article['category'][0]['name'] }}')">
+                                            {{ $article['title'] }}
+                                        </a>
+                                    </h5>
+                                    {{-- <h5 class="article-title" id="article_id_title">
                                         <a
                                             href="{{ route('TreatmentArticleGet', ['id' => $article['id']]) }}">{{ $article['title'] }}</a>
-                                    </h5>
+                                    </h5> --}}
+                                    
+                                    
+                                    
+                                    
+                                    
                                     <p style="display: none" id='html'>{{ $article['html'] }}</p>
                                     <div class="mb-3 article-abs" id="article_id_abs"
                                         style="overflow: hidden; max-height: 4em; max-width: 430px;">

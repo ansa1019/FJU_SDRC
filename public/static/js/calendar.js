@@ -159,16 +159,13 @@ $(document).ready(function () {
         $( "input[name='mc_amount'], input[name='pain_level'], input[name='loc_amount'], input[name='loc_color'], input[name='blood_amount'], input[name='blood_color'], input[name='loc_amount4'], input[name='loc_color4']").prop("disabled", isChecked);
     });
     // 監聽單選按鈕的點擊事件來實現點擊兩次取消選擇的功能
-    $("input[type='radio']").on("click", function () {
-        if ($(this).data("checked")) {
+    $("input[name='pain_level']").on("click", function () {
+        // 檢查該按鈕是否是已選中狀態
+        if ($(this).prop("checked")) {
+            // 取消選中並將值設為空
             $(this).prop("checked", false);
-            $(this).data("checked", false);
-            data.dict["pain_level"] = null; 
-        } else {
-            $(this).data("checked", true);
-            data.dict["pain_level"] = $(this).val(); 
         }
-    });
+    });    
     $('#daily_form').submit(calendarValidate);
     });  
     

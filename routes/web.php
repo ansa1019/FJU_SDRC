@@ -80,8 +80,11 @@ Route::get('/blacklist_manage', [App\Http\Controllers\ManageController::class, '
 //通知列表
 Route::get('/notifications', [App\Http\Controllers\Auth\UserInfoController::class, 'notifications_view'])->name('notifications');
 
-//常見問題
-Route::get('/common_qa', [App\Http\Controllers\RouteController::class, 'common_qa'])->name('common_qa');
+
+//隱私權政策、服務條款
+Route::get('/tos', action: [App\Http\Controllers\RouteController::class, 'tos'])->name('tos');
+Route::get('/privacy', action: [App\Http\Controllers\RouteController::class, 'privacy'])->name('privacy');
+
 
 //登入表單
 Route::post('/authenticate', [App\Http\Controllers\Auth\JWTsAuthController::class, 'authenticate'])->name('authenticate');
@@ -96,7 +99,8 @@ Route::patch('/UserInfoEdit', [App\Http\Controllers\Auth\UserInfoController::cla
 // Route::delete('/UserInfoEdit', [App\Http\Controllers\Auth\UserInfoController::class, 'UserInfoEdit'])->name('UserInfoEdit');
 
 //更改密碼
-Route::patch('/UserEditpassword', [App\Http\Controllers\Auth\UserInfoController::class, 'UserEditpassword'])->name('UserEditpassword');
+Route::match(['post', 'patch'], '/UserEditpassword', [App\Http\Controllers\Auth\UserInfoController::class, 'UserEditpassword'])->name('UserEditpassword');
+
 
 //使用者點數表單
 // Route::post('/exchangeProductform', [App\Http\Controllers\Point\PointController::class, 'exchangeProductform'])->name('exchangeProductform');
@@ -105,7 +109,7 @@ Route::patch('/UserEditpassword', [App\Http\Controllers\Auth\UserInfoController:
 //     Mail::to("test@gmail.com")->send(new OrderShipped());
 // });
 
-Route::post('/sendchkmail', [App\Http\Controllers\Auth\UserInfoController::class, 'sendchkmail'])->name('sendchkmail');
+Route::post('/chkmail', [App\Http\Controllers\Auth\UserInfoController::class, 'chkmail'])->name('chkmail');
 Route::post('/setUserimage', [App\Http\Controllers\Auth\JWTsAuthController::class, 'setUserimage'])->name('setUserimage');
 Route::post('/setBanlist', [App\Http\Controllers\Auth\JWTsAuthController::class, 'setBanlist'])->name('setBanlist');
 Route::post('/setBlacklist', [App\Http\Controllers\Auth\JWTsAuthController::class, 'setBlacklist'])->name('setBlacklist');

@@ -837,7 +837,7 @@
                                     最後，不要忘記那個充滿熱情和夢想的自己，或許時間會帶來許多變化，但是我希望你能一直保持那份初心和熱情，同時，我相信你現在也一定成為一個更好的人，希望未來的日子裡，你能找到屬於自己的步調，繼續成為一個更好的自己。
                                 </p>
                                 <p class="mt-3">
-                                    <span class="step-tabs" id="username"></span>
+                                    <span class="step-tabs" onclick="register_step(this,13)" id="username"></span>
                                     敬上
                                 </p>
                                 <span class="float-end" id="today">註冊日期</span>
@@ -852,8 +852,8 @@
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" value=""
                                         id="mail_confirm_check" />
-                                    <label class="form-check-label" for="mail_confirm_check"> 已閱讀並同意<a
-                                            href="#">服務條款</a>及<a href="#">隱私權政策</a></label>
+                                    <label class="form-check-label" for="mail_confirm_check"> 已閱讀並同意
+                                    <a href="{{ url('/tos') }}" class="">服務條款</a>及<a href="{{ url('/privacy') }}" class="">隱私權政策</a></label>
                                 </div>
                             </div>
                             <div class="col-12 my-2 text-center">
