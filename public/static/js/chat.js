@@ -42,7 +42,7 @@ $(document).ready(function () {
 
         previous_chat2 = [getPreviousChat("chat-room2")];
         Promise.all(previous_chat2).then((data) => {
-            data[0].reverse().forEach((chat) => {
+            data[0].forEach((chat) => {
                 if (chat["is_user"]) {
                     show_msg(
                         "user",
@@ -201,7 +201,7 @@ $(document).ready(function () {
             headers: myHeaders,
         };
 
-        previous_chat6 = [getPreviousChat("chat-room4")];
+        previous_chat6 = [getPreviousChat("chat-room6")];
         Promise.all(previous_chat6).then((data) => {
             data[0].forEach((chat) => {
                 if (chat["is_user"]) {
@@ -325,6 +325,7 @@ async function getPreviousChat(room) {
             return response.json();
         })
         .then((data) => {
+            console.log(data);
             return data;
         });
 }
