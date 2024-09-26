@@ -73,8 +73,8 @@ function all_read() {
 
 $.ajaxSetup({
     headers: {
-        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
-    },
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
 });
 
 $(document).ready(function () {
@@ -464,47 +464,166 @@ function reset_password() {
     }
 }
 
+// 檢查舊密碼是否正確
+async function checkOldPassword(oldPassword) {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: '/UserEditpassword',
+            method: 'POST',
+            dataType: 'json',
+            data: {
+                old_password: oldPassword,
+                action: "step1",
+            },
+            success: function (response) {
+                if (response.success) {
+                    resolve(true);
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: '錯誤',
+                        text: '舊密碼不正確',
+                    });
+                    resolve(false);
+                }
+            },
+            error: function (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: '錯誤',
+                    text: '密碼驗證過程中發生錯誤',
+                });
+                reject(false);
+            }
+        });
+    });
+}
+
+// 重設密碼邏輯
+async function resetPassword() {
+    let pwd_rule = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}$/; // 密碼規則
+    let old_pwd = $("input#old_password").val(); // 舊密碼
+    let new_pwd = $("input#new_password").val(); // 新密碼
+    let check_password = $("input#check_password").val(); // 確認新密碼
+    let pwd_error = false;
+
+    // 驗證舊密碼是否正確
+    const isOldPasswordValid = await checkOldPassword(old_pwd);
+    if (!isOldPasswordValid) {
+        $("#old_pwd_alert").removeClass("d-none");
+        pwd_error = true;
+    } else {
+        $("#old_pwd_alert").addClass("d-none");
+    }
+
+    // 檢查新密碼是否符合規則
+    if (!new_pwd.match(pwd_rule)) {
+        $("#new_pwd_alert").removeClass("d-none");
+        pwd_error = true;
+    } else {
+        $("#new_pwd_alert").addClass("d-none");
+    }
+
+    // 檢查新密碼與確認新密碼是否相符
+    if (new_pwd !== check_password) {
+        $("#check_pwd_alert").removeClass("d-none");
+        pwd_error = true;
+    } else {
+        $("#check_pwd_alert").addClass("d-none");
+    }
+
+    // 如果沒有錯誤，發送 PATCH 請求更新密碼
+    if (!pwd_error) {
+        $.ajax({
+            url: '/UserEditpassword',
+            method: 'PATCH',
+            data: {
+                new_password: new_pwd,
+                check_password: check_password
+            },
+            success: function (response) {
+                if (response.success) {
+                    Swal.fire({
+                        title: '修改密碼成功！',
+                        text: "已重新設定密碼",
+                        icon: 'success',
+                        confirmButtonColor: '#70c6e3',
+                        showConfirmButton: false,
+                        timer: 1500,
+                    }).then(() => {
+                        window.location.href = '/user_login';
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: '錯誤',
+                        text: response.message || '密碼更改失敗',
+                    });
+                }
+            },
+            error: function (xhr, status, error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: '錯誤',
+                    text: '密碼更改過程中發生錯誤',
+                });
+            }
+        });
+    }
+}
+
+// 表單提交處理
+$('#passwordForm').on('submit', function (e) {
+    e.preventDefault();
+    resetPassword();
+});
+
+
 function validateOldPassword() {
     const oldPassword = document.getElementById("old_password").value;
-    console.log(
-        JSON.stringify({
-            old_password: oldPassword,
-            action: "step1",
-        })
-    );
+    
     $.ajax({
-        url: "/UserEditpassword", // 此處應該是您的後端路由
-        method: "POST", // 使用POST方法
+        url: "/UserEditpassword", // 舊密碼驗證的 POST 請求
+        method: "POST",
         dataType: "json",
         data: {
             old_password: oldPassword,
             action: "step1",
         },
         success: function (response) {
-            // 如果舊密碼正確，顯示新密碼步驟
-            document.getElementById("step1").style.display = "none";
-            document.getElementById("step2").style.display = "block";
-        },
-        error: function (error) {
-            // 如果舊密碼錯誤，顯示錯誤訊息
-            const errorSpan = document.createElement("span");
-            errorSpan.className = "ct-txt-2 text-danger";
-            errorSpan.style.fontSize = "var(--fs-16)";
-            errorSpan.innerText = "舊密碼不正確";
-            const oldPasswordContainer =
-                document.querySelector("#old_password").parentElement;
-            // 清除之前的錯誤訊息（如果存在）
-            const existingError = oldPasswordContainer.querySelector(
-                ".ct-txt-2.text-danger"
-            );
-            if (existingError) {
-                existingError.remove();
+            if (response.success) {
+                // 舊密碼正確，顯示新密碼步驟
+                document.getElementById("step1").style.display = "none";
+                document.getElementById("step2").style.display = "block";
+            } else {
+                // 顯示錯誤訊息
+                showOldPasswordError();
             }
-            oldPasswordContainer.appendChild(errorSpan);
         },
+        error: function () {
+            Swal.fire({
+                icon: 'error',
+                title: '錯誤',
+                text: '密碼驗證過程中發生錯誤',
+            });
+        }
     });
 }
-
+function showOldPasswordError() {
+    const errorSpan = document.createElement("span");
+    errorSpan.className = "ct-txt-2 text-danger";
+    errorSpan.style.fontSize = "var(--fs-16)";
+    errorSpan.innerText = "舊密碼不正確";
+    
+    const oldPasswordContainer = document.querySelector("#old_password").parentElement;
+    const existingError = oldPasswordContainer.querySelector(".ct-txt-2.text-danger");
+    
+    if (existingError) {
+        existingError.remove();
+    }
+    
+    oldPasswordContainer.appendChild(errorSpan);
+}
 document
     .getElementById("passwordForm")
     .addEventListener("submit", function (event) {

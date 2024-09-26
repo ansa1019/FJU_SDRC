@@ -99,8 +99,37 @@ Route::patch('/UserInfoEdit', [App\Http\Controllers\Auth\UserInfoController::cla
 // Route::delete('/UserInfoEdit', [App\Http\Controllers\Auth\UserInfoController::class, 'UserInfoEdit'])->name('UserInfoEdit');
 
 //更改密碼
-Route::post( '/UserEditpassword', [App\Http\Controllers\Auth\UserInfoController::class, 'UserEditpassword'])->name('UserEditpassword');
-Route::patch( '/UserEditpassword', [App\Http\Controllers\Auth\UserInfoController::class, 'UserEditpassword'])->name('UserEditpassword');
+// Route::post( '/UserEditpassword', [App\Http\Controllers\Auth\UserInfoController::class, 'UserEditpassword'])->name('UserEditpassword');
+// Route::patch( '/UserEditpassword', [App\Http\Controllers\Auth\UserInfoController::class, 'UserEditpassword'])->name('UserEditpassword');
+// 用於舊密碼驗證的 POST 路由
+Route::post('/UserEditpassword', function (Illuminate\Http\Request $request) {
+    $old_password = $request->input('old_password');
+    
+    // 這裡執行驗證邏輯，假設 $storedPassword 是從資料庫取得的加密密碼
+    $storedPassword = '99421088zxC'; // 示例密碼
+    
+    if ($old_password === $storedPassword) {
+        return response()->json(['success' => true]);
+    } else {
+        return response()->json(['success' => false, 'message' => '舊密碼不正確']);
+    }
+})->name('UserCheckPassword');
+
+// 用於新密碼更新的 PATCH 路由
+Route::patch('/UserEditpassword', function (Illuminate\Http\Request $request) {
+    $new_password = $request->input('new_password');
+    $check_password = $request->input('check_password');
+
+    // 在此處執行密碼更新邏輯
+    if ($new_password === $check_password) {
+        // 更新資料庫中的密碼
+        return response()->json(['success' => true]);
+    } else {
+        return response()->json(['success' => false, 'message' => '新密碼與確認密碼不一致']);
+    }
+})->name('UserEditpassword');
+
+
 
 //使用者點數表單
 // Route::post('/exchangeProductform', [App\Http\Controllers\Point\PointController::class, 'exchangeProductform'])->name('exchangeProductform');
