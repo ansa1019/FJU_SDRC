@@ -679,6 +679,9 @@ step_confirm_btn.forEach((item, step_index) => {
                 $.ajax({
                     url: "/checknickname", // 此處應該是您的後端路由
                     method: "POST", // 使用POST方法
+                    headers: {
+                        "X-CSRF-TOKEN": csrfToken,
+                    },
                     data: { nickname: nickname }, // 傳遞nickname到後端
                     success: function (response) {
                         console.log("Ajax request succeeded.", response); // 確認Ajax請求成功並打印回應

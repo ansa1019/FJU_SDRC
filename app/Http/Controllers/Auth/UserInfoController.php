@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Validator;
 
 class UserInfoController extends Controller
 {
-    private function verifyPbkdf2Password($inputPassword, $hashedPassword)
+    public function verifyPbkdf2Password($inputPassword, $hashedPassword)
     {
         // 解析返回的密碼格式
         list($algorithm, $iterations, $salt, $hash) = explode('$', $hashedPassword);
@@ -33,7 +33,7 @@ class UserInfoController extends Controller
     public function UserEditpassword(Request $request)
     {
         $token = Session::get('jwt_token');
-
+        dd($request);
         // 請求用戶的資料
         $UserProfileresponse = ApiHelper::getAuthenticatedRequest($token, env('API_IP') . 'api/auth/user_config/');
         $UserPorfile = $UserProfileresponse->json();
