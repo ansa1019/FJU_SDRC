@@ -475,9 +475,6 @@ function validateOldPassword() {
     $.ajax({
         url: "/UserEditpassword", // 此處應該是您的後端路由
         method: "POST", // 使用POST方法
-        headers: {
-            "X-CSRF-TOKEN": csrfToken,
-        },
         dataType: "json",
         data: {
             old_password: oldPassword,
