@@ -473,6 +473,21 @@ $(`input[id='ds_item_1']`).change(function () {
     }
 });
 
+// 當 ds_item_1 被點選時
+$(`input[id='ds_item_1']`).change(function () {
+    if ($(this).is(":checked")) {
+        // 如果選擇了全選選項，禁用其他選項
+        $(`input[name*="user_disease_state"]:not("#ds_item_1")`).prop("disabled", true);
+        // 取消其他選項的選中狀態
+        $(`input[name*="user_disease_state"]:not("#ds_item_1")`).prop("checked", false);
+        // 清空 ds_item_other 輸入框
+        $(`input[id='ds_item_other']`).val('').prop("disabled", true);
+    } else {
+        // 取消選擇時，啟用其他選項
+        $(`input[name*="user_disease_state"]:not("#ds_item_1")`).prop("disabled", false);
+    }
+});
+
 // 當 ds_item_16 被點選時
 $(`input[id='ds_item_16']`).change(function () {
     if ($(this).is(":checked")) {
@@ -486,21 +501,12 @@ $(`input[id='ds_item_16']`).change(function () {
 
 // 當其他選項被點選時（除 ds_item_1 和 ds_item_16）
 $(`input[name*="user_disease_state"]:not("#ds_item_1, #ds_item_16")`).change(function () {
-    // 當選擇其他選項時，禁用並清空 ds_item_other 的輸入框
-    $(`input[id='ds_item_other']`).prop("disabled", true).val('');
-});
-
-// 當 a_item_1 被點選時
-$(`input[id='a_item_1']`).click(function () {
-    // 檢查是否已經選中 a_item_1
     if ($(this).is(":checked")) {
-        // 取消選中 a_item_2 並清空 a_item_other 的輸入框，但不禁用 a_item_other
-        $(`input[id='a_item_2']`).prop("checked", false);
-        $(`input[id='a_item_other']`).val('');
-        // 禁用 a_item_other 輸入框，因為 a_item_2 沒有被選中
-        $(`input[id='a_item_other']`).attr("disabled", true);
+        // 當選擇其他選項時，不會清空 ds_item_other 輸入框，保持原內容
+        $(`input[id='ds_item_other']`).prop("disabled", true);  // 確保 ds_item_other 不被啟用
     }
 });
+
 
 // 當 a_item_2 被點選時
 $(`input[id='a_item_2']`).click(function () {
@@ -743,7 +749,9 @@ step_confirm_btn.forEach((item, step_index) => {
                 //確認有填寫資料後
                 $(this).next().find(".step-next-btn").attr("disabled", false); //啟用上下步按紐
                 sessionStorage.setItem(obj_key, obj_value); //儲存至session
+                console.log(sessionStorage.getItem(obj_key));
                 register_info[obj_key] = obj_value; //儲存成json
+                console.log(register_info[obj_key]);
 
                 if (step_index == 5) {
                     //身高體重題
@@ -863,31 +871,21 @@ step_confirm_btn.forEach((item, step_index) => {
                     if (register_info.user_birth_plan != "0")
                         $("#birth_plan").html(register_info.user_birth_plan);
                     //疾病病史
+                    $("#disease").html("");
                     if (register_info.user_disease_state != "0")
-                        $("#disease").html(
-                            "有" + register_info.user_disease_state
-                        );
+                        $("#disease").html("有" + register_info.user_disease_state);
                     //過敏狀況
+                    $("#allergy_state").html("");
                     if (register_info.user_allergy_state != "0")
-                        $("#allergy_state").html(
-                            "，對" +
-                                register_info.user_allergy_state.replace(
-                                    "1,",
-                                    ""
-                                ) +
-                                "過敏"
-                        );
+                        $("#allergy_state").html("，對" + register_info.user_allergy_state.replace("1,","") +"過敏");
                     //醫生醫囑
+                    $("#order").html("");
                     if (register_info.user_order_state != "0")
-                        $("#order").html(
-                            "，醫生有特別說" +
-                                register_info.user_order_state.replace("1,", "")
-                        );
+                        $("#order").html("，醫生有特別說" +register_info.user_order_state.replace("1,", ""));   
                     //用藥狀況
+                    $("#drug").html("");
                     if (register_info.user_drug_state != "0")
-                        $("#drug").html(
-                            "，需要吃" +
-                                register_info.user_drug_state.replace("1,", "")
+                        $("#drug").html("，需要吃" +register_info.user_drug_state.replace("1,","")
                         );
                     //其他病史
                     if (
@@ -955,6 +953,7 @@ function register_step(obj, step_num) {
         $(obj).eq(0).removeClass("active");
     }, "1000");
 }
+
 
 /* 會員登入頁 */
 function facebook_login() {
