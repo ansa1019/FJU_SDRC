@@ -44,11 +44,11 @@
                                     
                                     <h5 class="article-title" id="article_id_title">
                                         <a href="{{ 
-                                            in_array($article['category'][0]['name'], ['備孕調理', '婦科保健', '小產調理', '懷孕知識', '日常保健']) 
+                                            in_array($article['maincate'], ['備孕調理', '婦科保健', '小產調理', '懷孕知識', '日常保健']) 
                                                 ? route('knowledge_article', ['id' => $article['id']]) 
                                                 : route('TreatmentArticleGet', ['id' => $article['id']]) 
                                         }}" 
-                                        onclick="console.log('{{ $article['category'][0]['name'] }}')">
+                                        onclick="console.log('{{ $article['maincate'] }}')">
                                             {{ $article['title'] }}
                                         </a>
                                     </h5>

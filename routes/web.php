@@ -99,8 +99,8 @@ Route::patch('/UserInfoEdit', [App\Http\Controllers\Auth\UserInfoController::cla
 // Route::delete('/UserInfoEdit', [App\Http\Controllers\Auth\UserInfoController::class, 'UserInfoEdit'])->name('UserInfoEdit');
 
 //更改密碼
-Route::match(['post', 'patch'], '/UserEditpassword', [App\Http\Controllers\Auth\UserInfoController::class, 'UserEditpassword'])->name('UserEditpassword');
-
+Route::post( '/UserEditpassword', [App\Http\Controllers\Auth\UserInfoController::class, 'UserEditpassword'])->name('UserEditpassword');
+Route::patch( '/UserEditpassword', [App\Http\Controllers\Auth\UserInfoController::class, 'UserEditpassword'])->name('UserEditpassword');
 
 //使用者點數表單
 // Route::post('/exchangeProductform', [App\Http\Controllers\Point\PointController::class, 'exchangeProductform'])->name('exchangeProductform');

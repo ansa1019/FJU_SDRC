@@ -129,8 +129,11 @@ if ($("#user_image")) {
                 return; // 停止後續操作
             }
 
-            const apiIP = document.getElementById("app").getAttribute("data-api-ip");
-            var authorizationId = document.getElementsByName("profile_id")[0].value;
+            const apiIP = document
+                .getElementById("app")
+                .getAttribute("data-api-ip");
+            var authorizationId =
+                document.getElementsByName("profile_id")[0].value;
             var myHeaders = new Headers();
             myHeaders.append("Authorization", "Bearer " + token);
 
@@ -145,7 +148,10 @@ if ($("#user_image")) {
                 redirect: "follow",
             };
 
-            fetch(apiIP + "api/userprofile/profile/" + authorizationId + "/", requestOptions)
+            fetch(
+                apiIP + "api/userprofile/profile/" + authorizationId + "/",
+                requestOptions
+            )
                 .then((response) => {
                     if (!response.ok) {
                         throw new Error("Network response was not ok");
@@ -156,12 +162,19 @@ if ($("#user_image")) {
                     console.log("Fetch response data: ", data); // 打印 fetch 回應資料
 
                     // 確保 user_image 存在於返回的第一個對象
-                    let userImage = data[0] && data[0]["user_image"] ? data[0]["user_image"] : null;
+                    let userImage =
+                        data[0] && data[0]["user_image"]
+                            ? data[0]["user_image"]
+                            : null;
                     if (userImage) {
                         // 更新預覽圖片
                         if ($(".preview").hasClass("d-flex")) {
-                            $(".preview").removeClass("d-flex").addClass("d-none");
-                            $("#image_preview img").removeClass("d-none").addClass("d-flex");
+                            $(".preview")
+                                .removeClass("d-flex")
+                                .addClass("d-none");
+                            $("#image_preview img")
+                                .removeClass("d-none")
+                                .addClass("d-flex");
                         }
                         $("#image_preview img").attr("src", userImage);
                         $("#topbar-nav-tabs img").attr("src", userImage);
@@ -184,8 +197,11 @@ if ($("#user_image")) {
                             error: function (result) {
                                 console.log("Ajax error: ", result); // 打印完整的錯誤對象
                                 console.log("Status: ", result.status); // 打印狀態碼
-                                console.log("Response Text: ", result.responseText); // 打印完整的錯誤訊息
-                        
+                                console.log(
+                                    "Response Text: ",
+                                    result.responseText
+                                ); // 打印完整的錯誤訊息
+
                                 Swal.fire({
                                     position: "center",
                                     icon: "error",
@@ -197,7 +213,9 @@ if ($("#user_image")) {
                         });
                     } else {
                         // 如果沒有獲取到正確的圖片，顯示錯誤訊息
-                        console.log("Image update failed, no valid user image in response.");
+                        console.log(
+                            "Image update failed, no valid user image in response."
+                        );
                         Swal.fire({
                             position: "center",
                             icon: "error",
@@ -220,9 +238,6 @@ if ($("#user_image")) {
         }
     });
 }
-
-
-
 
 // /* 會員資料 上傳圖片 */
 // if ($("#user_image")) {
@@ -311,8 +326,6 @@ if ($("#user_image")) {
 //         }
 //     });
 // }
-
-
 
 let datepick_pos_top = null;
 
@@ -451,25 +464,107 @@ function reset_password() {
     }
 }
 
+function validateOldPassword() {
+    const oldPassword = document.getElementById("old_password").value;
+    console.log(
+        JSON.stringify({
+            old_password: oldPassword,
+            action: "step1",
+        })
+    );
+    $.ajax({
+        url: "/UserEditpassword", // 此處應該是您的後端路由
+        method: "POST", // 使用POST方法
+        headers: {
+            "X-CSRF-TOKEN": csrfToken,
+        },
+        dataType: "json",
+        data: {
+            old_password: oldPassword,
+            action: "step1",
+        },
+        success: function (response) {
+            // 如果舊密碼正確，顯示新密碼步驟
+            document.getElementById("step1").style.display = "none";
+            document.getElementById("step2").style.display = "block";
+        },
+        error: function (error) {
+            // 如果舊密碼錯誤，顯示錯誤訊息
+            const errorSpan = document.createElement("span");
+            errorSpan.className = "ct-txt-2 text-danger";
+            errorSpan.style.fontSize = "var(--fs-16)";
+            errorSpan.innerText = "舊密碼不正確";
+            const oldPasswordContainer =
+                document.querySelector("#old_password").parentElement;
+            // 清除之前的錯誤訊息（如果存在）
+            const existingError = oldPasswordContainer.querySelector(
+                ".ct-txt-2.text-danger"
+            );
+            if (existingError) {
+                existingError.remove();
+            }
+            oldPasswordContainer.appendChild(errorSpan);
+        },
+    });
+}
+
+document
+    .getElementById("passwordForm")
+    .addEventListener("submit", function (event) {
+        const newPassword = document.getElementById("new_password").value;
+        const checkPassword = document.getElementById("check_password").value;
+
+        // 檢查新密碼和確認新密碼是否相同
+        if (newPassword !== checkPassword) {
+            event.preventDefault(); // 防止表單提交
+
+            const errorSpan = document.createElement("span");
+            errorSpan.className = "ctxt-2 text-danger";
+            errorSpan.style.fontSize = "var(--fs-16)";
+            errorSpan.innerText = "新密碼與確認新密碼不相符";
+            const newPasswordContainer =
+                document.querySelector("#new_password").parentElement;
+
+            // 清除之前的錯誤訊息（如果存在）
+            const existingError = newPasswordContainer.querySelector(
+                ".ctxt-2.text-danger"
+            );
+            if (existingError) {
+                existingError.remove();
+            }
+            newPasswordContainer.appendChild(errorSpan);
+
+            return; // 返回，不進行後續處理
+        }
+    });
+
 /*註冊步驟按鈕*/
 const step_confirm_btn = document.querySelectorAll(".step-confirm");
 const register_info = {}; // 儲存註冊資料 json格式
 let img_path = "static/img/register/vc/"; //註冊頁插圖目錄路徑
 let bg_path = "static/img/register/bg/"; //註冊頁背景目錄路徑
 
-
 // 當 ds_item_1 被點選時
 $(`input[id='ds_item_1']`).change(function () {
     if ($(this).is(":checked")) {
         // 如果選擇了全選選項，禁用其他選項
-        $(`input[name*="user_disease_state"]:not("#ds_item_1")`).prop("disabled", true);
+        $(`input[name*="user_disease_state"]:not("#ds_item_1")`).prop(
+            "disabled",
+            true
+        );
         // 取消其他選項的選中狀態
-        $(`input[name*="user_disease_state"]:not("#ds_item_1")`).prop("checked", false);
+        $(`input[name*="user_disease_state"]:not("#ds_item_1")`).prop(
+            "checked",
+            false
+        );
         // 清空 ds_item_other 輸入框
-        $(`input[id='ds_item_other']`).val('');
+        $(`input[id='ds_item_other']`).val("");
     } else {
         // 取消選擇時，啟用其他選項
-        $(`input[name*="user_disease_state"]:not("#ds_item_1")`).prop("disabled", false);
+        $(`input[name*="user_disease_state"]:not("#ds_item_1")`).prop(
+            "disabled",
+            false
+        );
     }
 });
 
@@ -480,15 +575,17 @@ $(`input[id='ds_item_16']`).change(function () {
         $(`input[id='ds_item_other']`).prop("disabled", false);
     } else {
         // 取消選中時，禁用並清空 ds_item_other 的輸入框
-        $(`input[id='ds_item_other']`).prop("disabled", true).val('');
+        $(`input[id='ds_item_other']`).prop("disabled", true).val("");
     }
 });
 
 // 當其他選項被點選時（除 ds_item_1 和 ds_item_16）
-$(`input[name*="user_disease_state"]:not("#ds_item_1, #ds_item_16")`).change(function () {
-    // 當選擇其他選項時，禁用並清空 ds_item_other 的輸入框
-    $(`input[id='ds_item_other']`).prop("disabled", true).val('');
-});
+$(`input[name*="user_disease_state"]:not("#ds_item_1, #ds_item_16")`).change(
+    function () {
+        // 當選擇其他選項時，禁用並清空 ds_item_other 的輸入框
+        $(`input[id='ds_item_other']`).prop("disabled", true).val("");
+    }
+);
 
 // 當 a_item_1 被點選時
 $(`input[id='a_item_1']`).click(function () {
@@ -496,7 +593,7 @@ $(`input[id='a_item_1']`).click(function () {
     if ($(this).is(":checked")) {
         // 取消選中 a_item_2 並清空 a_item_other 的輸入框，但不禁用 a_item_other
         $(`input[id='a_item_2']`).prop("checked", false);
-        $(`input[id='a_item_other']`).val('');
+        $(`input[id='a_item_other']`).val("");
         // 禁用 a_item_other 輸入框，因為 a_item_2 沒有被選中
         $(`input[id='a_item_other']`).attr("disabled", true);
     }
@@ -510,7 +607,7 @@ $(`input[id='a_item_2']`).click(function () {
         $(`input[id='a_item_other']`).attr("disabled", false);
     } else {
         // 如果取消選中 a_item_2，禁用並清空 a_item_other
-        $(`input[id='a_item_other']`).attr("disabled", true).val('');
+        $(`input[id='a_item_other']`).attr("disabled", true).val("");
     }
 });
 
@@ -520,7 +617,7 @@ $(`input[id='d_item_1']`).click(function () {
     if ($(this).is(":checked")) {
         // 取消選中 d_item_2 並清空 a_item_other 的輸入框，但不禁用 a_item_other
         $(`input[id='d_item_2']`).prop("checked", false);
-        $(`input[id='d_item_other']`).val('');
+        $(`input[id='d_item_other']`).val("");
         // 禁用 d_item_other 輸入框，因為 d_item_2 沒有被選中
         $(`input[id='d_item_other']`).attr("disabled", true);
     }
@@ -534,7 +631,7 @@ $(`input[id='d_item_2']`).click(function () {
         $(`input[id='d_item_other']`).attr("disabled", false);
     } else {
         // 如果取消選中 d_item_2，禁用並清空 d_item_other
-        $(`input[id='d_item_other']`).attr("disabled", true).val('');
+        $(`input[id='d_item_other']`).attr("disabled", true).val("");
     }
 });
 // 當 or_item_1 被點選時
@@ -543,7 +640,7 @@ $(`input[id='or_item_1']`).click(function () {
     if ($(this).is(":checked")) {
         // 取消選中 or_item_2 並清空 or_item_other 的輸入框，但不禁用 or_item_other
         $(`input[id='or_item_2']`).prop("checked", false);
-        $(`input[id='or_item_other']`).val('');
+        $(`input[id='or_item_other']`).val("");
         // 禁用 d_item_other 輸入框，因為 or_item_2 沒有被選中
         $(`input[id='or_item_other']`).attr("disabled", true);
     }
@@ -557,7 +654,7 @@ $(`input[id='or_item_2']`).click(function () {
         $(`input[id='or_item_other']`).attr("disabled", false);
     } else {
         // 如果取消選中 or_item_2，禁用並清空 or_item_other
-        $(`input[id='or_item_other']`).attr("disabled", true).val('');
+        $(`input[id='or_item_other']`).attr("disabled", true).val("");
     }
 });
 
@@ -925,7 +1022,7 @@ step_confirm_btn.forEach((item, step_index) => {
                     document.body.scrollTop = 0; // For Safari
                     document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
                 }
-            }           
+            }
         }
         console.log("Now step id:" + step_id);
     });

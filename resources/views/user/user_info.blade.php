@@ -387,10 +387,13 @@
         </div>
     </div>
 
-    <script>
+    {{-- <script>
         function validateOldPassword() {
             const oldPassword = document.getElementById('old_password').value;
-
+            console.log(JSON.stringify({
+                old_password: oldPassword,
+                action: 'step1'
+            }));
             fetch('{{ route('UserEditpassword') }}', {
                     method: 'POST',
                     headers: {
@@ -424,9 +427,6 @@
                         oldPasswordContainer.appendChild(errorSpan);
                     }
                 })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
         }
 
         document.getElementById('passwordForm').addEventListener('submit', function(event) {
@@ -453,7 +453,7 @@
                 return; // 返回，不進行後續處理
             }
         });
-    </script>
+    </script> --}}
 
 
 
