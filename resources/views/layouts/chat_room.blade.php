@@ -188,7 +188,9 @@
                     <input class="publisher-input" type="text" placeholder="請輸入訊息" />
                     <span class="publisher-btn file-group">
                         <input type="file" />
-
+                        <i class="fas fa-image">
+                            {{-- <img src="static/img/male.png"> --}}
+                        </i>
                     </span>
                     <a class="publisher-btn text-info" role="button" onclick="user_send_msg('chat-room2')"><i
                             class="fa fa-paper-plane"></i></a>
@@ -218,7 +220,7 @@
         </div>
 
 
-        <div class="tab-pane fade" id="chat-room3" role="tabpanel">
+        <div class="tab-pane fade" id="chat-room3" role="tabpanel" aria-labelledby="chat-room3">
             <div class="card-header">
                 {{-- <div class="img-thumbnail-group">
                     <!-- 小編&用戶 頭像縮圖 -->
