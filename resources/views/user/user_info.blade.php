@@ -1,3 +1,6 @@
+<link  href="https://unpkg.com/cropperjs/dist/cropper.min.css" rel="stylesheet"/>
+<script src="https://unpkg.com/cropperjs/dist/cropper.min.js"></script>
+
 @extends('layouts.masterpage')
 
 @section('content')
@@ -47,21 +50,24 @@
                                     <label for="user_name" class="col-form-label">大頭貼</label>
                                 </div>
                                 <div id="image_preview" class="col-auto">
-                                    <img src="{{ $user_image }}" alt="大頭貼"
-                                        class="{{ isset($user_image) ? 'd-block' : 'd-none' }}"
-                                        style="width: 200px; height: 200px; border-radius: 100%;">
+                                    <img id="crop_image" src="{{ $user_image }}" alt="大頭貼" 
+                                         class="{{ isset($user_image) ? 'd-block' : 'd-none' }}" 
+                                         style="width: 200px; height: 200px; border-radius: 100%;">
                                     <div class="preview {{ isset($user_image) ? 'd-none' : 'd-flex' }} align-items-center text-center justify-content-center "
-                                        style="z-index: 1">
+                                         style="z-index: 1">
                                         <p class="my-0">
-                                            <span class="d-none d-lg-block">上傳檔案 </span><span><i
-                                                    class="fas fa-camera"></i></span>
+                                            <span class="d-none d-lg-block">上傳檔案 </span><span><i class="fas fa-camera"></i></span>
                                         </p>
                                     </div>
                                     <div style="margin-top: 20px;">
-                                        <input type="file" id="user_image" name="user_image" accept=".jpg, .jpeg, .png"
-                                            style="position: absolute;" />
+                                        <input type="file" id="user_image" name="user_image" accept=".jpg, .jpeg, .png" style="position: absolute;" />
                                     </div>
+                                    <div id="crop_area" style="display: none;">
+                                        <img id="image_to_crop" src="" alt="Image to crop" style="max-width: 100%;">
+                                    </div>
+                                    <button id="crop_button" style="display: none;">裁切並上傳</button>
                                 </div>
+                                
                             </div>
                         </div>
                         <div class="col-md-12 col-lg-6" style="margin-top: 250px;" name='name'></div>
