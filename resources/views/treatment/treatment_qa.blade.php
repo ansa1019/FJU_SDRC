@@ -309,7 +309,6 @@
                             </div>
                             <div class="col">
                                 <select class="form-select" id="patch_treat_class" name="treat">
-                                    <option selected>選擇聊療的類別</option>
                                     <option value="聊療小產">聊療小產</option>
                                     <option value="聊療婦科保健">聊療婦科保健</option>
                                     <option value="聊療備孕">聊療備孕</option>

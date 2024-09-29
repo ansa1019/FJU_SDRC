@@ -913,74 +913,159 @@ function vote(obj) {
 //     },
 // });
 
-//修改聊療的資料
 function getValue(button, type) {
     if (type == "patch") {
+        // 獲取文章 ID 和 DOM 元素
         var id = button.parentNode.parentNode.id.replace("article_id_", "");
         var title = document.getElementById("input_patch_title");
         var article_id = document.getElementById("article_id");
         var selectTreat = document.getElementById("patch_treat_class");
         var hashtags = document.getElementById("patch_input_topic");
-        var category = $(button)
-            .parents()
-            .eq(2)
-            .find("#category")
-            .text()
-            .trim();
         var selectIdentity = document.getElementById("patch_id_type");
-        var identity = $(button)
-            .parents()
-            .eq(2)
-            .find("#identity")
-            .text()
-            .trim();
-
-        console.log($(button).parents().eq(2).find("#category").text());
-        console.log(
-            $(button).parents().eq(2).find("#article_id_title").text().trim()
-        );
-        console.log($(button).parents().eq(1).find("#html").text());
-        console.log(identity);
-        console.log($(button).parents().eq(2).find("#hashtags").text());
-
-        for (var i = 0; i < selectTreat.options.length; i++) {
-            if (selectTreat.options[i].value === category) {
-                selectTreat.selectedIndex = i;
-                break;
-            }
-        }
-        console.log("Category value:", category);
-
-        for (var i = 0; i < selectIdentity.options.length; i++) {
-            if (selectIdentity.options[i].value === identity) {
-                selectIdentity.selectedIndex = i;
-                break;
-            }
-        }
-
-        title.value = $(button)
-            .parents()
-            .eq(2)
-            .find("#article_id_title")
-            .text()
-            .trim();
+        var identity = $(button).parents().eq(2).find("#identity").text().trim();
+        
+        // 設置標題與文章ID
+        title.value = $(button).parents().eq(2).find("#article_id_title").text().trim();
         article_id.value = id;
-        hashtags.value = $(button)
-            .parents()
-            .eq(2)
-            .find("#hashtags")
-            .text()
-            .replace(",", "");
+
+        // 設置類別
+        var subcategory_id = $(button).parents().eq(2).find("#subcategory_id").text().trim();
+        console.log("Subcategory ID:", subcategory_id); // 確認 subcategory_id 的值
+
+        // 將選擇的類別直接設置為 subcategory_id 的值
+        selectTreat.value = subcategory_id; // 直接根據 value 設置選擇項目
+
+        // 確認選擇的類別是否正確
+        console.log("Selected category value:", selectTreat.value);
+
+        // 設置話題欄位，移除空值與多餘的標點
+        var hashtagsText = $(button).parents().eq(2).find("#hashtags").text().trim();
+        hashtags.value = hashtagsText === "null" || hashtagsText === "" ? "" : hashtagsText.replace(/,\s*$/, '').replace(/\s+/g, ' ');
+
+        // 使用 Quill 編輯器插入 HTML 內容
         patch_quill.clipboard.dangerouslyPasteHTML(
-            $(button).parents().eq(1).find("#html").text()
+            $(button).parents().eq(1).find("#html").text().trim()
         );
     }
+
     if (type == "post") {
+        // 發佈時使用 Quill 編輯器插入 HTML
         quill.clipboard.dangerouslyPasteHTML(
-            $(button).parents().eq(0).find("#html").text()
+            $(button).parents().eq(0).find("#html").text().trim()
         );
     }
 }
+
+
+
+
+// function getValue(button, type) {
+//     if (type == "patch") {
+//         // 獲取文章 ID 和 DOM 元素
+//         var id = button.parentNode.parentNode.id.replace("article_id_", "");
+//         var title = document.getElementById("input_patch_title");
+//         var article_id = document.getElementById("article_id");
+//         var selectTreat = document.getElementById("patch_treat_class");
+//         var hashtags = document.getElementById("patch_input_topic");
+//         var selectIdentity = document.getElementById("patch_id_type");
+//         var identity = $(button).parents().eq(2).find("#identity").text().trim();
+        
+//         // 設置標題與文章ID
+//         title.value = $(button).parents().eq(2).find("#article_id_title").text().trim();
+//         article_id.value = id;
+
+//         // 設置類別
+//         var subcategory_id = $(button).parents().eq(2).find("#subcategory_id").text().trim();
+//         for (var i = 0; i < selectTreat.options.length; i++) {
+//             if (selectTreat.options[i].value == subcategory_id) {
+//                 selectTreat.selectedIndex = i;
+//                 break;
+//             }
+//         }
+
+//         // 設置話題欄位，移除空值與多餘的標點
+//         var hashtagsText = $(button).parents().eq(2).find("#hashtags").text().trim();
+//         hashtags.value = hashtagsText === "null" || hashtagsText === "" ? "" : hashtagsText.replace(/,\s*$/, '').replace(/\s+/g, ' ');
+
+//         // 使用 Quill 編輯器插入 HTML 內容
+//         patch_quill.clipboard.dangerouslyPasteHTML(
+//             $(button).parents().eq(1).find("#html").text().trim()
+//         );
+//     }
+
+//     if (type == "post") {
+//         // 發佈時使用 Quill 編輯器插入 HTML
+//         quill.clipboard.dangerouslyPasteHTML(
+//             $(button).parents().eq(0).find("#html").text().trim()
+//         );
+//     }
+// }
+
+
+
+//修改聊療的資料
+// function getValue(button, type) {
+//     if (type == "patch") {
+//         // 獲取文章 ID 和 DOM 元素
+//         var id = button.parentNode.parentNode.id.replace("article_id_", "");
+//         var title = document.getElementById("input_patch_title");
+//         var article_id = document.getElementById("article_id");
+//         var selectTreat = document.getElementById("patch_treat_class");
+//         var hashtags = document.getElementById("patch_input_topic");
+//         var category = $(button).parents().eq(2).find("#category").text().trim();
+//         var selectIdentity = document.getElementById("patch_id_type");
+//         var identity = $(button).parents().eq(2).find("#identity").text().trim();
+
+//         // 確認 category 是否正確
+//         console.log("Category:", category);
+
+//         // 類別預設值顯示：通過比對選項值來設置
+//         let categoryMatched = false;
+//         for (var i = 0; i < selectTreat.options.length; i++) {
+//             if (selectTreat.options[i].value.trim() === category) {
+//                 selectTreat.selectedIndex = i;
+//                 categoryMatched = true;
+//                 break;
+//             }
+//         }
+//         if (!categoryMatched) {
+//             console.warn("未找到匹配的類別選項");
+//         }
+
+//         // 身份選擇框的預設選項
+//         for (var i = 0; i < selectIdentity.options.length; i++) {
+//             if (selectIdentity.options[i].value === identity) {
+//                 selectIdentity.selectedIndex = i;
+//                 break;
+//             }
+//         }
+
+//         // 設定標題與文章ID
+//         title.value = $(button).parents().eq(2).find("#article_id_title").text().trim();
+//         article_id.value = id;
+
+//         // 設定話題欄位，移除空值與多餘的標點
+//         var hashtagsText = $(button).parents().eq(2).find("#hashtags").text().trim();
+//         if (hashtagsText === "null" || hashtagsText === "") {
+//             hashtags.value = "";  // 若無話題則清空欄位
+//         } else {
+//             hashtags.value = hashtagsText.replace(/,\s*$/, '').replace(/\s+/g, ' '); // 移除多餘逗號和多餘空格
+//         }
+
+//         // 使用 Quill 編輯器插入 HTML 內容
+//         patch_quill.clipboard.dangerouslyPasteHTML(
+//             $(button).parents().eq(1).find("#html").text().trim()
+//         );
+//     }
+
+//     if (type == "post") {
+//         // 發佈時使用 Quill 編輯器插入 HTML
+//         quill.clipboard.dangerouslyPasteHTML(
+//             $(button).parents().eq(0).find("#html").text().trim()
+//         );
+//     }
+// }
+
 
 //新增聊療
 function postdata(obj, type) {
