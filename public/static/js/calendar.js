@@ -153,19 +153,11 @@ $(document).ready(function () {
 
      // 監聽單選按鈕的變更事件來禁用或啟用相關欄位
      $("input[name='has_mc_type'], input[name='has_loc_type'], input[name='has_blood_type'], input[name='has_loc_type1']").on("change", function () {
-        console.log("change");
         var isChecked = $(this).prop("checked") && $(this).val() === "沒有";
         // 判斷是否要禁用或啟用輸入欄位
         $( "input[name='mc_amount'], input[name='pain_level'], input[name='loc_amount'], input[name='loc_color'], input[name='blood_amount'], input[name='blood_color'], input[name='loc_amount4'], input[name='loc_color4']").prop("disabled", isChecked);
-    });
-    // 監聽單選按鈕的點擊事件來實現點擊兩次取消選擇的功能
-    $("input[name='pain_level']").on("click", function () {
-        // 檢查該按鈕是否是已選中狀態
-        if ($(this).prop("checked")) {
-            // 取消選中並將值設為空
-            $(this).prop("checked", false);
-        }
-    });    
+    }); 
+    
     $('#daily_form').submit(calendarValidate);
     });  
     
@@ -188,7 +180,9 @@ $(document).ready(function () {
                 } else if (data.dict.hasOwnProperty("mc_more")) {
                     menstruationDescription += "月經量：量多" + "<br/>";
                 }
-                if (data.dict.hasOwnProperty("pain_less")) {
+                if (data.dict.hasOwnProperty("pain_no")) {
+                    menstruationDescription += "經痛程度：不痛" + "<br/>";
+                } else if (data.dict.hasOwnProperty("pain_less")) {
                     menstruationDescription += "經痛程度：輕微" + "<br/>";
                 } else if (data.dict.hasOwnProperty("pain_normal")) {
                     menstruationDescription += "經痛程度：適中" + "<br/>";
@@ -561,9 +555,10 @@ function calendarValidate() {
     let uncheckedFields = [];
     let checked_list = [];
 
-    // 檢查所有文本輸入框是否為空且沒有被禁用
+    // 檢查所有文本輸入框是否為空且沒有被禁用，排除症狀欄位
     $(`#${daily_id} input[type='text']`).each(function (index, element) {
-        if (!$(element).prop("disabled") && $(element).val() === "") {
+        // 排除症狀欄位（假設症狀欄位的 id 或 name 包含 "symptom"）
+        if (!$(element).prop("disabled") && $(element).val() === "" && !$(element).attr("name").includes("symptom")) {
             // 如果值為空且輸入欄位沒有被禁用
             if ($(element).attr("id") == `type${daily_index}_q3_other`) {
                 var checkbox = $(`#${daily_id} input[type="checkbox"][value="其他"]`);
@@ -576,9 +571,9 @@ function calendarValidate() {
         }
     });
 
-    // 檢查所有單選按鈕是否有選擇且沒有被禁用
+    // 檢查所有單選按鈕是否有選擇且沒有被禁用，排除症狀相關的單選按鈕
     $(`#${daily_id} input[type='radio']`).each(function (index, element) {
-        if (!$(element).prop("disabled")) {
+        if (!$(element).prop("disabled") && !$(element).attr("name").includes("symptom")) {
             if (index === 0) {
                 firstInputName = $(element).attr("name");
                 checked_list.push($(element).prop("checked"));
@@ -604,27 +599,20 @@ function calendarValidate() {
 
     // 生成警示信息
     if (emptyFields.length > 0 || uncheckedFields.length > 0) {
-        let errorMessage = "存在未填寫或未選擇的項目，請進行填寫或選擇:\n";    
+        let errorMessage = "存在未填寫或未選擇的項目，請進行填寫或選擇:\n";
         if (emptyFields.length > 0) {
             errorMessage += "- " + emptyFields.join("\n- ") + "\n";
-        }   
-        // 完全排除經痛程度的檢查，不管月經是否為"有"
-        if (uncheckedFields.length > 0) {
-            let filteredUncheckedFields = uncheckedFields.filter(item => item !== '經痛程度');
-            
-            // 如果篩選後還有未選擇的項目，則顯示警示訊息
-            if (filteredUncheckedFields.length > 0) {
-                errorMessage += "- " + filteredUncheckedFields.join("\n- ");
-                alert(errorMessage);
-                return false;
-            }
         }
+        if (uncheckedFields.length > 0) {
+            errorMessage += "- " + uncheckedFields.join("\n- ") + "\n";
+        }
+        alert(errorMessage);
+        return false;
+    } else {
         // 將單選按鈕的 name 屬性設置為其 id 屬性值
-        $(this)
-            .find("input[type=radio]")
-            .each(function () {
-                $(this).attr("name", $(this).attr("id"));
-            });
+        $(this).find("input[type=radio]").each(function () {
+            $(this).attr("name", $(this).attr("id"));
+        });
         return true;
     }
 };
