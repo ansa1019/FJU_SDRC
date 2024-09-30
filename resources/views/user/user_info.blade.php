@@ -44,25 +44,23 @@
             <div class="row px-md-5">
                 <div class="col-md col-lg-9 px-1 ps-md-1 pe-md-4">
                     <div class="row mt-4">
-                        <div class="col-md-12 col-lg-6" style="font-size: var(--fs-18)">
+                        <div class="col-12" style="font-size: var(--fs-18)">
                             <div class="row g-3 align-items-start">
-                                <div class="col-3">
+                                <div class="col-3 col-lg-2">
                                     <label for="user_name" class="col-form-label">大頭貼</label>
                                 </div>
-                                <div id="image_preview" class="col-auto">
+                                <div id="image_preview" class="col">
                                     <img id="crop_image" src="{{ $user_image }}" alt="大頭貼"
                                         class="{{ isset($user_image) ? 'd-block' : 'd-none' }}"
                                         style="width: 200px; height: 200px; border-radius: 100%;">
-                                    <div class="preview {{ isset($user_image) ? 'd-none' : 'd-flex' }} align-items-center text-center justify-content-center "
-                                        style="z-index: 1">
-                                        <p class="my-0">
-                                            <span class="d-none d-lg-block">上傳檔案</span><span><i
-                                                    class="fas fa-camera"></i></span>
-                                        </p>
-                                    </div>
-                                    <div style="margin-top: 20px;">
-                                        <input type="file" id="user_image" name="user_image" accept=".jpg, .jpeg, .png"
-                                            style="position: absolute;" />
+                                    <div class="my-3">
+                                        <div class="preview {{ isset($user_image) ? 'd-none' : 'd-flex' }} align-items-center text-center justify-content-center "
+                                            style="z-index: 1">
+                                                <span class="d-none d-lg-block">上傳檔案</span><span><i
+                                                        class="fas fa-camera"></i></span>
+                                        </div>
+                                        <input type="file" id="user_image" name="user_image"
+                                            accept=".jpg, .jpeg, .png" />
                                     </div>
                                 </div>
                             </div>
@@ -93,7 +91,6 @@
                             </div>
                         </div>
 
-                        <div class="col-md-12 col-lg-6" style="margin-top: 250px;" name='name'></div>
                         <div class="col-md-12 col-lg-6" style="font-size: var(--fs-18)">
                             <div class="row g-3 mb-2 align-items-center">
                                 <div class="col-3">

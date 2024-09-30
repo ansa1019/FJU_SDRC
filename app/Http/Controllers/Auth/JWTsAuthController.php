@@ -90,7 +90,7 @@ class JWTsAuthController extends Controller
     }
     public function setUserimage(Request $request)
     {
-        Session::put('user_image', $request->user_image[0]);
+        Session::put('user_image', $request->user_image);
         return Session::get('user_image');
     }
     public function setBlacklist(Request $request)

@@ -14,12 +14,6 @@ usersocket.onmessage = function (e) {
             data: {
                 notifications: data["notifications"],
             },
-            success: function (result) {
-                console.log(result);
-            },
-            error: function (result) {
-                console.log(result);
-            },
         });
     } else if (data["blacklist"]) {
         $.ajax({
@@ -29,12 +23,6 @@ usersocket.onmessage = function (e) {
             data: {
                 blacklist: JSON.stringify(data["blacklist"]),
             },
-            success: function (result) {
-                console.log(result);
-            },
-            error: function (result) {
-                console.log(result);
-            },
         });
     } else if (data["banlist"]) {
         $.ajax({
@@ -43,12 +31,6 @@ usersocket.onmessage = function (e) {
             dataType: "json",
             data: {
                 banlist: JSON.stringify(data["banlist"]),
-            },
-            success: function (result) {
-                console.log(result);
-            },
-            error: function (result) {
-                console.log(result);
             },
         });
     }
@@ -65,9 +47,6 @@ function all_read() {
     $.ajax({
         type: "POST",
         url: "/setNotifications",
-        success: function (result) {
-            console.log(result);
-        },
     });
 }
 
@@ -166,7 +145,7 @@ if ($("#user_image")) {
             // 將裁切後的圖片轉為 Blob 格式
             croppedCanvas.toBlob((blob) => {
                 const formdata = new FormData();
-                formdata.append("user_image", blob, "cropped_image.png");
+                formdata.append("user_image", blob, "image.png");
 
                 const apiIP = document
                     .getElementById("app")
@@ -199,19 +178,29 @@ if ($("#user_image")) {
                             $("#crop_image").attr("src", userImage);
                             $("#topbar-nav-tabs img").attr("src", userImage);
 
-                            Swal.fire({
-                                position: "center",
-                                icon: "success",
-                                title: "修改頭像成功!",
-                                showConfirmButton: false,
-                                timer: 1500,
-                            });
+                            $.ajax({
+                                type: "POST",
+                                url: "/setUserimage",
+                                data: { user_image: userImage },
+                                success: function (result) {
+                                    Swal.fire({
+                                        position: "center",
+                                        icon: "success",
+                                        title: "修改頭像成功!",
+                                        showConfirmButton: false,
+                                        timer: 1500,
+                                    });
 
-                            // 隱藏模態視窗並重整頁面
-                            $("#cropModal").modal("hide");
-                            setTimeout(() => {
-                                window.location.reload(); // 重整網頁
-                            }, 1500);
+                                    // 隱藏模態視窗並重整頁面
+                                    $("#cropModal").modal("hide");
+                                    setTimeout(() => {
+                                        window.location.reload(); // 重整網頁
+                                    }, 1500);
+                                },
+                                error: function (result) {
+                                    console.log(result);
+                                },
+                            });
                         }
                     })
                     .catch((error) => {
@@ -669,6 +658,7 @@ function showOldPasswordError() {
 
     oldPasswordContainer.appendChild(errorSpan);
 }
+
 document
     .getElementById("passwordForm")
     .addEventListener("submit", function (event) {
