@@ -35,7 +35,7 @@
                         <div class="py-3 ps-lg-4 health_type" id="health_type_1">
                             <div class="row align-items-center mb-2">
                                 <div class="col-auto">
-                                    <label for="type1_q1" class="col-form-label">・生理期週期(天)<span class="i-imp">*</spanc></label>
+                                    <label for="type1_q1" class="col-form-label">・生理期週期(天)<span class="i-imp">*</span></label>
                                 </div>
                                 <div class="col-auto">
                                     <input type="number" id="type1_q1" name="menstrualCycle" class="form-control" />
@@ -43,7 +43,7 @@
                             </div>
                             <div class="row align-items-center mb-2">
                                 <div class="col-auto">
-                                    <label for="type1_q2" class="col-form-label">・上次生理期開始日<span class="i-imp">*</spanc></label>
+                                    <label for="type1_q2" class="col-form-label">・上次生理期開始日<span class="i-imp">*</span></label>
                                 </div>
                                 <div class="col-auto">
                                     <div class="input-group">
@@ -55,7 +55,7 @@
                             </div>
                             <div class="row align-items-center mb-2">
                                 <div class="col-auto">
-                                    <label for="type1_q3" class="col-form-label">・每次月經大約來多少天<span class="i-imp">*</spanc></label>
+                                    <label for="type1_q3" class="col-form-label">・每次月經大約來多少天<span class="i-imp">*</span></label>
                                 </div>
                                 <div class="col-auto">
                                     <input type="number" id="type1_q3" name="menstruationLast" class="form-control" />
@@ -66,7 +66,7 @@
                         <div class="py-3 ps-lg-4 health_type d-none" id="health_type_2">
                             <div class="row align-items-center mb-2">
                                 <div class="col-auto">
-                                    <label for="type2_q1" class="col-form-label">・小產的日期</label>
+                                    <label for="type2_q1" class="col-form-label">・小產的日期<span class="i-imp">*</span></label>
                                 </div>
                                 <div class="col-auto">
                                     <div class="input-group">
@@ -81,7 +81,7 @@
                         <div class="py-3 ps-lg-4 health_type d-none" id="health_type_3">
                             <div class="row align-items-center mb-2">
                                 <div class="col-auto">
-                                    <label for="type3_q1" class="col-form-label">・懷孕的週數</label>
+                                    <label for="type3_q1" class="col-form-label">・懷孕的週數<span class="i-imp">*</span></label>
                                 </div>
                                 <div class="col-auto">
                                     <div class="input-group">
@@ -92,7 +92,7 @@
                             </div>
                             <div class="row align-items-center mb-2">
                                 <div class="col-auto">
-                                    <label for="type3_q2" class="col-form-label">・預產的日期</label>
+                                    <label for="type3_q2" class="col-form-label">・預產的日期<span class="i-imp">*</span></label>
                                 </div>
                                 <div class="col-auto">
                                     <div class="input-group">
@@ -107,7 +107,7 @@
                         <div class="py-3 ps-lg-4 health_type d-none" id="health_type_4">
                             <div class="row align-items-center mb-2">
                                 <div class="col-auto">
-                                    <label for="type4_q1" class="col-form-label">・生產的日期</label>
+                                    <label for="type4_q1" class="col-form-label">・生產的日期<span class="i-imp">*</span></label>
                                 </div>
                                 <div class="col-auto">
                                     <div class="input-group">
@@ -123,7 +123,7 @@
                         <div class="row justify-content-center align-items-center mt-2">
                             <div class="col-auto">
                                 <a class="btn btn-c2 rounded-pill" style="font-size: var(--fs-18)"
-                                    onclick="first_daily_set()">前往記錄身體日記</a>
+                                    onclick="first_daily_set(event)">前往記錄身體日記</a>
                             </div>
                         </div>
                     </div>

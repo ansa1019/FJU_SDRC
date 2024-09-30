@@ -86,6 +86,13 @@ const chineseLabels = {
     loc_amount4: "惡露量",
     loc_color4: "惡露顏色",
     loc_color4: "惡露顏色",
+    menstrualCycle: "生理期週期",
+    lastMenstrual: "上次生理期開始日",
+    menstruationLast: "月經天數",
+    weeksPregnancy: "懷孕週數",
+    dueDate: "預產日期",
+    miscarriageDay: "小產日期",
+    productionPeriod: "生產日期",
 };
 
 dayjs.locale("zh-tw");
@@ -159,7 +166,11 @@ $(document).ready(function () {
     }); 
     
     $('#daily_form').submit(calendarValidate);
+    $('#first_daily_form').submit(function(event) {
+        first_daily_set(event); // 確保 event 被傳遞
+    });
     });  
+    
     
     //載入月曆資料
     function getCalendarEvents() {
@@ -493,9 +504,10 @@ function open_modal(type) {
     }
 }
 function toggle_modal() {
-    $("#first_daily_modal").modal("toggle");
-    $("#daily_modal").modal("toggle");
+    $("#daily_modal").modal("hide"); 
+    $("#first_daily_modal").modal("show"); 
 }
+
 function close_modal() {
     $(".modal").modal("hide");
     $(".modal-backdrop").remove();
@@ -548,20 +560,155 @@ function daily_select_type() {
     $('#daily_modal input[type="radio"]').prop("checked", false);
 }
 // 資料防呆檢查
+// function calendarValidate() {
+//     let daily_id = $(".daily_type").not(".d-none").attr("id"); // 取得是哪個時期的 div id
+//     let daily_index = daily_id.replace("daily_type_", "");
+//     let emptyFields = [];
+//     let uncheckedFields = [];
+
+//     // 檢查所有文本輸入框是否為空且沒有被禁用，排除症狀欄位
+//     $(`#${daily_id} input[type='text']`).each(function (index, element) {
+//         if (!$(element).prop("disabled") && $(element).val() === "" && !$(element).attr("name").includes("symptom")) {
+//             // 如果是 "其他" 選項且 "其他" 已勾選，則需要檢查該欄位
+//             if ($(element).attr("id") === `type${daily_index}_q3_other`) {
+//                 let checkbox = $(`#${daily_id} input[type="checkbox"][value="其他"]`);
+//                 if (checkbox.prop("checked")) {
+//                     emptyFields.push(chineseLabels[$(element).attr("name")] || $(element).attr("name"));
+//                 }
+//             } else {
+//                 emptyFields.push(chineseLabels[$(element).attr("name")] || $(element).attr("name"));
+//             }
+//         }
+//     });
+
+//     // 檢查所有單選按鈕是否有選擇且沒有被禁用，排除症狀相關的單選按鈕
+//     let radioGroups = {};
+//     $(`#${daily_id} input[type='radio']`).each(function (index, element) {
+//         if (!$(element).prop("disabled") && !$(element).attr("name").includes("symptom")) {
+//             if (!radioGroups[$(element).attr("name")]) {
+//                 radioGroups[$(element).attr("name")] = false;
+//             }
+//             if ($(element).prop("checked")) {
+//                 radioGroups[$(element).attr("name")] = true; // 如果某個 name 屬性對應的 radio 被選擇
+//             }
+//         }
+//     });
+
+//     // 檢查每組單選按鈕是否有被選擇
+//     for (let groupName in radioGroups) {
+//         if (!radioGroups[groupName]) {
+//             uncheckedFields.push(chineseLabels[groupName] || groupName);
+//         }
+//     }
+
+//     // 生成警示信息
+//     if (emptyFields.length > 0 || uncheckedFields.length > 0) {
+//         let errorMessage = "存在未填寫或未選擇的項目，請進行填寫或選擇:\n";
+//         if (emptyFields.length > 0) {
+//             errorMessage += "- " + emptyFields.join("\n- ") + "\n";
+//         }
+//         if (uncheckedFields.length > 0) {
+//             errorMessage += "- " + uncheckedFields.join("\n- ") + "\n";
+//         }
+//         alert(errorMessage);
+//         return false;
+//     }
+
+//     return true;
+// }
+function first_daily_set(event) {
+    event.preventDefault(); // 防止表單提交
+    if (firstDailyModalValidate()) {
+        // 如果驗證通過，則轉到 daily_modal
+        $('#daily_modal').modal('show');
+    }
+}
+
+function first_daily_set(event) {
+    event.preventDefault(); // 防止表單提交
+    if (firstDailyModalValidate()) {
+        // 如果驗證通過，則轉到 daily_modal
+        $('#daily_modal').modal('show');
+    }
+}
+
+function firstDailyModalValidate() {
+    let modal_id = "#first_daily_modal"; // 取得 first_daily_modal 的 ID
+    let emptyFields = [];
+    let healthType = $(modal_id + " #health_type").val();
+
+    // 檢查所有文本輸入框是否為空，根據 healthType 檢查對應的字段
+    $(`${modal_id} input[type='text']`).each(function (index, element) {
+        let fieldName = $(element).attr("name");
+        let value = $(element).val();
+
+        // 根據選擇的健康類型檢查對應的字段
+        if (value === "" && !$(element).attr("name").includes("symptom")) {
+            if (healthType === "menstruation" && fieldName === "lastMenstrual") {
+                emptyFields.push(chineseLabels[fieldName]); 
+            } else if (healthType === "pregnancy" && fieldName === "dueDate") {
+                emptyFields.push(chineseLabels[fieldName]); 
+            } else if (healthType === "miscarriage period" && fieldName === "miscarriageDay") {
+                emptyFields.push(chineseLabels[fieldName]); 
+            } else if (healthType === "postpartum_period" && fieldName === "productionPeriod") {
+                emptyFields.push(chineseLabels[fieldName]); 
+            }
+        }
+    });
+
+
+    // 根據健康類型檢查對應的 number 輸入框
+    if (healthType === "menstruation") {
+        // 檢查生理期相關的 number 輸入框
+        let fieldsToCheck = ["menstrualCycle", "menstruationLast"];
+        fieldsToCheck.forEach(function (field) {
+            let value = $(`${modal_id} input[name='${field}']`).val();
+            if (value === "") {
+                emptyFields.push(chineseLabels[field] || field);
+            }
+        });
+    } else if (healthType === "pregnancy") {
+        // 檢查懷孕相關的 number 輸入框
+        let fieldsToCheck = ["weeksPregnancy"]; // 可以在這裡添加其他懷孕相關的輸入框名稱
+        fieldsToCheck.forEach(function (field) {
+            let value = $(`${modal_id} input[name='${field}']`).val();
+            if (value === "") {
+                emptyFields.push(chineseLabels[field] || field);
+            }
+        });
+    }
+
+    // 生成警示信息
+    if (emptyFields.length > 0) {
+        let errorMessage = "存在未填寫的項目，請進行填寫:\n";
+        errorMessage += "- " + emptyFields.join("\n- ") + "\n";
+        alert(errorMessage);
+        return false; // 阻止進入下一步
+    }
+
+    return true; // 通過驗證，允許進入下一步
+}
+
+
+
+
 function calendarValidate() {
+    // 先驗證 first_daily_modal
+    if (!firstDailyModalValidate()) {
+        return false; // 如果 first_daily_modal 沒有通過驗證，停止操作
+    }
+
+    // 以下是對daily_modal的驗證
     let daily_id = $(".daily_type").not(".d-none").attr("id"); // 取得是哪個時期的 div id
     let daily_index = daily_id.replace("daily_type_", "");
     let emptyFields = [];
     let uncheckedFields = [];
-    let checked_list = [];
 
     // 檢查所有文本輸入框是否為空且沒有被禁用，排除症狀欄位
     $(`#${daily_id} input[type='text']`).each(function (index, element) {
-        // 排除症狀欄位（假設症狀欄位的 id 或 name 包含 "symptom"）
         if (!$(element).prop("disabled") && $(element).val() === "" && !$(element).attr("name").includes("symptom")) {
-            // 如果值為空且輸入欄位沒有被禁用
-            if ($(element).attr("id") == `type${daily_index}_q3_other`) {
-                var checkbox = $(`#${daily_id} input[type="checkbox"][value="其他"]`);
+            if ($(element).attr("id") === `type${daily_index}_q3_other`) {
+                let checkbox = $(`#${daily_id} input[type="checkbox"][value="其他"]`);
                 if (checkbox.prop("checked")) {
                     emptyFields.push(chineseLabels[$(element).attr("name")] || $(element).attr("name"));
                 }
@@ -572,30 +719,24 @@ function calendarValidate() {
     });
 
     // 檢查所有單選按鈕是否有選擇且沒有被禁用，排除症狀相關的單選按鈕
+    let radioGroups = {};
     $(`#${daily_id} input[type='radio']`).each(function (index, element) {
         if (!$(element).prop("disabled") && !$(element).attr("name").includes("symptom")) {
-            if (index === 0) {
-                firstInputName = $(element).attr("name");
-                checked_list.push($(element).prop("checked"));
-            } else if (index === $(`#${daily_id} input[type='radio']`).length - 1) {
-                checked_list.push($(element).prop("checked"));
-                if (!checked_list.includes(true)) {
-                    uncheckedFields.push(chineseLabels[firstInputName] || firstInputName);
-                }
-            } else {
-                if (firstInputName == $(element).attr("name")) {
-                    checked_list.push($(element).prop("checked"));
-                } else {
-                    if (!checked_list.includes(true)) {
-                        uncheckedFields.push(chineseLabels[firstInputName] || firstInputName);
-                    }
-                    firstInputName = $(element).attr("name");
-                    checked_list = [];
-                    checked_list.push($(element).prop("checked"));
-                }
+            if (!radioGroups[$(element).attr("name")]) {
+                radioGroups[$(element).attr("name")] = false;
+            }
+            if ($(element).prop("checked")) {
+                radioGroups[$(element).attr("name")] = true; // 如果某個 name 屬性對應的 radio 被選擇
             }
         }
     });
+
+    // 檢查每組單選按鈕是否有被選擇
+    for (let groupName in radioGroups) {
+        if (!radioGroups[groupName]) {
+            uncheckedFields.push(chineseLabels[groupName] || groupName);
+        }
+    }
 
     // 生成警示信息
     if (emptyFields.length > 0 || uncheckedFields.length > 0) {
@@ -608,11 +749,77 @@ function calendarValidate() {
         }
         alert(errorMessage);
         return false;
-    } else {
-        // 將單選按鈕的 name 屬性設置為其 id 屬性值
-        $(this).find("input[type=radio]").each(function () {
-            $(this).attr("name", $(this).attr("id"));
-        });
-        return true;
     }
-};
+
+    return true; // 通過驗證，允許進入下一步
+}
+
+
+// function calendarValidate() {
+//     let daily_id = $(".daily_type").not(".d-none").attr("id"); // 取得是哪個時期的 div id
+//     let daily_index = daily_id.replace("daily_type_", "");
+//     let emptyFields = [];
+//     let uncheckedFields = [];
+//     let checked_list = [];
+
+//     // 檢查所有文本輸入框是否為空且沒有被禁用，排除症狀欄位
+//     $(`#${daily_id} input[type='text']`).each(function (index, element) {
+//         // 排除症狀欄位（假設症狀欄位的 id 或 name 包含 "symptom"）
+//         if (!$(element).prop("disabled") && $(element).val() === "" && !$(element).attr("name").includes("symptom")) {
+//             // 如果值為空且輸入欄位沒有被禁用
+//             if ($(element).attr("id") == `type${daily_index}_q3_other`) {
+//                 var checkbox = $(`#${daily_id} input[type="checkbox"][value="其他"]`);
+//                 if (checkbox.prop("checked")) {
+//                     emptyFields.push(chineseLabels[$(element).attr("name")] || $(element).attr("name"));
+//                 }
+//             } else {
+//                 emptyFields.push(chineseLabels[$(element).attr("name")] || $(element).attr("name"));
+//             }
+//         }
+//     });
+
+//     // 檢查所有單選按鈕是否有選擇且沒有被禁用，排除症狀相關的單選按鈕
+//     $(`#${daily_id} input[type='radio']`).each(function (index, element) {
+//         if (!$(element).prop("disabled") && !$(element).attr("name").includes("symptom")) {
+//             if (index === 0) {
+//                 firstInputName = $(element).attr("name");
+//                 checked_list.push($(element).prop("checked"));
+//             } else if (index === $(`#${daily_id} input[type='radio']`).length - 1) {
+//                 checked_list.push($(element).prop("checked"));
+//                 if (!checked_list.includes(true)) {
+//                     uncheckedFields.push(chineseLabels[firstInputName] || firstInputName);
+//                 }
+//             } else {
+//                 if (firstInputName == $(element).attr("name")) {
+//                     checked_list.push($(element).prop("checked"));
+//                 } else {
+//                     if (!checked_list.includes(true)) {
+//                         uncheckedFields.push(chineseLabels[firstInputName] || firstInputName);
+//                     }
+//                     firstInputName = $(element).attr("name");
+//                     checked_list = [];
+//                     checked_list.push($(element).prop("checked"));
+//                 }
+//             }
+//         }
+//     });
+
+//     // 生成警示信息
+//     if (emptyFields.length > 0 || uncheckedFields.length > 0) {
+//         let errorMessage = "存在未填寫或未選擇的項目，請進行填寫或選擇:\n";
+//         if (emptyFields.length > 0) {
+//             errorMessage += "- " + emptyFields.join("\n- ") + "\n";
+//         }
+//         if (uncheckedFields.length > 0) {
+//             errorMessage += "- " + uncheckedFields.join("\n- ") + "\n";
+//         }
+//         alert(errorMessage);
+//         return false;
+//     } else {
+//         // 將單選按鈕的 name 屬性設置為其 id 屬性值
+//         $(this).find("input[type=radio]").each(function () {
+//             $(this).attr("name", $(this).attr("id"));
+//         });
+//         return true;
+//     }
+// };
