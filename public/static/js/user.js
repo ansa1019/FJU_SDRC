@@ -73,8 +73,8 @@ function all_read() {
 
 $.ajaxSetup({
     headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    }
+        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+    },
 });
 
 $(document).ready(function () {
@@ -96,7 +96,8 @@ $(document).ready(function () {
 /* 會員資料 上傳圖片 */
 if ($("#user_image")) {
     let cropper;
-    
+
+    // 當選擇圖片後
     $("#user_image").on("change", (event) => {
         var input = document.getElementById("user_image");
 
@@ -104,6 +105,7 @@ if ($("#user_image")) {
             const file = input.files[0];
             const validImageTypes = ["image/jpeg", "image/png", "image/gif"];
 
+            // 檢查文件類型是否有效
             if (!validImageTypes.includes(file.type)) {
                 Swal.fire({
                     position: "center",
@@ -112,10 +114,13 @@ if ($("#user_image")) {
                     showConfirmButton: false,
                     timer: 1500,
                 });
+                // 重置文件輸入框
+                input.value = "";
                 return;
             }
 
-            const maxSize = 5 * 1024 * 1024; // 5MB
+            // 檢查文件大小是否超過 5MB
+            const maxSize = 5 * 1024 * 1024;
             if (file.size > maxSize) {
                 Swal.fire({
                     position: "center",
@@ -124,20 +129,23 @@ if ($("#user_image")) {
                     showConfirmButton: false,
                     timer: 1500,
                 });
+                // 重置文件輸入框
+                input.value = "";
                 return;
             }
 
-            // 顯示圖片裁切區域
+            // 顯示模態視窗並初始化 Cropper.js
             const reader = new FileReader();
             reader.onload = (e) => {
                 $("#image_to_crop").attr("src", e.target.result);
-                $("#crop_area").show(); // 顯示裁切區域
-                $("#crop_button").show(); // 顯示裁切按鈕
-                
+
+                // 顯示模態視窗
+                $("#cropModal").modal("show");
+
                 // 初始化 Cropper.js
                 const imageElement = document.getElementById("image_to_crop");
                 cropper = new Cropper(imageElement, {
-                    aspectRatio: 1, // 圓形裁切 (1:1)
+                    aspectRatio: 1, // 圓形裁切
                     viewMode: 1,
                     minContainerWidth: 300,
                     minContainerHeight: 300,
@@ -147,21 +155,24 @@ if ($("#user_image")) {
         }
     });
 
-    // 當使用者裁切完成後，點擊 "裁切並上傳" 按鈕
+    // 當使用者點擊裁切並上傳按鈕
     $("#crop_button").on("click", () => {
         if (cropper) {
             const croppedCanvas = cropper.getCroppedCanvas({
-                width: 200, // 圖片寬度
-                height: 200, // 圖片高度
+                width: 200, // 設定裁切後的寬度
+                height: 200, // 設定裁切後的高度
             });
 
-            // 將裁切後的圖片轉為 blob 格式
+            // 將裁切後的圖片轉為 Blob 格式
             croppedCanvas.toBlob((blob) => {
                 const formdata = new FormData();
                 formdata.append("user_image", blob, "cropped_image.png");
 
-                const apiIP = document.getElementById("app").getAttribute("data-api-ip");
-                var authorizationId = document.getElementsByName("profile_id")[0].value;
+                const apiIP = document
+                    .getElementById("app")
+                    .getAttribute("data-api-ip");
+                var authorizationId =
+                    document.getElementsByName("profile_id")[0].value;
                 var myHeaders = new Headers();
                 myHeaders.append("Authorization", "Bearer " + token);
 
@@ -172,13 +183,20 @@ if ($("#user_image")) {
                     redirect: "follow",
                 };
 
-                fetch(apiIP + "api/userprofile/profile/" + authorizationId + "/", requestOptions)
+                // 發送圖片至後端
+                fetch(
+                    apiIP + "api/userprofile/profile/" + authorizationId + "/",
+                    requestOptions
+                )
                     .then((response) => response.json())
                     .then((data) => {
-                        let userImage = data[0] && data[0]["user_image"] ? data[0]["user_image"] : null;
+                        let userImage =
+                            data[0] && data[0]["user_image"]
+                                ? data[0]["user_image"]
+                                : null;
                         if (userImage) {
                             // 更新圖片預覽
-                            $("#image_preview img").attr("src", userImage);
+                            $("#crop_image").attr("src", userImage);
                             $("#topbar-nav-tabs img").attr("src", userImage);
 
                             Swal.fire({
@@ -188,6 +206,12 @@ if ($("#user_image")) {
                                 showConfirmButton: false,
                                 timer: 1500,
                             });
+
+                            // 隱藏模態視窗並重整頁面
+                            $("#cropModal").modal("hide");
+                            setTimeout(() => {
+                                window.location.reload(); // 重整網頁
+                            }, 1500);
                         }
                     })
                     .catch((error) => {
@@ -203,19 +227,48 @@ if ($("#user_image")) {
             });
         }
     });
+
+    // 當模態視窗關閉時，重置 cropper 並清空圖片
+    $("#cropModal").on("hidden.bs.modal", function () {
+        if (cropper) {
+            cropper.destroy();
+            cropper = null;
+        }
+        $("#image_to_crop").attr("src", ""); // 清空裁切區域的圖片
+        $("#user_image").val(""); // 重置文件輸入框
+    });
 }
 
-/* 會員資料 上傳圖片 */
-// /* 會員資料 上傳圖片 */
+// 當模態視窗取消按鈕被點擊時，手動觸發關閉
+$(".btn-secondary").on("click", function () {
+    $("#cropModal").modal("hide");
+});
+
+// 手動處理右上角叉叉按鈕的關閉
+$(".close").on("click", function () {
+    $("#cropModal").modal("hide");
+});
+
+// 模態視窗關閉時，重置 Cropper
+$("#cropModal").on("hidden.bs.modal", function () {
+    if (cropper) {
+        cropper.destroy();
+        cropper = null;
+    }
+    $("#image_to_crop").attr("src", ""); // 清空圖片
+    $("#user_image").val(""); // 重置輸入框
+});
+
 // if ($("#user_image")) {
+//     let cropper;
+
 //     $("#user_image").on("change", (event) => {
 //         var input = document.getElementById("user_image");
 
 //         if (input.files.length > 0) {
-//             const file = input.files[0]; // 獲取上傳的檔案
-//             const validImageTypes = ["image/jpeg", "image/png", "image/gif"]; // 允許的圖片類型
+//             const file = input.files[0];
+//             const validImageTypes = ["image/jpeg", "image/png", "image/gif"];
 
-//             // 檢查檔案類型是否為允許的圖片類型
 //             if (!validImageTypes.includes(file.type)) {
 //                 Swal.fire({
 //                     position: "center",
@@ -224,10 +277,9 @@ if ($("#user_image")) {
 //                     showConfirmButton: false,
 //                     timer: 1500,
 //                 });
-//                 return; // 停止後續操作
+//                 return;
 //             }
 
-//             // 檢查圖片大小是否超過 5MB
 //             const maxSize = 5 * 1024 * 1024; // 5MB
 //             if (file.size > maxSize) {
 //                 Swal.fire({
@@ -237,120 +289,86 @@ if ($("#user_image")) {
 //                     showConfirmButton: false,
 //                     timer: 1500,
 //                 });
-//                 return; // 停止後續操作
+//                 return;
 //             }
 
-//             const apiIP = document
-//                 .getElementById("app")
-//                 .getAttribute("data-api-ip");
-//             var authorizationId =
-//                 document.getElementsByName("profile_id")[0].value;
-//             var myHeaders = new Headers();
-//             myHeaders.append("Authorization", "Bearer " + token);
+//             // 顯示圖片裁切區域
+//             const reader = new FileReader();
+//             reader.onload = (e) => {
+//                 $("#image_to_crop").attr("src", e.target.result);
+//                 $("#crop_area").show(); // 顯示裁切區域
+//                 $("#crop_button").show(); // 顯示裁切按鈕
 
-//             // 使用 FormData 上傳圖片
-//             var formdata = new FormData();
-//             formdata.append("user_image", file, "image.png");
-
-//             var requestOptions = {
-//                 method: "PATCH",
-//                 headers: myHeaders,
-//                 body: formdata,
-//                 redirect: "follow",
+//                 // 初始化 Cropper.js
+//                 const imageElement = document.getElementById("image_to_crop");
+//                 cropper = new Cropper(imageElement, {
+//                     aspectRatio: 1, // 圓形裁切 (1:1)
+//                     viewMode: 1,
+//                     minContainerWidth: 300,
+//                     minContainerHeight: 300,
+//                 });
 //             };
+//             reader.readAsDataURL(file);
+//         }
+//     });
 
-//             fetch(
-//                 apiIP + "api/userprofile/profile/" + authorizationId + "/",
-//                 requestOptions
-//             )
-//                 .then((response) => {
-//                     if (!response.ok) {
-//                         throw new Error("Network response was not ok");
-//                     }
-//                     return response.json();
-//                 })
-//                 .then(function (data) {
-//                     console.log("Fetch response data: ", data); // 打印 fetch 回應資料
+//     // 當使用者裁切完成後，點擊 "裁切並上傳" 按鈕
+//     $("#crop_button").on("click", () => {
+//         if (cropper) {
+//             const croppedCanvas = cropper.getCroppedCanvas({
+//                 width: 200, // 圖片寬度
+//                 height: 200, // 圖片高度
+//             });
 
-//                     // 確保 user_image 存在於返回的第一個對象
-//                     let userImage =
-//                         data[0] && data[0]["user_image"]
-//                             ? data[0]["user_image"]
-//                             : null;
-//                     if (userImage) {
-//                         // 更新預覽圖片
-//                         if ($(".preview").hasClass("d-flex")) {
-//                             $(".preview")
-//                                 .removeClass("d-flex")
-//                                 .addClass("d-none");
-//                             $("#image_preview img")
-//                                 .removeClass("d-none")
-//                                 .addClass("d-flex");
+//             // 將裁切後的圖片轉為 blob 格式
+//             croppedCanvas.toBlob((blob) => {
+//                 const formdata = new FormData();
+//                 formdata.append("user_image", blob, "cropped_image.png");
+
+//                 const apiIP = document.getElementById("app").getAttribute("data-api-ip");
+//                 var authorizationId = document.getElementsByName("profile_id")[0].value;
+//                 var myHeaders = new Headers();
+//                 myHeaders.append("Authorization", "Bearer " + token);
+
+//                 var requestOptions = {
+//                     method: "PATCH",
+//                     headers: myHeaders,
+//                     body: formdata,
+//                     redirect: "follow",
+//                 };
+
+//                 fetch(apiIP + "api/userprofile/profile/" + authorizationId + "/", requestOptions)
+//                     .then((response) => response.json())
+//                     .then((data) => {
+//                         let userImage = data[0] && data[0]["user_image"] ? data[0]["user_image"] : null;
+//                         if (userImage) {
+//                             // 更新圖片預覽
+//                             $("#image_preview img").attr("src", userImage);
+//                             $("#topbar-nav-tabs img").attr("src", userImage);
+
+//                             Swal.fire({
+//                                 position: "center",
+//                                 icon: "success",
+//                                 title: "修改頭像成功!",
+//                                 showConfirmButton: false,
+//                                 timer: 1500,
+//                             });
 //                         }
-//                         $("#image_preview img").attr("src", userImage);
-//                         $("#topbar-nav-tabs img").attr("src", userImage);
-
-//                         // 更新頭像，傳遞正確的圖片路徑
-//                         $.ajax({
-//                             type: "POST",
-//                             url: "/setUserimage", // 確保此 URL 是正確的
-//                             dataType: "json",
-//                             data: { user_image: userImage }, // 確保這裡傳遞的資料是正確的
-//                             success: function (result) {
-//                                 Swal.fire({
-//                                     position: "center",
-//                                     icon: "success",
-//                                     title: "修改頭像成功!",
-//                                     showConfirmButton: false,
-//                                     timer: 1500,
-//                                 });
-//                             },
-//                             error: function (result) {
-//                                 console.log("Ajax error: ", result); // 打印完整的錯誤對象
-//                                 console.log("Status: ", result.status); // 打印狀態碼
-//                                 console.log(
-//                                     "Response Text: ",
-//                                     result.responseText
-//                                 ); // 打印完整的錯誤訊息
-
-//                                 Swal.fire({
-//                                     position: "center",
-//                                     icon: "error",
-//                                     title: "修改頭像失敗!",
-//                                     showConfirmButton: false,
-//                                     timer: 1500,
-//                                 });
-//                             },
-//                         });
-//                     } else {
-//                         // 如果沒有獲取到正確的圖片，顯示錯誤訊息
-//                         console.log(
-//                             "Image update failed, no valid user image in response."
-//                         );
+//                     })
+//                     .catch((error) => {
+//                         console.log("Fetch error: ", error);
 //                         Swal.fire({
 //                             position: "center",
 //                             icon: "error",
-//                             title: "無法獲取正確的用戶圖片！",
+//                             title: "修改頭像失敗!",
 //                             showConfirmButton: false,
 //                             timer: 1500,
 //                         });
-//                     }
-//                 })
-//                 .catch(function (err) {
-//                     console.log("Fetch error: ", err); // 打印具體的 fetch 錯誤
-//                     Swal.fire({
-//                         position: "center",
-//                         icon: "error",
-//                         title: "修改頭像失敗!",
-//                         showConfirmButton: false,
-//                         timer: 1500,
 //                     });
-//                 });
+//             });
 //         }
 //     });
 // }
-
-
 
 let datepick_pos_top = null;
 
@@ -493,9 +511,9 @@ function reset_password() {
 async function checkOldPassword(oldPassword) {
     return new Promise((resolve, reject) => {
         $.ajax({
-            url: '/UserEditpassword',
-            method: 'POST',
-            dataType: 'json',
+            url: "/UserEditpassword",
+            method: "POST",
+            dataType: "json",
             data: {
                 old_password: oldPassword,
                 action: "step1",
@@ -505,21 +523,21 @@ async function checkOldPassword(oldPassword) {
                     resolve(true);
                 } else {
                     Swal.fire({
-                        icon: 'error',
-                        title: '錯誤',
-                        text: '舊密碼不正確',
+                        icon: "error",
+                        title: "錯誤",
+                        text: "舊密碼不正確",
                     });
                     resolve(false);
                 }
             },
             error: function (error) {
                 Swal.fire({
-                    icon: 'error',
-                    title: '錯誤',
-                    text: '密碼驗證過程中發生錯誤',
+                    icon: "error",
+                    title: "錯誤",
+                    text: "密碼驗證過程中發生錯誤",
                 });
                 reject(false);
-            }
+            },
         });
     });
 }
@@ -560,53 +578,52 @@ async function resetPassword() {
     // 如果沒有錯誤，發送 PATCH 請求更新密碼
     if (!pwd_error) {
         $.ajax({
-            url: '/UserEditpassword',
-            method: 'PATCH',
+            url: "/UserEditpassword",
+            method: "PATCH",
             data: {
                 new_password: new_pwd,
-                check_password: check_password
+                check_password: check_password,
             },
             success: function (response) {
                 if (response.success) {
                     Swal.fire({
-                        title: '修改密碼成功！',
+                        title: "修改密碼成功！",
                         text: "已重新設定密碼",
-                        icon: 'success',
-                        confirmButtonColor: '#70c6e3',
+                        icon: "success",
+                        confirmButtonColor: "#70c6e3",
                         showConfirmButton: false,
                         timer: 1500,
                     }).then(() => {
-                        window.location.href = '/user_login';
+                        window.location.href = "/user_login";
                     });
                 } else {
                     Swal.fire({
-                        icon: 'error',
-                        title: '錯誤',
-                        text: response.message || '密碼更改失敗',
+                        icon: "error",
+                        title: "錯誤",
+                        text: response.message || "密碼更改失敗",
                     });
                 }
             },
             error: function (xhr, status, error) {
                 Swal.fire({
-                    icon: 'error',
-                    title: '錯誤',
-                    text: '密碼更改過程中發生錯誤',
+                    icon: "error",
+                    title: "錯誤",
+                    text: "密碼更改過程中發生錯誤",
                 });
-            }
+            },
         });
     }
 }
 
 // 表單提交處理
-$('#passwordForm').on('submit', function (e) {
+$("#passwordForm").on("submit", function (e) {
     e.preventDefault();
     resetPassword();
 });
 
-
 function validateOldPassword() {
     const oldPassword = document.getElementById("old_password").value;
-    
+
     $.ajax({
         url: "/UserEditpassword", // 舊密碼驗證的 POST 請求
         method: "POST",
@@ -627,11 +644,11 @@ function validateOldPassword() {
         },
         error: function () {
             Swal.fire({
-                icon: 'error',
-                title: '錯誤',
-                text: '密碼驗證過程中發生錯誤',
+                icon: "error",
+                title: "錯誤",
+                text: "密碼驗證過程中發生錯誤",
             });
-        }
+        },
     });
 }
 function showOldPasswordError() {
@@ -639,14 +656,17 @@ function showOldPasswordError() {
     errorSpan.className = "ct-txt-2 text-danger";
     errorSpan.style.fontSize = "var(--fs-16)";
     errorSpan.innerText = "舊密碼不正確";
-    
-    const oldPasswordContainer = document.querySelector("#old_password").parentElement;
-    const existingError = oldPasswordContainer.querySelector(".ct-txt-2.text-danger");
-    
+
+    const oldPasswordContainer =
+        document.querySelector("#old_password").parentElement;
+    const existingError = oldPasswordContainer.querySelector(
+        ".ct-txt-2.text-danger"
+    );
+
     if (existingError) {
         existingError.remove();
     }
-    
+
     oldPasswordContainer.appendChild(errorSpan);
 }
 document
@@ -739,7 +759,6 @@ $(`input[id='a_item_1']`).click(function () {
         $(`input[id='a_item_other']`).attr("disabled", true);
     }
 });
-
 
 // 當 a_item_2 被點選時
 $(`input[id='a_item_2']`).click(function () {
@@ -1106,19 +1125,33 @@ step_confirm_btn.forEach((item, step_index) => {
                     //疾病病史
                     $("#disease").html("");
                     if (register_info.user_disease_state != "0")
-                        $("#disease").html("有" + register_info.user_disease_state);
+                        $("#disease").html(
+                            "有" + register_info.user_disease_state
+                        );
                     //過敏狀況
                     $("#allergy_state").html("");
                     if (register_info.user_allergy_state != "0")
-                        $("#allergy_state").html("，對" + register_info.user_allergy_state.replace("1,","") +"過敏");
+                        $("#allergy_state").html(
+                            "，對" +
+                                register_info.user_allergy_state.replace(
+                                    "1,",
+                                    ""
+                                ) +
+                                "過敏"
+                        );
                     //醫生醫囑
                     $("#order").html("");
                     if (register_info.user_order_state != "0")
-                        $("#order").html("，醫生有特別說" +register_info.user_order_state.replace("1,", ""));   
+                        $("#order").html(
+                            "，醫生有特別說" +
+                                register_info.user_order_state.replace("1,", "")
+                        );
                     //用藥狀況
                     $("#drug").html("");
                     if (register_info.user_drug_state != "0")
-                        $("#drug").html("，需要吃" +register_info.user_drug_state.replace("1,","")
+                        $("#drug").html(
+                            "，需要吃" +
+                                register_info.user_drug_state.replace("1,", "")
                         );
                     //其他病史
                     if (
@@ -1186,7 +1219,6 @@ function register_step(obj, step_num) {
         $(obj).eq(0).removeClass("active");
     }, "1000");
 }
-
 
 /* 會員登入頁 */
 function facebook_login() {
