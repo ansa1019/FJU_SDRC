@@ -1,7 +1,7 @@
 <footer class="footer-px ct-bg-3 mt-5">
     <div class="row p-xs-2 p-md-4 px-lg-4 text-center justify-content-md-center justify-content-lg-evenly">
         <div class="col-4 col-md-2 col-lg-auto mb-2">
-            <a href="{{ url('/') }}" class="">優德莎莉官網</a>
+            <a href="https://www.uterusally.com/" target="_blank" class="">優德莎莉官網</a>
         </div>
         <div class="col-4 col-md-2 col-lg-auto mb-2">
             <a href="{{ url('/tos') }}" class="">服務條款</a>
