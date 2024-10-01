@@ -325,7 +325,6 @@ async function getPreviousChat(room) {
             return response.json();
         })
         .then((data) => {
-            console.log(data);
             return data;
         });
 }

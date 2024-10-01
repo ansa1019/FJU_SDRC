@@ -67,20 +67,20 @@ function denounce() {
                 if (response.ok) {
                     if (cate == "comment") {
                         // 即時刪除留言
-                        const commentElement = document.getElementById(`comment_${den_id}`);
+                        const commentElement = document.getElementById(
+                            `comment_${den_id}`
+                        );
                         if (commentElement) {
-                            commentElement.remove(); 
+                            commentElement.remove();
                         }
-                        // 更新 blacklist["comment"]
-                        blacklist.comment.push(den_id);
                     } else if (cate == "chat") {
                         // 即時刪除聊天室訊息
-                        const chatMessageElement = document.getElementById(`chat_${den_id}`);
+                        const chatMessageElement = document.getElementById(
+                            `chat_${den_id}`
+                        );
                         if (chatMessageElement) {
-                            chatMessageElement.remove(); 
+                            chatMessageElement.remove();
                         }
-                        // 更新 blacklist["chat"]
-                        blacklist.chat.push(den_id);
                     } else if (cate == "post") {
                         // 檢舉文章後即時跳回文章列表
                         Swal.fire({
@@ -93,16 +93,6 @@ function denounce() {
                             window.history.back();
                         });
                     }
-                    // 更新後端的 session
-                    $.ajax({
-                        type: "POST",
-                        url: "/setBlacklist",
-                        dataType: "json",
-                        data: { blacklist: blacklist },
-                        success: function (result) {
-                            console.log(result);
-                        },
-                    });
                     // 非文章顯示
                     if (cate !== "post") {
                         Swal.fire({
@@ -128,7 +118,7 @@ function denounce() {
                     });
                 }
             }
-        );              
+        );
     } else {
         Swal.fire({
             position: "center",
@@ -139,6 +129,7 @@ function denounce() {
         });
     }
 }
+
 function banerror(ban) {
     Swal.fire({
         title: "你已被禁言！",
@@ -154,7 +145,7 @@ function banerror(ban) {
         allowEscapeKey: false, // 禁止按 ESC 鍵關閉
         confirmButtonText: "確定", // 確認按鈕文字
         customClass: {
-            confirmButton: 'swal-confirm-button' // 自定義按鈕類別
-        }
+            confirmButton: "swal-confirm-button", // 自定義按鈕類別
+        },
     });
 }

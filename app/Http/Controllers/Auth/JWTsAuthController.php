@@ -95,7 +95,7 @@ class JWTsAuthController extends Controller
     }
     public function setBlacklist(Request $request)
     {
-        Session::put('blacklist', $request->blacklist);
+        Session::put('blacklist', json_decode($request->blacklist, true));
         return Session::get('blacklist');
     }
     public function setBanlist(Request $request)

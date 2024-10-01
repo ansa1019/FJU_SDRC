@@ -12,7 +12,7 @@
                         <i class="fas fa-bell ct-txt-1"></i>
                         <!--如有新通知 顯示紅點-->
                         @if (session('notifications'))
-                            <span
+                            <span id="reddot"
                                 class="position-absolute top-25 start-75 translate-middle p-1 bg-danger border border-light rounded-circle">
                             </span>
                         @endif
@@ -137,7 +137,7 @@
                     <div class="d-flex justify-content-between align-items-center"><a
                             href="{{ route('notifications') }}" class="text-dark text-decoration-none">全部通知
                             @if (session('notifications'))
-                                <span
+                                <span id="reddotNumber"
                                     class="badge bg-danger rounded-circle">{{ session('notifications') ? count(session('notifications')) : 0 }}</span>
                             @endif
                         </a>

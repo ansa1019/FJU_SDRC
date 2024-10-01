@@ -42,46 +42,55 @@
                     <div class="col-lg-12 px-0" id='articleContainer'>
                         <!-- 文章 -->
                         @foreach ($articles as $article)
-                            @if ($article['identity'] == $author)
-                                <div class="row border-bottom">
-                                    <div id="article_id_{{ $article['id'] }}"
-                                        class="col p-3 d-flex flex-column align-content-between justify-content-center position-static">
-                                        <p style="display:none" id='article_category'>{{ $article['category'][0]['name'] }}
-                                        <p style="display:none" id='identity'>{{ $article['identity'] }}
-                                        <p style="display:none" id='hashtags'>{{ $article['hashtag'] }}
-                                        </p>
-                                        <h5 class="article-title" id="article_id_title">
-                                            <a
-                                                href="{{ route('TreatmentArticleGet', ['id' => $article['id']]) }}">{{ $article['title'] }}</a>
-                                        </h5>
-                                        <p style="display: none" id='html'>{{ $article['html'] }}</p>
-                                        <div class="mb-3 article-abs" id="article_id_abs"
-                                            style="overflow: hidden; max-height: 4em; max-width: 430px;">
-                                            {!! $article['plain'] !!}
+                            @php
+                                $blacklist = session('blacklist');
+                                $blacklistedArticleIds = $blacklist['article'] ?? [];
+                            @endphp
+                            @if (!in_array($article['id'], $blacklistedArticleIds))
+                                @if ($article['identity'] == $author)
+                                    <div class="row border-bottom">
+                                        <div id="article_id_{{ $article['id'] }}"
+                                            class="col p-3 d-flex flex-column align-content-between justify-content-center position-static">
+                                            <p style="display:none" id='article_category'>
+                                                {{ $article['category'][0]['name'] }}
+                                            <p style="display:none" id='identity'>{{ $article['identity'] }}
+                                            <p style="display:none" id='hashtags'>{{ $article['hashtag'] }}
+                                            </p>
+                                            <h5 class="article-title" id="article_id_title">
+                                                <a
+                                                    href="{{ route('TreatmentArticleGet', ['id' => $article['id']]) }}">{{ $article['title'] }}</a>
+                                            </h5>
+                                            <p style="display: none" id='html'>{{ $article['html'] }}</p>
+                                            <div class="mb-3 article-abs" id="article_id_abs"
+                                                style="overflow: hidden; max-height: 4em; max-width: 430px;">
+                                                {!! $article['plain'] !!}
+                                            </div>
+                                            <div class="ct-sub-1">
+                                                <i
+                                                    class="fas fa-heart {{ $article['like']['in_user'][0] == 1 ? 'ct-txt-2' : 'ct-sub-1' }} me-1"></i>
+                                                <span class="me-2 like_count"
+                                                    id='like_count'>{{ $article['like']['count'] }}</span>
+                                                <i class="fas fa-comment me-1"></i>
+                                                <span class="me-2"
+                                                    id='comment_count'>{{ $article['comment_count'] }}</span>
+                                                <i
+                                                    class="fas fa-share  {{ $article['share']['in_user'][0] == 1 ? 'ct-txt-2' : 'ct-sub-1' }} me-1"></i>
+                                                <span class="me-2"
+                                                    id='share_count'>{{ $article['share']['count'] }}</span>
+                                                <!--收藏文章 onclick()帶入文章id-->
+                                                <button class="btn btn-sm p-0 openBookmark"
+                                                    id="openBookmark_{{ $article['id'] }}"
+                                                    onclick="openBookmark('{{ $article['id'] }}')"><i
+                                                        class="{{ $article['bookmark']['in_user'][0] == 1 ? 'fas ct-txt-2' : 'far ct-sub-1' }} fa-bookmark me-1"></i></button>
+                                                <!---->
+                                            </div>
                                         </div>
-                                        <div class="ct-sub-1">
-                                            <i
-                                                class="fas fa-heart {{ $article['like']['in_user'][0] == 1 ? 'ct-txt-2' : 'ct-sub-1' }} me-1"></i>
-                                            <span class="me-2 like_count"
-                                                id='like_count'>{{ $article['like']['count'] }}</span>
-                                            <i class="fas fa-comment me-1"></i>
-                                            <span class="me-2" id='comment_count'>{{ $article['comment_count'] }}</span>
-                                            <i
-                                                class="fas fa-share  {{ $article['share']['in_user'][0] == 1 ? 'ct-txt-2' : 'ct-sub-1' }} me-1"></i>
-                                            <span class="me-2" id='share_count'>{{ $article['share']['count'] }}</span>
-                                            <!--收藏文章 onclick()帶入文章id-->
-                                            <button class="btn btn-sm p-0 openBookmark"
-                                                id="openBookmark_{{ $article['id'] }}"
-                                                onclick="openBookmark('{{ $article['id'] }}')"><i
-                                                    class="{{ $article['bookmark']['in_user'][0] == 1 ? 'fas ct-txt-2' : 'far ct-sub-1' }} fa-bookmark me-1"></i></button>
-                                            <!---->
+                                        <div class="col-auto d-none d-lg-block px-0 py-1">
+                                            <img src={{ !empty($article['image']) ? $article['image'] : $article['index_image'] }}
+                                                class="article-img" />
                                         </div>
                                     </div>
-                                    <div class="col-auto d-none d-lg-block px-0 py-1">
-                                        <img src={{ !empty($article['image']) ? $article['image'] : $article['index_image'] }}
-                                            class="article-img" />
-                                    </div>
-                                </div>
+                                @endif
                             @endif
                         @endforeach
                     </div>

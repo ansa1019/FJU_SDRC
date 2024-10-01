@@ -15,7 +15,64 @@ usersocket.onmessage = function (e) {
                 notifications: data["notifications"],
             },
         });
+        if (data["notifications"].length > 0) {
+            var reddot = document.getElementById("reddot");
+            if (!reddot) {
+                var container = document.querySelector(
+                    ".notfiy_bell .nav-link"
+                );
+                var reddot = document.createElement("span");
+                reddot.id = "reddot";
+                reddot.className =
+                    "position-absolute top-25 start-75 translate-middle p-1 bg-danger border border-light rounded-circle";
+                container.append(reddot);
+            }
+
+            var reddot = document.getElementById("reddotNumber");
+            if (reddot) {
+                reddot.innerHTML = data["notifications"].length;
+            } else {
+                var container = document.querySelector(
+                    "#notifications_box div a"
+                );
+                var reddot = document.createElement("span");
+                reddot.id = "reddotNumber";
+                reddot.className = "badge bg-danger rounded-circle";
+                reddot.innerHTML = data["notifications"].length;
+                container.append(reddot);
+            }
+
+            document
+                .querySelectorAll(".notifications-item")
+                .forEach((el) => el.remove());
+            var container = document.getElementById("notifications_box");
+            data["notifications"].forEach((element) => {
+                var notify = document.createElement("a");
+                notify.href = element["url"];
+                notify.id = "notify_" + element["id"];
+                notify.className =
+                    "notifications-item btn btn-link text-decoration-none text-start";
+                var span = document.createElement("span");
+                span.className =
+                    "p-1 bg-danger border border-light rounded-circle";
+                span.style = "height: 1px;width: 1px;margin: auto 8px auto 0;";
+                notify.append(span);
+                var div = document.createElement("div");
+                div.className = "text";
+                var h4 = document.createElement("h4");
+                h4.className = "d-flex align-items-center";
+                h4.innerHTML = element["action"];
+                div.append(h4);
+                var p = document.createElement("p");
+                p.innerHTML = element["content"];
+                div.append(p);
+                notify.append(div);
+                container.append(notify);
+            });
+        }
     } else if (data["blacklist"]) {
+        blacklist = data["blacklist"];
+        console.log(blacklist);
         $.ajax({
             type: "POST",
             url: "/setBlacklist",
@@ -25,6 +82,8 @@ usersocket.onmessage = function (e) {
             },
         });
     } else if (data["banlist"]) {
+        banlist = data["banlist"];
+        console.log(banlist);
         $.ajax({
             type: "POST",
             url: "/setBanlist",
