@@ -35,7 +35,7 @@
                         <div class="py-3 ps-lg-4 health_type" id="health_type_1">
                             <div class="row align-items-center mb-2">
                                 <div class="col-auto">
-                                    <label for="type1_q1" class="col-form-label">・生理期週期(天)</label>
+                                    <label for="type1_q1" class="col-form-label">・生理期週期(天)<span class="i-imp">*</span></label>
                                 </div>
                                 <div class="col-auto">
                                     <input type="number" id="type1_q1" name="menstrualCycle" class="form-control" />
@@ -43,19 +43,19 @@
                             </div>
                             <div class="row align-items-center mb-2">
                                 <div class="col-auto">
-                                    <label for="type1_q2" class="col-form-label">・上次生理期開始日</label>
+                                    <label for="type1_q2" class="col-form-label">・上次生理期開始日<span class="i-imp">*</span></label>
                                 </div>
                                 <div class="col-auto">
                                     <div class="input-group">
                                         <input type="text" id="type1_q2" name="lastMenstrual"
-                                            class="form-control datepicker" />
+                                            class="form-control datepicker" onkeydown="return false;"/>
                                         <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
                                     </div>
                                 </div>
                             </div>
                             <div class="row align-items-center mb-2">
                                 <div class="col-auto">
-                                    <label for="type1_q3" class="col-form-label">・每次月經大約來多少天</label>
+                                    <label for="type1_q3" class="col-form-label">・每次月經大約來多少天<span class="i-imp">*</span></label>
                                 </div>
                                 <div class="col-auto">
                                     <input type="number" id="type1_q3" name="menstruationLast" class="form-control" />
@@ -66,12 +66,12 @@
                         <div class="py-3 ps-lg-4 health_type d-none" id="health_type_2">
                             <div class="row align-items-center mb-2">
                                 <div class="col-auto">
-                                    <label for="type2_q1" class="col-form-label">・小產的日期</label>
+                                    <label for="type2_q1" class="col-form-label">・小產的日期<span class="i-imp">*</span></label>
                                 </div>
                                 <div class="col-auto">
                                     <div class="input-group">
                                         <input type="text" id="type2_q1" name="miscarriageDay"
-                                            class="form-control datepicker" />
+                                            class="form-control datepicker" onkeydown="return false;" />
                                         <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
                                     </div>
                                 </div>
@@ -81,7 +81,7 @@
                         <div class="py-3 ps-lg-4 health_type d-none" id="health_type_3">
                             <div class="row align-items-center mb-2">
                                 <div class="col-auto">
-                                    <label for="type3_q1" class="col-form-label">・懷孕的週數</label>
+                                    <label for="type3_q1" class="col-form-label">・懷孕的週數<span class="i-imp">*</span></label>
                                 </div>
                                 <div class="col-auto">
                                     <div class="input-group">
@@ -92,12 +92,12 @@
                             </div>
                             <div class="row align-items-center mb-2">
                                 <div class="col-auto">
-                                    <label for="type3_q2" class="col-form-label">・預產的日期</label>
+                                    <label for="type3_q2" class="col-form-label">・預產的日期<span class="i-imp">*</span></label>
                                 </div>
                                 <div class="col-auto">
                                     <div class="input-group">
                                         <input type="text" id="type3_q2" name="dueDate"
-                                            class="form-control datepicker" />
+                                            class="form-control datepicker" onkeydown="return false;"/>
                                         <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
                                     </div>
                                 </div>
@@ -107,12 +107,12 @@
                         <div class="py-3 ps-lg-4 health_type d-none" id="health_type_4">
                             <div class="row align-items-center mb-2">
                                 <div class="col-auto">
-                                    <label for="type4_q1" class="col-form-label">・生產的日期</label>
+                                    <label for="type4_q1" class="col-form-label">・生產的日期<span class="i-imp">*</span></label>
                                 </div>
                                 <div class="col-auto">
                                     <div class="input-group">
                                         <input type="text" id="type4_q1" name="productionPeriod"
-                                            class="form-control datepicker" />
+                                            class="form-control datepicker" onkeydown="return false;"/>
                                         <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
                                     </div>
                                 </div>
@@ -123,7 +123,7 @@
                         <div class="row justify-content-center align-items-center mt-2">
                             <div class="col-auto">
                                 <a class="btn btn-c2 rounded-pill" style="font-size: var(--fs-18)"
-                                    onclick="first_daily_set()">前往記錄身體日記</a>
+                                    onclick="first_daily_set(event)">前往記錄身體日記</a>
                             </div>
                         </div>
                     </div>
@@ -199,21 +199,17 @@
                                 </div>
                                 <div class="row align-items-center mb-1">
                                     <div class="col-auto">
-                                        <label for="type1_q2" class="col-form-label">・經痛程度</label>
+                                        <label for="type1_q2" class="col-form-label">・經痛程度<span class="i-imp">*</span></label>
                                     </div>
                                     <div class="col-auto">
-                                        <input type="radio" class="btn-check m-1" name="pain_level" id="pain_less"
-                                            value="輕微" />
-                                        <label class="btn btn-outline-c3 rounded-pill"
-                                            for="pain_less">輕微(悶痛可忍)</label>
-                                        <input type="radio" class="btn-check m-1" name="pain_level"
-                                            id="pain_normal" value="中度" />
-                                        <label class="btn btn-outline-c3 rounded-pill"
-                                            for="pain_normal">中度(止痛藥可緩解)</label>
-                                        <input type="radio" class="btn-check m-1" name="pain_level" id="pain_more"
-                                            value="嚴重" />
-                                        <label class="btn btn-outline-c3 rounded-pill"
-                                            for="pain_more">嚴重(止痛藥無法緩解)</label>
+                                        <input type="radio" class="btn-check m-1" name="pain_level" id="pain_no" value="不痛" />
+                                        <label class="btn btn-outline-c3 rounded-pill" for="pain_no">完全不痛</label>
+                                        <input type="radio" class="btn-check m-1" name="pain_level" id="pain_less" value="輕微" />
+                                        <label class="btn btn-outline-c3 rounded-pill" for="pain_less">輕微(悶痛可忍)</label>
+                                        <input type="radio" class="btn-check m-1" name="pain_level" id="pain_normal" value="中度" />
+                                        <label class="btn btn-outline-c3 rounded-pill" for="pain_normal">中度(止痛藥可緩解)</label>
+                                        <input type="radio" class="btn-check m-1" name="pain_level" id="pain_more" value="嚴重" />
+                                        <label class="btn btn-outline-c3 rounded-pill" for="pain_more">嚴重(止痛藥無法緩解)</label>
                                     </div>
                                 </div>
                             </div>

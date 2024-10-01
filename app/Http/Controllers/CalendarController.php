@@ -55,7 +55,7 @@ class CalendarController extends Controller
             $requestData = $request->all();
             $dataToInclude = [];
 
-            $fieldsToCheck = ['menstrualPeriod', 'has_mc', 'no_mc', 'mc_less', 'mc_normal', 'mc_more', 'pain_less', 'pain_normal', 'pain_more', 'menstrualPeriodHeadache', 'backache', 'hecticFever', 'breastTenderness', 'OvulationPain', 'menstrualPeriodConstipate', 'diarrhea', 'increasedSecretions', 'spottingHemorrhage', 'menstrualPeriodOther', 'noRoommate', 'roommateContraception', 'roommateNoContraception'];
+            $fieldsToCheck = ['menstrualPeriod', 'has_mc', 'no_mc', 'mc_less', 'mc_normal', 'mc_more', 'pain_no', 'pain_less', 'pain_normal', 'pain_more', 'menstrualPeriodHeadache', 'backache', 'hecticFever', 'breastTenderness', 'OvulationPain', 'menstrualPeriodConstipate', 'diarrhea', 'increasedSecretions', 'spottingHemorrhage', 'menstrualPeriodOther', 'noRoommate', 'roommateContraception', 'roommateNoContraception'];
 
             foreach ($fieldsToCheck as $field) {
                 if (isset($requestData[$field]) && !empty($requestData[$field])) {
