@@ -48,7 +48,7 @@
                                 <div class="col-auto">
                                     <div class="input-group">
                                         <input type="text" id="type1_q2" name="lastMenstrual"
-                                            class="form-control datepicker" />
+                                            class="form-control datepicker" onkeydown="return false;"/>
                                         <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
                                     </div>
                                 </div>
@@ -71,7 +71,7 @@
                                 <div class="col-auto">
                                     <div class="input-group">
                                         <input type="text" id="type2_q1" name="miscarriageDay"
-                                            class="form-control datepicker" />
+                                            class="form-control datepicker" onkeydown="return false;" />
                                         <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
                                     </div>
                                 </div>
@@ -97,7 +97,7 @@
                                 <div class="col-auto">
                                     <div class="input-group">
                                         <input type="text" id="type3_q2" name="dueDate"
-                                            class="form-control datepicker" />
+                                            class="form-control datepicker" onkeydown="return false;"/>
                                         <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
                                     </div>
                                 </div>
@@ -112,7 +112,7 @@
                                 <div class="col-auto">
                                     <div class="input-group">
                                         <input type="text" id="type4_q1" name="productionPeriod"
-                                            class="form-control datepicker" />
+                                            class="form-control datepicker" onkeydown="return false;"/>
                                         <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
                                     </div>
                                 </div>
