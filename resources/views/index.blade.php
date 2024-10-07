@@ -40,7 +40,12 @@
         </div>
         <!--日期事件提醒-->
         @php
-            $period = end($personalCalendar)['type'];
+            // 檢查 $personalCalendar 是否為空
+            if (!empty($personalCalendar)) {
+                $period = end($personalCalendar)['type'];
+            } else {
+                $period = 'general';
+            }
             $generalCalmsg = [
                 '脂肪含量高的食物，例如：高脂、油炸食品，會讓消化速度變得緩慢，氣體可能會滯留在消化道中，可能導致脹氣。',
                 '吃飽後，建議避免躺下、坐著或趴下睡覺，可以散步多走動20分鐘，以避免脹氣。',
