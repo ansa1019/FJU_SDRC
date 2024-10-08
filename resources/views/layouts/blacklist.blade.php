@@ -3,11 +3,15 @@
         var user = "{{ session('user_email') }}";
         var user_image = "{{ session('user_image') }}";
         var nickname = "{{ session('nickname') }}";
-        var blacklist = @json(session('blacklist')) || {article: [], comment: [], chat: []};
+        var blacklist = @json(session('blacklist')) || {
+            article: [],
+            comment: [],
+            chat: []
+        };
         var banlist = @json(session('banlist'));
 
         console.log(banlist);
-        console.log(blacklist)
+        console.log(blacklist);
     </script>
 @endisset
 

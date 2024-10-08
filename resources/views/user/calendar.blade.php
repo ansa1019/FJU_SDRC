@@ -7,42 +7,42 @@
         }
 
         /* #events .list {
-                height: 150px;
-                overflow-y: auto;
-                border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-            }
-            #events .list .event-item {
-                line-height: 24px;
-                min-height: 24px;
-                padding: 2px 5px;
-                border-top: 1px solid rgba(0, 0, 0, 0.2);
-            }
-            #events .list .event-item .close {
-                font-family: Tahoma, Geneva, sans-serif;
-                font-weight: bold;
-                font-size: 12px;
-                color: #000;
-                border-radius: 8px;
-                height: 14px;
-                width: 14px;
-                line-height: 12px;
-                text-align: center;
-                float: right;
-                border: 1px solid rgba(0, 0, 0, 0.5);
-                padding: 0px;
-                margin: 5px;
-                display: block;
-                overflow: hidden;
-                background: #f44336;
-                cursor: pointer;
-            } */
+                    height: 150px;
+                    overflow-y: auto;
+                    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+                }
+                #events .list .event-item {
+                    line-height: 24px;
+                    min-height: 24px;
+                    padding: 2px 5px;
+                    border-top: 1px solid rgba(0, 0, 0, 0.2);
+                }
+                #events .list .event-item .close {
+                    font-family: Tahoma, Geneva, sans-serif;
+                    font-weight: bold;
+                    font-size: 12px;
+                    color: #000;
+                    border-radius: 8px;
+                    height: 14px;
+                    width: 14px;
+                    line-height: 12px;
+                    text-align: center;
+                    float: right;
+                    border: 1px solid rgba(0, 0, 0, 0.5);
+                    padding: 0px;
+                    margin: 5px;
+                    display: block;
+                    overflow: hidden;
+                    background: #f44336;
+                    cursor: pointer;
+                } */
     </style>
     <?php
     $json = json_encode($subPersonalCalendar);
     echo "<script>
-                var subPersonalCalendar = $json;
-                subPersonalCalendar.sort((a,b) => a.last_nom - b.last_nom);
-            </script>";
+                    var subPersonalCalendar = $json;
+                    subPersonalCalendar.sort((a,b) => a.last_nom - b.last_nom);
+                </script>";
     ?>
     <div class="container-xxl">
         <div class="row pt-3 px-md-5">
@@ -84,13 +84,21 @@
                     </div>
                     <div class="col-md-12 col-lg p-4">
                         <h4 class="fw-bold" id="event-title" style="font-size: var(--fs-24)"></h4>
-                        @php
-                            // 檢查 $personalCalendar 是否為空
-                            if (!empty($personalCalendar)) {
-                                $period = end($personalCalendar)['type'];
-                            } else {
+                        @if ($nickname != '')
+                            @php
+                                // 檢查 $personalCalendar 是否為空
+                                if (!empty($personalCalendar)) {
+                                    $period = end($personalCalendar)['type'];
+                                } else {
+                                    $period = 'general';
+                                }
+                            @endphp
+                        @else
+                            @php
                                 $period = 'general';
-                            }                            
+                            @endphp
+                        @endif
+                        @php
                             $generalCalmsg = [
                                 '脂肪含量高的食物，例如：高脂、油炸食品，會讓消化速度變得緩慢，氣體可能會滯留在消化道中，可能導致脹氣。',
                                 '吃飽後，建議避免躺下、坐著或趴下睡覺，可以散步多走動20分鐘，以避免脹氣。',
@@ -124,7 +132,7 @@
                             $menstruationCalmsg = [
                                 '補充水分可以減輕經痛的症狀，記得避免酒精與咖啡因喔，因為酒精與咖啡因會利尿，容易造成身體缺水的情況。',
                                 '吃營養食物可以緩解經痛，可以多攝取含有維生素 E、B1、B6、鎂、鋅、omega-3脂肪酸食物喔！像是堅果、鮭魚、鯖魚、魚油都是很好的食物，能緩解肌肉痙攣與發炎。',
-                                '可以在醫師或營養師指示下補充維生素E，在生理期前兩天開始使用至經期第三天，透過每日兩次維生素E，一次是200國際單位，或每日一次，一次 500國際單位。', 
+                                '可以在醫師或營養師指示下補充維生素E，在生理期前兩天開始使用至經期第三天，透過每日兩次維生素E，一次是200國際單位，或每日一次，一次 500國際單位。',
                                 '建議可以吃薑、富含鈣（如：小魚干、芝麻牛奶、板豆腐、莧菜、堅果）、鎂（如：菠菜、芥菜等等深綠色蔬菜、南瓜子）的食物，以及好油脂（omega-3脂肪酸），如：含 EPA與 DHA食物與油性魚類（鯖魚、秋刀魚、鮭魚與鮪魚）。',
                                 '若生理期無明顯症狀可以正常運動，如果有經痛問題可透過適當伸展與瑜珈緩解不適。',
                                 '生理期間盡量避開高強度核心訓練，避免下腹腫脹時額外的刺激與出力。',
@@ -168,7 +176,7 @@
                             </p>
                             <div class="subtitle badge rounded-pill bg-secondary" style="color: white">No events</div>
                             <!-- 顯示下次生理期預測 -->
-                            @if($nextMenstrualDate)
+                            @if ($nextMenstrualDate)
                                 <div id="next-menstrual" class="mt-2" style="font-size: var(--fs-16);">
                                     下次生理期預計：{{ \Carbon\Carbon::parse($nextMenstrualDate)->format('n月j日') }}
                                 </div>

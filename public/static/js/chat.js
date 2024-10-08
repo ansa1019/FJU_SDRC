@@ -502,9 +502,7 @@ function user_send_msg(chat_room) {
 
         //輸入框文字清空
         $(`#${chat_room} .publisher-input`).val("");
-    } else if (banlist["chat"] != true) {
-        banerror(banlist["chat"]);
-    } else {
+    } else if (banlist["chat"][0] == "禁言24小時") {
         Swal.fire({
             title: "你已被禁言！",
             html:
@@ -516,6 +514,11 @@ function user_send_msg(chat_room) {
             allowOutsideClick: false, // 禁止點擊外部關閉
             allowEscapeKey: false, // 禁止按 ESC 鍵關閉
             confirmButtonText: "確定", // 確認按鈕文字
+            customClass: {
+                confirmButton: "swal-confirm-button", // 自定義按鈕類別
+            },
         });
+    } else {
+        banerror(banlist["chat"]);
     }
 }
