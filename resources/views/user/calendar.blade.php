@@ -167,6 +167,15 @@
                             <p class="ct-sub-1" style="line-height: 1.75rem; letter-spacing: 1px">{{ $rdmcalmsg }}
                             </p>
                             <div class="subtitle badge rounded-pill bg-secondary" style="color: white">No events</div>
+                            <!-- 顯示下次生理期預測 -->
+                            @if($nextMenstrualDate)
+                                <div id="next-menstrual" class="mt-2" style="font-size: var(--fs-16);">
+                                    下次生理期預計：{{ \Carbon\Carbon::parse($nextMenstrualDate)->format('n月j日') }}
+                                </div>
+                            @endif
+
+
+
                             <div class="h5 my-3 list px-1" id="event-reminder" style="display: none"></div>
                             <div class="my-3 list px-1" id="event-content">
                                 <div id="nextMenstrualDateDisplay" class="h5"></div>
