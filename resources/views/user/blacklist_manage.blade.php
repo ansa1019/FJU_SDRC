@@ -142,31 +142,6 @@
                         requestOptions
                     ).then((response) => {
                         if (response.ok) {
-                            var status_notify = ["禁言15天", "永久禁言", "停用帳號"]
-                            if (status_notify.includes(event.data.status)) {
-                                var category = (event.data.category == "聊天室") ? "訊息" : event.data.category
-                                var formdata2 = new FormData();
-                                formdata2.append("blacklist", event.data.id);
-                                formdata2.append(
-                                    "content",
-                                    "因您於 " + event.data.created_at + " 發布的" + category + "『" + event
-                                    .data
-                                    .content + "』被人檢舉 " + event.data.reason +
-                                    "! 此帳號將進行『" + event.data
-                                    .status + "』的處置。如有疑慮，請洽客服。"
-                                );
-                                var requestOptions2 = {
-                                    method: "POST",
-                                    headers: myHeaders,
-                                    body: formdata2,
-                                    redirect: "follow",
-                                };
-
-                                fetch(
-                                    apiIP + "api/notifications/notifications/",
-                                    requestOptions2
-                                );
-                            }
                             Swal.fire({
                                 position: "center",
                                 icon: "success",
