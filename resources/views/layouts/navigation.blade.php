@@ -161,7 +161,8 @@
                             </a>
                         @endforeach
                     @else
-                        <p style="font-size: 14px;color: #999;text-align: center;margin: 25px;">
+                        <p class="notifications-item"
+                            style="font-size: 14px;color: #999;justify-content: center;padding: 25px;">
                             尚無通知</p>
                     @endif
                 </div>
