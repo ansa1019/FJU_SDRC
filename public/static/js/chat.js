@@ -515,7 +515,7 @@ function user_send_msg(chat_room) {
             allowEscapeKey: false, // 禁止按 ESC 鍵關閉
             confirmButtonText: "確定", // 確認按鈕文字
             customClass: {
-                confirmButton: "swal-confirm-button", // 自定義按鈕類別
+                confirmButton: "btn btn-c2", // 自定義按鈕類別
             },
         });
     } else {
