@@ -27,18 +27,55 @@
  */
 
 /* Custom Color */
+.jsCalendar tbody td.jsCalendar-current.jsCalendar-colorful-blue {
+    background-color: #ffffff;
+    border: 2px solid #53d2dc;
+    color: #000000;
+    height: 32px;
+    line-height: 32px;
+    width: 32px;
+}
+
 .jsCalendar tbody td.jsCalendar-current.jsCalendar-colorful-yellow {
-    color: #ffffff;
+    background-color: #ffffff;
+    border: 2px solid #ffc64c;
+    color: #000000;
+    height: 32px;
+    line-height: 32px;
+    width: 32px;
 }
-.jsCalendar tbody td.jsCalendar-current.jsCalendar-colorful-blue,
-.jsCalendar tbody td.jsCalendar-current.jsCalendar-colorful-pink,
-.jsCalendar tbody td.jsCalendar-current.jsCalendar-colorful-red,
+
+.jsCalendar tbody td.jsCalendar-current.jsCalendar-colorful-red {
+    background-color: #ffffff;
+    border: 2px solid #f6511d;
+    color: #000000;
+    height: 32px;
+    line-height: 32px;
+    width: 32px;
+}
+
+.jsCalendar tbody td.jsCalendar-current.jsCalendar-colorful-pink {
+    background-color: #ffffff;
+    border: 2px solid #fe72a9;
+    color: #000000;
+    height: 32px;
+    line-height: 32px;
+    width: 32px;
+}
+
 .jsCalendar tbody td.jsCalendar-current.jsCalendar-colorful-gray {
-    color: #ff8a00;
+    background-color: #ffffff;
+    border: 2px solid #808080;
+    color: #000000;
+    height: 32px;
+    line-height: 32px;
+    width: 32px;
 }
+
 .jsCalendar tbody td.jsCalendar-colorful-blue {
-    border: 2px solid #53d2dc !important;
-    background-color: white;
+    background-color: #53d2dc;
+    border: 2px solid #53d2dc;
+    color: #ffffff; 
     height: 32px;
     line-height: 32px;
     width: 32px;
@@ -46,29 +83,35 @@
 .jsCalendar tbody td.jsCalendar-colorful-yellow {
     /* border: 2px solid #ffc64c !important;
     background-color: white; */
-    background-color: var(--ct-color-2);
-    border: 2px solid #e6e6e6;
+    /* background-color: var(--ct-color-2);
+    border: 2px solid #e6e6e6; */
+    background-color: #ffc64c; 
+    border: 2px solid #ffc64c;
+    color: #ffffff; 
     height: 32px;
     line-height: 32px;
     width: 32px;
 }
 .jsCalendar tbody td.jsCalendar-colorful-red {
-    border: 2px solid #f6511d !important;
-    background-color: white;
+    background-color: #f6511d;
+    border: 2px solid #f6511d;
+    color: #ffffff; 
     height: 32px;
     line-height: 32px;
     width: 32px;
 }
 .jsCalendar tbody td.jsCalendar-colorful-pink {
-    border: 2px solid #fe72a9 !important;
-    background-color: white;
+    background-color: #fe72a9; 
+    border: 2px solid #fe72a9;
+    color: #ffffff; 
     height: 32px;
     line-height: 32px;
     width: 32px;
 }
 .jsCalendar tbody td.jsCalendar-colorful-gray {
-    border: 2px solid #808080 !important;
-    background-color: white;
+    background-color: #808080; 
+    border: 2px solid #808080;
+    color: #ffffff; 
     height: 32px;
     line-height: 32px;
     width: 32px;
