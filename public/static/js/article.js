@@ -67,22 +67,14 @@ const myModal = new bootstrap.Modal("#create_modal", {
     focus: false,
 });
 
-//文字編輯器樣式
+// 修改後的工具列選項，移除字體、引用、置中、靠右
 var toolbarOptions = [
     [
         {
-            font: [],
+            header: [1, 2, 3, false], // 標題選項
         },
     ],
-    [
-        {
-            header: [1, 2, 3, false],
-        },
-    ], // custom dropdown
-
-    ["bold", "italic", "underline", "strike"], // toggled buttons
-    ["blockquote", "code-block"],
-
+    ["bold", "italic", "underline", "strike"], // 加粗、斜體、底線、刪除線
     [
         {
             list: "ordered",
@@ -90,7 +82,7 @@ var toolbarOptions = [
         {
             list: "bullet",
         },
-    ],
+    ], // 順序列表、無序列表
     [
         {
             color: [],
@@ -98,29 +90,48 @@ var toolbarOptions = [
         {
             background: [],
         },
-    ], // dropdown with defaults from theme
-    [
-        {
-            align: [],
-        },
-    ],
-    ["link", "image"],
+    ], // 顏色選項
+    ["link", "image"], // 超連結和圖片功能
 ];
 
-//新增用文字編輯器
+// 初始化新增用文字編輯器
 var quill = new Quill("#editor-container", {
     modules: {
         toolbar: toolbarOptions,
     },
-    theme: "snow", // or 'bubble'
+    theme: "snow",
 });
 
-//修改用文字編輯器
+// 初始化修改用文字編輯器
 var patch_quill = new Quill("#patch-editor-container", {
     modules: {
         toolbar: toolbarOptions,
     },
-    theme: "snow", // or 'bubble'
+    theme: "snow",
+});
+
+// 應用自定義提示框到所有編輯器實例
+document.querySelectorAll('.ql-link').forEach(function (linkBtn) {
+    linkBtn.addEventListener('click', function () {
+        setTimeout(() => {
+            var tooltip = document.querySelector('.ql-tooltip');
+            if (tooltip) {
+                var input = tooltip.querySelector("input[data-link]");
+                var saveButton = tooltip.querySelector("a.ql-action");
+                var removeButton = tooltip.querySelector("a.ql-remove");
+
+                if (input) input.placeholder = "請輸入超連結";
+                if (saveButton) saveButton.textContent = "儲存";
+                if (removeButton) removeButton.textContent = "移除";
+            }
+        }, 50); // 可能需要调整延迟时间以确保修改在 Tooltip 显示后进行
+    });
+});
+
+// 確保上述代碼在頁面完全加載後執行
+document.addEventListener("DOMContentLoaded", function() {
+    customizeTooltip(quill);
+    customizeTooltip(patch_quill);
 });
 
 //取文字編輯器內容
@@ -148,6 +159,7 @@ $("#content_tabs > li > a").click(function () {
     );
     return false;
 });
+
 
 // 使用者文章按讚
 function treatment_like(obj) {
@@ -922,14 +934,29 @@ function getValue(button, type) {
         var selectTreat = document.getElementById("patch_treat_class");
         var hashtags = document.getElementById("patch_input_topic");
         var selectIdentity = document.getElementById("patch_id_type");
-        var identity = $(button).parents().eq(2).find("#identity").text().trim();
-        
+        var identity = $(button)
+            .parents()
+            .eq(2)
+            .find("#identity")
+            .text()
+            .trim();
+
         // 設置標題與文章ID
-        title.value = $(button).parents().eq(2).find("#article_id_title").text().trim();
+        title.value = $(button)
+            .parents()
+            .eq(2)
+            .find("#article_id_title")
+            .text()
+            .trim();
         article_id.value = id;
 
         // 設置類別
-        var subcategory_id = $(button).parents().eq(2).find("#subcategory_id").text().trim();
+        var subcategory_id = $(button)
+            .parents()
+            .eq(2)
+            .find("#subcategory_id")
+            .text()
+            .trim();
         console.log("Subcategory ID:", subcategory_id); // 確認 subcategory_id 的值
 
         // 將選擇的類別直接設置為 subcategory_id 的值
@@ -939,8 +966,16 @@ function getValue(button, type) {
         console.log("Selected category value:", selectTreat.value);
 
         // 設置話題欄位，移除空值與多餘的標點
-        var hashtagsText = $(button).parents().eq(2).find("#hashtags").text().trim();
-        hashtags.value = hashtagsText === "null" || hashtagsText === "" ? "" : hashtagsText.replace(/,\s*$/, '').replace(/\s+/g, ' ');
+        var hashtagsText = $(button)
+            .parents()
+            .eq(2)
+            .find("#hashtags")
+            .text()
+            .trim();
+        hashtags.value =
+            hashtagsText === "null" || hashtagsText === ""
+                ? ""
+                : hashtagsText.replace(/,\s*$/, "").replace(/\s+/g, " ");
 
         // 使用 Quill 編輯器插入 HTML 內容
         patch_quill.clipboard.dangerouslyPasteHTML(
@@ -956,9 +991,6 @@ function getValue(button, type) {
     }
 }
 
-
-
-
 // function getValue(button, type) {
 //     if (type == "patch") {
 //         // 獲取文章 ID 和 DOM 元素
@@ -969,7 +1001,7 @@ function getValue(button, type) {
 //         var hashtags = document.getElementById("patch_input_topic");
 //         var selectIdentity = document.getElementById("patch_id_type");
 //         var identity = $(button).parents().eq(2).find("#identity").text().trim();
-        
+
 //         // 設置標題與文章ID
 //         title.value = $(button).parents().eq(2).find("#article_id_title").text().trim();
 //         article_id.value = id;
@@ -1000,8 +1032,6 @@ function getValue(button, type) {
 //         );
 //     }
 // }
-
-
 
 //修改聊療的資料
 // function getValue(button, type) {
@@ -1065,7 +1095,6 @@ function getValue(button, type) {
 //         );
 //     }
 // }
-
 
 //新增聊療
 function postdata(obj, type) {
