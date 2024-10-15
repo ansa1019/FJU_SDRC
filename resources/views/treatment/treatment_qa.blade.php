@@ -34,10 +34,31 @@
                                             class="fas fa-pen me-1"></i>建立聊療</button>
                                 @endif
                             @else
-                            <button class="btn btn-c2 rounded-pill" onclick='banerror(@json(session('banlist.article')))'>
-                                <i class="fas fa-pen me-1"></i>建立聊療
-                            </button>
-                            
+                                @if (session('banlist.article')[0] == '禁言24小時')
+                                    <button class="btn btn-c2 rounded-pill"
+                                        onclick="Swal.fire({
+                                                    title: '你已被禁言！',
+                                                    html:
+                                                        '因您於短時間內收到多次檢舉，故系統於 ' +
+                                                        dayjs(banlist['chat'][1]).format('YYYY-MM-DD HH:mm:ss') +
+                                                        ' 起自動禁言24小時<br>我們將同步進行人工審核，若造成不便請見諒，謝謝',
+                                                    icon: 'error',
+                                                    showConfirmButton: true, // 顯示確認按鈕
+                                                    allowOutsideClick: false, // 禁止點擊外部關閉
+                                                    allowEscapeKey: false, // 禁止按 ESC 鍵關閉
+                                                    confirmButtonText: '確定', // 確認按鈕文字
+                                                    customClass: {
+                                                        confirmButton: 'btn btn-c2', // 自定義按鈕類別
+                                                    },
+                                                });">
+                                        <i class="fas fa-pen me-1"></i>建立聊療
+                                    </button>
+                                @else
+                                    <button class="btn btn-c2 rounded-pill"
+                                        onclick="banerror(@json(session('banlist.article')))">
+                                        <i class="fas fa-pen me-1"></i>建立聊療
+                                    </button>
+                                @endif
                             @endif
                         @endif
                     </div>

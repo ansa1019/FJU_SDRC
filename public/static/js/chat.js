@@ -432,7 +432,7 @@ function show_msg(
         // 目前預設為營養師諮詢(chat-room1)，如果是其他聊天室 將chat-room1 改成 2 or 3
         var container = $(`#${chat_room} .ps-container`).eq(0);
         container.append(chatMedia);
-        container.scrollTop(container.prop("scrollHeight"));
+        container.scrollTop($("#chat_" + id).position().top);
     }
 }
 
@@ -508,7 +508,7 @@ function user_send_msg(chat_room) {
             html:
                 "因您於短時間內收到多次檢舉，故系統於 " +
                 dayjs(banlist["chat"][1]).format("YYYY-MM-DD HH:mm:ss") +
-                " 起 自動禁言24小時我們將同步進行人工審核，若造成不便請見諒，謝謝",
+                " 起自動禁言24小時<br>我們將同步進行人工審核，若造成不便請見諒，謝謝",
             icon: "error",
             showConfirmButton: true, // 顯示確認按鈕
             allowOutsideClick: false, // 禁止點擊外部關閉

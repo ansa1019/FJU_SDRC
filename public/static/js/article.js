@@ -1914,6 +1914,22 @@ function createArticleComment(button) {
                 timer: 2500,
             });
         }
+    } else if (banlist["comment"][0] == "禁言24小時") {
+        Swal.fire({
+            title: "你已被禁言！",
+            html:
+                "因您於短時間內收到多次檢舉，故系統於 " +
+                dayjs(banlist["comment"][1]).format("YYYY-MM-DD HH:mm:ss") +
+                " 起自動禁言24小時<br>我們將同步進行人工審核，若造成不便請見諒，謝謝",
+            icon: "error",
+            showConfirmButton: true, // 顯示確認按鈕
+            allowOutsideClick: false, // 禁止點擊外部關閉
+            allowEscapeKey: false, // 禁止按 ESC 鍵關閉
+            confirmButtonText: "確定", // 確認按鈕文字
+            customClass: {
+                confirmButton: "btn btn-c2", // 自定義按鈕類別
+            },
+        });
     } else {
         banerror(banlist["comment"]);
     }
