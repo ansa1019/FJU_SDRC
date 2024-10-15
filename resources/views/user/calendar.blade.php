@@ -174,7 +174,6 @@
                             style="font-size: var(--fs-16); line-height: var(--fs-28); text-align: justify">
                             <p class="ct-sub-1" style="line-height: 1.75rem; letter-spacing: 1px">{{ $rdmcalmsg }}
                             </p>
-                            <div class="subtitle badge rounded-pill bg-secondary" style="color: white">No events</div>
                             <!-- 顯示下次生理期預測 -->
                             @if ($nextMenstrualDate)
                                 <div id="next-menstrual" class="mt-2" style="font-size: var(--fs-16);">
