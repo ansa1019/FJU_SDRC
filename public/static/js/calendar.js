@@ -93,6 +93,11 @@ const chineseLabels = {
     dueDate: "預產日期",
     miscarriageDay: "小產日期",
     productionPeriod: "生產日期",
+    menstrualPeriodOther: "填寫其他症狀",
+    miscarriagePeriodOther: "填寫其他症狀",
+    pregnancyOther: "填寫其他症狀",
+    postpartumPeriodOther: "填寫其他症狀",
+    menopauseOther: "填寫其他症狀",
 };
 
 dayjs.locale("zh-tw");
@@ -618,14 +623,20 @@ function calendarValidate() {
 
     // 檢查文本輸入框
     $(`#${daily_id} input[type='text']`).each(function (index, element) {
-        if (!$(element).prop("disabled") && $(element).val() === "" && !$(element).attr("name").includes("symptom")) {
-            if ($(element).attr("id") == `type${daily_index}_q3_other`) {
+        if (!$(element).prop("disabled") && !$(element).attr("name").includes("symptom")) {
+            let fieldName = $(element).attr("name");
+            if (chineseLabels.hasOwnProperty(fieldName)) {
                 var checkbox = $(`#${daily_id} input[type="checkbox"][value="其他"]`);
-                if (checkbox.prop("checked")) {
-                    emptyFields.push(chineseLabels[$(element).attr("name")] || $(element).attr("name"));
+                if ($(element).val() !== "" && !checkbox.prop("checked")) {
+                    checkbox.prop("checked", true);
+                }
+                if (checkbox.prop("checked") && $(element).val() === "") {
+                    emptyFields.push(chineseLabels[fieldName] || fieldName);
                 }
             } else {
-                emptyFields.push(chineseLabels[$(element).attr("name")] || $(element).attr("name"));
+                if ($(element).val() === "") {
+                    emptyFields.push(chineseLabels[fieldName] || fieldName);
+                }
             }
         }
     });
