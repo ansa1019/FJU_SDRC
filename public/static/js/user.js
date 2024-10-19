@@ -717,36 +717,49 @@ function showOldPasswordError() {
 
     oldPasswordContainer.appendChild(errorSpan);
 }
+document.addEventListener("DOMContentLoaded", function () {
+    if (token != null) {
+        // 確保 token 存在且不是 null 或 undefined
+        const form = document.getElementById("passwordForm");
 
-document
-    .getElementById("passwordForm")
-    .addEventListener("submit", function (event) {
-        const newPassword = document.getElementById("new_password").value;
-        const checkPassword = document.getElementById("check_password").value;
+        if (form) {
+            // 確保表單元素存在
+            form.addEventListener("submit", function (event) {
+                const newPassword =
+                    document.getElementById("new_password").value;
+                const checkPassword =
+                    document.getElementById("check_password").value;
 
-        // 檢查新密碼和確認新密碼是否相同
-        if (newPassword !== checkPassword) {
-            event.preventDefault(); // 防止表單提交
+                // 檢查新密碼和確認新密碼是否相同
+                if (newPassword !== checkPassword) {
+                    event.preventDefault(); // 防止表單提交
 
-            const errorSpan = document.createElement("span");
-            errorSpan.className = "ctxt-2 text-danger";
-            errorSpan.style.fontSize = "var(--fs-16)";
-            errorSpan.innerText = "新密碼與確認新密碼不相符";
-            const newPasswordContainer =
-                document.querySelector("#new_password").parentElement;
+                    const errorSpan = document.createElement("span");
+                    errorSpan.className = "ctxt-2 text-danger";
+                    errorSpan.style.fontSize = "var(--fs-16)";
+                    errorSpan.innerText = "新密碼與確認新密碼不相符";
 
-            // 清除之前的錯誤訊息（如果存在）
-            const existingError = newPasswordContainer.querySelector(
-                ".ctxt-2.text-danger"
-            );
-            if (existingError) {
-                existingError.remove();
-            }
-            newPasswordContainer.appendChild(errorSpan);
+                    const newPasswordContainer =
+                        document.querySelector("#new_password").parentElement;
 
-            return; // 返回，不進行後續處理
+                    // 清除之前的錯誤訊息（如果存在）
+                    const existingError = newPasswordContainer.querySelector(
+                        ".ctxt-2.text-danger"
+                    );
+                    if (existingError) {
+                        existingError.remove();
+                    }
+
+                    newPasswordContainer.appendChild(errorSpan);
+
+                    return; // 返回，不進行後續處理
+                }
+            });
+        } else {
+            console.error("passwordForm not found");
         }
-    });
+    }
+});
 
 /*註冊步驟按鈕*/
 const step_confirm_btn = document.querySelectorAll(".step-confirm");
@@ -1278,35 +1291,63 @@ function line_login() {
 }
 
 var verification_code;
+
+function resetButton() {
+    $("#chk_sub_btn")
+        .removeAttr("disabled")
+        .text("發送驗證碼")
+        .css("cursor", "pointer");
+}
+
+function resetButtonWithDelay() {
+    setTimeout(function () {
+        resetButton();
+    }, 3000); // 3秒延遲
+}
+
 $("#chk_sub_btn").on("click", function () {
     const apiIP = document.getElementById("app").getAttribute("data-api-ip");
     var email = $("#user_email").val();
-    if (email == "") {
-        // $("#new_pwd_alert").removeClass("d-none").text("電子信箱輸入錯誤");
+    var email_rule = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    // 檢查電子郵件格式是否正確
+    if (!email.match(email_rule)) {
+        $("#user_email_alert").removeClass("d-none").text("電子信箱格式錯誤");
+        return;
     } else {
-        $("#sub_btn")
-            .attr("disabled", "disabled")
-            .text("傳送中")
-            .css("cursor", "default");
-        var requestOptions = {
-            method: "GET",
-        };
-        fetch(apiIP + "api/auth/mail_verify/" + email + "/", requestOptions)
-            .then((response) => response.json())
-            .then(function (data) {
-                if (data["result"] == true) {
-                    verification_code = String(
-                        Math.floor(Math.random() * 1000000)
-                    ).padStart(6, "0");
-                    $.ajax({
-                        type: "POST",
-                        url: "/chkmail",
-                        dataType: "json",
-                        data: {
-                            user_name: email,
-                            verification_code: verification_code,
-                        },
-                    });
+        $("#user_email_alert").addClass("d-none");  // 隱藏提示
+    }
+
+    // 禁用按鈕防止重複請求
+    $("#chk_sub_btn")
+        .attr("disabled", "disabled")
+        .text("傳送中")
+        .css("cursor", "default");
+
+    // 使用 fetch 發送郵件驗證請求
+    fetch(apiIP + "api/auth/mail_verify/" + email + "/", {
+        method: "GET",
+    })
+    .then((response) => response.json())
+    .then((data) => {
+        if (data.result === true) {
+            // 生成隨機驗證碼
+            verification_code = String(Math.floor(Math.random() * 1000000)).padStart(6, "0");
+
+            // 使用 fetch 發送驗證碼到後端
+            fetch("/chkmail", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    user_name: email,
+                    verification_code: verification_code
+                })
+            })
+            .then((response) => {
+                if (response.ok) {
+                    // 顯示成功提示
                     Swal.fire({
                         title: "已發送驗證碼到您的信箱",
                         icon: "success",
@@ -1314,81 +1355,138 @@ $("#chk_sub_btn").on("click", function () {
                         showConfirmButton: false,
                         timer: 1500,
                     });
+                    resetButtonWithDelay(); // 延遲重置按鈕
+                } else {
+                    throw new Error("發送驗證碼失敗");
                 }
-                // Handle success or display appropriate message
             })
-            .catch(function (error) {
+            .catch((error) => {
                 console.error("Error:", error);
-                // Handle error or display appropriate message
-            });
-    }
-});
-
-function forget_password() {
-    const apiIP = document.getElementById("app").getAttribute("data-api-ip");
-    var email = $("#user_email").val();
-    let pwd_rule = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}$/; //密碼規則
-    //let old_pwd = $("input#old_password").val(); //舊密碼
-    let check_verification_code = $("#chkmsg").val(); //驗證碼
-    let new_reset_pwd = $("input#new_password").val(); //新密碼
-    let check_password = $("input#check_password").val(); //確認新密碼
-    let pwd_error = false;
-    //新密碼有無符合規則
-    if (!new_reset_pwd.match(pwd_rule)) {
-        $("#new_reset_pwd_alert").removeClass("d-none");
-        pwd_error = true;
-    } else {
-        $("#new_pwd_alert").addClass("d-none");
-    }
-    //驗證碼有無一致
-    if (check_verification_code != verification_code) {
-        $("#new_chkmsg_alert").removeClass("d-none");
-        pwd_error = true;
-    } else {
-        $("#new_chkmsg_alert").addClass("d-none");
-    }
-    //新密碼與確認新密碼有無一致
-    if (new_reset_pwd != check_password) {
-        $("#check_pwd_alert").removeClass("d-none");
-        pwd_error = true;
-    } else {
-        $("#check_pwd_alert").addClass("d-none");
-    }
-
-    /*後端處理*/
-    if (pwd_error == false) {
-        var formdata = new FormData();
-        formdata.append("username", email);
-        formdata.append("password", new_reset_pwd);
-        var requestOptions = {
-            method: "post",
-            body: formdata,
-        };
-        fetch(
-            apiIP + "api/auth/forget_password/" + email + "/",
-            requestOptions
-        ).then((response) => {
-            if (response.ok) {
                 Swal.fire({
-                    title: `修改密碼成功！`,
-                    text: "已重新設定密碼",
-                    icon: "success",
-                    confirmButtonColor: "#70c6e3",
-                    showConfirmButton: false,
-                    timer: 1500,
-                });
-                window.location.reload();
-            } else {
-                Swal.fire({
-                    title: `修改密碼失敗！`,
+                    title: "發送失敗，請檢查您的信箱",
                     icon: "error",
                     confirmButtonColor: "#70c6e3",
                     showConfirmButton: false,
                     timer: 1500,
                 });
-            }
+                resetButton();
+            });
+        } else {
+            Swal.fire({
+                title: "無法發送驗證碼",
+                text: "請檢查您的郵件地址或稍後再試",
+                icon: "error",
+                confirmButtonColor: "#70c6e3",
+                showConfirmButton: true,
+            });
+            resetButton();
+        }
+    })
+    .catch((error) => {
+        console.error("Error:", error);
+        Swal.fire({
+            title: "伺服器錯誤！",
+            text: "請稍後再試。",
+            icon: "error",
+            confirmButtonColor: "#70c6e3",
+            showConfirmButton: true,
         });
+        resetButton();
+    });
+});
+
+
+function forget_password() {
+    let email = document.getElementById("user_email").value;
+    let entered_verification_code = document.getElementById("chkmsg").value; // 用戶輸入的驗證碼
+    let new_password = document.getElementById("new_password").value;
+    let confirm_password = document.getElementById("check_password").value;
+
+    let pwd_rule = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}$/; // 密碼規則
+    let has_error = false;
+
+    // 檢查電子郵件格式
+    let email_regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email.match(email_regex)) {
+        document.getElementById("user_email_alert").classList.remove("d-none");
+        has_error = true;
+    } else {
+        document.getElementById("user_email_alert").classList.add("d-none");
     }
+
+    // 驗證碼是否一致
+    if (entered_verification_code !== verification_code) {
+        document.getElementById("new_chkmsg_alert").classList.remove("d-none");
+        document.getElementById("new_chkmsg_alert").textContent = "驗證碼輸入錯誤";
+        has_error = true;
+    } else {
+        document.getElementById("new_chkmsg_alert").classList.add("d-none");
+    }
+
+    // 檢查新密碼是否符合規則
+    if (!new_password.match(pwd_rule)) {
+        document.getElementById("new_pwd_alert").classList.remove("d-none");
+        has_error = true;
+    } else {
+        document.getElementById("new_pwd_alert").classList.add("d-none");
+    }
+
+    // 檢查新密碼與確認密碼是否一致
+    if (new_password !== confirm_password) {
+        document.getElementById("check_pwd_alert").classList.remove("d-none");
+        has_error = true;
+    } else {
+        document.getElementById("check_pwd_alert").classList.add("d-none");
+    }
+
+    // 如果有錯誤，停止提交
+    if (has_error) {
+        return;
+    }
+
+    // 提交表單，這裡你可以用 Ajax 發送新密碼到後端
+    const apiIP = document.getElementById("app").getAttribute("data-api-ip");
+    var formdata = new FormData();
+    formdata.append("email", email);
+    formdata.append("new_password", new_password);
+
+    var requestOptions = {
+        method: "POST",
+        body: formdata,
+    };
+
+    fetch(apiIP + "/api/auth/update_password", requestOptions)
+        .then((response) => response.json())
+        .then(function (data) {
+            if (data.success) {
+                Swal.fire({
+                    title: "密碼修改成功！",
+                    icon: "success",
+                    confirmButtonColor: "#70c6e3",
+                    showConfirmButton: false,
+                    timer: 1500,
+                });
+                // 重置表單或跳轉
+            } else {
+                Swal.fire({
+                    title: "密碼修改失敗",
+                    text: data.message || "請稍後再試。",
+                    icon: "error",
+                    confirmButtonColor: "#70c6e3",
+                    showConfirmButton: true,
+                });
+            }
+        })
+        .catch(function (error) {
+            console.error("Error:", error);
+            Swal.fire({
+                title: "伺服器錯誤！",
+                text: "請稍後再試。",
+                icon: "error",
+                confirmButtonColor: "#70c6e3",
+                showConfirmButton: true,
+            });
+        });
 }
 
 //會員資料

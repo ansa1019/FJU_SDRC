@@ -137,9 +137,9 @@
                                     <label for="user_email" class="col-form-label">電子郵件帳號</label>
                                 </div>
                                 <div class="col">
-                                    <input type="user_email" id="user_email" name="user_email" placeholder="電子郵件帳號"
+                                    <input type="email" id="user_email" name="user_email" placeholder="電子郵件帳號"
                                         class="form-control">
-                                    <span class="ct-txt-2 d-none" id="user_email"
+                                    <span class="ct-txt-2 d-none" id="user_email_alert"
                                         style="font-size: var(--fs-16)">＊電子郵件帳號</span>
                                 </div>
                             </div>

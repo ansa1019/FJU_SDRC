@@ -260,7 +260,7 @@
                                     </div>
                                     <div class="col-12">
                                         <input class="form-control" type="text" id="create_input_topic"
-                                            placeholder='＃話題：可以根據你的文章內容輸入多個＃話題喔！'
+                                            placeholder='#話題：可以根據你的文章內容，輸入半形的#，可以新增多個話題喔！'
                                             value={{ $temporary_article[0]['hashtag'] != 'null' ? $temporary_article[0]['hashtag'] : '' }}>
                                     </div>
                                 </div>
@@ -324,7 +324,7 @@
                             </div>
                             <div class="col-12">
                                 <input class="form-control" type="text" id="patch_input_topic"
-                                    placeholder="＃話題：可以根據你的文章內容輸入多個＃話題喔！" />
+                                    placeholder="#話題：可以根據你的文章內容，輸入半形的#，可以新增多個話題喔！" />
                             </div>
                         </div>
                     </div>
