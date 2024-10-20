@@ -67,14 +67,14 @@ const myModal = new bootstrap.Modal("#create_modal", {
     focus: false,
 });
 
-// 修改後的工具列選項，移除字體、引用、置中、靠右
+// 修改后的工具栏选项，移除字体、引用、置中、靠右
 var toolbarOptions = [
     [
         {
-            header: [1, 2, 3, false], // 標題選項
+            header: [1, 2, 3, false], // 标题选项
         },
     ],
-    ["bold", "italic", "underline", "strike"], // 加粗、斜體、底線、刪除線
+    ["bold", "italic", "underline", "strike"], // 加粗、斜体、底线、删除线
     [
         {
             list: "ordered",
@@ -82,7 +82,7 @@ var toolbarOptions = [
         {
             list: "bullet",
         },
-    ], // 順序列表、無序列表
+    ], // 顺序列表、无序列表
     [
         {
             color: [],
@@ -90,19 +90,20 @@ var toolbarOptions = [
         {
             background: [],
         },
-    ], // 顏色選項
-    ["link", "image"], // 超連結和圖片功能
+    ], // 颜色选项
+    ["link", "image"], // 超链接和图片功能
 ];
 
-// 初始化新增用文字編輯器
+// 初始化新增用文字编辑器
 var quill = new Quill("#editor-container", {
     modules: {
         toolbar: toolbarOptions,
     },
     theme: "snow",
+    formats: { 'align': 'left' } // 设置默认格式，尽量保持文本靠左
 });
 
-// 初始化修改用文字編輯器
+// 初始化修改用文字编辑器
 var patch_quill = new Quill("#patch-editor-container", {
     modules: {
         toolbar: toolbarOptions,
@@ -110,7 +111,7 @@ var patch_quill = new Quill("#patch-editor-container", {
     theme: "snow",
 });
 
-// 應用自定義提示框到所有編輯器實例
+// 应用自定义提示框到所有编辑器实例
 document.querySelectorAll('.ql-link').forEach(function (linkBtn) {
     linkBtn.addEventListener('click', function () {
         setTimeout(() => {
@@ -120,30 +121,51 @@ document.querySelectorAll('.ql-link').forEach(function (linkBtn) {
                 var saveButton = tooltip.querySelector("a.ql-action");
                 var removeButton = tooltip.querySelector("a.ql-remove");
 
-                if (input) input.placeholder = "請輸入超連結";
-                if (saveButton) saveButton.textContent = "儲存";
+                if (input) input.placeholder = "请输入超链接";
+                if (saveButton) saveButton.textContent = "保存";
                 if (removeButton) removeButton.textContent = "移除";
             }
         }, 50); // 可能需要调整延迟时间以确保修改在 Tooltip 显示后进行
     });
 });
 
-// 確保上述代碼在頁面完全加載後執行
+// 确保上述代码在页面完全加载后执行
 document.addEventListener("DOMContentLoaded", function() {
-    customizeTooltip(quill);
-    customizeTooltip(patch_quill);
+    var style = document.createElement('style');
+    document.head.appendChild(style);
+    style.textContent = `
+        #editor-container ol li a, 
+        #editor-container ul li a {
+            pointer-events: none;  /* 禁止鼠标事件，使链接不可点击 */
+            color: black;          /* 设置链接颜色与普通文本一样 */
+            text-decoration: none; /* 去掉下划线 */
+            cursor: default;       /* 更改鼠标光标为默认样式 */
+        }
+        #editor-container ol li,
+        #editor-container ul li {
+            text-align: left !important; /* 强制文本靠左对齐 */
+        }
+    `;
 });
 
-//取文字編輯器內容
-function get_content() {
-    tinymce.activeEditor.dom.addClass(
-        tinymce.activeEditor.dom.select("img"),
-        "w-100"
-    );
+// 清除列表中的超链接
+function removeLinksFromLists() {
+    var editorHtml = quill.root.innerHTML;  // 获取编辑器的 HTML
+    var tempDiv = document.createElement('div');  // 创建一个临时 div 来处理 HTML
+    tempDiv.innerHTML = editorHtml;
 
-    let content = tinymce.get("editor").getContent();
-    console.log(content);
+    // 只针对顺序列表和无序列表中的超链接进行操作
+    tempDiv.querySelectorAll('ol li a, ul li a').forEach(function(a) {
+        var parentLi = a.parentNode;
+        if (parentLi.tagName === 'LI') {  // 确保超链接直接在列表项目下
+            while (a.firstChild) parentLi.insertBefore(a.firstChild, a);  // 将超链接的内容移动到列表项目
+            parentLi.removeChild(a);  // 移除超链接
+        }
+    });
+
+    quill.root.innerHTML = tempDiv.innerHTML;  // 更新编辑器的 HTML
 }
+
 
 // 使用 Day.js
 // const now_today = dayjs().format("YYYY-MM-DD");
