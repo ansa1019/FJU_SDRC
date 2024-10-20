@@ -1,5 +1,7 @@
 <link href="https://unpkg.com/cropperjs/dist/cropper.min.css" rel="stylesheet" />
 <script src="https://unpkg.com/cropperjs/dist/cropper.min.js"></script>
+<meta name="csrf-token" content="{{ csrf_token() }}">
+
 
 @extends('layouts.masterpage')
 
@@ -56,8 +58,8 @@
                                     <div class="my-3">
                                         <div class="preview {{ isset($user_image) ? 'd-none' : 'd-flex' }} align-items-center text-center justify-content-center "
                                             style="z-index: 1">
-                                                <span class="d-none d-lg-block">上傳檔案</span><span><i
-                                                        class="fas fa-camera"></i></span>
+                                            <span class="d-none d-lg-block">上傳檔案</span><span><i
+                                                    class="fas fa-camera"></i></span>
                                         </div>
                                         <input type="file" id="user_image" name="user_image"
                                             accept=".jpg, .jpeg, .png" />
@@ -339,38 +341,33 @@
     </div>
 
     <!--重設密碼modal-->
-    <!-- 重設密碼 modal -->
+    <!-- 重设密码 modal -->
     <div class="modal fade" id="pwdModal" tabindex="-1">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="exampleModalLabel">
-                        <i class="bi bi-lock-fill ct-txt-1 me-2"></i>設定密碼
+                        <i class="bi bi-lock-fill ct-txt-1 me-2"></i>设定密码
                     </h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body" style="font-size: var(--fs-18)">
                     <div class="row d-flex justify-content-center py-3">
                         <div class="col-md col-lg-8">
-                            <form method="POST" action="{{ route('UserEditpassword') }}" enctype="multipart/form-data"
-                                id="passwordForm">
+                            <form id="passwordForm">
                                 @csrf
-                                @method('PATCH')
+                                <!-- 隐藏输入，存储用户ID -->
+                                <input type="hidden" id="user_id" name="user_id" value="{{ Auth::user()->id }}">
 
                                 <div id="step1">
                                     <div class="row g-3 mb-3 align-items-start">
                                         <div class="col-4">
-                                            <label for="old_password" class="col-form-label">舊密碼</label>
+                                            <label for="old_password" class="col-form-label">旧密码</label>
                                         </div>
                                         <div class="col">
                                             <input type="password" id="old_password" name="old_password"
-                                                placeholder="請輸入舊密碼" class="form-control"
-                                                value="{{ old('old_password') }}">
-                                            @if ($errors->has('old_password'))
-                                                <span class="ct-txt-2 text-danger" style="font-size: var(--fs-16)">
-                                                    {{ $errors->first('old_password') }}
-                                                </span>
-                                            @endif
+                                                placeholder="请输入旧密码" class="form-control">
+                                            <div class="error text-danger"></div>
                                         </div>
                                     </div>
                                     <div class="row g-3 my-4 align-items-center">
@@ -378,28 +375,27 @@
                                             onclick="validateOldPassword()">下一步</button>
                                     </div>
                                 </div>
-
                                 <div id="step2" style="display: none;">
                                     <div class="row g-3 mb-3 align-items-start">
                                         <div class="col-4">
-                                            <label for="new_password" class="col-form-label">新密碼</label>
+                                            <label for="new_password" class="col-form-label">新密码</label>
                                         </div>
                                         <div class="col">
                                             <input type="password" id="new_password" name="new_password"
-                                                placeholder="須包含英文大小寫，至少8個字元" class="form-control" />
+                                                placeholder="必须包含英文大小写，至少8个字符" class="form-control">
                                         </div>
                                     </div>
                                     <div class="row g-3 mb-3 align-items-start">
                                         <div class="col-4">
-                                            <label for="check_password" class="col-form-label">確認新密碼</label>
+                                            <label for="check_password" class="col-form-label">确认新密码</label>
                                         </div>
                                         <div class="col">
                                             <input type="password" id="check_password" name="check_password"
-                                                class="form-control" />
+                                                class="form-control">
                                         </div>
                                     </div>
                                     <div class="row g-3 my-4 align-items-center">
-                                        <button type="submit"
+                                        <button type="button" onclick="updatePassword()"
                                             class="btn btn-c2 rounded-pill px-4 mx-1 col-auto">完成</button>
                                         <button type="button" class="btn col-auto mx-1"
                                             data-bs-dismiss="modal">取消</button>
@@ -412,6 +408,8 @@
             </div>
         </div>
     </div>
+
+
 
     {{-- <script>
         function validateOldPassword() {
