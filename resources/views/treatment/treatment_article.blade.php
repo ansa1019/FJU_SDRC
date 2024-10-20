@@ -42,9 +42,9 @@
                     <ol class="breadcrumb">
                         {{-- <li class="breadcrumb-item"><a href="{{ route('treatment_qa',$category['0']['name']) }}" class="ct-title-1 text-decoration-none mx-2"
                             id='article_category'>{{$category['0']['name'] }}</a></li> --}}
-                        <li class="breadcrumb-item active" aria-current="page">
+                        <li class="breadcrumb-item active" aria-current="page">療心室&nbsp;/
                             <a href="{{ route('treatment_qa', $category['0']['name']) }}"
-                                class="ct-title-1 text-decoration-none mx-2"
+                                class="breadcrumb-item active"
                                 id='article_category'>{{ $category['0']['name'] }}</a>
                         </li>
                         <!-- <li class="breadcrumb-item active" aria-current="page">{{ $article_title }}</li> -->
@@ -358,5 +358,6 @@
         }
         var ArticleRoute = "{{ route('treatment_qa') }}";
         var treatmentArticleUpdateRoute = "{{ route('TreatmentArticleUpdate') }}";
+
     </script>
 @endsection
