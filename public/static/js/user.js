@@ -158,7 +158,7 @@ if ($("#user_image")) {
             }
 
             // 檢查文件大小是否超過 5MB
-            const maxSize = 5 * 1024 * 1024;
+            const maxSize = 1 * 1024 * 1024;
             if (file.size > maxSize) {
                 Swal.fire({
                     position: "center",
@@ -510,61 +510,18 @@ function info_setting() {
     // });
 }
 
-/* 重設密碼 */
-function reset_password() {
-    let pwd_rule = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}$/; //密碼規則
-    let old_pwd = $("input#old_password").val(); //舊密碼
-    let new_pwd = $("input#new_password").val(); //新密碼
-    let check_password = $("input#check_password").val(); //確認新密碼
-    let pwd_error = false;
-    let og_pwd = ""; //原密碼 須從後端要取
-    if (old_pwd != og_pwd) {
-        //原密碼比對
-        $("#old_pwd_alert").removeClass("d-none");
-        pwd_error = true;
-    } else {
-        $("#old_pwd_alert").addClass("d-none");
-    }
-
-    //新密碼有無符合規則
-    if (!new_pwd.match(pwd_rule)) {
-        $("#new_pwd_alert").removeClass("d-none");
-        pwd_error = true;
-    } else {
-        $("#new_pwd_alert").addClass("d-none");
-    }
-
-    //新密碼與確認新密碼有無一致
-    if (new_pwd != check_password) {
-        $("#check_pwd_alert").removeClass("d-none");
-        pwd_error = true;
-    } else {
-        $("#check_pwd_alert").addClass("d-none");
-    }
-
-    /*後端處理*/
-    if (pwd_error == false) {
-        Swal.fire({
-            title: `修改密碼成功！`,
-            text: "已重新設定密碼",
-            icon: "success",
-            confirmButtonColor: "#70c6e3",
-            showConfirmButton: false,
-            timer: 1500,
-        });
-    }
-}
-
-// 檢查舊密碼是否正確
+// 检查旧密码是否正确
 async function checkOldPassword(oldPassword) {
+    let userId = $("#user_id").val(); // 确保前端获取到 userId
     return new Promise((resolve, reject) => {
         $.ajax({
-            url: "/UserEditpassword",
+            url: "/checkOldPassword",
             method: "POST",
             dataType: "json",
             data: {
+                _token: $('input[name="_token"]').val(),
                 old_password: oldPassword,
-                action: "step1",
+                user_id: userId
             },
             success: function (response) {
                 if (response.success) {
@@ -572,17 +529,17 @@ async function checkOldPassword(oldPassword) {
                 } else {
                     Swal.fire({
                         icon: "error",
-                        title: "錯誤",
-                        text: "舊密碼不正確",
+                        title: "错误",
+                        text: "旧密码不正确",
                     });
                     resolve(false);
                 }
             },
-            error: function (error) {
+            error: function (xhr, status, error) {
                 Swal.fire({
                     icon: "error",
-                    title: "錯誤",
-                    text: "密碼驗證過程中發生錯誤",
+                    title: "错误",
+                    text: "密码验证过程中发生错误",
                 });
                 reject(false);
             },
@@ -590,115 +547,150 @@ async function checkOldPassword(oldPassword) {
     });
 }
 
-// 重設密碼邏輯
-async function resetPassword() {
-    let pwd_rule = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}$/; // 密碼規則
-    let old_pwd = $("input#old_password").val(); // 舊密碼
-    let new_pwd = $("input#new_password").val(); // 新密碼
-    let check_password = $("input#check_password").val(); // 確認新密碼
-    let pwd_error = false;
-
-    // 驗證舊密碼是否正確
-    const isOldPasswordValid = await checkOldPassword(old_pwd);
-    if (!isOldPasswordValid) {
-        $("#old_pwd_alert").removeClass("d-none");
-        pwd_error = true;
-    } else {
-        $("#old_pwd_alert").addClass("d-none");
-    }
-
-    // 檢查新密碼是否符合規則
-    if (!new_pwd.match(pwd_rule)) {
-        $("#new_pwd_alert").removeClass("d-none");
-        pwd_error = true;
-    } else {
-        $("#new_pwd_alert").addClass("d-none");
-    }
-
-    // 檢查新密碼與確認新密碼是否相符
-    if (new_pwd !== check_password) {
-        $("#check_pwd_alert").removeClass("d-none");
-        pwd_error = true;
-    } else {
-        $("#check_pwd_alert").addClass("d-none");
-    }
-
-    // 如果沒有錯誤，發送 PATCH 請求更新密碼
-    if (!pwd_error) {
-        $.ajax({
-            url: "/UserEditpassword",
-            method: "PATCH",
-            data: {
-                new_password: new_pwd,
-                check_password: check_password,
-            },
-            success: function (response) {
-                if (response.success) {
-                    Swal.fire({
-                        title: "修改密碼成功！",
-                        text: "已重新設定密碼",
-                        icon: "success",
-                        confirmButtonColor: "#70c6e3",
-                        showConfirmButton: false,
-                        timer: 1500,
-                    }).then(() => {
-                        window.location.href = "/user_login";
-                    });
-                } else {
-                    Swal.fire({
-                        icon: "error",
-                        title: "錯誤",
-                        text: response.message || "密碼更改失敗",
-                    });
-                }
-            },
-            error: function (xhr, status, error) {
-                Swal.fire({
-                    icon: "error",
-                    title: "錯誤",
-                    text: "密碼更改過程中發生錯誤",
-                });
-            },
-        });
-    }
+function getUserId() {
+    return document.getElementById('user_id').value; // 获取用户ID
 }
 
-// 表單提交處理
+
+// 重置密码逻辑
+async function resetPassword() {
+    let old_pwd = $("#old_password").val();
+    let new_pwd = $("#new_password").val();
+    let check_password = $("#check_password").val();
+
+    // 验证旧密码是否正确
+    let isOldPasswordValid = await checkOldPassword(old_pwd);
+    if (!isOldPasswordValid) return;
+
+    // 检查新密码与确认新密码是否一致
+    if (new_pwd !== check_password) {
+        Swal.fire({
+            icon: "error",
+            title: "错误",
+            text: "新密码与确认新密码不一致",
+        });
+        return;
+    }
+
+    // 向服务器发送更新密码请求
+    $.ajax({
+        url: "/updatePassword",
+        method: "PATCH",
+        dataType: "json",
+        data: {
+            _token: $('input[name="_token"]').val(),
+            new_password: new_pwd,
+            user_id: $("#user_id").val()
+        },
+        success: function (response) {
+            if (response.success) {
+                Swal.fire({
+                    title: "修改密码成功！",
+                    icon: "success",
+                    confirmButtonColor: "#70c6e3",
+                    timer: 1500,
+                }).then(() => {
+                    window.location.href = "/user_login";
+                });
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: "错误",
+                    text: response.message,
+                });
+            }
+        },
+        error: function (xhr) {
+            console.error("Request failed:", xhr.responseText);
+            Swal.fire({
+                icon: "error",
+                title: "错误",
+                text: "密码更改过程中发生错误"
+            });
+        }
+    });
+}
+
+// 表单提交处理，只绑定一次
 $("#passwordForm").on("submit", function (e) {
     e.preventDefault();
     resetPassword();
 });
 
 function validateOldPassword() {
-    const oldPassword = document.getElementById("old_password").value;
-
+    let oldPassword = document.getElementById('old_password').value;
     $.ajax({
-        url: "/UserEditpassword", // 舊密碼驗證的 POST 請求
-        method: "POST",
-        dataType: "json",
+        type: 'POST',
+        url: '/validate-old-password',  // 确保 URL 是正确的
         data: {
+            _token: $('input[name="_token"]').val(),
             old_password: oldPassword,
-            action: "step1",
+            user_id: userId
         },
-        success: function (response) {
-            if (response.success) {
-                // 舊密碼正確，顯示新密碼步驟
-                document.getElementById("step1").style.display = "none";
-                document.getElementById("step2").style.display = "block";
+        success: function(data) {
+            if (data.success) {
+                document.getElementById('step1').style.display = 'none';
+                document.getElementById('step2').style.display = 'block';
             } else {
-                // 顯示錯誤訊息
-                showOldPasswordError();
+                document.querySelector('#step1 .error').textContent = '旧密码不正确';
+            }
+        },
+        error: function() {
+            alert('旧密码验证失败，请重试。');
+        }
+    });
+}
+
+function updatePassword() {
+    let newPassword = document.getElementById('new_password').value;
+    let checkPassword = document.getElementById('check_password').value;
+    if (newPassword !== checkPassword) {
+        Swal.fire({
+            icon: "error",
+            title: "错误",
+            text: "新密码与确认新密码不一致",
+        });
+        return;
+    }
+
+    let userId = getUserId();  // 获取用户 ID
+    $.ajax({
+        type: 'PATCH',
+        url: '/update-password',
+        data: {
+            _token: $('input[name="_token"]').val(),
+            new_password: newPassword,
+            user_id: userId  // 发送用户 ID
+        },
+        success: function(response) {
+            if (response.success) {
+                Swal.fire({
+                    title: "修改密码成功！",
+                    icon: "success",
+                    confirmButtonColor: "#70c6e3",
+                    timer: 1500,
+                }).then(() => {
+                    window.location.href = "/user_login";
+                });
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: "错误",
+                    text: response.message,
+                });
             }
         },
         error: function () {
             Swal.fire({
                 icon: "error",
-                title: "錯誤",
-                text: "密碼驗證過程中發生錯誤",
+                title: "错误",
+                text: "密码更改过程中发生错误",
             });
-        },
+        }
     });
 }
+
+
 function showOldPasswordError() {
     const errorSpan = document.createElement("span");
     errorSpan.className = "ct-txt-2 text-danger";

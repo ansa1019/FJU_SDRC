@@ -1,3 +1,16 @@
+<style>
+    #editor-container ol li a,
+    #editor-container ul li a {
+        pointer-events: none !important;
+        /* 禁止鼠标事件，使链接不可点击 */
+        color: inherit !important;
+        /* 使链接颜色继承，避免明显区分 */
+        text-decoration: none !important;
+        /* 去掉下划线 */
+        cursor: default !important;
+        /* 更改鼠标光标为默认样式 */
+    }
+</style>
 @extends('layouts.masterpage')
 
 @section('content')
@@ -29,9 +42,9 @@
                     <ol class="breadcrumb">
                         {{-- <li class="breadcrumb-item"><a href="{{ route('treatment_qa',$category['0']['name']) }}" class="ct-title-1 text-decoration-none mx-2"
                             id='article_category'>{{$category['0']['name'] }}</a></li> --}}
-                        <li class="breadcrumb-item active" aria-current="page">
+                        <li class="breadcrumb-item active" aria-current="page">療心室&nbsp;/
                             <a href="{{ route('treatment_qa', $category['0']['name']) }}"
-                                class="ct-title-1 text-decoration-none mx-2"
+                                class="breadcrumb-item active"
                                 id='article_category'>{{ $category['0']['name'] }}</a>
                         </li>
                         <!-- <li class="breadcrumb-item active" aria-current="page">{{ $article_title }}</li> -->
@@ -250,8 +263,8 @@
                                                     </button>
                                                     <!--當使用者正在編輯留言時 顯示提交按鈕-->
                                                     <!-- <button class="btn btn-sm p-0 edit_check_btn" data-bs-toggle="tooltip" data-bs-title="提交">
-                                                                                                                                        <i class="fas fa-check ct-sub-1 me-1"></i>
-                                                                                                                                    </button> -->
+                                                                                                                            <i class="fas fa-check ct-sub-1 me-1"></i>
+                                                                                                                        </button> -->
                                                     <button class="btn btn-primary btn-sm edit_check_btn mx-1">提交</button>
                                                 @endif
                                                 <div class="dropdown d-inline" data-bs-toggle="tooltip"
@@ -402,23 +415,23 @@
                     JSON.stringify({
                         action: "connect",
 
-                    }));
-            } else {
-                console.log("reconnect")
-                socket.send(
-                    JSON.stringify({
-                        action: "reconnect",
-                    }));
+                        }));
+                } else {
+                    console.log("reconnect")
+                    socket.send(
+                        JSON.stringify({
+                            action: "reconnect",
+                        }));
+                }
             }
-        }
-        var ArticleRoute = "{{ route('treatment_qa') }}";
-        var treatmentArticleUpdateRoute = "{{ route('TreatmentArticleUpdate') }}";
-        $(document).ready(function() {
-            $('#content').find('li').each(function(index) {
-                $(this).wrapInner("<a href='#section" + index + "'></a>")
-                $("h1:contains('" + $(this).text() + "'), h2:contains('" + $(this).text() +
-                    "'), h3:contains('" + $(this).text() + "')").attr('id', 'section' + index);
-            })
-        });
-    </script>
+            var ArticleRoute = "{{ route('treatment_qa') }}";
+            var treatmentArticleUpdateRoute = "{{ route('TreatmentArticleUpdate') }}";
+            $(document).ready(function() {
+                $('#content').find('li').each(function(index) {
+                    $(this).wrapInner("<a href='#section" + index + "'></a>")
+                    $("h1:contains('" + $(this).text() + "'), h2:contains('" + $(this).text() +
+                        "'), h3:contains('" + $(this).text() + "')").attr('id', 'section' + index);
+                })
+            });
+        </script>
 @endsection
