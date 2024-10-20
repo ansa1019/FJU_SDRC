@@ -188,7 +188,7 @@ $("#add_saved_btn").click(async function () {
                     icon: "success",
                     title: "新增成功!",
                     showConfirmButton: false,
-                    timer: 1500,
+                    timer: 2500,
                 });
             })
             .catch((error) => {
@@ -198,7 +198,7 @@ $("#add_saved_btn").click(async function () {
                     icon: "error",
                     title: "新增失敗!",
                     showConfirmButton: false,
-                    timer: 1500,
+                    timer: 2500,
                 });
             });
     }
@@ -268,7 +268,7 @@ function article_saved(storage_id, storage_name) {
             icon: "success",
             title: action + "成功!",
             showConfirmButton: false,
-            timer: 1500,
+            timer: 2500,
         });
         console.log(postStorageds);
     } catch (error) {
@@ -277,7 +277,7 @@ function article_saved(storage_id, storage_name) {
             icon: "error",
             title: action + "失敗!",
             showConfirmButton: false,
-            timer: 1500,
+            timer: 2500,
         });
     }
 }
@@ -359,7 +359,7 @@ function storaged_rename(storage_id, storage_name) {
                         icon: "success",
                         title: "修改成功!",
                         showConfirmButton: false,
-                        timer: 1500,
+                        timer: 2500,
                     });
                 } else {
                     Swal.fire({
@@ -367,7 +367,7 @@ function storaged_rename(storage_id, storage_name) {
                         icon: "error",
                         title: "修改失敗!",
                         showConfirmButton: false,
-                        timer: 1500,
+                        timer: 2500,
                     });
                 }
             });
@@ -416,7 +416,7 @@ function storaged_delete(storage_id, storage_name) {
                         icon: "success",
                         title: "刪除成功!",
                         showConfirmButton: false,
-                        timer: 1500,
+                        timer: 2500,
                     }).then(() => {
                         if (
                             postStorageds.length >= 1 &&
@@ -430,7 +430,7 @@ function storaged_delete(storage_id, storage_name) {
                         icon: "error",
                         title: "刪除失敗!",
                         showConfirmButton: false,
-                        timer: 1500,
+                        timer: 2500,
                     });
                 }
             });

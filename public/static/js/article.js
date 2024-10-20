@@ -63,9 +63,9 @@ if ($("#is_click").text() == 0) {
     });
 }
 
-const myModal = new bootstrap.Modal("#create_modal", {
-    focus: false,
-});
+// const myModal = new bootstrap.Modal("#create_modal", {
+//     focus: false,
+// });
 
 // 修改後的工具列選項，移除字體、引用、置中、靠右
 var toolbarOptions = [
@@ -111,10 +111,10 @@ var patch_quill = new Quill("#patch-editor-container", {
 });
 
 // 應用自定義提示框到所有編輯器實例
-document.querySelectorAll('.ql-link').forEach(function (linkBtn) {
-    linkBtn.addEventListener('click', function () {
+document.querySelectorAll(".ql-link").forEach(function (linkBtn) {
+    linkBtn.addEventListener("click", function () {
         setTimeout(() => {
-            var tooltip = document.querySelector('.ql-tooltip');
+            var tooltip = document.querySelector(".ql-tooltip");
             if (tooltip) {
                 var input = tooltip.querySelector("input[data-link]");
                 var saveButton = tooltip.querySelector("a.ql-action");
@@ -129,7 +129,7 @@ document.querySelectorAll('.ql-link').forEach(function (linkBtn) {
 });
 
 // 確保上述代碼在頁面完全加載後執行
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     customizeTooltip(quill);
     customizeTooltip(patch_quill);
 });
@@ -159,7 +159,6 @@ $("#content_tabs > li > a").click(function () {
     );
     return false;
 });
-
 
 // 使用者文章按讚
 function treatment_like(obj) {
@@ -933,19 +932,12 @@ function getValue(button, type) {
         var article_id = document.getElementById("article_id");
         var selectTreat = document.getElementById("patch_treat_class");
         var hashtags = document.getElementById("patch_input_topic");
-        var selectIdentity = document.getElementById("patch_id_type");
-        var identity = $(button)
-            .parents()
-            .eq(2)
-            .find("#identity")
-            .text()
-            .trim();
 
         // 設置標題與文章ID
         title.value = $(button)
             .parents()
             .eq(2)
-            .find("#article_id_title")
+            .find("#article_title")
             .text()
             .trim();
         article_id.value = id;
@@ -954,7 +946,7 @@ function getValue(button, type) {
         var subcategory_id = $(button)
             .parents()
             .eq(2)
-            .find("#subcategory_id")
+            .find("#article_category")
             .text()
             .trim();
         console.log("Subcategory ID:", subcategory_id); // 確認 subcategory_id 的值
@@ -981,12 +973,53 @@ function getValue(button, type) {
         patch_quill.clipboard.dangerouslyPasteHTML(
             $(button).parents().eq(1).find("#html").text().trim()
         );
-    }
+    } else if (type == "patch2") {
+        // 獲取文章 ID 和 DOM 元素
+        var id = $("#article_id").text();
+        var title = document.getElementById("input_patch_title");
+        var article_id = document.getElementById("return_id");
+        var selectTreat = document.getElementById("patch_treat_class");
+        var hashtags = document.getElementById("patch_input_topic");
+        var selectIdentity = document.getElementById("patch_id_type");
+        var identity = $(button)
+            .parents()
+            .eq(2)
+            .find("#identity")
+            .text()
+            .trim();
 
-    if (type == "post") {
+        // 設置標題與文章ID
+        title.value = $("#article_title").text();
+        article_id.value = id;
+
+        // 設置類別
+        var subcategory_id = $("#category").text().split("/")[1];
+        console.log("Subcategory ID:", subcategory_id); // 確認 subcategory_id 的值
+
+        // 將選擇的類別直接設置為 subcategory_id 的值
+        selectTreat.value = subcategory_id; // 直接根據 value 設置選擇項目
+
+        // 確認選擇的類別是否正確
+        console.log("Selected category value:", selectTreat.value);
+
+        // 設置話題欄位，移除空值與多餘的標點
+        var hashtagsa = $("#article_tabs a");
+        if (hashtagsa.length == 0) {
+            hashtagsText = "";
+        } else {
+            hashtagsText = "";
+            for (var i = 0; i < hashtagsa.length; i++) {
+                hashtagsText += "#" + hashtagsa[i].text;
+            }
+        }
+        hashtags.value = hashtagsText;
+
+        // 使用 Quill 編輯器插入 HTML 內容
+        patch_quill.clipboard.dangerouslyPasteHTML($("#content").html());
+    } else {
         // 發佈時使用 Quill 編輯器插入 HTML
         quill.clipboard.dangerouslyPasteHTML(
-            $(button).parents().eq(0).find("#html").text().trim()
+            $(button).parents().eq(1).find("#html").text().trim()
         );
     }
 }
@@ -1108,7 +1141,7 @@ function postdata(obj, type) {
     const randomInteger = Math.floor(Math.random() * 4) + 1;
     const Hashtags = $("#create_input_topic")
         .val()
-        .match(/#[^\s#]+/g);
+        .match(/#[\w]+/g);
     var myHeaders = new Headers();
 
     myHeaders.append("Authorization", "Bearer " + token);
@@ -1124,7 +1157,9 @@ function postdata(obj, type) {
             html: html,
         })
     );
-    formdata.append("hashtag", Hashtags);
+    if (Hashtags) {
+        formdata.append("hashtag", Hashtags);
+    }
     formdata.append("is_official", 0);
     formdata.append("is_temporary", 0);
 
@@ -1154,12 +1189,21 @@ function postdata(obj, type) {
                 redirect: "follow",
             };
 
-            fetch(apiIP + "api/content/textEditorPost/", requestOptions)
+            fetch(
+                apiIP + "api/content/textEditorPost/" + article_id + "/",
+                requestOptions
+            )
                 .then((response) => {
-                    if (!response.ok) {
-                        throw new Error("Network response was not ok.");
+                    if (response.ok) {
+                        return response.json();
                     }
-                    return response.json();
+                    Swal.fire({
+                        position: "center",
+                        icon: "error",
+                        title: "新增失敗!",
+                        showConfirmButton: false,
+                        timer: 2500,
+                    });
                 })
                 .then((data) => {
                     var formdata2 = new FormData();
@@ -1188,10 +1232,15 @@ function postdata(obj, type) {
                         apiIP + "api/notifications/notifications/",
                         requestOptions2
                     );
-                    window.location.reload();
-                })
-                .catch((error) => {
-                    alert("標題重複");
+                    Swal.fire({
+                        position: "center",
+                        icon: "success",
+                        title: "新增成功!",
+                        showConfirmButton: false,
+                        timer: 2500,
+                    });
+                    window.location =
+                        "/TreatmentArticleGet/" + data["id"] + "/";
                 });
         }
     } else {
@@ -1200,7 +1249,13 @@ function postdata(obj, type) {
                 if (response.ok) {
                     return response.blob();
                 }
-                throw new Error("Network response was not ok.");
+                Swal.fire({
+                    position: "center",
+                    icon: "error",
+                    title: "新增失敗!",
+                    showConfirmButton: false,
+                    timer: 2500,
+                });
             })
             .then((blob) => {
                 // formdata.append("index_image", blob, 'image.png');
@@ -1230,16 +1285,28 @@ function postdata(obj, type) {
                     if (response.ok) {
                         return response.blob();
                     }
-                    throw new Error("Network response was not ok.");
+                    Swal.fire({
+                        position: "center",
+                        icon: "error",
+                        title: "新增失敗!",
+                        showConfirmButton: false,
+                        timer: 2500,
+                    });
                 })
                 .then((blob) => {
                     formdata.append("index_image", blob, "image.png");
                     fetch(apiIP + "api/content/textEditorPost/", requestOptions)
                         .then((response) => {
-                            if (!response.ok) {
-                                throw new Error("Network response was not ok.");
+                            if (response.ok) {
+                                return response.json();
                             }
-                            return response.json();
+                            Swal.fire({
+                                position: "center",
+                                icon: "error",
+                                title: "新增失敗!",
+                                showConfirmButton: false,
+                                timer: 2500,
+                            });
                         })
                         .then((data) => {
                             var formdata2 = new FormData();
@@ -1268,10 +1335,15 @@ function postdata(obj, type) {
                                 apiIP + "api/notifications/notifications/",
                                 requestOptions2
                             );
-                            window.location.reload();
-                        })
-                        .catch((error) => {
-                            alert("標題重複");
+                            Swal.fire({
+                                position: "center",
+                                icon: "success",
+                                title: "新增成功!",
+                                showConfirmButton: false,
+                                timer: 2500,
+                            });
+                            window.location =
+                                "/TreatmentArticleGet/" + data["id"] + "/";
                         });
                 });
         }
@@ -1290,7 +1362,7 @@ function official_postdata(obj, type) {
     const randomInteger = Math.floor(Math.random() * 4) + 1;
     const Hashtags = $("#create_input_topic")
         .val()
-        .match(/#[^\s#]+/g);
+        .match(/#[\w]+/g);
     var myHeaders = new Headers();
 
     myHeaders.append("Authorization", "Bearer " + token);
@@ -1306,7 +1378,9 @@ function official_postdata(obj, type) {
             html: html,
         })
     );
-    formdata.append("hashtag", Hashtags);
+    if (Hashtags) {
+        formdata.append("hashtag", Hashtags);
+    }
     formdata.append("is_official", 1);
     formdata.append("is_temporary", 0);
 
@@ -1336,12 +1410,21 @@ function official_postdata(obj, type) {
                 redirect: "follow",
             };
 
-            fetch(apiIP + "api/content/textEditorPost/", requestOptions)
+            fetch(
+                apiIP + "api/content/textEditorPost/" + article_id + "/",
+                requestOptions
+            )
                 .then((response) => {
-                    if (!response.ok) {
-                        throw new Error("Network response was not ok.");
+                    if (response.ok) {
+                        return response.json();
                     }
-                    return response.json();
+                    Swal.fire({
+                        position: "center",
+                        icon: "error",
+                        title: "新增失敗!",
+                        showConfirmButton: false,
+                        timer: 2500,
+                    });
                 })
                 .then((data) => {
                     var formdata2 = new FormData();
@@ -1370,19 +1453,29 @@ function official_postdata(obj, type) {
                         apiIP + "api/notifications/notifications/",
                         requestOptions2
                     );
-                    window.location.reload();
-                })
-                .catch((error) => {
-                    alert("標題重複");
+                    Swal.fire({
+                        position: "center",
+                        icon: "success",
+                        title: "新增成功!",
+                        showConfirmButton: false,
+                        timer: 2500,
+                    });
+                    window.location = "/knowledge_article/" + data["id"] + "/";
                 });
         }
     } else {
         fetch("/get-image/img_" + randomInteger + ".png")
             .then((response) => {
                 if (response.ok) {
-                    return response.blob();
+                    return response.json();
                 }
-                throw new Error("Network response was not ok.");
+                Swal.fire({
+                    position: "center",
+                    icon: "error",
+                    title: "新增失敗!",
+                    showConfirmButton: false,
+                    timer: 2500,
+                });
             })
             .then((blob) => {
                 // formdata.append("index_image", blob, 'image.png');
@@ -1410,18 +1503,30 @@ function official_postdata(obj, type) {
             fetch("/get-image/img_" + randomInteger + ".png")
                 .then((response) => {
                     if (response.ok) {
-                        return response.blob();
+                        return response.json();
                     }
-                    throw new Error("Network response was not ok.");
+                    Swal.fire({
+                        position: "center",
+                        icon: "error",
+                        title: "新增失敗!",
+                        showConfirmButton: false,
+                        timer: 2500,
+                    });
                 })
                 .then((blob) => {
                     formdata.append("index_image", blob, "image.png");
                     fetch(apiIP + "api/content/textEditorPost/", requestOptions)
                         .then((response) => {
-                            if (!response.ok) {
-                                throw new Error("Network response was not ok.");
+                            if (response.ok) {
+                                return response.json();
                             }
-                            return response.json();
+                            Swal.fire({
+                                position: "center",
+                                icon: "error",
+                                title: "新增失敗!",
+                                showConfirmButton: false,
+                                timer: 2500,
+                            });
                         })
                         .then((data) => {
                             var formdata2 = new FormData();
@@ -1450,10 +1555,15 @@ function official_postdata(obj, type) {
                                 apiIP + "api/notifications/notifications/",
                                 requestOptions2
                             );
-                            window.location.reload();
-                        })
-                        .catch((error) => {
-                            alert("標題重複");
+                            Swal.fire({
+                                position: "center",
+                                icon: "success",
+                                title: "新增成功!",
+                                showConfirmButton: false,
+                                timer: 2500,
+                            });
+                            window.location =
+                                "/knowledge_article/" + data["id"] + "/";
                         });
                 });
         }
@@ -1470,7 +1580,7 @@ function patchData() {
     var title = $("#input_patch_title").val();
     const Hashtags = $("#patch_input_topic")
         .val()
-        .match(/#[^\s#]+/g);
+        .match(/#[\w]+/g);
     var category = document.getElementById("patch_treat_class").value;
     var id_type = document.getElementById("patch_id_type").value;
     var myHeaders = new Headers();
@@ -1488,7 +1598,9 @@ function patchData() {
             html: html,
         })
     );
-    formdata.append("hashtag", Hashtags);
+    if (Hashtags) {
+        formdata.append("hashtag", Hashtags);
+    }
     formdata.append("id", article_id);
     formdata.append("is_official", 0);
     formdata.append("is_temporary", 0);
@@ -1511,9 +1623,22 @@ function patchData() {
         requestOptions
     ).then((response) => {
         if (!response.ok) {
-            alert("標題重複");
+            Swal.fire({
+                position: "center",
+                icon: "error",
+                title: "修改失敗!",
+                showConfirmButton: false,
+                timer: 2500,
+            });
         } else {
-            window.location.reload();
+            Swal.fire({
+                position: "center",
+                icon: "success",
+                title: "修改成功!",
+                showConfirmButton: false,
+                timer: 2500,
+            });
+            window.location = "/TreatmentArticleGet/" + data["id"] + "/";
         }
     });
 }
@@ -1528,7 +1653,7 @@ function official_patchData() {
     var title = $("#input_patch_title").val();
     const Hashtags = $("#patch_input_topic")
         .val()
-        .match(/#[^\s#]+/g);
+        .match(/#[\w]+/g);
     var category = document.getElementById("patch_treat_class").value;
     var id_type = document.getElementById("patch_id_type").value;
     var myHeaders = new Headers();
@@ -1546,7 +1671,9 @@ function official_patchData() {
             html: html,
         })
     );
-    formdata.append("hashtag", Hashtags);
+    if (Hashtags) {
+        formdata.append("hashtag", Hashtags);
+    }
     formdata.append("id", article_id);
     formdata.append("is_official", 1);
     formdata.append("is_temporary", 0);
@@ -1569,9 +1696,22 @@ function official_patchData() {
         requestOptions
     ).then((response) => {
         if (!response.ok) {
-            alert("標題重複");
+            Swal.fire({
+                position: "center",
+                icon: "error",
+                title: "修改失敗!",
+                showConfirmButton: false,
+                timer: 2500,
+            });
         } else {
-            window.location.reload();
+            Swal.fire({
+                position: "center",
+                icon: "success",
+                title: "修改成功!",
+                showConfirmButton: false,
+                timer: 2500,
+            });
+            window.location = "/knowledge_article/" + data["id"] + "/";
         }
     });
 }
@@ -1588,7 +1728,7 @@ function temporaryData(obj, type) {
     const randomInteger = Math.floor(Math.random() * 4) + 1;
     const Hashtags = $("#create_input_topic")
         .val()
-        .match(/#[^\s#]+/g);
+        .match(/#[\w]+/g);
     var myHeaders = new Headers();
 
     myHeaders.append("Authorization", "Bearer " + token);
@@ -1604,7 +1744,9 @@ function temporaryData(obj, type) {
             html: html,
         })
     );
-    formdata.append("hashtag", Hashtags);
+    if (Hashtags) {
+        formdata.append("hashtag", Hashtags);
+    }
     formdata.append("is_official", 0);
     formdata.append("is_temporary", 1);
 
@@ -1651,9 +1793,21 @@ function temporaryData(obj, type) {
                 requestOptions
             ).then((response) => {
                 if (!response.ok) {
-                    alert("標題重複");
+                    Swal.fire({
+                        position: "center",
+                        icon: "error",
+                        title: "暫存失敗!",
+                        showConfirmButton: false,
+                        timer: 2500,
+                    });
                 } else {
-                    window.location.reload();
+                    Swal.fire({
+                        position: "center",
+                        icon: "success",
+                        title: "暫存成功!",
+                        showConfirmButton: false,
+                        timer: 2500,
+                    });
                 }
             });
         }
@@ -1681,7 +1835,13 @@ function temporaryData(obj, type) {
                     if (response.ok) {
                         return response.blob();
                     }
-                    throw new Error("Network response was not ok.");
+                    Swal.fire({
+                        position: "center",
+                        icon: "error",
+                        title: "暫存失敗!",
+                        showConfirmButton: false,
+                        timer: 2500,
+                    });
                 })
                 .then((blob) => {
                     formdata.append("index_image", blob, "image.png");
@@ -1690,9 +1850,21 @@ function temporaryData(obj, type) {
                         requestOptions
                     ).then((response) => {
                         if (!response.ok) {
-                            alert("標題重複");
+                            Swal.fire({
+                                position: "center",
+                                icon: "error",
+                                title: "暫存失敗!",
+                                showConfirmButton: false,
+                                timer: 2500,
+                            });
                         } else {
-                            window.location.reload();
+                            Swal.fire({
+                                position: "center",
+                                icon: "success",
+                                title: "暫存成功!",
+                                showConfirmButton: false,
+                                timer: 2500,
+                            });
                         }
                     });
                 });
@@ -1712,7 +1884,7 @@ function official_temporaryData(obj, type) {
     const randomInteger = Math.floor(Math.random() * 4) + 1;
     const Hashtags = $("#create_input_topic")
         .val()
-        .match(/#[^\s#]+/g);
+        .match(/#[\w]+/g);
     var myHeaders = new Headers();
 
     myHeaders.append("Authorization", "Bearer " + token);
@@ -1728,7 +1900,9 @@ function official_temporaryData(obj, type) {
             html: html,
         })
     );
-    formdata.append("hashtag", Hashtags);
+    if (Hashtags) {
+        formdata.append("hashtag", Hashtags);
+    }
     formdata.append("is_official", 1);
     formdata.append("is_temporary", 1);
 
@@ -1737,7 +1911,13 @@ function official_temporaryData(obj, type) {
             if (response.ok) {
                 return response.blob();
             }
-            throw new Error("Network response was not ok.");
+            Swal.fire({
+                position: "center",
+                icon: "error",
+                title: "暫存失敗!",
+                showConfirmButton: false,
+                timer: 2500,
+            });
         })
         .then((blob) => {
             // formdata.append("index_image", blob, 'image.png');
@@ -1775,9 +1955,21 @@ function official_temporaryData(obj, type) {
                 requestOptions
             ).then((response) => {
                 if (!response.ok) {
-                    alert("標題重複");
+                    Swal.fire({
+                        position: "center",
+                        icon: "error",
+                        title: "暫存失敗!",
+                        showConfirmButton: false,
+                        timer: 2500,
+                    });
                 } else {
-                    window.location.reload();
+                    Swal.fire({
+                        position: "center",
+                        icon: "success",
+                        title: "暫存成功!",
+                        showConfirmButton: false,
+                        timer: 2500,
+                    });
                 }
             });
         }
@@ -1805,7 +1997,13 @@ function official_temporaryData(obj, type) {
                     if (response.ok) {
                         return response.blob();
                     }
-                    throw new Error("Network response was not ok.");
+                    Swal.fire({
+                        position: "center",
+                        icon: "error",
+                        title: "暫存失敗!",
+                        showConfirmButton: false,
+                        timer: 2500,
+                    });
                 })
                 .then((blob) => {
                     formdata.append("index_image", blob, "image.png");
@@ -1814,9 +2012,21 @@ function official_temporaryData(obj, type) {
                         requestOptions
                     ).then((response) => {
                         if (!response.ok) {
-                            alert("標題重複");
+                            Swal.fire({
+                                position: "center",
+                                icon: "error",
+                                title: "暫存失敗!",
+                                showConfirmButton: false,
+                                timer: 2500,
+                            });
                         } else {
-                            window.location.reload();
+                            Swal.fire({
+                                position: "center",
+                                icon: "success",
+                                title: "暫存成功!",
+                                showConfirmButton: false,
+                                timer: 2500,
+                            });
                         }
                     });
                 });
@@ -1857,7 +2067,7 @@ function delArticle(button) {
 function generateHashtag(obj) {
     // 獲取輸入框中的值
     let input = obj.value;
-    const output = input.match(/#[^\s#]+/g);
+    const output = input.match(/#[\w]+/g);
     Hashtags = output;
     console.log(Hashtags); //輸出["#ABC", "#qwe"]
 }

@@ -17,7 +17,8 @@
                     <!-- 麵包屑 網頁導覽列-->
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="#">知識圖書館</a></li>
-                        <li class="breadcrumb-item"><a href="{{ url('/knowledge_library/' . $category . '/' . $subcategory) }}">{{ $category }}</a>
+                        <li class="breadcrumb-item"><a
+                                href="{{ url('/knowledge_library/' . $category . '/' . $subcategory) }}">{{ $category }}</a>
 
                         </li>
                         <li class="breadcrumb-item active" aria-current="page">{{ $subcategory }}</li>
@@ -87,7 +88,9 @@
                                 <button class="btn btn-c2 rounded-pill" data-bs-toggle="modal"
                                     data-bs-target="#create_modal"><i class="fas fa-pen me-1"></i>建立營養師文章</button>
                             @else
-                                <p style="display: none" id='html'>{{ $temporary_article[0]['html'] }}</p>
+                            <p style="display: none" id='article_title'>{{ $temporary_article[0]['title'] }}</p>
+                            <p style="display:none" id='article_category'>{{ $temporary_article[0]['category'][0]['name'] }}</p>
+                            <p style="display: none" id='html'>{{ $temporary_article[0]['html'] }}</p>
                                 <button class="btn btn-c2 rounded-pill" data-bs-toggle="modal"
                                     data-bs-target="#create_modal" onclick="getValue(this, 'post')"><i
                                         class="fas fa-pen me-1"></i>建立營養師文章</button>
@@ -98,8 +101,9 @@
                         <div class="row g-3 align-items-center float-end">
                             <div class="col-auto pe-0">
                                 <select class="form-select" id="articleSortKnowledge" style="font-size: var(--fs-16)">
-                                    <option value='-created_at' {{ $sort == '-created_at' ? 'selected' : '' }}>最新文章</option>
-                                    <option value='-click' {{ $sort == '-click' ? 'selected' : '' }}>熱門文章</option>  
+                                    <option value='-created_at' {{ $sort == '-created_at' ? 'selected' : '' }}>最新文章
+                                    </option>
+                                    <option value='-click' {{ $sort == '-click' ? 'selected' : '' }}>熱門文章</option>
                                 </select>
                             </div>
                         </div>
@@ -126,7 +130,8 @@
                                                 <p style="display:none" id='hashtags'>{{ $article['hashtag'] }}
                                                     <!--文章標題-->
                                                 <h5 class="article-title" id="article_id_title">
-                                                    <a href="{{ route('knowledge_article', ['id' => $article['id']]) }}">{{ $article['title'] }}</a>
+                                                    <a
+                                                        href="{{ route('knowledge_article', ['id' => $article['id']]) }}">{{ $article['title'] }}</a>
                                                 </h5>
                                                 <p style="display: none" id='html'>{{ $article['html'] }}</p>
                                                 <!--文章內文摘要-->
@@ -142,30 +147,34 @@
                                                             <i class="fas fa-edit ct-sub-1 me-1"></i>
                                                         </button>
 
-                                                        <div class="dropdown d-inline" data-bs-toggle="tooltip" 
-                                                        data-bs-title="刪除" data-bs-placement="top">
-                                                            <button class="btn btn-sm dropdown-toggle" type="button" 
-                                                            data-bs-toggle="dropdown">
+                                                        <div class="dropdown d-inline" data-bs-toggle="tooltip"
+                                                            data-bs-title="刪除" data-bs-placement="top">
+                                                            <button class="btn btn-sm dropdown-toggle" type="button"
+                                                                data-bs-toggle="dropdown">
                                                                 <i class="fas fa-exclamation-circle ct-sub-1 me-1"></i>
                                                             </button>
                                                             <ul class="dropdown-menu">
                                                                 <li>
-                                                                    <button type="button" onclick="delArticle(this)" 
-                                                                    class="dropdown-item">刪除文章</button>
+                                                                    <button type="button" onclick="delArticle(this)"
+                                                                        class="dropdown-item">刪除文章</button>
                                                                 </li>
                                                             </ul>
                                                         </div>
                                                     @endif
                                                     <!--按鑽數 資料填入span-->
-                                                    <i class="fas fa-heart {{ $article['like']['in_user'][0] == 1 ? 'ct-txt-2' : 'ct-sub-1' }} me-1"></i>
-                                                    <span class="me-2 like_count" id='like_count'>{{ $article['like']['count'] }}</span>
+                                                    <i
+                                                        class="fas fa-heart {{ $article['like']['in_user'][0] == 1 ? 'ct-txt-2' : 'ct-sub-1' }} me-1"></i>
+                                                    <span class="me-2 like_count"
+                                                        id='like_count'>{{ $article['like']['count'] }}</span>
                                                     <i class="fas fa-comment me-1"></i>
                                                     <span class="me-2">{{ $article['comment_count'] }}</span>
-                                                    <i class="fas fa-share {{ $article['share']['in_user'][0] == 1 ? 'ct-txt-2' : 'ct-sub-1' }} me-1"></i>
-                                                    <span class="me-2" id='share_count'>{{ $article['share']['count'] }}</span>
+                                                    <i
+                                                        class="fas fa-share {{ $article['share']['in_user'][0] == 1 ? 'ct-txt-2' : 'ct-sub-1' }} me-1"></i>
+                                                    <span class="me-2"
+                                                        id='share_count'>{{ $article['share']['count'] }}</span>
                                                     <!--收藏文章 onclick()帶入文章id-->
-                                                    <button class="btn btn-sm p-0 openBookmark" 
-                                                    id="openBookmark_{{ $article['id'] }}"
+                                                    <button class="btn btn-sm p-0 openBookmark"
+                                                        id="openBookmark_{{ $article['id'] }}"
                                                         onclick="openBookmark('{{ $article['id'] }}')"><i
                                                             class="{{ $article['bookmark']['in_user'][0] == 1 ? 'fas ct-txt-2' : 'far ct-sub-1' }} fa-bookmark me-1"></i></button>
                                                 </div>
@@ -464,7 +473,7 @@
             <div class="modal-content">
                 <input type="hidden" id="return_content" name="content">
                 <input type="hidden" id="return_html" name="html">
-                <input type="hidden" id='article_id'>
+                <input type="hidden" id="article_id">
                 <div class="modal-header pb-0 border-bottom-0">
                     <h1 class="modal-title fs-5 ct-txt-2 fw-bold">修改聊療，一起聊聊吧🙂</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -507,37 +516,37 @@
                             <textarea class="form-control" rows="7" id="patch_editor" name="patch_editor"></textarea>
                         </div>
                         <!-- <div class="col-12 vote_div">
-                                <div class="mb-2">
-                                    <input type="text" class="form-control" id="qa_title" placeholder="投票問題：描述發起投票的問題" />
-                                </div>
-                                <div class="mb-2" id="vote_item_list">
-                                    <input type="text" class="form-control my-1" id="vote_item1" placeholder="選項1" />
-                                    <input type="text" class="form-control my-1" id="vote_item2" placeholder="選項2" />
-                                </div>
-                                <div class="mb-2">
-                                    <button id="add_voteitem_btn" class="col-12 btn btn-secondary text-start"><i class="bi bi-plus-circle-fill me-2"></i>新增選項</button>
-                                </div>
-                                <div class="mb-2 align-items-center">
-                                    <div class="col-auto">
-                                        <label for="input_vote_type" class="col-form-label">投票方式</label>
+                                    <div class="mb-2">
+                                        <input type="text" class="form-control" id="qa_title" placeholder="投票問題：描述發起投票的問題" />
                                     </div>
-                                    <div class="col-auto">
-                                        <select class="form-select" id="input_vote_type">
-                                            <option selected>選擇投票方式</option>
-                                            <option value="radio">單選</option>
-                                            <option value="check">複選</option>
-                                        </select>
+                                    <div class="mb-2" id="vote_item_list">
+                                        <input type="text" class="form-control my-1" id="vote_item1" placeholder="選項1" />
+                                        <input type="text" class="form-control my-1" id="vote_item2" placeholder="選項2" />
                                     </div>
-                                </div>
-                                <div class="mb-2 align-items-center">
-                                    <div class="col-auto">
-                                        <label for="input_vote_time" class="col-form-label">投票結束時間</label>
+                                    <div class="mb-2">
+                                        <button id="add_voteitem_btn" class="col-12 btn btn-secondary text-start"><i class="bi bi-plus-circle-fill me-2"></i>新增選項</button>
                                     </div>
-                                    <div class="col-auto">
-                                        <input type="datetime-local" class="form-control" id="input_vote_time" />
+                                    <div class="mb-2 align-items-center">
+                                        <div class="col-auto">
+                                            <label for="input_vote_type" class="col-form-label">投票方式</label>
+                                        </div>
+                                        <div class="col-auto">
+                                            <select class="form-select" id="input_vote_type">
+                                                <option selected>選擇投票方式</option>
+                                                <option value="radio">單選</option>
+                                                <option value="check">複選</option>
+                                            </select>
+                                        </div>
                                     </div>
-                                </div>
-                            </div> -->
+                                    <div class="mb-2 align-items-center">
+                                        <div class="col-auto">
+                                            <label for="input_vote_time" class="col-form-label">投票結束時間</label>
+                                        </div>
+                                        <div class="col-auto">
+                                            <input type="datetime-local" class="form-control" id="input_vote_time" />
+                                        </div>
+                                    </div>
+                                </div> -->
                         <div class="col-12">
                             <input class="form-control" type="text" id="patch_input_topic"
                                 placeholder="#話題：可以根據你的文章內容，輸入半形的#，可以新增多個話題喔！" />
