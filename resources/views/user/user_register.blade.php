@@ -853,7 +853,7 @@
                                     <input class="form-check-input" type="checkbox" value=""
                                         id="mail_confirm_check" />
                                     <label class="form-check-label" for="mail_confirm_check"> 已閱讀並同意
-                                    <a href="{{ url('/tos') }}" class="">服務條款</a>及<a href="{{ url('/privacy') }}" class="">隱私權政策</a></label>
+                                    <a href="{{ url('/tos') }}" target="_blank">服務條款</a>及<a href="{{ url('/privacy') }}" target="_blank">隱私權政策</a></label>
                                 </div>
                             </div>
                             <div class="col-12 my-2 text-center">
