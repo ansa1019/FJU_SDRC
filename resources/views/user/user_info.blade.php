@@ -341,13 +341,14 @@
     </div>
 
     <!--重設密碼modal-->
+
     <!-- 重设密码 modal -->
     <div class="modal fade" id="pwdModal" tabindex="-1">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="exampleModalLabel">
-                        <i class="bi bi-lock-fill ct-txt-1 me-2"></i>设定密码
+                        <i class="bi bi-lock-fill ct-txt-1 me-2"></i>設定密碼
                     </h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
@@ -356,17 +357,19 @@
                         <div class="col-md col-lg-8">
                             <form id="passwordForm">
                                 @csrf
-                                <!-- 隐藏输入，存储用户ID -->
-                                <input type="hidden" id="user_id" name="user_id" value="{{ Auth::user()->id }}">
+                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                <!-- 隱藏的輸入框，用於存儲用戶電子郵件 -->
+                                <input type="hidden" id="user_email_forpassword" name="user_email"
+                                    value="{{ $username }}">
 
                                 <div id="step1">
                                     <div class="row g-3 mb-3 align-items-start">
                                         <div class="col-4">
-                                            <label for="old_password" class="col-form-label">旧密码</label>
+                                            <label for="old_password" class="col-form-label">舊密碼</label>
                                         </div>
                                         <div class="col">
                                             <input type="password" id="old_password" name="old_password"
-                                                placeholder="请输入旧密码" class="form-control">
+                                                placeholder="請輸入舊密碼" class="form-control">
                                             <div class="error text-danger"></div>
                                         </div>
                                     </div>
@@ -375,19 +378,20 @@
                                             onclick="validateOldPassword()">下一步</button>
                                     </div>
                                 </div>
+
                                 <div id="step2" style="display: none;">
                                     <div class="row g-3 mb-3 align-items-start">
                                         <div class="col-4">
-                                            <label for="new_password" class="col-form-label">新密码</label>
+                                            <label for="new_password" class="col-form-label">新密碼</label>
                                         </div>
                                         <div class="col">
                                             <input type="password" id="new_password" name="new_password"
-                                                placeholder="必须包含英文大小写，至少8个字符" class="form-control">
+                                                placeholder="必須包含英文大小寫，至少8個字符" class="form-control">
                                         </div>
                                     </div>
                                     <div class="row g-3 mb-3 align-items-start">
                                         <div class="col-4">
-                                            <label for="check_password" class="col-form-label">确认新密码</label>
+                                            <label for="check_password" class="col-form-label">確認新密碼</label>
                                         </div>
                                         <div class="col">
                                             <input type="password" id="check_password" name="check_password"
@@ -395,8 +399,9 @@
                                         </div>
                                     </div>
                                     <div class="row g-3 my-4 align-items-center">
-                                        <button type="button" onclick="updatePassword()"
+                                        <button type="button" onclick="resetPassword()"
                                             class="btn btn-c2 rounded-pill px-4 mx-1 col-auto">完成</button>
+
                                         <button type="button" class="btn col-auto mx-1"
                                             data-bs-dismiss="modal">取消</button>
                                     </div>
@@ -408,6 +413,12 @@
             </div>
         </div>
     </div>
+
+
+
+
+
+
 
 
 
