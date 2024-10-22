@@ -110,7 +110,7 @@
                                         </p>
                                     @endif
                                 @endforeach
-                            @else
+                            {{-- @else
                                 <p class="my-2">
                                     步驟1：＿＿＿＿＿＿＿<a href="#"><span class="badge finish_badge">已完成</span></a>
                                 </p>
@@ -122,7 +122,7 @@
                                 </p>
                                 <p class="my-2">
                                     步驟4：＿＿＿＿＿＿＿<a href="#"><span class="badge">去完成</span></a>
-                                </p>
+                                </p> --}}
                             @endif
                             <p class="mt-3 mb-1">任務規則：</p>
                             <div class="task_detail">
