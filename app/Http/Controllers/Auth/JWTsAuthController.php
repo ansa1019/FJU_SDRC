@@ -47,7 +47,7 @@ class JWTsAuthController extends Controller
 
         // 发送 POST 请求到认证 API
         // dd(env('API_IP'));
-        $response = Http::asForm()->post(env('API_IP') . 'api/auth/token/', $formData);
+        $response = Http::asForm()->post(env('API_IP') . 'api/auth/token/', data: $formData);
 
         // 根据 API 响应处理进一步逻辑
         if ($response->successful()) {
