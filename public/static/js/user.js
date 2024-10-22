@@ -18,14 +18,13 @@ usersocket.onmessage = function (e) {
         if (data["notifications"].length > 0) {
             var reddot = document.getElementById("reddot");
             if (!reddot) {
-                var container = document.querySelector(
-                    ".notfiy_bell .nav-link"
-                );
-                var reddot = document.createElement("span");
-                reddot.id = "reddot";
-                reddot.className =
-                    "position-absolute top-25 start-75 translate-middle p-1 bg-danger border border-light rounded-circle";
-                container.append(reddot);
+                document.querySelectorAll(".notify_bell").forEach((x) => {
+                    var reddot = document.createElement("span");
+                    reddot.id = "reddot";
+                    reddot.className =
+                        "position-absolute top-25 start-75 translate-middle p-1 bg-danger border border-light rounded-circle";
+                    container.appendChild(reddot);
+                });
             }
 
             var reddot = document.getElementById("reddotNumber");
