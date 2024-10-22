@@ -151,6 +151,11 @@ body > footer {
         --fs-46: calc(2.875rem - 0.25rem);
         --fs-60: calc(3.75rem - 0.25rem);
     }
+    
+    .footer-px {
+        padding-left: 1vw !important;
+        padding-right: 1vw !important;
+    }
 }
 
 @media screen and (max-width: 425px) {
