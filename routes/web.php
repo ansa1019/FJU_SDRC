@@ -103,8 +103,7 @@ Route::patch('/UserInfoEdit', [App\Http\Controllers\Auth\UserInfoController::cla
 // Route::post( '/UserEditpassword', [App\Http\Controllers\Auth\UserInfoController::class, 'UserEditpassword'])->name('UserEditpassword');
 // Route::patch( '/UserEditpassword', [App\Http\Controllers\Auth\UserInfoController::class, 'UserEditpassword'])->name('UserEditpassword');
 // 用於舊密碼驗證的 POST 路由
-Route::post('/validate-old-password', [App\Http\Controllers\Auth\PasswordController::class, 'validateOldPassword'])->name('validateOldPassword');
-Route::patch('/update-password', [App\Http\Controllers\Auth\PasswordController::class, 'updatePassword'])->name('updatePassword');
+Route::patch('/update-password', [PasswordController::class, 'updatePassword'])->middleware('auth')->name('password.update');
 
 //使用者點數表單
 // Route::post('/exchangeProductform', [App\Http\Controllers\Point\PointController::class, 'exchangeProductform'])->name('exchangeProductform');

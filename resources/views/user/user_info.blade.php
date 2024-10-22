@@ -3,6 +3,7 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
 
+
 @extends('layouts.masterpage')
 
 @section('content')
@@ -353,65 +354,67 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body" style="font-size: var(--fs-18)">
-                    <div class="row d-flex justify-content-center py-3">
-                        <div class="col-md col-lg-8">
-                            <form id="passwordForm">
-                                @csrf
-                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                <!-- 隱藏的輸入框，用於存儲用戶電子郵件 -->
-                                <input type="hidden" id="user_email_forpassword" name="user_email"
-                                    value="{{ $username }}">
 
-                                <div id="step1">
-                                    <div class="row g-3 mb-3 align-items-start">
-                                        <div class="col-4">
-                                            <label for="old_password" class="col-form-label">舊密碼</label>
-                                        </div>
-                                        <div class="col">
-                                            <input type="password" id="old_password" name="old_password"
-                                                placeholder="請輸入舊密碼" class="form-control">
-                                            <div class="error text-danger"></div>
-                                        </div>
+                </div>
+                <div class="row d-flex justify-content-center py-3">
+                    <div class="col-md col-lg-8">
+                        <form id="passwordForm">
+                            @csrf
+                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                            <!-- 隱藏的輸入框，用於存儲用戶電子郵件 -->
+                            <input type="hidden" id="user_email_forpassword" name="user_email"
+                                value="{{ $username }}">
+
+                            <div id="step1">
+                                <div class="row g-3 mb-3 align-items-start">
+                                    <div class="col-4">
+                                        <label for="old_password" class="col-form-label">舊密碼</label>
                                     </div>
-                                    <div class="row g-3 my-4 align-items-center">
-                                        <button type="button" class="btn btn-c2 rounded-pill px-4 mx-1 col-auto"
-                                            onclick="validateOldPassword()">下一步</button>
+                                    <div class="col">
+                                        <input type="password" id="old_password" name="old_password"
+                                            placeholder="請輸入舊密碼" class="form-control">
+                                        <div class="error text-danger"></div>
                                     </div>
                                 </div>
+                                <div class="row g-3 my-4 align-items-center">
+                                    <button type="button" class="btn btn-c2 rounded-pill px-4 mx-1 col-auto"
+                                        onclick="validateOldPassword()">下一步</button>
+                                </div>
+                            </div>
 
-                                <div id="step2" style="display: none;">
-                                    <div class="row g-3 mb-3 align-items-start">
-                                        <div class="col-4">
-                                            <label for="new_password" class="col-form-label">新密碼</label>
-                                        </div>
-                                        <div class="col">
-                                            <input type="password" id="new_password" name="new_password"
-                                                placeholder="必須包含英文大小寫，至少8個字符" class="form-control">
-                                        </div>
+                            <div id="step2" style="display: none;">
+                                <div id="passwordup" data-update-password-route="{{ route('password.update') }}"></div>
+                                <div class="row g-3 mb-3 align-items-start">
+                                    <div class="col-4">
+                                        <label for="new_password" class="col-form-label">新密碼</label>
                                     </div>
-                                    <div class="row g-3 mb-3 align-items-start">
-                                        <div class="col-4">
-                                            <label for="check_password" class="col-form-label">確認新密碼</label>
-                                        </div>
-                                        <div class="col">
-                                            <input type="password" id="check_password" name="check_password"
-                                                class="form-control">
-                                        </div>
-                                    </div>
-                                    <div class="row g-3 my-4 align-items-center">
-                                        <button type="button" onclick="resetPassword()"
-                                            class="btn btn-c2 rounded-pill px-4 mx-1 col-auto">完成</button>
-
-                                        <button type="button" class="btn col-auto mx-1"
-                                            data-bs-dismiss="modal">取消</button>
+                                    <div class="col">
+                                        <input type="password" id="new_password" name="new_password"
+                                            placeholder="必須包含英文大小寫，至少8個字符" class="form-control">
                                     </div>
                                 </div>
-                            </form>
-                        </div>
+                                <div class="row g-3 mb-3 align-items-start">
+                                    <div class="col-4">
+                                        <label for="check_password" class="col-form-label">確認新密碼</label>
+                                    </div>
+                                    <div class="col">
+                                        <input type="password" id="check_password" name="check_password"
+                                            class="form-control">
+                                    </div>
+                                </div>
+                                <div class="row g-3 my-4 align-items-center">
+                                    <button type="button" onclick="resetPassword()"
+                                        class="btn btn-c2 rounded-pill px-4 mx-1 col-auto">完成</button>
+
+                                    <button type="button" class="btn col-auto mx-1" data-bs-dismiss="modal">取消</button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
     </div>
 
 
