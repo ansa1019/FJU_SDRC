@@ -635,7 +635,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: `Bearer ${jwtToken}`, // 添加 JWT Token
+                    Authorization: `Bearer ${jwtToken}`,
                 },
                 body: JSON.stringify(formData),
             });
@@ -648,12 +648,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     timer: 1500,
                 }).then(() => {
                     window.location.href = "/user_login";
-                });
-            } else if (response.status === 403) {
-                Swal.fire({
-                    icon: "error",
-                    title: "错误",
-                    text: "權限不足，請確認您的身份信息。",
                 });
             } else {
                 Swal.fire({

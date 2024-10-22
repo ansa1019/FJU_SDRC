@@ -469,12 +469,5 @@
             }
             var ArticleRoute = "{{ route('knowledge_library') }}";
             var knowledgeArticleUpdateRoute = "{{ route('KnowledgeArticleUpdate') }}";
-            $(document).ready(function() {
-                $('#content').find('li').each(function(index) {
-                    $(this).wrapInner("<a href='#section" + index + "'></a>")
-                    $("h1:contains('" + $(this).text() + "'), h2:contains('" + $(this).text() +
-                        "'), h3:contains('" + $(this).text() + "')").attr('id', 'section' + index);
-                })
-            });
         </script>
     @endsection
