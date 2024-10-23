@@ -191,7 +191,9 @@ footer .row > a {
         right: 45px !important;
     }
 
-    footer a {
+    footer div.row,
+    footer a,
+    footer p {
         font-size: var(--fs-14) !important;
     }
     #topbar-nav-tabs li .dropdown-submenu .dropdown-menu a {
@@ -528,7 +530,12 @@ footer a {
     text-decoration: none;
     text-align: center;
     color: var(--ct-title-1);
-    font-size: var(--fs-17);
+}
+
+footer div.row,
+footer a,
+footer p {
+    font-size: var(--fs-17) !important;
 }
 
 /* 星號重要標示 */
