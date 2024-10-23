@@ -39,7 +39,7 @@
                                     <span class="topic_news">有{{ $article_num[$sub . '_new_article'] }}篇新文章</span> --}}
                                 </div>
                                 <div class="col-auto">
-                                    {{-- <button type="button" class="btn" onclick="notfiy_saved_btn(this)"><i
+                                    {{-- <button type="button" class="btn" onclick="notify_saved_btn(this)"><i
                                         class="fas fa-bell"></i></button> --}}
                                     <button type="button" class="btn btn-c2 rounded-pill follow-saved-btn"
                                         onclick="follow_topic_saved_btn(this)">追蹤中</button>

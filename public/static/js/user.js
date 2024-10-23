@@ -101,7 +101,7 @@ function all_read() {
         })
     );
     $("#notifications_box .rounded-circle").remove();
-    $(".notfiy_bell span").remove();
+    $(".notify_bell span").remove();
     $.ajax({
         type: "POST",
         url: "/setNotifications",
