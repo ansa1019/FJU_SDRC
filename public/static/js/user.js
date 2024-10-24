@@ -757,13 +757,14 @@ $(`input[id='ds_item_16']`).change(function () {
     }
 });
 
-// 當其他選項被點選時（除 ds_item_1 和 ds_item_16）
-$(`input[name*="user_disease_state"]:not("#ds_item_1, #ds_item_16")`).change(
-    function () {
-        // 當選擇其他選項時，禁用並清空 ds_item_other 的輸入框
+// 當其他選項被選擇時（除 ds_item_1 和 ds_item_16）
+$(`input[name*="user_disease_state"]:not("#ds_item_1, #ds_item_16")`).change(function () {
+    // 當選擇其他選項時，禁用並清空 ds_item_other 的輸入框
+    if (!$("#ds_item_16").is(":checked")) {
         $(`input[id='ds_item_other']`).prop("disabled", true).val("");
     }
-);
+});
+
 
 // 當 a_item_1 被點選時
 $(`input[id='a_item_1']`).click(function () {
@@ -793,7 +794,7 @@ $(`input[id='a_item_2']`).click(function () {
 $(`input[id='d_item_1']`).click(function () {
     // 檢查是否已經選中 d_item_1
     if ($(this).is(":checked")) {
-        // 取消選中 d_item_2 並清空 a_item_other 的輸入框，但不禁用 a_item_other
+        // 取消選中 d_item_2 並清空 d_item_other 的輸入框，但不禁用 d_item_other
         $(`input[id='d_item_2']`).prop("checked", false);
         $(`input[id='d_item_other']`).val("");
         // 禁用 d_item_other 輸入框，因為 d_item_2 沒有被選中
@@ -805,7 +806,7 @@ $(`input[id='d_item_1']`).click(function () {
 $(`input[id='d_item_2']`).click(function () {
     // 檢查是否已經選中 d_item_2
     if ($(this).is(":checked")) {
-        // 啟用 a_item_other 輸入框
+        // 啟用 d_item_other 輸入框
         $(`input[id='d_item_other']`).attr("disabled", false);
     } else {
         // 如果取消選中 d_item_2，禁用並清空 d_item_other
@@ -819,7 +820,7 @@ $(`input[id='or_item_1']`).click(function () {
         // 取消選中 or_item_2 並清空 or_item_other 的輸入框，但不禁用 or_item_other
         $(`input[id='or_item_2']`).prop("checked", false);
         $(`input[id='or_item_other']`).val("");
-        // 禁用 d_item_other 輸入框，因為 or_item_2 沒有被選中
+        // 禁用 or_item_other 輸入框，因為 or_item_2 沒有被選中
         $(`input[id='or_item_other']`).attr("disabled", true);
     }
 });
@@ -828,7 +829,7 @@ $(`input[id='or_item_1']`).click(function () {
 $(`input[id='or_item_2']`).click(function () {
     // 檢查是否已經選中 or_item_2
     if ($(this).is(":checked")) {
-        // 啟用 a_item_other 輸入框
+        // 啟用 or_item_other 輸入框
         $(`input[id='or_item_other']`).attr("disabled", false);
     } else {
         // 如果取消選中 or_item_2，禁用並清空 or_item_other
@@ -986,11 +987,11 @@ step_confirm_btn.forEach((item, step_index) => {
                             confirmButtonColor: "#70c6e3",
                         });
                     } else {
-                        if (obj_value.includes("1") == true) {
-                            //第9-12題 答"有"的話，需要檢查有無填寫備註
-                            other_text = $(
-                                `input[name='${obj_key}'][id$='other']`
-                            ).val();
+                        if (obj_value.includes("1")) {
+                            // 第9-12題 答"有"的話，需要檢查有無填寫備註
+                            other_text = $(`input[name='${obj_key}'][id$='other']`).val();
+                            console.log("other_text:", other_text);
+                            
                             if (other_text == "") {
                                 Swal.fire({
                                     title: `請勿填空`,
@@ -999,9 +1000,12 @@ step_confirm_btn.forEach((item, step_index) => {
                                 });
                             } else {
                                 if (step_index == 11) {
-                                    //步驟11: 病史題 將其他填寫選項接寫在病史字串後
-                                    // obj_value = obj_value.replace("1", other_text);
-                                    obj_value = obj_value.replace(",1", "");
+                                    // 步驟11: 病史題 將其他填寫選項接寫在病史字串後
+                                    obj_value = obj_value.replace(/1(,|$)/, `${other_text}$1`);
+                                    // 如果 obj_value 原本是以 "1" 結尾，則用 "other_text" 替代
+                                    if (obj_value.endsWith(",1")) {
+                                        obj_value = obj_value.slice(0, -2) + `, ${other_text}`;
+                                    }
                                 } else {
                                     obj_value += `, ${other_text}`;
                                 }
