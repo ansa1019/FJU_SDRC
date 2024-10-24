@@ -1150,7 +1150,7 @@ function postdata(obj, type) {
     const randomInteger = Math.floor(Math.random() * 4) + 1;
     const Hashtags = $("#create_input_topic")
         .val()
-        .match(/#[\w]+/g);
+        .match(/#[\u4e00-\u9fa5\w]+/g);
     var myHeaders = new Headers();
 
     myHeaders.append("Authorization", "Bearer " + token);
@@ -1371,7 +1371,7 @@ function official_postdata(obj, type) {
     const randomInteger = Math.floor(Math.random() * 4) + 1;
     const Hashtags = $("#create_input_topic")
         .val()
-        .match(/#[\w]+/g);
+        .match(/#[\u4e00-\u9fa5\w]+/g);
     var myHeaders = new Headers();
 
     myHeaders.append("Authorization", "Bearer " + token);
@@ -1589,7 +1589,7 @@ function patchData() {
     var title = $("#input_patch_title").val();
     const Hashtags = $("#patch_input_topic")
         .val()
-        .match(/#[\w]+/g);
+        .match(/#[\u4e00-\u9fa5\w]+/g);
     var category = document.getElementById("patch_treat_class").value;
     var id_type = document.getElementById("patch_id_type").value;
     var myHeaders = new Headers();
@@ -1662,7 +1662,7 @@ function official_patchData() {
     var title = $("#input_patch_title").val();
     const Hashtags = $("#patch_input_topic")
         .val()
-        .match(/#[\w]+/g);
+        .match(/#[\u4e00-\u9fa5\w]+/g);
     var category = document.getElementById("patch_treat_class").value;
     var id_type = document.getElementById("patch_id_type").value;
     var myHeaders = new Headers();
@@ -1737,7 +1737,7 @@ function temporaryData(obj, type) {
     const randomInteger = Math.floor(Math.random() * 4) + 1;
     const Hashtags = $("#create_input_topic")
         .val()
-        .match(/#[\w]+/g);
+        .match(/#[\u4e00-\u9fa5\w]+/g);
     var myHeaders = new Headers();
 
     myHeaders.append("Authorization", "Bearer " + token);
@@ -1893,7 +1893,7 @@ function official_temporaryData(obj, type) {
     const randomInteger = Math.floor(Math.random() * 4) + 1;
     const Hashtags = $("#create_input_topic")
         .val()
-        .match(/#[\w]+/g);
+        .match(/#[\u4e00-\u9fa5\w]+/g);
     var myHeaders = new Headers();
 
     myHeaders.append("Authorization", "Bearer " + token);
@@ -2076,7 +2076,7 @@ function delArticle(button) {
 function generateHashtag(obj) {
     // 獲取輸入框中的值
     let input = obj.value;
-    const output = input.match(/#[\w]+/g);
+    const output = input.match(/#[\u4e00-\u9fa5\w]+/g);
     Hashtags = output;
     console.log(Hashtags); //輸出["#ABC", "#qwe"]
 }

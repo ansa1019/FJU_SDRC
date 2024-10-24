@@ -29,7 +29,8 @@
                                         data-bs-target="#create_modal"><i class="fas fa-pen me-1"></i>建立聊療</button>
                                 @else
                                     <p style="display: none" id='article_title'>{{ $temporary_article[0]['title'] }}</p>
-                                    <p style="display:none" id='article_category'>{{ $temporary_article[0]['category'][0]['name'] }}</p>
+                                    <p style="display:none" id='article_category'>
+                                        {{ $temporary_article[0]['category'][0]['name'] }}</p>
                                     <p style="display: none" id='html'>{{ $temporary_article[0]['html'] }}</p>
                                     <button class="btn btn-c2 rounded-pill" data-bs-toggle="modal"
                                         data-bs-target="#create_modal" onclick="getValue(this, 'post')"><i
@@ -57,9 +58,8 @@
                                     </button>
                                 @else
                                     <button class="btn btn-c2 rounded-pill"
-                                        onclick="banerror(@json(session('banlist.article')))">
-                                        <i class="fas fa-pen me-1"></i>建立聊療
-                                    </button>
+                                        onclick='banerror(@json(session("banlist.article")))'>
+                                        <i class="fas fa-pen me-1"></i>建立聊療</button>
                                 @endif
                             @endif
                         @endif

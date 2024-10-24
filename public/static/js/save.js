@@ -467,15 +467,15 @@ function refreshBookmark() {
 
 //作者、話題追蹤頁
 //通知按鈕
-function notfiy_saved_btn(obj) {
-    let notfiy_enable = $(obj)
+function notify_saved_btn(obj) {
+    let notify_enable = $(obj)
         .parent()
         .find("i")
         .attr("class")
         .includes("slash");
     let title = $(obj).parents().eq(1).find(".topic_title").html(); //選中的作者/話題
     console.log(title);
-    if (notfiy_enable) {
+    if (notify_enable) {
         $(obj).parent().find("i").removeClass("fa-bell-slash");
         $(obj).parent().find("i").addClass("fa-bell");
         //後端處理

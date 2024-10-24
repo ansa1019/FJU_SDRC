@@ -14,12 +14,12 @@ const now_today = dayjs().format("YYYY-MM-DD");
 
 $.ajaxSetup({
     headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    }
+        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+    },
 });
 
 document.addEventListener("click", function (e) {
-    let checkNotifyShow = $(e.target).parents(".notfiy_bell,.notifications");
+    let checkNotifyShow = $(e.target).parents(".notify_bell,.notifications");
     if (checkNotifyShow.length == 0) {
         $("#notifications_box").removeClass("show");
         notify_dropdown = false;
@@ -28,7 +28,7 @@ document.addEventListener("click", function (e) {
 
 //點選通知 打開選單
 let notify_dropdown = false;
-$(".notfiy_bell").click(function (e) {
+$(".notify_bell").click(function (e) {
     if (notify_dropdown) {
         $("#notifications_box").removeClass("show");
         notify_dropdown = false;
@@ -37,7 +37,6 @@ $(".notfiy_bell").click(function (e) {
         notify_dropdown = true;
     }
 });
-
 
 $(document).ready(function () {
     sessionStorage.setItem("previousPageUrl", window.location.href);
@@ -68,6 +67,48 @@ $(document).ready(function () {
         e.stopPropagation();
         e.preventDefault();
     });
+
+    if (
+        $(".notify_bell:visible").position().left +
+            $(".notify_bell:visible").width() / 2 +
+            $("#notifications_box").width() / 2 >
+        $(window).width() - 20
+    ) {
+        let right =
+            $(window).width() -
+            $(".notify_bell:visible").position().left -
+            $(".notify_bell:visible").width() * 2;
+        $("#notifications_box").css("right", right + "px");
+    } else {
+        let left =
+            $(".notify_bell:visible").position().left +
+            $(".notify_bell:visible").width() / 2 -
+            $("#notifications_box").width() / 2;
+        $("#notifications_box").css("left", left + "px");
+    }
+});
+
+$(window).resize(function () {
+    if (
+        $(".notify_bell:visible").position().left +
+            $(".notify_bell:visible").width() / 2 +
+            $("#notifications_box").width() / 2 >
+        $(window).width() - 20
+    ) {
+        let right =
+            $(window).width() -
+            $(".notify_bell:visible").position().left -
+            $(".notify_bell:visible").width() * 2;
+        $("#notifications_box").css("left", "auto");
+        $("#notifications_box").css("right", right + "px");
+    } else {
+        let left =
+            $(".notify_bell:visible").position().left +
+            $(".notify_bell:visible").width() / 2 -
+            $("#notifications_box").width() / 2;
+        $("#notifications_box").css("left", left + "px");
+        $("#notifications_box").css("right", "auto");
+    }
 });
 
 //即時聊天室 close按鈕

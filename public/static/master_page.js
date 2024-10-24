@@ -9,7 +9,7 @@ const now_day = dayjs().day();
 const now_today = dayjs().format("YYYY-MM-DD");
 
 document.addEventListener("click", function (e) {
-    let checkNotifyShow = $(e.target).parents(".notfiy_bell,.notifications");
+    let checkNotifyShow = $(e.target).parents(".notify_bell,.notifications");
     if (checkNotifyShow.length == 0) {
         $("#notifications_box").removeClass("show");
         notify_dropdown = false;
@@ -18,7 +18,7 @@ document.addEventListener("click", function (e) {
 
 //點選通知 打開選單
 let notify_dropdown = false;
-$(".notfiy_bell").click(function (e) {
+$(".notify_bell").click(function (e) {
     if (notify_dropdown) {
         $("#notifications_box").removeClass("show");
         notify_dropdown = false;

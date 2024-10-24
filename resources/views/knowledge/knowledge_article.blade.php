@@ -28,13 +28,7 @@
                 <nav class="mb-4">
                     <ol class="breadcrumb">
                         {{-- <li class="breadcrumb-item"><a href="{{ route('knowledge_library',$maincate . '/' . $category['0']['name']) }}" class="ct-title-1 text-decoration-none mx-2"
-                            id='article_category'>知識圖書館</a></li> --}}
-
-                        <li class="breadcrumb-item active"><a
-                                href="{{ route('knowledge_library', $maincate . '/' . $category['0']['name']) }}"
-                                class="ct-title-1 text-decoration-none mx-2"
-                                id='article_category'>{{ $category['0']['name'] }}</a></li>
-                            
+                            id='article_category'>知識圖書館</a></li> --}}                            
                         <li class="breadcrumb-item active">知識圖書館&nbsp;/&nbsp;<a href="{{ route('knowledge_library',$maincate . '/' . $category['0']['name']) }}" class="breadcrumb-item active"
                             id='article_category'>{{ $category['0']['name'] }}</a></li>
                         {{-- <!-- <li class="breadcrumb-item active" aria-current="page">{{ $article_title }}</li> --> --}}
@@ -469,12 +463,5 @@
             }
             var ArticleRoute = "{{ route('knowledge_library') }}";
             var knowledgeArticleUpdateRoute = "{{ route('KnowledgeArticleUpdate') }}";
-            $(document).ready(function() {
-                $('#content').find('li').each(function(index) {
-                    $(this).wrapInner("<a href='#section" + index + "'></a>")
-                    $("h1:contains('" + $(this).text() + "'), h2:contains('" + $(this).text() +
-                        "'), h3:contains('" + $(this).text() + "')").attr('id', 'section' + index);
-                })
-            });
         </script>
     @endsection

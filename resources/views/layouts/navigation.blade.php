@@ -7,7 +7,7 @@
             </a>
             <div class="align-items-center">
                 @if ($nickname != '')
-                    <button class="navbar-toggler notfiy_bell" type="button" data-bs-toggle="tooltip"
+                    <button class="navbar-toggler notify_bell" type="button" data-bs-toggle="tooltip"
                         data-bs-title="通知" data-bs-placement="bottom">
                         <i class="fas fa-bell ct-txt-1"></i>
                         <!--如有新通知 顯示紅點-->
@@ -70,7 +70,7 @@
                                 class="nav-link active">檢舉管理</a></li>
                     @endif
                     @if ($nickname != '')
-                        <li class="nav-item notfiy_bell d-none d-lg-block" data-bs-toggle="tooltip" data-bs-title="通知"
+                        <li class="nav-item notify_bell d-none d-lg-block" data-bs-toggle="tooltip" data-bs-title="通知"
                             data-bs-placement="bottom">
                             <a class="nav-link" style="cursor: pointer">
                                 <i class="fas fa-bell"></i>
@@ -185,7 +185,7 @@
         );
         if ($("#notifications_box .rounded-circle").text() == 1) {
             $("#notifications_box .rounded-circle").remove();
-            $(".notfiy_bell span").remove();
+            $(".notify_bell span").remove();
         } else {
             $("#notify_" + id +
                 " .rounded-circle").remove();

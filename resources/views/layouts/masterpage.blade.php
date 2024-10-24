@@ -23,6 +23,8 @@
     <!-- Datetime picker -->
     <link rel="stylesheet"
         href="{{ asset('static/bootstrap-datepicker-master/dist/css/bootstrap-datepicker.min.css') }}" />
+    <!-- Image cropper -->
+    <link href="https://unpkg.com/cropperjs/dist/cropper.min.css" rel="stylesheet" />
 
     <!-- Sweet Alert -->
     <link rel="stylesheet" href="{{ asset('static/sweetalert2-11.7.1/dist/sweetalert2.min.css') }}" />
@@ -40,12 +42,12 @@
     <link rel="stylesheet" href="{{ asset('static/css/chat_room.css') }}" />
     <link rel="stylesheet" href="{{ asset('static/css/share_modal.css') }}" />
     <link rel="stylesheet" href="{{ asset('static/css/point.css') }}" />
-
     <!-- JS -->
     <script src="{{ asset('static/bootstrap-4.6.0-dist/jquery-3.6.0.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"
         integrity="sha384-SR1sx49pcuLnqZUnnPwx6FCym0wLsk5JZuNx2bPPENzswTNFaQU1RDvt3wT4gWFG" crossorigin="anonymous">
     </script>
+    <script src="https://unpkg.com/cropperjs/dist/cropper.min.js"></script>
     <!-- jsCalendar -->
     <link rel="stylesheet" type="text/css" href="static/jsCalendar-master/source/jsCalendar.css" />
     <!-- chat room -->

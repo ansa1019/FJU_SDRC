@@ -21,6 +21,13 @@ body > footer {
     margin-left: 0;
     margin-right: 0;
 }
+footer .row {
+    margin: 1rem;
+}
+footer .row > a {
+    width: auto;
+    padding: 0;
+}
 
 .ct-txt-1 {
     color: #54beec !important;
@@ -151,6 +158,11 @@ body > footer {
         --fs-46: calc(2.875rem - 0.25rem);
         --fs-60: calc(3.75rem - 0.25rem);
     }
+
+    .footer-px {
+        padding-left: 1vw !important;
+        padding-right: 1vw !important;
+    }
 }
 
 @media screen and (max-width: 425px) {
@@ -179,7 +191,9 @@ body > footer {
         right: 45px !important;
     }
 
-    footer a {
+    footer div.row,
+    footer a,
+    footer p {
         font-size: var(--fs-14) !important;
     }
     #topbar-nav-tabs li .dropdown-submenu .dropdown-menu a {
@@ -317,7 +331,6 @@ header,
     display: none;
     position: absolute;
     top: 63px;
-    right: 62px;
     border-radius: 5px 0px 5px 5px;
     background-color: #fff;
     border-left: 1px #eee solid;
@@ -507,7 +520,8 @@ header,
     background-color: var(--ct-sub-3);
 } */
 footer i {
-    font-size: var(--fs-24);
+    font-size: var(--fs-32);
+    line-height: 2rem;
     color: var(--ct-color-1);
 }
 
@@ -515,7 +529,12 @@ footer a {
     text-decoration: none;
     text-align: center;
     color: var(--ct-title-1);
-    font-size: var(--fs-17);
+}
+
+footer div.row,
+footer a,
+footer p {
+    font-size: var(--fs-17) !important;
 }
 
 /* 星號重要標示 */

@@ -75,7 +75,7 @@
                         <img src="static/img/us-logo.png" alt="" height="40" class="d-inline-block align-text-top" />
                     </a>
                     <div class="align-items-center">
-                        <button class="navbar-toggler notfiy_bell" type="button" data-bs-toggle="tooltip" data-bs-title="通知" data-bs-placement="bottom">
+                        <button class="navbar-toggler notify_bell" type="button" data-bs-toggle="tooltip" data-bs-title="通知" data-bs-placement="bottom">
                             <i class="fas fa-bell ct-txt-1"></i>
                         </button>
                         <button class="navbar-toggler border" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown">
@@ -107,7 +107,7 @@
                             </li>
                             <li class="nav-item"><a href="#" class="nav-link active">暢聊咖啡廳</a></li>
                             <li class="nav-item"><a href="#" class="nav-link active">營養師諮詢</a></li>
-                            <li class="nav-item notfiy_bell d-none d-lg-block" data-bs-toggle="tooltip" data-bs-title="通知" data-bs-placement="bottom">
+                            <li class="nav-item notify_bell d-none d-lg-block" data-bs-toggle="tooltip" data-bs-title="通知" data-bs-placement="bottom">
                                 <a class="nav-link" style="cursor: pointer">
                                     <i class="fas fa-bell"></i>
                                 </a>

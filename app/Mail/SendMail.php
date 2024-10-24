@@ -70,7 +70,7 @@ class SendMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: '優德莎莉會員註冊成功',
+            subject: '莎莉聊療吧｜會員註冊成功',
         );
     }
 
