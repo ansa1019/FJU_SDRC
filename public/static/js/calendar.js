@@ -152,12 +152,6 @@ $(document).ready(function () {
         refreshEvents(calendarEvents);
     });
 
-    //今日按鈕 月曆快速點到當天日期
-    $("#today_btn").click(function () {
-        calendar.set(dayjs(current).format(date_format));
-        showEvents(current);
-    });
-
     //當未點擊月曆區塊、選擇日期 即顯示提醒事項而非日期事件
     $("#calendar").focusout(function () {
         $("#event-reminder").show();
