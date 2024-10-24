@@ -1292,10 +1292,14 @@ $("#chk_sub_btn").on("click", function () {
                 ).padStart(6, "0");
 
                 // 使用 fetch 發送驗證碼到後端
+                // 在 POST 請求中添加 CSRF token
                 fetch("/chkmail", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": document
+                            .querySelector('meta[name="csrf-token"]')
+                            .getAttribute("content"),
                     },
                     body: JSON.stringify({
                         user_name: email,
@@ -1406,15 +1410,27 @@ function forget_password() {
     var formdata = new FormData();
     formdata.append("email", email);
     formdata.append("new_password", new_password);
+    formdata.append("confirm_password", confirm_password);
+    formdata.append("verification_code", verification_code); // 新增驗證碼
 
     var requestOptions = {
         method: "POST",
         body: formdata,
+        headers: {
+            "X-CSRF-TOKEN": document
+                .querySelector('meta[name="csrf-token"]')
+                .getAttribute("content"), // 添加 CSRF Token
+        },
     };
 
     fetch(apiIP + "/api/auth/update_password", requestOptions)
-        .then((response) => response.json())
-        .then(function (data) {
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error("Network response was not ok");
+            }
+            return response.json();
+        })
+        .then((data) => {
             if (data.success) {
                 Swal.fire({
                     title: "密碼修改成功！",
@@ -1423,7 +1439,6 @@ function forget_password() {
                     showConfirmButton: false,
                     timer: 1500,
                 });
-                // 重置表單或跳轉
             } else {
                 Swal.fire({
                     title: "密碼修改失敗",
@@ -1434,7 +1449,7 @@ function forget_password() {
                 });
             }
         })
-        .catch(function (error) {
+        .catch((error) => {
             console.error("Error:", error);
             Swal.fire({
                 title: "伺服器錯誤！",
