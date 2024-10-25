@@ -185,6 +185,7 @@ function updateRemainingPoint() {
     //     });
 
     const productItems = document.querySelectorAll(".pd-item");
+    var products = [];
 
     productItems.forEach((productItem, index) => {
         const pdNumElement = productItem.querySelector(".pd_num");
@@ -193,58 +194,98 @@ function updateRemainingPoint() {
         const productQuantity = parseInt(pdNumElement.textContent, 10);
         if (productQuantity >= 1) {
             // console.log(`商品名稱: ${productName}, 數量: ${productQuantity}`);
-            var myHeaders2 = new Headers();
-
-            myHeaders2.append("Authorization", "Bearer " + authorization);
-
-            var formdata = new FormData();
-            formdata.append("product", productName);
-            formdata.append("amount", productQuantity);
-
-            var exchangeRequestOptions = {
-                method: "POST",
-                headers: myHeaders2,
-                body: formdata,
-                redirect: "follow",
-            };
-
-            fetch(apiIP + "api/point/exchange/", exchangeRequestOptions)
-                .then((response) => {
-                    if (!response.ok) {
-                        throw new Error("Network response was not ok.");
-                    }
-                    return response.json();
-                })
-                .then((data) => {
-                    var formdata2 = new FormData();
-                    formdata2.append("exchange", data["id"]);
-                    // 後端會將 # 依序替換成 兌換數量、商品名稱、兌換總點數、剩餘點數
-                    formdata2.append(
-                        "content",
-                        "您兌換了 # 個 # ，使用點數共 # 點，剩餘點數為 # 點!"
-                    );
-                    var requestOptions2 = {
-                        method: "POST",
-                        headers: myHeaders,
-                        body: formdata2,
-                        redirect: "follow",
-                    };
-
-                    fetch(
-                        apiIP + "api/notifications/notifications/",
-                        requestOptions2
-                    );
-                    window.location.reload();
-                })
-                .catch((error) => {
-                    Swal.fire({
-                        position: "center",
-                        icon: "error",
-                        title: "兌換失敗!",
-                        showConfirmButton: false,
-                        timer: 1500,
-                    });
-                });
+            products.push({ product: productName, amount: productQuantity });
         }
     });
+
+    if (products.length == 0) {
+        Swal.fire({
+            position: "center",
+            icon: "error",
+            title: "請選擇商品！",
+            showConfirmButton: false,
+            timer: 2500,
+        });
+        return;
+    }
+
+    var myHeaders2 = new Headers();
+    myHeaders2.append("Authorization", "Bearer " + authorization);
+
+    var formdata = new FormData();
+    formdata.append("products", JSON.stringify(products));
+
+    var exchangeRequestOptions = {
+        method: "POST",
+        headers: myHeaders2,
+        body: formdata,
+        redirect: "follow",
+    };
+
+    fetch(apiIP + "api/point/exchange/", exchangeRequestOptions)
+        .then((response) => {
+            return response.json();
+        })
+        .then((data) => {
+            if (!("error" in data)) {
+                // // 後端會將 # 依序替換成 兌換數量、商品名稱、兌換總點數、剩餘點數
+                // // 顯示內容為 first_content+products_content+point_content
+                // // 當有2個以上商品products_content會在句尾自動增加"、"
+                // var formdata2 = new FormData();
+                // formdata2.append("first_content", "您兌換了 ");
+                // formdata2.append("products_content", "# 個 #");
+                // formdata2.append(
+                //     "point_content",
+                //     "，使用點數共 # 點，剩餘點數為 # 點!"
+                // );
+                // formdata2.append("products", JSON.stringify(data["products"]));
+                // var requestOptions2 = {
+                //     method: "POST",
+                //     headers: myHeaders,
+                //     body: formdata2,
+                // };
+
+                // fetch(
+                //     apiIP + "api/notifications/notifications/",
+                //     requestOptions2
+                // );
+
+                Swal.fire({
+                    position: "center",
+                    icon: "success",
+                    title: "兌換成功!",
+                    text: "您的兌換碼如下：" + item["exchage_token"],
+                    confirmButtonColor: "#70c6e3",
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.reload();
+                    }
+                });
+            } else {
+                Swal.fire({
+                    position: "center",
+                    icon: "error",
+                    title: data["error"],
+                    showConfirmButton: true,
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    confirmButtonText: "確定",
+                    confirmButtonColor: "#d33",
+                });
+            }
+        })
+        .catch((error) => {
+            Swal.fire({
+                position: "center",
+                icon: "error",
+                title: error,
+                showConfirmButton: true,
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                confirmButtonText: "確定",
+                confirmButtonColor: "#d33",
+            });
+        });
 }

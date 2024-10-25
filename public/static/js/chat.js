@@ -514,9 +514,7 @@ function user_send_msg(chat_room) {
             allowOutsideClick: false, // 禁止點擊外部關閉
             allowEscapeKey: false, // 禁止按 ESC 鍵關閉
             confirmButtonText: "確定", // 確認按鈕文字
-            customClass: {
-                confirmButton: "btn btn-c2", // 自定義按鈕類別
-            },
+            confirmButtonColor: "#d33",
         });
     } else {
         banerror(banlist["chat"]);
