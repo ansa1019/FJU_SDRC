@@ -772,13 +772,14 @@ $(`input[id='ds_item_16']`).change(function () {
 });
 
 // 當其他選項被選擇時（除 ds_item_1 和 ds_item_16）
-$(`input[name*="user_disease_state"]:not("#ds_item_1, #ds_item_16")`).change(function () {
-    // 當選擇其他選項時，禁用並清空 ds_item_other 的輸入框
-    if (!$("#ds_item_16").is(":checked")) {
-        $(`input[id='ds_item_other']`).prop("disabled", true).val("");
+$(`input[name*="user_disease_state"]:not("#ds_item_1, #ds_item_16")`).change(
+    function () {
+        // 當選擇其他選項時，禁用並清空 ds_item_other 的輸入框
+        if (!$("#ds_item_16").is(":checked")) {
+            $(`input[id='ds_item_other']`).prop("disabled", true).val("");
+        }
     }
-});
-
+);
 
 // 當 a_item_1 被點選時
 $(`input[id='a_item_1']`).click(function () {
@@ -1003,9 +1004,11 @@ step_confirm_btn.forEach((item, step_index) => {
                     } else {
                         if (obj_value.includes("1")) {
                             // 第9-12題 答"有"的話，需要檢查有無填寫備註
-                            other_text = $(`input[name='${obj_key}'][id$='other']`).val();
+                            other_text = $(
+                                `input[name='${obj_key}'][id$='other']`
+                            ).val();
                             console.log("other_text:", other_text);
-                            
+
                             if (other_text == "") {
                                 Swal.fire({
                                     title: `請勿填空`,
@@ -1015,10 +1018,15 @@ step_confirm_btn.forEach((item, step_index) => {
                             } else {
                                 if (step_index == 11) {
                                     // 步驟11: 病史題 將其他填寫選項接寫在病史字串後
-                                    obj_value = obj_value.replace(/1(,|$)/, `${other_text}$1`);
+                                    obj_value = obj_value.replace(
+                                        /1(,|$)/,
+                                        `${other_text}$1`
+                                    );
                                     // 如果 obj_value 原本是以 "1" 結尾，則用 "other_text" 替代
                                     if (obj_value.endsWith(",1")) {
-                                        obj_value = obj_value.slice(0, -2) + `, ${other_text}`;
+                                        obj_value =
+                                            obj_value.slice(0, -2) +
+                                            `, ${other_text}`;
                                     }
                                 } else {
                                     obj_value += `, ${other_text}`;
@@ -1273,9 +1281,16 @@ function resetButton() {
 }
 
 function resetButtonWithDelay() {
-    setTimeout(function () {
-        resetButton();
-    }, 3000); // 3秒延遲
+    var sec = 60;
+    const timer = setInterval(function () {
+        if (sec > 0) {
+            $("#chk_sub_btn").text("剩" + sec + "秒");
+            sec--;
+        } else {
+            clearInterval(timer);
+            resetButton();
+        }
+    }, 1000);
 }
 
 $("#chk_sub_btn").on("click", function () {
@@ -1298,17 +1313,21 @@ $("#chk_sub_btn").on("click", function () {
         .css("cursor", "default");
 
     // 使用 fetch 發送郵件驗證請求
-    fetch(apiIP + "api/auth/mail_verify/" + email + "/", {
-        method: "GET",
-    })
+    verification_code = String(Math.floor(Math.random() * 1000000)).padStart(
+        6,
+        "0"
+    );
+    var formdata = new FormData();
+    formdata.append("verification_code", verification_code); // 新增驗證碼
+    var requestOptions = {
+        method: "POST",
+        headers: new Headers(),
+        body: formdata,
+    };
+    fetch(apiIP + "api/auth/forget_password/" + email + "/", requestOptions)
         .then((response) => response.json())
         .then((data) => {
-            if (data.result === true) {
-                // 生成隨機驗證碼
-                verification_code = String(
-                    Math.floor(Math.random() * 1000000)
-                ).padStart(6, "0");
-
+            if (data["result"] == "success") {
                 // 使用 fetch 發送驗證碼到後端
                 // 在 POST 請求中添加 CSRF token
                 fetch("/chkmail", {
@@ -1426,27 +1445,15 @@ function forget_password() {
     // 提交表單，這裡你可以用 Ajax 發送新密碼到後端
     const apiIP = document.getElementById("app").getAttribute("data-api-ip");
     var formdata = new FormData();
-    formdata.append("email", email);
-    formdata.append("new_password", new_password);
-    formdata.append("confirm_password", confirm_password);
+    formdata.append("password", new_password);
     formdata.append("verification_code", verification_code); // 新增驗證碼
 
     var requestOptions = {
         method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "X-CSRF-TOKEN": document
-                .querySelector('meta[name="csrf-token"]')
-                .getAttribute("content"),
-        },
-        body: JSON.stringify({
-            email: email,
-            verification_code: entered_verification_code,
-            new_password: new_password,
-            confirm_password: confirm_password,
-        }),
+        headers: new Headers(),
+        body: formdata,
     };
-    fetch(apiIP + "api/auth/updatepassword", requestOptions)
+    fetch(apiIP + "api/auth/update_password/" + email + "/", requestOptions)
         .then((response) => {
             if (!response.ok) {
                 throw new Error("Network response was not ok");
@@ -1454,22 +1461,31 @@ function forget_password() {
             return response.json();
         })
         .then((data) => {
-            if (data.success) {
+            if (data["result"] == "success") {
                 Swal.fire({
                     title: "密碼修改成功！",
                     icon: "success",
-                    confirmButtonColor: "#70c6e3",
                     showConfirmButton: false,
                     timer: 2500,
                 });
+                window.location.reload();
             } else {
-                Swal.fire({
-                    icon: "error",
-                    title: "密碼修改失敗",
-                    text: data.message || "請稍後再試。",
-                    showConfirmButton: false,
-                    timer: 2500,
-                });
+                if (data["error"] == "verification code") {
+                    Swal.fire({
+                        icon: "error",
+                        title: "驗證碼輸入錯誤",
+                        showConfirmButton: false,
+                        timer: 2500,
+                    });
+                } else {
+                    Swal.fire({
+                        icon: "error",
+                        title: "密碼修改失敗",
+                        text: data.message || "請稍後再試。",
+                        showConfirmButton: false,
+                        timer: 2500,
+                    });
+                }
             }
         })
         .catch((error) => {
