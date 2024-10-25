@@ -396,7 +396,7 @@
                                     </div>
                                     <div class="col">
                                         <input type="password" id="check_password" name="check_password"
-                                            class="form-control">
+                                        placeholder="需與新密碼相同" class="form-control">
                                     </div>
                                 </div>
                                 <div class="row g-3 my-4 align-items-center">
