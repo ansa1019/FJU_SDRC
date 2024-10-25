@@ -32,8 +32,7 @@
                 <div class="row px-1 mt-5 justify-content-center justify-content-md-start" id="point_exchange_list">
                     <!--兌換商品1-->
                     @foreach ($responseProduct as $Product)
-                        <div class="col-auto text-center px-2 mb-2 pd-item" data-bs-toggle="modal"
-                            data-bs-target="#product_modal">
+                        <div class="col-auto text-center px-2 mb-2 pd-item">
                             <img src={{ $Product['product_image'] }} class="rounded mx-auto d-block" width="100%"
                                 alt="商品1" />
                             <!--商品名稱 根據消費者過去最常購買的商品會顯示皇冠icon-->

@@ -142,21 +142,21 @@ if ($("#user_image")) {
             const file = input.files[0];
             const validImageTypes = ["image/jpeg", "image/png", "image/gif"];
 
-            // 檢查文件類型是否有效
+            // 檢查檔案類型是否有效
             if (!validImageTypes.includes(file.type)) {
                 Swal.fire({
                     position: "center",
                     icon: "error",
                     title: "請上傳有效的圖片檔案！",
                     showConfirmButton: false,
-                    timer: 1500,
+                    timer: 2500,
                 });
                 // 重置文件輸入框
                 input.value = "";
                 return;
             }
 
-            // 檢查文件大小是否超過 3MB
+            // 檢查檔案大小是否超過 3MB
             const maxSize = 3 * 1024 * 1024;
             if (file.size > maxSize) {
                 Swal.fire({
@@ -164,7 +164,7 @@ if ($("#user_image")) {
                     icon: "error",
                     title: "圖片大小不得超過 3MB！",
                     showConfirmButton: false,
-                    timer: 1500,
+                    timer: 2500,
                 });
                 // 重置文件輸入框
                 input.value = "";
@@ -246,7 +246,7 @@ if ($("#user_image")) {
                                         icon: "success",
                                         title: "修改頭像成功!",
                                         showConfirmButton: false,
-                                        timer: 1500,
+                                        timer: 2500,
                                     });
 
                                     // 隱藏模態視窗並重整頁面
@@ -268,7 +268,7 @@ if ($("#user_image")) {
                             icon: "error",
                             title: "修改頭像失敗!",
                             showConfirmButton: false,
-                            timer: 1500,
+                            timer: 2500,
                         });
                     });
             });
@@ -322,7 +322,7 @@ $("#cropModal").on("hidden.bs.modal", function () {
 //                     icon: "error",
 //                     title: "請上傳有效的圖片檔案！",
 //                     showConfirmButton: false,
-//                     timer: 1500,
+//                     timer: 2500,
 //                 });
 //                 return;
 //             }
@@ -334,7 +334,7 @@ $("#cropModal").on("hidden.bs.modal", function () {
 //                     icon: "error",
 //                     title: "圖片大小不得超過 5MB！",
 //                     showConfirmButton: false,
-//                     timer: 1500,
+//                     timer: 2500,
 //                 });
 //                 return;
 //             }
@@ -398,7 +398,7 @@ $("#cropModal").on("hidden.bs.modal", function () {
 //                                 icon: "success",
 //                                 title: "修改頭像成功!",
 //                                 showConfirmButton: false,
-//                                 timer: 1500,
+//                                 timer: 2500,
 //                             });
 //                         }
 //                     })
@@ -409,7 +409,7 @@ $("#cropModal").on("hidden.bs.modal", function () {
 //                             icon: "error",
 //                             title: "修改頭像失敗!",
 //                             showConfirmButton: false,
-//                             timer: 1500,
+//                             timer: 2500,
 //                         });
 //                     });
 //             });
@@ -495,16 +495,16 @@ function info_setting() {
     };
     // $.ajax({
     //     type: 'POST',
-    //     url: '/get_user_info', // 这是服务器端处理请求的路由 URL，请根据您的 Laravel 路由进行更改
-    //     data: userInfo, // 发送用户信息的数据
+    //     url: '/get_user_info', // 這是伺服器端處理請求的路由 URL，請根據您的 Laravel 路由進行更改
+    //     data: userInfo, // 發送使用者資訊的資料
     //     success: function (response) {
-    //         // 在这里处理服务器响应
-    //         console.log(response); // 可以在控制台查看服务器的响应数据
-    //         // 将响应数据传递给 Blade 模板
+    //         // 在這裡處理伺服器回應
+    //         console.log(response); // 可以在控制台查看伺服器的回應資料
+    //         // 將回應資料傳遞給 Blade 範本
     //         updateUserProfile(response);
     //     },
     //     error: function (error) {
-    //         console.error(error); // 处理错误情况
+    //         console.error(error); // 處理錯誤情況
     //     }
     // });
 }
@@ -523,7 +523,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function getApiIp() {
-        // 嘗試從頁面中的元素中獲取 API IP 地址
+        // 嘗試從頁面中的元素中獲取 API IP 位址
         const appElement = document.getElementById("app");
         if (appElement && appElement.dataset.apiIp) {
             return appElement.dataset.apiIp;
@@ -548,8 +548,10 @@ document.addEventListener("DOMContentLoaded", function () {
         if (!userEmail) {
             Swal.fire({
                 icon: "error",
-                title: "错误",
+                title: "錯誤",
                 text: "舊密碼錯誤請確認舊密碼輸入。",
+                showConfirmButton: false,
+                timer: 2500,
             });
             return;
         }
@@ -580,15 +582,19 @@ document.addEventListener("DOMContentLoaded", function () {
                 // 客戶端錯誤，例如認證失敗
                 Swal.fire({
                     icon: "error",
-                    title: "错误",
+                    title: "錯誤",
                     text: "舊密碼錯誤請確認舊密碼輸入",
+                    showConfirmButton: false,
+                    timer: 2500,
                 });
             } else {
                 // 其他錯誤，例如伺服器錯誤
                 Swal.fire({
                     icon: "error",
-                    title: "错误",
+                    title: "錯誤",
                     text: "伺服器發生錯誤，請稍後再試",
+                    showConfirmButton: false,
+                    timer: 2500,
                 });
             }
         } catch (error) {
@@ -596,8 +602,10 @@ document.addEventListener("DOMContentLoaded", function () {
             console.error("Error during authentication request: ", error);
             Swal.fire({
                 icon: "error",
-                title: "错误",
+                title: "錯誤",
                 text: "發送認證請求時出錯，請稍後再試。",
+                showConfirmButton: false,
+                timer: 2500,
             });
         }
     }
@@ -635,15 +643,15 @@ document.addEventListener("DOMContentLoaded", function () {
                         icon: "success",
                         confirmButtonColor: "#70c6e3",
                         showConfirmButton: false,
-                        timer: 1500,
+                        timer: 2500,
                     }).then(() => {
                         window.location.href = "/user-login"; // Redirect to login page
                     });
                 } else {
                     Swal.fire({
+                        icon: "error",
                         title: "修改密碼失敗！",
                         text: data.message || "請稍後再試。",
-                        icon: "error",
                         confirmButtonColor: "#d33",
                     });
                 }
@@ -652,14 +660,16 @@ document.addEventListener("DOMContentLoaded", function () {
                     icon: "error",
                     title: "錯誤",
                     text: "密碼更改過程中發生錯誤，請稍後再試。",
+                    showConfirmButton: false,
+                    timer: 2500,
                 });
             }
         } catch (error) {
             console.error("Error during password update request: ", error);
             Swal.fire({
+                icon: "error",
                 title: "錯誤",
                 text: "更新密碼失敗，請稍後再試。",
-                icon: "error",
                 confirmButtonColor: "#d33",
             });
         }
@@ -676,6 +686,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 icon: "error",
                 title: "錯誤",
                 text: "新密碼與確認新密碼不一致。",
+                showConfirmButton: false,
+                timer: 2500,
             });
             return;
         }
@@ -694,6 +706,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 icon: "error",
                 title: "錯誤",
                 text: "新密碼與確認新密碼不一致。",
+                showConfirmButton: false,
+                timer: 2500,
             });
             return;
         }
@@ -757,13 +771,14 @@ $(`input[id='ds_item_16']`).change(function () {
     }
 });
 
-// 當其他選項被點選時（除 ds_item_1 和 ds_item_16）
-$(`input[name*="user_disease_state"]:not("#ds_item_1, #ds_item_16")`).change(
-    function () {
-        // 當選擇其他選項時，禁用並清空 ds_item_other 的輸入框
+// 當其他選項被選擇時（除 ds_item_1 和 ds_item_16）
+$(`input[name*="user_disease_state"]:not("#ds_item_1, #ds_item_16")`).change(function () {
+    // 當選擇其他選項時，禁用並清空 ds_item_other 的輸入框
+    if (!$("#ds_item_16").is(":checked")) {
         $(`input[id='ds_item_other']`).prop("disabled", true).val("");
     }
-);
+});
+
 
 // 當 a_item_1 被點選時
 $(`input[id='a_item_1']`).click(function () {
@@ -793,7 +808,7 @@ $(`input[id='a_item_2']`).click(function () {
 $(`input[id='d_item_1']`).click(function () {
     // 檢查是否已經選中 d_item_1
     if ($(this).is(":checked")) {
-        // 取消選中 d_item_2 並清空 a_item_other 的輸入框，但不禁用 a_item_other
+        // 取消選中 d_item_2 並清空 d_item_other 的輸入框，但不禁用 d_item_other
         $(`input[id='d_item_2']`).prop("checked", false);
         $(`input[id='d_item_other']`).val("");
         // 禁用 d_item_other 輸入框，因為 d_item_2 沒有被選中
@@ -805,7 +820,7 @@ $(`input[id='d_item_1']`).click(function () {
 $(`input[id='d_item_2']`).click(function () {
     // 檢查是否已經選中 d_item_2
     if ($(this).is(":checked")) {
-        // 啟用 a_item_other 輸入框
+        // 啟用 d_item_other 輸入框
         $(`input[id='d_item_other']`).attr("disabled", false);
     } else {
         // 如果取消選中 d_item_2，禁用並清空 d_item_other
@@ -819,7 +834,7 @@ $(`input[id='or_item_1']`).click(function () {
         // 取消選中 or_item_2 並清空 or_item_other 的輸入框，但不禁用 or_item_other
         $(`input[id='or_item_2']`).prop("checked", false);
         $(`input[id='or_item_other']`).val("");
-        // 禁用 d_item_other 輸入框，因為 or_item_2 沒有被選中
+        // 禁用 or_item_other 輸入框，因為 or_item_2 沒有被選中
         $(`input[id='or_item_other']`).attr("disabled", true);
     }
 });
@@ -828,7 +843,7 @@ $(`input[id='or_item_1']`).click(function () {
 $(`input[id='or_item_2']`).click(function () {
     // 檢查是否已經選中 or_item_2
     if ($(this).is(":checked")) {
-        // 啟用 a_item_other 輸入框
+        // 啟用 or_item_other 輸入框
         $(`input[id='or_item_other']`).attr("disabled", false);
     } else {
         // 如果取消選中 or_item_2，禁用並清空 or_item_other
@@ -845,7 +860,7 @@ step_confirm_btn.forEach((item, step_index) => {
         let pwd_rule = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}$/;
 
         console.log("Now step index:" + step_index); //目前點擊確認的是第幾步驟
-        // 獲取 CSRF 令牌值
+        // 獲取 CSRF 權杖值
         const csrfToken = $('meta[name="csrf-token"]').attr("content");
         console.log("csrfToken=", csrfToken);
         $(document).ready(function () {
@@ -864,7 +879,7 @@ step_confirm_btn.forEach((item, step_index) => {
                     },
                     data: { nickname: nickname }, // 傳遞nickname到後端
                     success: function (response) {
-                        console.log("Ajax request succeeded.", response); // 確認Ajax請求成功並打印回應
+                        console.log("Ajax request succeeded.", response); // 確認Ajax請求成功並列印回應
 
                         // 在獲得回應後處理結果
                         if (response.exists) {
@@ -986,11 +1001,11 @@ step_confirm_btn.forEach((item, step_index) => {
                             confirmButtonColor: "#70c6e3",
                         });
                     } else {
-                        if (obj_value.includes("1") == true) {
-                            //第9-12題 答"有"的話，需要檢查有無填寫備註
-                            other_text = $(
-                                `input[name='${obj_key}'][id$='other']`
-                            ).val();
+                        if (obj_value.includes("1")) {
+                            // 第9-12題 答"有"的話，需要檢查有無填寫備註
+                            other_text = $(`input[name='${obj_key}'][id$='other']`).val();
+                            console.log("other_text:", other_text);
+                            
                             if (other_text == "") {
                                 Swal.fire({
                                     title: `請勿填空`,
@@ -999,9 +1014,12 @@ step_confirm_btn.forEach((item, step_index) => {
                                 });
                             } else {
                                 if (step_index == 11) {
-                                    //步驟11: 病史題 將其他填寫選項接寫在病史字串後
-                                    // obj_value = obj_value.replace("1", other_text);
-                                    obj_value = obj_value.replace(",1", "");
+                                    // 步驟11: 病史題 將其他填寫選項接寫在病史字串後
+                                    obj_value = obj_value.replace(/1(,|$)/, `${other_text}$1`);
+                                    // 如果 obj_value 原本是以 "1" 結尾，則用 "other_text" 替代
+                                    if (obj_value.endsWith(",1")) {
+                                        obj_value = obj_value.slice(0, -2) + `, ${other_text}`;
+                                    }
                                 } else {
                                     obj_value += `, ${other_text}`;
                                 }
@@ -1314,7 +1332,7 @@ $("#chk_sub_btn").on("click", function () {
                                 icon: "success",
                                 confirmButtonColor: "#70c6e3",
                                 showConfirmButton: false,
-                                timer: 1500,
+                                timer: 2500,
                             });
                             resetButtonWithDelay(); // 延遲重置按鈕
                         } else {
@@ -1324,21 +1342,21 @@ $("#chk_sub_btn").on("click", function () {
                     .catch((error) => {
                         console.error("Error:", error);
                         Swal.fire({
-                            title: "發送失敗，請檢查您的信箱",
                             icon: "error",
+                            title: "發送失敗，請檢查您的信箱",
                             confirmButtonColor: "#70c6e3",
                             showConfirmButton: false,
-                            timer: 1500,
+                            timer: 2500,
                         });
                         resetButton();
                     });
             } else {
                 Swal.fire({
+                    icon: "error",
                     title: "無法發送驗證碼",
                     text: "請檢查您的郵件地址或稍後再試",
-                    icon: "error",
-                    confirmButtonColor: "#70c6e3",
-                    showConfirmButton: true,
+                    showConfirmButton: false,
+                    timer: 2500,
                 });
                 resetButton();
             }
@@ -1346,11 +1364,11 @@ $("#chk_sub_btn").on("click", function () {
         .catch((error) => {
             console.error("Error:", error);
             Swal.fire({
+                icon: "error",
                 title: "伺服器錯誤！",
                 text: "請稍後再試。",
-                icon: "error",
-                confirmButtonColor: "#70c6e3",
-                showConfirmButton: true,
+                showConfirmButton: false,
+                timer: 2500,
             });
             resetButton();
         });
@@ -1442,26 +1460,26 @@ function forget_password() {
                     icon: "success",
                     confirmButtonColor: "#70c6e3",
                     showConfirmButton: false,
-                    timer: 1500,
+                    timer: 2500,
                 });
             } else {
                 Swal.fire({
+                    icon: "error",
                     title: "密碼修改失敗",
                     text: data.message || "請稍後再試。",
-                    icon: "error",
-                    confirmButtonColor: "#70c6e3",
-                    showConfirmButton: true,
+                    showConfirmButton: false,
+                    timer: 2500,
                 });
             }
         })
         .catch((error) => {
             console.error("Error:", error);
             Swal.fire({
+                icon: "error",
                 title: "伺服器錯誤！",
                 text: "請稍後再試。",
-                icon: "error",
-                confirmButtonColor: "#70c6e3",
-                showConfirmButton: true,
+                showConfirmButton: false,
+                timer: 2500,
             });
         });
 }
@@ -1473,17 +1491,17 @@ function user_data() {
         .addEventListener("submit", function (event) {
             var checkBox = document.getElementById("mail_confirm_check");
             // if (checkBox) {
-            //     // checkBox 存在，执行相应的操作
-            //     console.log("成功获取到checkBox元素");
-            //     event.preventDefault(); // 阻止表单提交
+            //     // checkBox 存在，執行相應的操作
+            //     console.log("成功獲取到checkBox元素");
+            //     event.preventDefault(); // 阻止表單提交
             // } else {
-            //     // checkBox 不存在，执行相应的操作
+            //     // checkBox 不存在，執行相應的操作
             //     console.log("未找到checkBox元素");
-            //     event.preventDefault(); // 阻止表单提交
+            //     event.preventDefault(); // 阻止表單提交
             // }
             if (checkBox.checked == false) {
                 alert("請同意服務條款及隱私權政策");
-                event.preventDefault(); // 阻止表单提交
+                event.preventDefault(); // 阻止表單提交
             } else {
                 var username = $("#name").text();
                 document.getElementById("return_user_name").value = username; //真實姓名

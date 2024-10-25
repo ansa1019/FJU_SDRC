@@ -20,7 +20,7 @@ function open_denounce(o, c, i) {
             icon: "warning",
             title: "請先登入!",
             showConfirmButton: false,
-            timer: 1500,
+            timer: 2500,
         });
     }
 }
@@ -100,7 +100,7 @@ function denounce() {
                             icon: "success",
                             title: "檢舉成功!",
                             showConfirmButton: false,
-                            timer: 1500,
+                            timer: 2500,
                         });
                     }
                     // 重置變量
@@ -114,7 +114,7 @@ function denounce() {
                         icon: "error",
                         title: "檢舉失敗!",
                         showConfirmButton: false,
-                        timer: 1500,
+                        timer: 2500,
                     });
                 }
             }
@@ -125,7 +125,7 @@ function denounce() {
             icon: "warning",
             title: "請填寫檢舉原因!",
             showConfirmButton: false,
-            timer: 1500,
+            timer: 2500,
         });
     }
 }
@@ -140,12 +140,9 @@ function banerror(ban) {
             ban[0] +
             "<br>若有任何問題，請來信客服信箱，謝謝。",
         icon: "error",
-        showConfirmButton: true, // 顯示確認按鈕
         allowOutsideClick: false, // 禁止點擊外部關閉
         allowEscapeKey: false, // 禁止按 ESC 鍵關閉
         confirmButtonText: "確定", // 確認按鈕文字
-        customClass: {
-            confirmButton: "swal-confirm-button", // 自定義按鈕類別
-        },
+        confirmButtonColor: "#d33",
     });
 }

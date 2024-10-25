@@ -2170,13 +2170,10 @@ function createArticleComment(button) {
                 dayjs(banlist["comment"][1]).format("YYYY-MM-DD HH:mm:ss") +
                 " 起自動禁言24小時<br>我們將同步進行人工審核，若造成不便請見諒，謝謝",
             icon: "error",
-            showConfirmButton: true, // 顯示確認按鈕
             allowOutsideClick: false, // 禁止點擊外部關閉
             allowEscapeKey: false, // 禁止按 ESC 鍵關閉
             confirmButtonText: "確定", // 確認按鈕文字
-            customClass: {
-                confirmButton: "btn btn-c2", // 自定義按鈕類別
-            },
+            confirmButtonColor: "#d33",
         });
     } else {
         banerror(banlist["comment"]);
