@@ -1415,15 +1415,20 @@ function forget_password() {
 
     var requestOptions = {
         method: "POST",
-        body: formdata,
         headers: {
+            "Content-Type": "application/json",
             "X-CSRF-TOKEN": document
                 .querySelector('meta[name="csrf-token"]')
-                .getAttribute("content"), // 添加 CSRF Token
+                .getAttribute("content"),
         },
+        body: JSON.stringify({
+            email: email,
+            verification_code: entered_verification_code,
+            new_password: new_password,
+            confirm_password: confirm_password,
+        }),
     };
-
-    fetch(apiIP + "/api/auth/update_password", requestOptions)
+    fetch(apiIP + "api/auth/updatepassword", requestOptions)
         .then((response) => {
             if (!response.ok) {
                 throw new Error("Network response was not ok");

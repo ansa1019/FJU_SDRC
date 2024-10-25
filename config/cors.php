@@ -4,7 +4,7 @@ return [
     'allowed_methods' => ['*'],
     'allowed_origins' => ['*'], // 確保你允許前端所在的域名（或允許所有 '*')
     'allowed_origins_patterns' => [],
-    'allowed_headers' => ['Content-Type', 'X-Requested-With', 'Authorization', 'X-CSRF-TOKEN'], // 添加 'X-CSRF-TOKEN'
+    'allowed_headers' => ['Content-Type', 'X-Requested-With', 'Authorization', 'X-CSRF-TOKEN'],
     'exposed_headers' => [],
     'max_age' => 0,
     'supports_credentials' => true, // 如果需要身份憑證可以設為 true

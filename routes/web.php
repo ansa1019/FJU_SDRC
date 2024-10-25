@@ -112,7 +112,8 @@ Route::patch('/update-password', [PasswordController::class, 'updatePassword'])-
 //     Mail::to("test@gmail.com")->send(new OrderShipped());
 // });
 
-Route::post('/auth/update_password', [PasswordController::class, 'updatePassword']);
+Route::post('/updatePassword', [App\Http\Controllers\Auth\PasswordController::class, 'updatePassword']);
+
 
 
 
