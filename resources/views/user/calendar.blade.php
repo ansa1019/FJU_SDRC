@@ -67,9 +67,9 @@
         <div class="row px-md-5">
             <div class="col-md col-lg-9 pe-md-4">
                 <div class="row mt-2 d-flex align-items-center justify-content-end">
-                    <div class="col-sm-12 col-md-auto px-0">
+                    <!-- <div class="col-sm-12 col-md-auto px-0">
                         <button id="today_btn" type="button" class="btn btn-c2 rounded-pill mx-1">Today</button>
-                    </div>
+                    </div> -->
                     <div class="col-md px-0 text-end" style="font-size: var(--fs-15); font-style: italic">
                         <span class="me-1"><i class="bi bi-circle-fill px-1" style="color: #ffc64c"></i>生理期</span>
                         <span class="me-1"><i class="bi bi-circle-fill px-1" style="color: #f6511d"></i>小產期</span>
@@ -175,13 +175,17 @@
                             <p class="ct-sub-1" style="line-height: 1.75rem; letter-spacing: 1px">{{ $rdmcalmsg }}
                             </p>
                             <!-- 顯示下次生理期預測 -->
-                            @if ($nextMenstrualDate)
+                            @if (session('health_type') == 'menstruation' && session('next_menstrual_date') !== null && session('next_menstrual_date') !== '')
                                 <div id="next-menstrual" class="mt-2" style="font-size: var(--fs-16);">
-                                    下次生理期預計：{{ \Carbon\Carbon::parse($nextMenstrualDate)->format('n月j日') }}
+                                    下次生理期預計：{{ \Carbon\Carbon::parse(session('next_menstrual_date'))->format('n月j日') }}
                                 </div>
                             @endif
 
-
+                            @if (session('health_type') == 'pregnancy' && session('due_date') !== null)
+                                <div id="pregnancy-countdown" class="mt-2" style="font-size: var(--fs-16);">
+                                    懷孕期：倒數 {{ session('remaining_weeks') }} 週 {{ session('remaining_days') }} 天
+                                </div>
+                            @endif
 
                             <div class="h5 my-3 list px-1" id="event-reminder" style="display: none"></div>
                             <div class="my-3 list px-1" id="event-content">

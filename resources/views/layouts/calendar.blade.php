@@ -38,7 +38,8 @@
                                     <label for="type1_q1" class="col-form-label">・生理期週期(天)<span class="i-imp">*</span></label>
                                 </div>
                                 <div class="col-auto">
-                                    <input type="number" id="type1_q1" name="menstrualCycle" class="form-control" />
+                                    <input type="number" id="type1_q1" name="menstrualCycle" class="form-control" 
+                                        value="{{ $cycle ?? '' }}" />
                                 </div>
                             </div>
                             <div class="row align-items-center mb-2">
@@ -47,9 +48,9 @@
                                 </div>
                                 <div class="col-auto">
                                     <div class="input-group">
-                                        <input type="text" id="type1_q2" name="lastMenstrual"
-                                            class="form-control datepicker" onkeydown="return false;"/>
-                                        <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                                    <input type="date" id="type1_q2" name="lastMenstrual" 
+                                        class="form-control" onkeydown="return false;"  value="{{ $lastMenstrual ?? '' }}"/>
+                                        <!-- <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span> -->
                                     </div>
                                 </div>
                             </div>
@@ -58,10 +59,12 @@
                                     <label for="type1_q3" class="col-form-label">・每次月經大約來多少天<span class="i-imp">*</span></label>
                                 </div>
                                 <div class="col-auto">
-                                    <input type="number" id="type1_q3" name="menstruationLast" class="form-control" />
+                                    <input type="number" id="type1_q3" name="menstruationLast" class="form-control" 
+                                        value="{{ $cycle_days ?? '' }}" />
                                 </div>
                             </div>
                         </div>
+
                         <!--小產期-->
                         <div class="py-3 ps-lg-4 health_type d-none" id="health_type_2">
                             <div class="row align-items-center mb-2">
@@ -86,7 +89,7 @@
                                 <div class="col-auto">
                                     <div class="input-group">
                                         <input type="number" id="type3_q1" name="weeksPregnancy"
-                                            class="form-control" />
+                                            class="form-control" value="{{ session('pregnancy_data.weeksPregnancy', '') }}" />
                                     </div>
                                 </div>
                             </div>
@@ -96,10 +99,9 @@
                                 </div>
                                 <div class="col-auto">
                                     <div class="input-group">
-                                        <input type="text" id="type3_q2" name="dueDate"
-                                            class="form-control datepicker" onkeydown="return false;"/>
-                                        <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
-                                    </div>
+                                        <input type="date" id="dueDate" name="dueDate" class="form-control" onkeydown="return false;" 
+                                        value="{{ session('pregnancy_data.dueDate', '') }}" />
+                                    </div>  
                                 </div>
                             </div>
                         </div>
