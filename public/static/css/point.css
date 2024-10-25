@@ -143,8 +143,13 @@
 .task_point.use::before {
     content: "-";
 }
-.task_time {
+.task_time,
+.exchage_token {
     font-size: var(--fs-16);
+    color: var(--ct-sub-1);
+}
+.exchage_token span {
+    font-size: var(--fs-12);
     color: var(--ct-sub-1);
 }
 

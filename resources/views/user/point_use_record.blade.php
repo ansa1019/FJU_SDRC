@@ -33,8 +33,15 @@
                             <div class="row py-3 mb-2 d-flex align-items-center border-bottom">
                                 <div class="col">
                                     <!--記錄標題-->
-                                    <p class="record_title mb-1">兌換｜{{ $record['product_title'] }}</p>
+                                    <p class="record_title mb-1">
+                                        兌換｜<?php $text = '';
+                                        foreach ($record['products'] as $item) {
+                                            $text .= $item['product'] . '、';
+                                        }
+                                        echo mb_substr($text, 0, -1, 'utf-8'); ?>
+                                    </p>
                                     <!--記錄時間-->
+                                    <p class="exchage_token m-0">兌換碼：<span>{{ $record['exchage_token'] }}</span></p>
                                     <span class="task_time">{{ $record['created_at'] }}</span>
                                 </div>
                                 <!--該記錄所獲得點數-->
