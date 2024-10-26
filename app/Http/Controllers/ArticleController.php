@@ -42,7 +42,6 @@ class ArticleController extends Controller
      */
     public function treatment_view($category = null, $sort = '-created_at')
     {
-        //
         $token = Session::get('jwt_token', '');
         if ($token != '') {
             $response = [
@@ -57,9 +56,8 @@ class ArticleController extends Controller
             $subTopic = [];
             $postStorageds = [];
         }
-        // dd($response);
 
-        if ($token != '' && $postStorageds == null) {
+        if ($token != '' && empty($postStorageds)) {
             $formdata = [
                 'storage_name' => '不分類收藏',
             ];
@@ -71,12 +69,42 @@ class ArticleController extends Controller
             $postStorageds = ApiHelper::getAuthenticatedRequest($token, env('API_IP') . 'api/userdetail/postStoraged/')->json();
         }
 
-        if ($response['temporary_article'] != []) {
+        if (is_array($postStorageds)) {
+            // 更新收藏夾封面圖片的邏輯
+            foreach ($postStorageds as &$postStoraged) {
+                // 預設圖片設置為隨機的預設圖片
+                $defaultImages = [
+                    asset('static/img/img_1.png'),
+                    asset('static/img/img_2.png'),
+                    asset('static/img/img_3.png'),
+                    asset('static/img/img_4.png')
+                ];
+                $postStoraged['latest_article_image'] = $defaultImages[array_rand($defaultImages)];
+
+                // 獲取該分類夾下的文章
+                $articles = ApiHelper::getAuthenticatedRequest($token, env('API_IP') . 'api/content/getArticlesByStorage/' . $postStoraged['id'] . '/?ordering=-created_at')->json();
+
+                if (!empty($articles) && is_array($articles)) {
+                    // 嘗試找到第一個包含自定義圖片的文章
+                    foreach ($articles as $article) {
+                        if (!empty($article['image']) && strpos($article['image'], 'default_image') === false) {
+                            $postStoraged['latest_article_image'] = $article['image'];
+                            break;
+                        } elseif (!empty($article['index_image']) && strpos($article['index_image'], 'default_image') === false) {
+                            $postStoraged['latest_article_image'] = $article['index_image'];
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        if (!empty($response['temporary_article'])) {
             $response['temporary_article'][0]['hashtag'] = str_replace(',', '', $response['temporary_article'][0]['hashtag']);
         }
 
         $response['subTopic'] = 0;
-        if ($subTopic != []) {
+        if (!empty($subTopic)) {
             foreach ($subTopic[0]['topic'] as $sub) {
                 if ($sub == $category) {
                     $response['subTopic'] = 1;
@@ -85,16 +113,15 @@ class ArticleController extends Controller
             }
         }
 
-        if ($response['articles'] != []) {
+        if (!empty($response['articles'])) {
             foreach ($response['articles'] as $key => $article) {
                 if ($article['is_official'] == false) {
                     $response['articles'][$key]['comment_count'] = count($article['comments']);
 
                     $dom = new \DOMDocument();
-                    $dom->loadHTML($article['html']);
+                    @$dom->loadHTML($article['html']);
                     $imgTags = $dom->getElementsByTagName('img');
-                    // echo $imgTags[0]->getAttribute('src');
-                    if ($imgTags[0] !== null) {
+                    if ($imgTags->length > 0) {
                         $src = $imgTags[0]->getAttribute('src');
                         $response['articles'][$key]['image'] = $src;
                     }
@@ -115,7 +142,7 @@ class ArticleController extends Controller
             'sort' => $sort,
             'postStorageds' => $postStorageds
         ]);
-        // dd($response);
+
         return response()->view('treatment/treatment_qa', $response)->header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
     }
 
