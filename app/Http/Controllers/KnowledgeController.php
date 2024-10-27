@@ -59,15 +59,6 @@ class KnowledgeController extends Controller
             foreach ($response['articles'] as $key => $article) {
                 if ($article['is_official'] == true) {
                     $response['articles'][$key]['comment_count'] = count($article['comments']);
-
-                    $dom = new \DOMDocument();
-                    $dom->loadHTML($article['html']);
-                    $imgTags = $dom->getElementsByTagName('img');
-                    // echo $imgTags[0]->getAttribute('src');
-                    if ($imgTags[0] !== null) {
-                        $src = $imgTags[0]->getAttribute('src');
-                        $response['articles'][$key]['image'] = $src;
-                    }
                 } else {
                     unset($response['articles'][$key]);
                 }

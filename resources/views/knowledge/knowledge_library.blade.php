@@ -181,7 +181,7 @@
                                             </div>
                                             <div class="col-auto d-none d-lg-block px-0 py-1">
                                                 <!--文章縮圖-->
-                                                <img src={{ !empty($article['image']) ? $article['image'] : $article['index_image'] }}
+                                                <img src={{ $article['index_image'] }}
                                                     class="article-img" />
                                             </div>
                                         </div>

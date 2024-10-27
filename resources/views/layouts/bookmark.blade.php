@@ -19,8 +19,8 @@
                         <div class="row d-flex justify-content-center pb-2">
                             <div id="postStoraged_不分類收藏" class="col-auto text-center mb-3 postStoraged">
                                 <!--分類圖片-->
-                                <img src="{{ asset('static/img/img_' . rand(1, 4) . '.png') }}" class="rounded mx-auto d-block"
-                                    alt="不分類收藏" />
+                                <img src="{{ $postStorageds[0]['image'] ? $postStorageds[0]['image'] : asset('static/img/img_' . rand(1, 4) . '.png') }}"
+                                    class="rounded mx-auto d-block" alt="不分類收藏" />
                                 <!--分類名稱-->
                                 <div class="row">
                                     <p class="col-auto ms-1 m-auto saved-title ps-0">不分類收藏</p>
@@ -49,7 +49,7 @@
                                         <div id="postStoraged_{{ $postStoraged['storage_name'] }}"
                                             class="col-auto text-center mb-3 postStoraged">
                                             <!--分類圖片-->
-                                            <img src="{{ asset('static/img/img_' . rand(1, 4) . '.png') }}" class="rounded mx-auto d-block"
+                                            <img src="{{ $postStoraged['image'] }}" class="rounded mx-auto d-block"
                                                 alt="{{ $postStoraged['storage_name'] }}" />
                                             <!--分類名稱-->
                                             <div class="row">

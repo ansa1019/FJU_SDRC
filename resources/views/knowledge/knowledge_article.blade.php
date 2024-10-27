@@ -172,14 +172,14 @@
                                     class="me-2 share_count" id='share_count'>{{ $share['count'] }}</span>
                             </div>
                             @if ($user_mail == $author)
-                                <div class="me-2">
+                                <div class="me-2 d-flex">
                                     <button class="btn btn-sm p-0" data-bs-toggle="modal" data-bs-target="#patch_modal"
                                         onclick="getValue(this, 'patch2')">
                                         <i class="fas fa-edit ct-sub-1 me-1"></i>
                                     </button>
                                 </div>
                             @endif
-                            <div class="dropdown d-inline me-3" data-bs-toggle="tooltip" data-bs-title="檢舉/刪除"
+                            <div class="dropdown d-inline me-2" data-bs-toggle="tooltip" data-bs-title="檢舉/刪除"
                                 data-bs-placement="top">
                                 <button class="btn btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">
                                     <i class="fas fa-exclamation-circle ct-sub-1 me-1"></i>
@@ -200,7 +200,7 @@
                                     @endif
                                 </ul>
                             </div>
-                            <div class="me-3">
+                            <div class="d-flex">
                                 <button class="btn btn-sm p-0 openBookmark" id="openBookmark_{{ $id }}"
                                     onclick="openBookmark('{{ $id }}')"><i
                                         class="{{ $bookmark['in_user'][0] == 1 ? 'fas ct-txt-2' : 'far ct-sub-1' }} fa-bookmark me-1"></i></button>
