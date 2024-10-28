@@ -5,37 +5,6 @@
         #calendar {
             font-size: var(--fs-18);
         }
-
-        /* #events .list {
-                    height: 150px;
-                    overflow-y: auto;
-                    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-                }
-                #events .list .event-item {
-                    line-height: 24px;
-                    min-height: 24px;
-                    padding: 2px 5px;
-                    border-top: 1px solid rgba(0, 0, 0, 0.2);
-                }
-                #events .list .event-item .close {
-                    font-family: Tahoma, Geneva, sans-serif;
-                    font-weight: bold;
-                    font-size: 12px;
-                    color: #000;
-                    border-radius: 8px;
-                    height: 14px;
-                    width: 14px;
-                    line-height: 12px;
-                    text-align: center;
-                    float: right;
-                    border: 1px solid rgba(0, 0, 0, 0.5);
-                    padding: 0px;
-                    margin: 5px;
-                    display: block;
-                    overflow: hidden;
-                    background: #f44336;
-                    cursor: pointer;
-                } */
     </style>
     <?php
     $json = json_encode($subPersonalCalendar);

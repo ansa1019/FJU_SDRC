@@ -322,7 +322,6 @@
                 @endforeach
             </div>
         </div>
+        @include('layouts.calendar')
     </div>
-
-    @include('layouts.calendar')
 @endsection
