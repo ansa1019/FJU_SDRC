@@ -373,7 +373,6 @@
                                                 style="font-size: var(--fs-16)">＊舊密碼錯誤請確認舊密碼輸入</span>
                                         </div>
                                     </div>
-                                    <div id="passwordup" data-update-password-route="{{ route('password.update') }}">
                                     </div>
                                     <div class="row g-3 mb-3 align-items-start">
                                         <div class="col-4">
