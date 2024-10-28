@@ -114,10 +114,12 @@ var elements = {
 };
 
 //月曆初始化
-var calendar = jsCalendar.new("#calendar", "now", {
-    monthFormat: "YYYY年 ##月",
-    language: "zh",
-});
+if (window.location.pathname == "/calendar") {
+    var calendar = jsCalendar.new("#calendar", "now", {
+        monthFormat: "YYYY年 ##月",
+        language: "zh",
+    });
+}
 
 $(".datepicker").datepicker({
     format: "yyyy-mm-dd",
@@ -127,20 +129,23 @@ $(".datepicker").datepicker({
 });
 
 $(document).ready(function () {
-    getCalendarEvents();
-    $(".datepicker").datepicker("setDate", current);
+    if (window.location.pathname == "/calendar") {
+        getCalendarEvents();
 
-    // 當點擊日期 即觸發顯示該日期事件
-    calendar.onDateClick(function (event, date) {
-        // Update calendar date
-        calendar.set(date);
-        // Show events
-        showEvents(date);
-        $(".datepicker").datepicker(
-            "setDate",
-            dayjs(date).format("YYYY-MM-DD")
-        );
-    });
+        // 當點擊日期 即觸發顯示該日期事件
+        calendar.onDateClick(function (event, date) {
+            // Update calendar date
+            calendar.set(date);
+            // Show events
+            showEvents(date);
+            $(".datepicker").datepicker(
+                "setDate",
+                dayjs(date).format("YYYY-MM-DD")
+            );
+        });
+    }
+
+    $(".datepicker").datepicker("setDate", current);
 
     // 當點擊上or下一月按鈕都須refresh events data
     $(".jsCalendar-nav-right").click(function () {
@@ -157,21 +162,24 @@ $(document).ready(function () {
         $("#event-reminder").show();
     });
 
-     // 監聽單選按鈕的變更事件來禁用或啟用相關欄位
-     $("input[name='has_mc_type'], input[name='has_loc_type'], input[name='has_blood_type'], input[name='has_loc_type1']").on("change", function () {
+    // 監聽單選按鈕的變更事件來禁用或啟用相關欄位
+    $(
+        "input[name='has_mc_type'], input[name='has_loc_type'], input[name='has_blood_type'], input[name='has_loc_type1']"
+    ).on("change", function () {
         var isChecked = $(this).prop("checked") && $(this).val() === "沒有";
         // 判斷是否要禁用或啟用輸入欄位
-        $( "input[name='mc_amount'], input[name='pain_level'], input[name='loc_amount'], input[name='loc_color'], input[name='blood_amount'], input[name='blood_color'], input[name='loc_amount4'], input[name='loc_color4']").prop("disabled", isChecked);
-    }); 
-    $('#first_daily_form').submit(function(event) {
-        first_daily_set(event); 
+        $(
+            "input[name='mc_amount'], input[name='pain_level'], input[name='loc_amount'], input[name='loc_color'], input[name='blood_amount'], input[name='blood_color'], input[name='loc_amount4'], input[name='loc_color4']"
+        ).prop("disabled", isChecked);
     });
-    $('#daily_form').submit(calendarValidate);
-});  
-    
-    
-    //載入月曆資料
-    function getCalendarEvents() {
+    $("#first_daily_form").submit(function (event) {
+        first_daily_set(event);
+    });
+    $("#daily_form").submit(calendarValidate);
+});
+
+//載入月曆資料
+function getCalendarEvents() {
     var content = {};
     subPersonalCalendar.forEach((data) => {
         if (data.calendar.type == "menstruation") {
@@ -502,8 +510,8 @@ function open_modal(type) {
     }
 }
 function toggle_modal() {
-    $("#daily_modal").modal("hide"); 
-    $("#first_daily_modal").modal("show"); 
+    $("#daily_modal").modal("hide");
+    $("#first_daily_modal").modal("show");
 }
 
 function close_modal() {
@@ -562,7 +570,7 @@ function first_daily_set(event) {
     event.preventDefault(); // 防止表單提交
     if (firstDailyModalValidate()) {
         // 如果驗證通過，則轉到 daily_modal
-        $('#daily_modal').modal('show');
+        $("#daily_modal").modal("show");
     }
 }
 //資料防呆檢查(first_daily_modal)
@@ -617,10 +625,15 @@ function calendarValidate() {
 
     // 檢查文本輸入框
     $(`#${daily_id} input[type='text']`).each(function (index, element) {
-        if (!$(element).prop("disabled") && !$(element).attr("name").includes("symptom")) {
+        if (
+            !$(element).prop("disabled") &&
+            !$(element).attr("name").includes("symptom")
+        ) {
             let fieldName = $(element).attr("name");
             if (chineseLabels.hasOwnProperty(fieldName)) {
-                var checkbox = $(`#${daily_id} input[type="checkbox"][value="其他"]`);
+                var checkbox = $(
+                    `#${daily_id} input[type="checkbox"][value="其他"]`
+                );
                 if ($(element).val() !== "" && !checkbox.prop("checked")) {
                     checkbox.prop("checked", true);
                 }
@@ -638,7 +651,10 @@ function calendarValidate() {
     // 檢查單選按鈕
     let radioGroups = {};
     $(`#${daily_id} input[type='radio']`).each(function (index, element) {
-        if (!$(element).prop("disabled") && !$(element).attr("name").includes("symptom")) {
+        if (
+            !$(element).prop("disabled") &&
+            !$(element).attr("name").includes("symptom")
+        ) {
             let groupName = $(element).attr("name");
             if (!radioGroups[groupName]) {
                 radioGroups[groupName] = false; // 初始化群組為未選中狀態
@@ -675,4 +691,3 @@ function calendarValidate() {
         return true;
     }
 }
-
