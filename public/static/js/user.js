@@ -539,83 +539,50 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         throw new Error("Update password route is not set in the page");
     }
-
-    // 檢查舊密碼是否正確
-    async function validateOldPassword() {
+    // 檢查新密碼與確認新密碼是否一致並重置密碼
+    // Update new password without changing other parts
+    async function updatePassword() {
+        const apiIP = document
+            .getElementById("app")
+            .getAttribute("data-api-ip");
+        let email = document.getElementById("user_email").value;
         let oldPassword = document.getElementById("old_password").value;
-        let userEmail = sessionStorage.getItem("user_email") || getUserEmail();
-
-        if (!userEmail) {
-            Swal.fire({
-                icon: "error",
-                title: "錯誤",
-                text: "舊密碼錯誤請確認舊密碼輸入。",
-                showConfirmButton: false,
-                timer: 2500,
-            });
-            return;
-        }
-
-        // 構建表單數據
-        const formData = {
-            username: userEmail,
-            password: oldPassword,
-        };
+        let password = document.getElementById("old_password").value;
+        let new_password = document.getElementById("new_password").value;
+        let confirm_password = document.getElementById("check_password").value;
+        let pwd_rule = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}$/; // 密碼規則
+        let has_error = false;
 
         try {
             // 發送 POST 請求到認證 API
-            let apiIp = getApiIp();
-
-            const response = await fetch(`${apiIp}api/auth/token/`, {
+            var formdata = new FormData();
+            formdata.append("username", email);
+            formdata.append("password", oldPassword);
+            var requestOptions = {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(formData),
-            });
-
-            if (response.ok) {
-                // 認證成功，進入下一步
-                document.getElementById("step1").style.display = "none";
-                document.getElementById("step2").style.display = "block";
-            } else if (response.status === 401) {
-                // 客戶端錯誤，例如認證失敗
-                Swal.fire({
-                    icon: "error",
-                    title: "錯誤",
-                    text: "舊密碼錯誤請確認舊密碼輸入",
-                    showConfirmButton: false,
-                    timer: 2500,
-                });
-            } else {
-                // 其他錯誤，例如伺服器錯誤
-                Swal.fire({
-                    icon: "error",
-                    title: "錯誤",
-                    text: "伺服器發生錯誤，請稍後再試",
-                    showConfirmButton: false,
-                    timer: 2500,
-                });
-            }
+                headers: new Headers(),
+                body: formdata,
+            };
+            fetch(apiIP + "api/auth/token/", requestOptions).then(
+                (response) => {
+                    if (!response.ok) {
+                        document
+                            .getElementById("old_pwd_alert")
+                            .classList.remove("d-none");
+                        has_error = true;
+                    } else {
+                        document
+                            .getElementById("old_pwd_alert")
+                            .classList.add("d-none");
+                        has_error = false;
+                    }
+                }
+            );
         } catch (error) {
             // 處理請求失敗的情況
-            console.error("Error during authentication request: ", error);
-            Swal.fire({
-                icon: "error",
-                title: "錯誤",
-                text: "發送認證請求時出錯，請稍後再試。",
-                showConfirmButton: false,
-                timer: 2500,
-            });
+            document.getElementById("old_pwd_alert").classList.remove("d-none");
+            has_error = true;
         }
-    }
-
-    // 檢查新密碼與確認新密碼是否一致並重置密碼
-    // Update new password without changing other parts
-    async function updatePassword(new_password, confirm_password) {
-        let email = document.getElementById("user_email").value;
-        let pwd_rule = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}$/; // 密碼規則
-        let has_error = false;
 
         // 檢查新密碼是否符合規則
         if (!new_password.match(pwd_rule)) {
@@ -638,96 +605,72 @@ document.addEventListener("DOMContentLoaded", function () {
         // 如果有錯誤，停止提交
         if (has_error) {
             return;
-        }
-
-        const apiIP = document
-            .getElementById("app")
-            .getAttribute("data-api-ip");
-        var formdata = new FormData();
-        formdata.append("password", new_password);
-        var requestOptions = {
-            method: "POST",
-            headers: new Headers(),
-            body: formdata,
-        };
-        fetch(apiIP + "api/auth/update_password/" + email + "/", requestOptions)
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error("Network response was not ok");
-                }
-                return response.json();
-            })
-            .then((data) => {
-                if (data["result"] == "success") {
+        } else {
+            const apiIP = document
+                .getElementById("app")
+                .getAttribute("data-api-ip");
+            var formdata = new FormData();
+            formdata.append("password", password);
+            formdata.append("new_password", new_password);
+            var requestOptions = {
+                method: "POST",
+                headers: new Headers(),
+                body: formdata,
+            };
+            fetch(
+                apiIP + "api/auth/update_password/" + email + "/",
+                requestOptions
+            )
+                .then((response) => {
+                    console.log(response);
+                    if (!response.ok) {
+                        throw new Error("Network response was not ok");
+                    }
+                    return response.json();
+                })
+                .then((data) => {
+                    if (data["result"] == "success") {
+                        Swal.fire({
+                            title: "密碼修改成功！",
+                            icon: "success",
+                            showConfirmButton: false,
+                            timer: 2500,
+                        });
+                        window.location.reload();
+                    } else {
+                        if (data["error"] == "verification code") {
+                            Swal.fire({
+                                icon: "error",
+                                title: "驗證碼輸入錯誤",
+                                showConfirmButton: false,
+                                timer: 2500,
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: "error",
+                                title: "密碼修改失敗",
+                                text: data.message || "請稍後再試。",
+                                showConfirmButton: false,
+                                timer: 2500,
+                            });
+                        }
+                    }
+                })
+                .catch((error) => {
+                    console.error("Error:", error);
                     Swal.fire({
-                        title: "密碼修改成功！",
-                        icon: "success",
+                        icon: "error",
+                        title: "伺服器錯誤！",
+                        text: "請稍後再試。",
                         showConfirmButton: false,
                         timer: 2500,
                     });
-                    window.location.reload();
-                } else {
-                    if (data["error"] == "verification code") {
-                        Swal.fire({
-                            icon: "error",
-                            title: "驗證碼輸入錯誤",
-                            showConfirmButton: false,
-                            timer: 2500,
-                        });
-                    } else {
-                        Swal.fire({
-                            icon: "error",
-                            title: "密碼修改失敗",
-                            text: data.message || "請稍後再試。",
-                            showConfirmButton: false,
-                            timer: 2500,
-                        });
-                    }
-                }
-            })
-            .catch((error) => {
-                console.error("Error:", error);
-                Swal.fire({
-                    icon: "error",
-                    title: "伺服器錯誤！",
-                    text: "請稍後再試。",
-                    showConfirmButton: false,
-                    timer: 2500,
                 });
-            });
-    }
-
-    async function resetPassword() {
-        let new_pwd = document.getElementById("new_password").value;
-        let confirm_password = document.getElementById("check_password").value;
-
-        if (new_pwd !== confirm_password) {
-            Swal.fire({
-                icon: "error",
-                title: "錯誤",
-                text: "新密碼與確認新密碼不一致。",
-                showConfirmButton: false,
-                timer: 2500,
-            });
-            return;
         }
-
-        updatePassword(new_pwd, confirm_password);
     }
 
-    document
-        .getElementById("passwordForm")
-        .addEventListener("submit", function (e) {
-            e.preventDefault();
-            resetPassword();
-        });
-
-    window.validateOldPassword = function () {
-        validateOldPassword();
-    };
-
-    window.resetPassword = function () {
-        resetPassword();
+    window.updatePassword = function () {
+        updatePassword();
     };
 });
 /*註冊步驟按鈕*/

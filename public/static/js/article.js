@@ -131,24 +131,6 @@ var patch_quill = new Quill("#patch-editor-container", {
     theme: "snow",
 });
 
-// 應用自定義提示框到所有編輯器實例
-document.querySelectorAll(".ql-link").forEach(function (linkBtn) {
-    linkBtn.addEventListener("click", function () {
-        setTimeout(() => {
-            var tooltip = document.querySelector(".ql-tooltip");
-            if (tooltip) {
-                var input = tooltip.querySelector("input[data-link]");
-                var saveButton = tooltip.querySelector("a.ql-action");
-                var removeButton = tooltip.querySelector("a.ql-remove");
-
-                if (input) input.placeholder = "请输入超链接";
-                if (saveButton) saveButton.textContent = "保存";
-                if (removeButton) removeButton.textContent = "移除";
-            }
-        }, 50); // 可能需要调整延迟时间以确保修改在 Tooltip 显示后进行
-    });
-});
-
 // 確保上述代碼在頁面完全加載後執行
 document.addEventListener("DOMContentLoaded", function () {
     customizeTooltip(quill);

@@ -46,8 +46,8 @@
 
                                     <!--分類圖片-->
                                     <a href="{{ route('article_saved_collect') . '/' . $postStoraged['storage_name'] }}">
-                                        <img src="{{ !empty($postStoraged['latest_article_image']) ? $postStoraged['latest_article_image'] : asset('static/img/img_' . rand(1, 4) . '.png') }}"
-                                            class="rounded mx-auto d-block" alt="{{ $postStoraged['storage_name'] }}" />
+                                        <img src="{{ $postStoraged['image'] }}" class="rounded mx-auto d-block"
+                                            alt="{{ $postStoraged['storage_name'] }}" />
                                     </a>
                                     <!--分類名稱-->
                                     <div class="row">
