@@ -612,91 +612,91 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // 檢查新密碼與確認新密碼是否一致並重置密碼
     // Update new password without changing other parts
-    async function updatePassword(new_pwd, confirm_password) {
-        const payload = {
-            new_password: new_pwd,
-            confirm_password: confirm_password,
-        };
+    async function updatePassword(new_password, confirm_password) {
+        let email = document.getElementById("user_email").value;
+        let pwd_rule = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}$/; // 密碼規則
+        let has_error = false;
 
-        try {
-            const updatePasswordRoute = getUpdatePasswordRoute();
-            console.log("Updating password using route:", updatePasswordRoute);
-
-            // Make the request to the backend to update the password
-            const response = await fetch(updatePasswordRoute, {
-                method: "PATCH",
-                headers: {
-                    "X-CSRF-TOKEN": document
-                        .querySelector('meta[name="csrf-token"]')
-                        .getAttribute("content"),
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(payload),
-            });
-
-            if (response.ok) {
-                const data = await response.json();
-                if (data.success) {
-                    Swal.fire({
-                        title: "修改密碼成功！",
-                        text: "已重新設定密碼。",
-                        icon: "success",
-                        confirmButtonColor: "#70c6e3",
-                        showConfirmButton: false,
-                        timer: 2500,
-                    }).then(() => {
-                        window.location.href = "/user-login"; // Redirect to login page
-                    });
-                } else {
-                    Swal.fire({
-                        icon: "error",
-                        title: "修改密碼失敗！",
-                        text: data.message || "請稍後再試。",
-                        confirmButtonColor: "#d33",
-                    });
-                }
-            } else {
-                Swal.fire({
-                    icon: "error",
-                    title: "錯誤",
-                    text: "密碼更改過程中發生錯誤，請稍後再試。",
-                    showConfirmButton: false,
-                    timer: 2500,
-                });
-            }
-        } catch (error) {
-            console.error("Error during password update request: ", error);
-            Swal.fire({
-                icon: "error",
-                title: "錯誤",
-                text: "更新密碼失敗，請稍後再試。",
-                confirmButtonColor: "#d33",
-            });
+        // 檢查新密碼是否符合規則
+        if (!new_password.match(pwd_rule)) {
+            document.getElementById("new_pwd_alert").classList.remove("d-none");
+            has_error = true;
+        } else {
+            document.getElementById("new_pwd_alert").classList.add("d-none");
         }
-    }
-
-    // Reset password logic remains unchanged
-    async function resetPassword() {
-        let new_pwd = document.getElementById("new_password").value;
-        let confirm_password = document.getElementById("check_password").value;
 
         // 檢查新密碼與確認密碼是否一致
-        if (new_pwd !== confirm_password) {
-            Swal.fire({
-                icon: "error",
-                title: "錯誤",
-                text: "新密碼與確認新密碼不一致。",
-                showConfirmButton: false,
-                timer: 2500,
-            });
+        if (new_password !== confirm_password) {
+            document
+                .getElementById("check_pwd_alert")
+                .classList.remove("d-none");
+            has_error = true;
+        } else {
+            document.getElementById("check_pwd_alert").classList.add("d-none");
+        }
+
+        // 如果有錯誤，停止提交
+        if (has_error) {
             return;
         }
 
-        // Validate and update the password
-        updatePassword(new_pwd, confirm_password);
+        const apiIP = document
+            .getElementById("app")
+            .getAttribute("data-api-ip");
+        var formdata = new FormData();
+        formdata.append("password", new_password);
+        var requestOptions = {
+            method: "POST",
+            headers: new Headers(),
+            body: formdata,
+        };
+        fetch(apiIP + "api/auth/update_password/" + email + "/", requestOptions)
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                }
+                return response.json();
+            })
+            .then((data) => {
+                if (data["result"] == "success") {
+                    Swal.fire({
+                        title: "密碼修改成功！",
+                        icon: "success",
+                        showConfirmButton: false,
+                        timer: 2500,
+                    });
+                    window.location.reload();
+                } else {
+                    if (data["error"] == "verification code") {
+                        Swal.fire({
+                            icon: "error",
+                            title: "驗證碼輸入錯誤",
+                            showConfirmButton: false,
+                            timer: 2500,
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: "error",
+                            title: "密碼修改失敗",
+                            text: data.message || "請稍後再試。",
+                            showConfirmButton: false,
+                            timer: 2500,
+                        });
+                    }
+                }
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+                Swal.fire({
+                    icon: "error",
+                    title: "伺服器錯誤！",
+                    text: "請稍後再試。",
+                    showConfirmButton: false,
+                    timer: 2500,
+                });
+            });
     }
 
-    // Reset password logic
     async function resetPassword() {
         let new_pwd = document.getElementById("new_password").value;
         let confirm_password = document.getElementById("check_password").value;
