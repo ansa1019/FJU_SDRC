@@ -86,6 +86,19 @@
                             @if ($record['task'] == '個人資料')
                                 @foreach ($personalProgress['profile']['is_null'] as $key => $value)
                                     @if ($value)
+
+                                        <p class="my-2">
+                                            未完成：@if ($key == 'phone')
+                                                手機
+                                            @elseif($key == 'address')
+                                                地址
+                                            @elseif($key == 'user_image')
+                                                個人照
+                                            @endif
+                                            <a href="#"><span class="badge">去完成</span></a>
+                                        </p>        
+                                    @else
+                                                                      
                                         <p class="my-2">
                                             已完成：@if ($key == 'phone')
                                                 手機
@@ -96,20 +109,7 @@
                                             @endif
                                             <a href="#">
                                                 <span class="badge finish_badge">已完成</span></a>
-                                        </p>
-
-                                    @else
-                                        <p class="my-2">
-                                            未完成：@if ($key == 'phone')
-                                                手機
-                                            @elseif($key == 'address')
-                                                地址
-                                            @elseif($key == 'user_image')
-                                                個人照
-                                            @endif
-                                            <a href="#"><span class="badge">去完成</span></a>
-                                        </p>                                      
-                                        
+                                        </p>                                        
                                     @endif
                                 @endforeach
                             @endif
