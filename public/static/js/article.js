@@ -158,93 +158,144 @@ function removeLinksFromLists() {
     quill.root.innerHTML = tempDiv.innerHTML; // 更新编辑器的 HTML
 }
 
-$("#article_image").on("change", (event) => {
-    var input = event.target;
+/* 上傳文章圖片 */
+// if ($("#article_image")) {
+//     let cropper;
 
-    if (input.files && input.files[0]) {
-        const file = input.files[0];
-        const validImageTypes = ["image/jpeg", "image/png", "image/gif"];
+//     // 當選擇圖片後
+//     $("#article_image").on("change", (event) => {
+//         var input = document.getElementById("article_image");
 
-        // 檢查檔案類型是否有效
-        if (!validImageTypes.includes(file.type)) {
-            Swal.fire({
-                position: "center",
-                icon: "error",
-                title: "請上傳有效的圖片檔案！",
-                showConfirmButton: false,
-                timer: 2500,
-            });
-            input.value = "";
-            return;
-        }
+//         if (input.files.length > 0) {
+//             const file = input.files[0];
+//             const validImageTypes = ["image/jpeg", "image/png", "image/gif"];
 
-        // 顯示模態視窗並初始化 Cropper.js
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            $("#image_to_crop").attr("src", e.target.result);
-            $("#cropModal").modal("show");
+//             // 檢查檔案類型是否有效
+//             if (!validImageTypes.includes(file.type)) {
+//                 Swal.fire({
+//                     position: "center",
+//                     icon: "error",
+//                     title: "請上傳有效的圖片檔案！",
+//                     showConfirmButton: false,
+//                     timer: 2500,
+//                 });
+//                 // 重置文件輸入框
+//                 input.value = "";
+//                 return;
+//             }
 
-            // 初始化 Cropper.js
-            const imageElement = document.getElementById("image_to_crop");
-            if (cropper) {
-                cropper.destroy(); // 如果已經存在 Cropper，先銷毀它
-            }
-            cropper = new Cropper(imageElement, {
-                aspectRatio: 1, // 圓形裁切
-                viewMode: 1,
-                minContainerWidth: 300,
-                minContainerHeight: 300,
-            });
-        };
-        reader.readAsDataURL(file);
-    }
-});
+//             // 檢查檔案大小是否超過 3MB
+//             const maxSize = 3 * 1024 * 1024;
+//             if (file.size > maxSize) {
+//                 Swal.fire({
+//                     position: "center",
+//                     icon: "error",
+//                     title: "圖片大小不得超過 3MB！",
+//                     showConfirmButton: false,
+//                     timer: 2500,
+//                 });
+//                 // 重置文件輸入框
+//                 input.value = "";
+//                 return;
+//             }
 
-// 裁剪並上傳圖片
-$("#crop_button").on("click", () => {
-    if (cropper) {
-        const croppedCanvas = cropper.getCroppedCanvas({
-            width: 200, // 設定裁切後的寬度
-            height: 200, // 設定裁切後的高度
-        });
+//             // 顯示模態視窗並初始化 Cropper.js
+//         }
+//     });
 
-        // 將裁切後的圖片轉為 Blob 格式
-        croppedCanvas.toBlob((blob) => {
-            const formdata = new FormData();
-            formdata.append("user_image", blob, "image.png");
+//     // 當使用者點擊裁切並上傳按鈕
+//     $("#crop_button").on("click", () => {
+//         if (cropper) {
+//             const croppedCanvas = cropper.getCroppedCanvas({
+//                 width: 200, // 設定裁切後的寬度
+//                 height: 200, // 設定裁切後的高度
+//             });
 
-            // 設置封面預覽圖片
-            const objectURL = URL.createObjectURL(blob);
-            $("#crop_image")
-                .attr("src", objectURL)
-                .removeClass("d-none")
-                .addClass("d-block");
+//             // 將裁切後的圖片轉為 Blob 格式
+//             croppedCanvas.toBlob((blob) => {
+//                 const formdata = new FormData();
+//                 formdata.append("article_image", blob, "image.png");
 
-            // 使用已知的用戶授權 ID 和 API IP
-            const apiIP = document
-                .getElementById("app")
-                .getAttribute("data-api-ip");
-            var myHeaders = new Headers();
-            myHeaders.append("Authorization", "Bearer " + token);
+//                 const apiIP = document
+//                     .getElementById("app")
+//                     .getAttribute("data-api-ip");
+//                 var authorizationId =
+//                     document.getElementsByName("profile_id")[0].value;
+//                 var myHeaders = new Headers();
+//                 myHeaders.append("Authorization", "Bearer " + token);
 
-            var requestOptions = {
-                method: "PATCH",
-                headers: myHeaders,
-                body: formdata,
-                redirect: "follow",
-            };
-        });
-    }
-});
+//                 var requestOptions = {
+//                     method: "PATCH",
+//                     headers: myHeaders,
+//                     body: formdata,
+//                     redirect: "follow",
+//                 };
 
-// 關閉裁剪視窗
-$("#close_crop_modal").on("click", () => {
-    if (cropper) {
-        cropper.destroy(); // 關閉裁剪視窗時，銷毀 Cropper 實例
-        cropper = null;
-    }
-    $("#cropModal").modal("hide");
-});
+//                 // 發送圖片至後端
+//                 fetch(
+//                     apiIP + "api/userprofile/profile/" + authorizationId + "/",
+//                     requestOptions
+//                 )
+//                     .then((response) => response.json())
+//                     .then((data) => {
+//                         let article_image =
+//                             data[0] && data[0]["article_image"]
+//                                 ? data[0]["article_image"]
+//                                 : null;
+//                         if (article_image) {
+//                             Swal.fire({
+//                                 position: "center",
+//                                 icon: "success",
+//                                 title: "修改封面成功!",
+//                                 showConfirmButton: false,
+//                                 timer: 2500,
+//                             });
+//                         }
+//                     })
+//                     .catch((error) => {
+//                         console.log("Fetch error: ", error);
+//                         Swal.fire({
+//                             position: "center",
+//                             icon: "error",
+//                             title: "修改封面失敗!",
+//                             showConfirmButton: false,
+//                             timer: 2500,
+//                         });
+//                     });
+//             });
+//         }
+//     });
+
+//     // 當模態視窗關閉時，重置 cropper 並清空圖片
+//     $("#cropModal").on("hidden.bs.modal", function () {
+//         if (cropper) {
+//             cropper.destroy();
+//             cropper = null;
+//         }
+//         $("#image_to_crop").attr("src", ""); // 清空裁切區域的圖片
+//         $("#article_image").val(""); // 重置文件輸入框
+//     });
+
+//     // 當模態視窗取消按鈕被點擊時，手動觸發關閉
+//     $(".btn-secondary").on("click", function () {
+//         $("#cropModal").modal("hide");
+//     });
+
+//     // 手動處理右上角叉叉按鈕的關閉
+//     $(".close").on("click", function () {
+//         $("#cropModal").modal("hide");
+//     });
+
+//     // 模態視窗關閉時，重置 Cropper
+//     $("#cropModal").on("hidden.bs.modal", function () {
+//         if (cropper) {
+//             cropper.destroy();
+//             cropper = null;
+//         }
+//         $("#image_to_crop").attr("src", ""); // 清空圖片
+//         $("#article_image").val(""); // 重置輸入框
+//     });
+// }
 
 // 使用 Day.js
 // const now_today = dayjs().format("YYYY-MM-DD");
@@ -2361,7 +2412,7 @@ function generateHashtag(obj) {
     console.log(Hashtags); //輸出["#ABC", "#qwe"]
 }
 
-//使用者文章留言=
+//使用者文章留言
 function createArticleComment(button) {
     var token = $("#jwt_token").text();
     if (token != "") {
