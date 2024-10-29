@@ -200,8 +200,7 @@
                                                 </div>
                                                 <!-- 封面圖片預覽，位於右上方 -->
                                                 <div class="d-flex flex-column align-items-end">
-                                                    <img id="crop_image"
-                                                        style="float: right; max-width: 150px; max-height: 150px; margin-left: 20px; border-radius: 10px;">
+
                                                     <!-- 清除圖片按鈕 -->
                                                     <button id="clear_image_button" type="button"
                                                         class="btn btn-outline-danger btn-sm mt-2 d-none">清除圖片</button>
@@ -266,9 +265,6 @@
 
                                     <!-- 清除圖片按鈕，在文章編輯頁面中 -->
                                     <button type="button" class="btn btn-danger" id="clear_image_button">清除圖片</button>
-
-                                    <img id="crop_image" src="" class="d-none"
-                                        style="max-width: 100%; margin-top: 10px;">
 
                                 </div>
                                 <div class="row my-1 g-2 align-items-center justify-content-between">

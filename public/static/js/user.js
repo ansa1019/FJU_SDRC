@@ -173,23 +173,7 @@ if ($("#user_image")) {
             }
 
             // 顯示模態視窗並初始化 Cropper.js
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                $("#image_to_crop").attr("src", e.target.result);
-
-                // 顯示模態視窗
-                $("#cropModal").modal("show");
-
-                // 初始化 Cropper.js
-                const imageElement = document.getElementById("image_to_crop");
-                cropper = new Cropper(imageElement, {
-                    aspectRatio: 1, // 圓形裁切
-                    viewMode: 1,
-                    minContainerWidth: 300,
-                    minContainerHeight: 300,
-                });
-            };
-            reader.readAsDataURL(file);
+            
         }
     });
 
