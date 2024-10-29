@@ -147,7 +147,9 @@
                                 icon: "success",
                                 title: "修改成功!",
                                 showConfirmButton: false,
-                                timer: 1500,
+                                allowOutsideClick: false, // 禁止點擊外部關閉
+                                allowEscapeKey: false, // 禁止按 ESC 鍵關閉
+                                timer: 2500,
                             });
                         } else {
                             Swal.fire({
@@ -155,7 +157,7 @@
                                 icon: "error",
                                 title: "修改失敗!",
                                 showConfirmButton: false,
-                                timer: 1500,
+                                timer: 2500,
                             });
                         }
                     });
