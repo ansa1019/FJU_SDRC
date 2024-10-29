@@ -62,9 +62,10 @@ usersocket.onmessage = function (e) {
                 h4.className = "d-flex align-items-center";
                 h4.innerHTML = element["action"];
                 div.append(h4);
-                var p = document.createElement("p");
-                p.innerHTML = element["content"];
-                div.append(p);
+                div.insertAdjacentHTML(
+                    "beforeend",
+                    "<p>" + element["content"] + "</p>"
+                );
                 notify.append(div);
                 container.append(notify);
             });
