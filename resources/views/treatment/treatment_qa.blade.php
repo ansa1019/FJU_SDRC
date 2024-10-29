@@ -50,15 +50,13 @@
                                                     allowOutsideClick: false, // 禁止點擊外部關閉
                                                     allowEscapeKey: false, // 禁止按 ESC 鍵關閉
                                                     confirmButtonText: '確定', // 確認按鈕文字
-                                                    customClass: {
-                                                        confirmButton: 'btn btn-c2', // 自定義按鈕類別
-                                                    },
+                                                    confirmButtonColor: '#d33',
                                                 });">
                                         <i class="fas fa-pen me-1"></i>建立聊療
                                     </button>
                                 @else
                                     <button class="btn btn-c2 rounded-pill"
-                                        onclick='banerror(@json(session("banlist.article")))'>
+                                        onclick='banerror(@json(session('banlist.article')))'>
                                         <i class="fas fa-pen me-1"></i>建立聊療</button>
                                 @endif
                             @endif
@@ -141,8 +139,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-auto d-none d-lg-block px-0 py-1">
-                                                <img src={{ $article['index_image'] }}
-                                                    class="article-img" />
+                                                <img src={{ $article['index_image'] }} class="article-img" />
                                             </div>
                                         </div>
                                     @endif
