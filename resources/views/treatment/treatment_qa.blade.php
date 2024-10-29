@@ -58,7 +58,7 @@
                                     </button>
                                 @else
                                     <button class="btn btn-c2 rounded-pill"
-                                        onclick='banerror(@json(session("banlist.article")))'>
+                                        onclick='banerror(@json(session('banlist.article')))'>
                                         <i class="fas fa-pen me-1"></i>建立聊療</button>
                                 @endif
                             @endif
@@ -141,8 +141,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-auto d-none d-lg-block px-0 py-1">
-                                                <img src={{ $article['index_image'] }}
-                                                    class="article-img" />
+                                                <img src={{ $article['index_image'] }} class="article-img" />
                                             </div>
                                         </div>
                                     @endif
@@ -174,15 +173,105 @@
                             </div>
                             <div class="modal-body">
                                 <div class="row mb-1 g-2 align-items-center">
-                                    <div class="col-auto">
-                                        <img class="me-1" src="{{ asset('static/img/user.png') }}" width="25" />
+                                    <div class="col-12" style="font-size: var(--fs-18)">
+                                        <div class="row g-3 align-items-center justify-content-between">
+                                            <!-- 左邊部分 -->
+                                            <div class="col-auto d-flex align-items-center">
+                                                <!-- 人物圖片 -->
+                                                <img class="me-1" src="{{ asset('static/img/user.png') }}"
+                                                    width="25" />
+
+                                                <!-- 下拉選擇框 -->
+                                                <select class="form-select ms-2" id="id_type">
+                                                    <option value="{{ $nickname }}" selected>{{ $nickname }}
+                                                    </option>
+                                                    <option value="匿名">匿名</option>
+                                                </select>
+                                            </div>
+                                            <!-- 右邊部分 -->
+                                            <div id="image_preview" class="col-auto d-flex align-items-start">
+                                                <!-- 上傳檔案按鈕 -->
+                                                <div class="my-3 d-flex align-items-center">
+                                                    <div class="preview {{ isset($user_image) ? 'd-none' : 'd-flex' }} align-items-center text-center justify-content-center"
+                                                        style="z-index: 1; margin-right: 10px;">
+                                                        <span class="d-none d-lg-block">上傳檔案</span><span><i
+                                                                class="fas fa-camera"></i></span>
+                                                    </div>
+                                                    <input type="file" id="article_image" name="article_image"
+                                                        accept=".jpg, .jpeg, .png" />
+                                                </div>
+                                                <!-- 封面圖片預覽，位於右上方 -->
+                                                <div class="d-flex flex-column align-items-end">
+                                                    <img id="crop_image"
+                                                        style="float: right; max-width: 150px; max-height: 150px; margin-left: 20px; border-radius: 10px;">
+                                                    <!-- 清除圖片按鈕 -->
+                                                    <button id="clear_image_button" type="button"
+                                                        class="btn btn-outline-danger btn-sm mt-2 d-none">清除圖片</button>
+                                                </div>
+                                            </div>
+                                            <!-- 裁剪模態視窗 -->
+                                            <div class="modal fade" id="cropModal" tabindex="-1" role="dialog"
+                                                aria-labelledby="cropModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="cropModalLabel">裁剪圖片</h5>
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <img id="image_to_crop" style="max-width: 100%;">
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-dismiss="modal">取消</button>
+                                                            <button type="button" class="btn btn-primary"
+                                                                id="crop_button">裁剪並上傳</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
                                     </div>
-                                    <div class="col-auto">
-                                        <select class="form-select" id="id_type">
-                                            <option value={{ $nickname }} selected>{{ $nickname }}</option>
-                                            <option value="匿名">匿名</option>
-                                        </select>
+
+
+
+                                    <!-- 模態視窗部分，用來顯示裁切功能 -->
+                                    <!-- 裁剪模態視窗 -->
+                                    <div class="modal fade" id="cropModal" tabindex="-1" role="dialog"
+                                        aria-labelledby="cropModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="cropModalLabel">裁剪圖片</h5>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <img id="image_to_crop" src=""
+                                                        style="max-width: 100%; display: block;">
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        id="close_crop_modal" data-dismiss="modal">取消</button>
+                                                    <button type="button" class="btn btn-primary"
+                                                        id="crop_button">裁剪並上傳</button>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
+
+                                    <!-- 清除圖片按鈕，在文章編輯頁面中 -->
+                                    <button type="button" class="btn btn-danger" id="clear_image_button">清除圖片</button>
+
+                                    <img id="crop_image" src="" class="d-none"
+                                        style="max-width: 100%; margin-top: 10px;">
+
                                 </div>
                                 <div class="row my-1 g-2 align-items-center justify-content-between">
                                     <div class="col-8">
