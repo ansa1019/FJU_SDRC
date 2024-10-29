@@ -81,6 +81,7 @@ public function CalendarIndex()
         // dd($request->all());
         $token = Session::get('jwt_token', '');
         $error = "";
+        session()->forget(['next_menstrual_date', 'remaining_weeks', 'remaining_days', 'due_date', 'health_type', 'pregnancy_data']);
         if ($request['health_type'] == 'menstruation') {
             // 獲取使用者填寫的紀錄日期
             $recordDate = $request->has('menstrualPeriod') 

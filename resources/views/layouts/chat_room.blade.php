@@ -101,7 +101,7 @@
                 <div class="alert alert-secondary m-2 p-2 align-items-center d-flex" role="alert">
                     <i class="bi bi-exclamation-circle float-start px-2"></i>
                     <!-- 如有置頂標語提醒 請顯示alert，並填入文字 -->
-                    詐騙提醒詐騙提醒詐騙提醒
+                    勿洩漏個資，留意聊天室中潛在的詐騙行為
                 </div>
 
                 <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 0px">
@@ -170,7 +170,7 @@
                     <div class="alert alert-secondary m-2 p-2 align-items-center d-flex" role="alert">
                         <i class="bi bi-exclamation-circle float-start px-2"></i>
                         <!-- 如有置頂標語提醒 請顯示alert，並填入文字 -->
-                        詐騙提醒詐騙提醒詐騙提醒
+                        勿洩漏個資，留意聊天室中潛在的詐騙行為
                     </div>
 
                     <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 0px">
@@ -201,7 +201,7 @@
                     <div class="alert alert-secondary m-2 p-2 align-items-center d-flex" role="alert">
                         <i class="bi bi-exclamation-circle float-start px-2"></i>
                         <!-- 如有置頂標語提醒 請顯示alert，並填入文字 -->
-                        詐騙提醒詐騙提醒詐騙提醒
+                        勿洩漏個資，留意聊天室中潛在的詐騙行為
                     </div>
 
                     <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 0px">
@@ -256,7 +256,7 @@
                     <div class="alert alert-secondary m-2 p-2 align-items-center d-flex" role="alert">
                         <i class="bi bi-exclamation-circle float-start px-2"></i>
                         <!-- 如有置頂標語提醒 請顯示alert，並填入文字 -->
-                        詐騙提醒詐騙提醒詐騙提醒
+                        勿洩漏個資，留意聊天室中潛在的詐騙行為
                     </div>
 
                     <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 0px">
@@ -287,7 +287,7 @@
                     <div class="alert alert-secondary m-2 p-2 align-items-center d-flex" role="alert">
                         <i class="bi bi-exclamation-circle float-start px-2"></i>
                         <!-- 如有置頂標語提醒 請顯示alert，並填入文字 -->
-                        詐騙提醒詐騙提醒詐騙提醒
+                        勿洩漏個資，留意聊天室中潛在的詐騙行為
                     </div>
 
                     <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 0px">
@@ -341,7 +341,7 @@
                     <div class="alert alert-secondary m-2 p-2 align-items-center d-flex" role="alert">
                         <i class="bi bi-exclamation-circle float-start px-2"></i>
                         <!-- 如有置頂標語提醒 請顯示alert，並填入文字 -->
-                        詐騙提醒詐騙提醒詐騙提醒
+                        勿洩漏個資，留意聊天室中潛在的詐騙行為
                     </div>
 
                     <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 0px">
@@ -370,7 +370,7 @@
                     <div class="alert alert-secondary m-2 p-2 align-items-center d-flex" role="alert">
                         <i class="bi bi-exclamation-circle float-start px-2"></i>
                         <!-- 如有置頂標語提醒 請顯示alert，並填入文字 -->
-                        詐騙提醒詐騙提醒詐騙提醒
+                        勿洩漏個資，留意聊天室中潛在的詐騙行為
                     </div>
 
                     <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 0px">
@@ -424,7 +424,7 @@
                     <div class="alert alert-secondary m-2 p-2 align-items-center d-flex" role="alert">
                         <i class="bi bi-exclamation-circle float-start px-2"></i>
                         <!-- 如有置頂標語提醒 請顯示alert，並填入文字 -->
-                        詐騙提醒詐騙提醒詐騙提醒
+                        勿洩漏個資，留意聊天室中潛在的詐騙行為
                     </div>
 
                     <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 0px">
@@ -453,7 +453,7 @@
                     <div class="alert alert-secondary m-2 p-2 align-items-center d-flex" role="alert">
                         <i class="bi bi-exclamation-circle float-start px-2"></i>
                         <!-- 如有置頂標語提醒 請顯示alert，並填入文字 -->
-                        詐騙提醒詐騙提醒詐騙提醒
+                        勿洩漏個資，留意聊天室中潛在的詐騙行為
                     </div>
 
                     <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 0px">
@@ -507,7 +507,7 @@
                     <div class="alert alert-secondary m-2 p-2 align-items-center d-flex" role="alert">
                         <i class="bi bi-exclamation-circle float-start px-2"></i>
                         <!-- 如有置頂標語提醒 請顯示alert，並填入文字 -->
-                        詐騙提醒詐騙提醒詐騙提醒
+                        勿洩漏個資，留意聊天室中潛在的詐騙行為
                     </div>
 
                     <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 0px">
@@ -536,7 +536,7 @@
                     <div class="alert alert-secondary m-2 p-2 align-items-center d-flex" role="alert">
                         <i class="bi bi-exclamation-circle float-start px-2"></i>
                         <!-- 如有置頂標語提醒 請顯示alert，並填入文字 -->
-                        詐騙提醒詐騙提醒詐騙提醒
+                        勿洩漏個資，留意聊天室中潛在的詐騙行為
                     </div>
 
                     <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 0px">
