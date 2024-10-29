@@ -312,6 +312,61 @@
                 <div class="modal-content">
                     <input type="hidden" id="return_content" name="content">
                     <input type="hidden" id="return_html" name="html">
+                    <input type="hidden" id='return_id'>
+                    <div class="modal-header pb-0 border-bottom-0">
+                        <h1 class="modal-title fs-5 ct-txt-2 fw-bold">修改聊療，一起聊聊吧🙂</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row mb-1 g-2 align-items-center">
+                            <div class="col-auto">
+                                <img class="me-1" src="{{ asset('static/img/user.png') }}" width="25" />
+                            </div>
+                            <div class="col-auto">
+                                <select class="form-select" id="patch_id_type">
+                                    <option value={{ $nickname }} selected>{{ $nickname }}</option>
+                                    <option value="匿名">匿名</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row my-1 g-2 align-items-center justify-content-between">
+                            <div class="col-8">
+                                <input class="form-control" type="text" id="input_patch_title" name="title"
+                                    placeholder="標題：請用簡短的話說明你的提問/分享" />
+                            </div>
+                            <div class="col">
+                                <select class="form-select" id="patch_treat_class" name="treat">
+                                    <option value="聊療小產">聊療小產</option>
+                                    <option value="聊療婦科保健">聊療婦科保健</option>
+                                    <option value="聊療備孕">聊療備孕</option>
+                                    <option value="聊療懷孕">聊療懷孕</option>
+                                    <option value="聊療日常保健">聊療日常保健</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row my-1 g-2 justify-content-center">
+                            <!--文字編輯器套件 editor-->
+                            <div class="col-12" id="patch-editor-container" style="height: 300px; font-size: 30px;">
+                                <textarea class="form-control" rows="7" id="patch_editor" name="patch_editor"></textarea>
+                            </div>
+                            <div class="col-12">
+                                <input class="form-control" type="text" id="patch_input_topic"
+                                    placeholder="#話題：可以根據你的文章內容，輸入半形的#，可以新增多個話題喔！" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-c2 rounded-pill px-3 py-1" onclick="patchData()"><i
+                                class="fas fa-bullhorn me-1"></i>發文</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{-- <div class="modal fade" id="patch_modal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content">
+                    <input type="hidden" id="return_content" name="content">
+                    <input type="hidden" id="return_html" name="html">
                     <input type="hidden" id="return_id">
                     <div class="modal-header pb-0 border-bottom-0">
                         <h1 class="modal-title fs-5 ct-txt-2 fw-bold">修改聊療，一起聊聊吧🙂</h1>
@@ -358,13 +413,11 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-c2 rounded-pill px-3 py-1" onclick="patchData()"><i
                                 class="fas fa-bullhorn me-1"></i>發文</button>
-                        {{-- <button type="button" class="btn btn-outline-c2 ct-sub-1 rounded-pill px-3 py-1"
-                        onclick="draft()"><i class="bi bi-inbox-fill me-1"></i>暫存</button> --}}
-                        {{-- <button onclick="data()">發文</button> --}}
+                        
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
 
         <!--分享貼文 modal-->
         <div class="popup modal fade" id="shareModal" tabindex="-1">

@@ -100,7 +100,7 @@
                                                     style="overflow: hidden; max-height: 4em; max-width: 430px;">
                                                     {!! $article['plain'] !!}
                                                 </div>
-                                                <div class="ct-sub-1">
+                                                <div class="ctsub-1">
                                                     @if ($user_mail == $article['author'])
                                                         <!--判斷是否是自己帳號留的言 有則顯示編輯功能-->
                                                         <button class="btn btn-sm p-0" data-bs-toggle="modal"
@@ -294,7 +294,6 @@
                                 <button type="button" class="btn btn-outline-c2 ct-sub-1 rounded-pill px-3 py-1"
                                     onclick="temporaryData(this, 'temporary')"><i
                                         class="bi bi-inbox-fill me-1"></i>暫存</button>
-                                {{-- <button onclick="data()">發文</button> --}}
                             </div>
                         @endif
                     </div>
@@ -354,9 +353,6 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-c2 rounded-pill px-3 py-1" onclick="patchData()"><i
                                 class="fas fa-bullhorn me-1"></i>發文</button>
-                        {{-- <button type="button" class="btn btn-outline-c2 ct-sub-1 rounded-pill px-3 py-1"
-                        onclick="draft()"><i class="bi bi-inbox-fill me-1"></i>暫存</button> --}}
-                        {{-- <button onclick="data()">發文</button> --}}
                     </div>
                 </div>
             </div>
