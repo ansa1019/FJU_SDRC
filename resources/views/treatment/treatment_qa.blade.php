@@ -200,10 +200,6 @@
                                                 </div>
                                                 <!-- 封面圖片預覽，位於右上方 -->
                                                 <div class="d-flex flex-column align-items-end">
-
-                                                    <!-- 清除圖片按鈕 -->
-                                                    <button id="clear_image_button" type="button"
-                                                        class="btn btn-outline-danger btn-sm mt-2 d-none">清除圖片</button>
                                                 </div>
                                             </div>
                                             <!-- 裁剪模態視窗 -->
@@ -262,10 +258,6 @@
                                             </div>
                                         </div>
                                     </div>
-
-                                    <!-- 清除圖片按鈕，在文章編輯頁面中 -->
-                                    <button type="button" class="btn btn-danger" id="clear_image_button">清除圖片</button>
-
                                 </div>
                                 <div class="row my-1 g-2 align-items-center justify-content-between">
                                     <div class="col-8">
