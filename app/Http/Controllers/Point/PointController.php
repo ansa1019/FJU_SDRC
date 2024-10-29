@@ -30,9 +30,7 @@ class PointController extends Controller
         // dd($response);
         // --以上手動新增點數
 
-        $responseTaskRecord = Http::withHeaders([
-            'Authorization' => 'Bearer ' . $token,
-        ])->get(env('API_IP') . 'api/task/taskRecord/')->json();
+        $responseTaskRecord = ApiHelper::getAuthenticatedRequest($token, env('API_IP') . 'api/task/taskRecord/')->json();
 
         $personalProgress = end($responseTaskRecord);
         array_pop($responseTaskRecord);
