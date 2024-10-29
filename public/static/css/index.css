@@ -161,3 +161,7 @@
     object-fit: cover;
     border-radius: 50%;
 }
+
+a.card {
+    text-decoration: none;
+}
