@@ -373,40 +373,40 @@
                                                 style="font-size: var(--fs-16)">＊舊密碼錯誤請確認舊密碼輸入</span>
                                         </div>
                                     </div>
+                                </div>
+                                <div class="row g-3 mb-3 align-items-start">
+                                    <div class="col-4">
+                                        <label for="new_password" class="col-form-label">新密碼</label>
                                     </div>
-                                    <div class="row g-3 mb-3 align-items-start">
-                                        <div class="col-4">
-                                            <label for="new_password" class="col-form-label">新密碼</label>
-                                        </div>
-                                        <div class="col">
-                                            <input type="password" id="new_password" name="new_password"
-                                                placeholder="須包含英文大小寫，至少8個字元" class="form-control" />
-                                            <span class="ct-txt-2 d-none" id="new_pwd_alert"
-                                                style="font-size: var(--fs-16)">＊新密碼須包含英文大小寫，至少8個字元</span>
-                                        </div>
-                                    </div>
-                                    <div class="row g-3 mb-3 align-items-start">
-                                        <div class="col-4">
-                                            <label for="check_password" class="col-form-label">確認新密碼</label>
-                                        </div>
-                                        <div class="col">
-                                            <input type="password" id="check_password" class="form-control" />
-                                            <span class="ct-txt-2 d-none" id="check_pwd_alert"
-                                                style="font-size: var(--fs-16)">＊需與新密碼相同</span>
-                                        </div>
-                                    </div>
-                                    <div class="row g-3 my-4 align-items-center">
-                                        <button type="button" onclick="updatePassword()"
-                                            class="btn btn-c2 rounded-pill px-4 mx-1 col-auto">完成</button>
-
-                                        <button type="button" class="btn col-auto mx-1"
-                                            data-bs-dismiss="modal">取消</button>
+                                    <div class="col">
+                                        <input type="password" id="new_password" name="new_password"
+                                            placeholder="須包含英文大小寫，至少8個字元" class="form-control" />
+                                        <span class="ct-txt-2 d-none" id="new_pwd_alert"
+                                            style="font-size: var(--fs-16)">＊新密碼須包含英文大小寫，至少8個字元</span>
                                     </div>
                                 </div>
-                            </form>
+                                <div class="row g-3 mb-3 align-items-start">
+                                    <div class="col-4">
+                                        <label for="check_password" class="col-form-label">確認新密碼</label>
+                                    </div>
+                                    <div class="col">
+                                        <input type="password" id="check_password"
+                                            class="form-control"placeholder="需與新密碼相同" />
+                                        <span class="ct-txt-2 d-none" id="check_pwd_alert"
+                                            style="font-size: var(--fs-16)">＊需與新密碼相同</span>
+                                    </div>
+                                </div>
+                                <div class="row g-3 my-4 align-items-center">
+                                    <button type="button" onclick="updatePassword()"
+                                        class="btn btn-c2 rounded-pill px-4 mx-1 col-auto">完成</button>
+
+                                    <button type="button" class="btn col-auto mx-1" data-bs-dismiss="modal">取消</button>
+                                </div>
                         </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
-    @endsection
+    </div>
+@endsection

@@ -947,8 +947,8 @@ function getValue(button, type) {
         // 設置標題與文章ID
         title.value = $(button)
             .parents()
-            .eq(2)
-            .find("#article_title")
+            .parents()
+            .find("#article_id_title")
             .text()
             .trim();
         article_id.value = id;
@@ -1004,7 +1004,7 @@ function getValue(button, type) {
         article_id.value = id;
 
         // 設置類別
-        var subcategory_id = $("#category").text().split("/")[1];
+        var subcategory_id = $("#article_category").text().split("/")[1];
         console.log("Subcategory ID:", subcategory_id); // 確認 subcategory_id 的值
 
         // 將選擇的類別直接設置為 subcategory_id 的值
@@ -1026,7 +1026,7 @@ function getValue(button, type) {
         hashtags.value = hashtagsText;
 
         // 使用 Quill 編輯器插入 HTML 內容
-        patch_quill.clipboard.dangerouslyPasteHTML($("#content").html());
+        patch_quill.clipboard.dangerouslyPasteHTML($("#content").html().trim());
     } else {
         // 發佈時使用 Quill 編輯器插入 HTML
         quill.clipboard.dangerouslyPasteHTML(

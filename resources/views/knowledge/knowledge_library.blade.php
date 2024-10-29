@@ -249,68 +249,11 @@
                             <div class="col-12" id="editor-container" style="height: 300px; font-size: 30px;">
                                 <textarea class="form-control" rows="7" id="editor"></textarea>
                             </div>
-                            {{-- <div class="col-12">
-                                <label class="fw-bold text-muted">建立投票貼文</label>
-                                <a class="btn px-1" data-bs-toggle="collapse" href="#collapseVote">
-                                    <i class="bi bi-caret-down-fill"></i>
-                                </a>
-                            </div>
-                            <div class="col-12 vote_div collapse" id="collapseVote">
-                                <div class="mb-2">
-                                    <input type="text" class="form-control" id="qa_title"
-                                        placeholder="投票問題：描述發起投票的問題" />
-                                </div>
-                                <div class="mb-2" id="vote_item_list">
-                                    <input type="text" class="form-control my-1" id="vote_item1" placeholder="選項1" />
-                                    <input type="text" class="form-control my-1" id="vote_item2" placeholder="選項2" />
-                                </div>
-                                <div class="mb-2">
-                                    <button id="add_voteitem_btn" class="col-12 btn btn-secondary text-start"><i
-                                            class="bi bi-plus-circle-fill me-2"></i>新增選項</button>
-                                </div>
-                                <div class="mb-2 align-items-center">
-                                    <div class="col-auto">
-                                        <label for="input_vote_type" class="col-form-label">投票方式</label>
-                                    </div>
-                                    <div class="col-auto">
-                                        <select class="form-select" id="input_vote_type">
-                                            <option selected>選擇投票方式</option>
-                                            <option value="radio">單選</option>
-                                            <option value="check">複選</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="mb-2 align-items-center">
-                                    <div class="col-auto">
-                                        <label for="input_vote_time" class="col-form-label">投票結束時間（投票開始時間即為發文時間）</label>
-                                    </div>
-                                    <div class="col-auto">
-                                        <input type="datetime-local" class="form-control" id="input_vote_time" />
-                                    </div>
-                                </div>
-                            </div> --}}
+                            
                             <div class="col-12">
                                 <input class="form-control" type="text" id="create_input_topic"
                                     placeholder="#話題：可以根據你的文章內容，輸入半形的#，可以新增多個話題喔！" />
                             </div>
-                            {{-- <div class="col-12 my-1">
-                                <div class="row">
-                                    <div class="btn-group col-auto px-0 align-items-center" role="group"
-                                        aria-label="Basic radio toggle button group">
-                                        <input type="radio" class="btn-check" name="set_post_time" id="post_now"
-                                            autocomplete="off" checked />
-                                        <label class="btn btn-outline-c3" for="post_now">立即發布</label>
-
-                                        <input type="radio" class="btn-check" name="set_post_time" id="post_settime"
-                                            autocomplete="off" />
-                                        <label class="btn btn-outline-c3" for="post_settime">排程時間</label>
-                                    </div>
-                                    <div class="col pe-0">
-                                        <input type="datetime-local" class="form-control" id="input_post_time"
-                                            disabled />
-                                    </div>
-                                </div>
-                            </div> --}}
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -338,10 +281,6 @@
                                     <option value={{ $nickname }}
                                         {{ $temporary_article[0]['identity'] == $nickname ? 'selected' : '' }}>
                                         {{ $nickname }}</option>
-                                    {{-- <option value="匿名"
-                                        {{ $temporary_article[0]['identity'] == '匿名' ? 'selected' : '' }}>
-                                        匿名
-                                    </option> --}}
                                 </select>
                             </div>
                         </div>
@@ -389,69 +328,13 @@
                             <div class="col-12" id="editor-container" style="height: 300px; font-size: 30px;">
                                 <textarea class="form-control" rows="7" id="editor"></textarea>
                             </div>
-                            {{-- <div class="col-12">
-                                <label class="fw-bold text-muted">建立投票貼文</label>
-                                <a class="btn px-1" data-bs-toggle="collapse" href="#collapseVote2">
-                                    <i class="bi bi-caret-down-fill"></i>
-                                </a>
-                            </div>
-                            <div class="col-12 vote_div collapse" id="collapseVote2">
-                                <div class="mb-2">
-                                    <input type="text" class="form-control" id="qa_title"
-                                        placeholder="投票問題：描述發起投票的問題" />
-                                </div>
-                                <div class="mb-2" id="vote_item_list">
-                                    <input type="text" class="form-control my-1" id="vote_item1" placeholder="選項1" />
-                                    <input type="text" class="form-control my-1" id="vote_item2" placeholder="選項2" />
-                                </div>
-                                <div class="mb-2">
-                                    <button id="add_voteitem_btn" class="col-12 btn btn-secondary text-start"><i
-                                            class="bi bi-plus-circle-fill me-2"></i>新增選項</button>
-                                </div>
-                                <div class="mb-2 align-items-center">
-                                    <div class="col-auto">
-                                        <label for="input_vote_type" class="col-form-label">投票方式</label>
-                                    </div>
-                                    <div class="col-auto">
-                                        <select class="form-select" id="input_vote_type">
-                                            <option selected>選擇投票方式</option>
-                                            <option value="radio">單選</option>
-                                            <option value="check">複選</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="mb-2 align-items-center">
-                                    <div class="col-auto">
-                                        <label for="input_vote_time" class="col-form-label">投票結束時間（投票開始時間即為發文時間）</label>
-                                    </div>
-                                    <div class="col-auto">
-                                        <input type="datetime-local" class="form-control" id="input_vote_time" />
-                                    </div>
-                                </div>
-                            </div> --}}
+
                             <div class="col-12 mb-2">
                                 <input class="form-control" type="text" id="create_input_topic"
                                     placeholder='#話題：可以根據你的文章內容，輸入半形的#，可以新增多個話題喔！'
                                     value={{ $temporary_article[0]['hashtag'] != 'null' ? $temporary_article[0]['hashtag'] : '' }}>
                             </div>
-                            {{-- <div class="col-12 my-1">
-                                <div class="row">
-                                    <div class="btn-group col-auto px-0 align-items-center" role="group"
-                                        aria-label="Basic radio toggle button group">
-                                        <input type="radio" class="btn-check" name="set_post_time" id="post_now"
-                                            autocomplete="off" checked />
-                                        <label class="btn btn-outline-c3" for="post_now">立即發布</label>
 
-                                        <input type="radio" class="btn-check" name="set_post_time" id="post_settime"
-                                            autocomplete="off" />
-                                        <label class="btn btn-outline-c3" for="post_settime">排程時間</label>
-                                    </div>
-                                    <div class="col pe-0">
-                                        <input type="datetime-local" class="form-control" id="input_post_time"
-                                            disabled />
-                                    </div>
-                                </div>
-                            </div> --}}
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -515,38 +398,6 @@
                         <div class="col-12" id="patch-editor-container" style="height: 300px; font-size: 30px;">
                             <textarea class="form-control" rows="7" id="patch_editor" name="patch_editor"></textarea>
                         </div>
-                        <!-- <div class="col-12 vote_div">
-                                    <div class="mb-2">
-                                        <input type="text" class="form-control" id="qa_title" placeholder="投票問題：描述發起投票的問題" />
-                                    </div>
-                                    <div class="mb-2" id="vote_item_list">
-                                        <input type="text" class="form-control my-1" id="vote_item1" placeholder="選項1" />
-                                        <input type="text" class="form-control my-1" id="vote_item2" placeholder="選項2" />
-                                    </div>
-                                    <div class="mb-2">
-                                        <button id="add_voteitem_btn" class="col-12 btn btn-secondary text-start"><i class="bi bi-plus-circle-fill me-2"></i>新增選項</button>
-                                    </div>
-                                    <div class="mb-2 align-items-center">
-                                        <div class="col-auto">
-                                            <label for="input_vote_type" class="col-form-label">投票方式</label>
-                                        </div>
-                                        <div class="col-auto">
-                                            <select class="form-select" id="input_vote_type">
-                                                <option selected>選擇投票方式</option>
-                                                <option value="radio">單選</option>
-                                                <option value="check">複選</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="mb-2 align-items-center">
-                                        <div class="col-auto">
-                                            <label for="input_vote_time" class="col-form-label">投票結束時間</label>
-                                        </div>
-                                        <div class="col-auto">
-                                            <input type="datetime-local" class="form-control" id="input_vote_time" />
-                                        </div>
-                                    </div>
-                                </div> -->
                         <div class="col-12">
                             <input class="form-control" type="text" id="patch_input_topic"
                                 placeholder="#話題：可以根據你的文章內容，輸入半形的#，可以新增多個話題喔！" />
@@ -556,9 +407,6 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-c2 rounded-pill px-3 py-1" onclick="official_patchData()"><i
                             class="fas fa-bullhorn me-1"></i>發文</button>
-                    {{-- <button type="button" class="btn btn-outline-c2 ct-sub-1 rounded-pill px-3 py-1"
-                        onclick="draft()"><i class="bi bi-inbox-fill me-1"></i>暫存</button> --}}
-                    {{-- <button onclick="data()">發文</button> --}}
                 </div>
             </div>
         </div>
