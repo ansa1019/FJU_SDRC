@@ -152,18 +152,17 @@ textarea {
     overflow: auto;
 }
 
-#report thead {text-align: center;}
-#editor-container ol li a, 
+#report thead {
+    text-align: center;
+}
+#editor-container ol li a,
 #editor-container ul li a {
-    pointer-events: none !important;  /* 禁止鼠标事件，使链接不可点击 */
-    color: black !important;          /* 设置链接颜色与普通文本一样 */
+    pointer-events: none !important; /* 禁止鼠标事件，使链接不可点击 */
+    color: black !important; /* 设置链接颜色与普通文本一样 */
     text-decoration: none !important; /* 去掉下划线 */
-    cursor: default !important;       /* 更改鼠标光标为默认样式 */
+    cursor: default !important; /* 更改鼠标光标为默认样式 */
 }
 #editor-container ol,
 #editor-container ul {
     text-align: left; /* 确保所有列表文本都靠左对齐 */
 }
-
-
-

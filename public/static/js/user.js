@@ -131,7 +131,6 @@ $(document).ready(function () {
         language: "zh-TW",
     });
 });
-
 /* 會員資料 上傳圖片 */
 if ($("#user_image")) {
     let cropper;
@@ -144,29 +143,29 @@ if ($("#user_image")) {
             const file = input.files[0];
             const validImageTypes = ["image/jpeg", "image/png", "image/gif"];
 
-            // 檢查文件類型是否有效
+            // 檢查檔案類型是否有效
             if (!validImageTypes.includes(file.type)) {
                 Swal.fire({
                     position: "center",
                     icon: "error",
                     title: "請上傳有效的圖片檔案！",
                     showConfirmButton: false,
-                    timer: 1500,
+                    timer: 2500,
                 });
                 // 重置文件輸入框
                 input.value = "";
                 return;
             }
 
-            // 檢查文件大小是否超過 5MB
-            const maxSize = 5 * 1024 * 1024;
+            // 檢查檔案大小是否超過 3MB
+            const maxSize = 3 * 1024 * 1024;
             if (file.size > maxSize) {
                 Swal.fire({
                     position: "center",
                     icon: "error",
-                    title: "圖片大小不得超過 5MB！",
+                    title: "圖片大小不得超過 3MB！",
                     showConfirmButton: false,
-                    timer: 1500,
+                    timer: 2500,
                 });
                 // 重置文件輸入框
                 input.value = "";
@@ -248,7 +247,7 @@ if ($("#user_image")) {
                                         icon: "success",
                                         title: "修改頭像成功!",
                                         showConfirmButton: false,
-                                        timer: 1500,
+                                        timer: 2500,
                                     });
 
                                     // 隱藏模態視窗並重整頁面
@@ -270,7 +269,7 @@ if ($("#user_image")) {
                             icon: "error",
                             title: "修改頭像失敗!",
                             showConfirmButton: false,
-                            timer: 1500,
+                            timer: 2500,
                         });
                     });
             });
@@ -286,27 +285,27 @@ if ($("#user_image")) {
         $("#image_to_crop").attr("src", ""); // 清空裁切區域的圖片
         $("#user_image").val(""); // 重置文件輸入框
     });
-
-    // 當模態視窗取消按鈕被點擊時，手動觸發關閉
-    $(".btn-secondary").on("click", function () {
-        $("#cropModal").modal("hide");
-    });
-
-    // 手動處理右上角叉叉按鈕的關閉
-    $(".close").on("click", function () {
-        $("#cropModal").modal("hide");
-    });
-
-    // 模態視窗關閉時，重置 Cropper
-    $("#cropModal").on("hidden.bs.modal", function () {
-        if (cropper) {
-            cropper.destroy();
-            cropper = null;
-        }
-        $("#image_to_crop").attr("src", ""); // 清空圖片
-        $("#user_image").val(""); // 重置輸入框
-    });
 }
+
+// 當模態視窗取消按鈕被點擊時，手動觸發關閉
+$(".btn-secondary").on("click", function () {
+    $("#cropModal").modal("hide");
+});
+
+// 手動處理右上角叉叉按鈕的關閉
+$(".close").on("click", function () {
+    $("#cropModal").modal("hide");
+});
+
+// 模態視窗關閉時，重置 Cropper
+$("#cropModal").on("hidden.bs.modal", function () {
+    if (cropper) {
+        cropper.destroy();
+        cropper = null;
+    }
+    $("#image_to_crop").attr("src", ""); // 清空圖片
+    $("#user_image").val(""); // 重置輸入框
+});
 
 let datepick_pos_top = null;
 

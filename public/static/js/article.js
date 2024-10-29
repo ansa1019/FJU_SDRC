@@ -1,5 +1,3 @@
-let cropper; // 全局宣告 cropper 變數
-
 const b64toBlob = (b64Data, contentType = "", sliceSize = 512) => {
     const byteCharacters = atob(b64Data);
     const byteArrays = [];
@@ -157,145 +155,6 @@ function removeLinksFromLists() {
 
     quill.root.innerHTML = tempDiv.innerHTML; // 更新编辑器的 HTML
 }
-
-/* 上傳文章圖片 */
-// if ($("#article_image")) {
-//     let cropper;
-
-//     // 當選擇圖片後
-//     $("#article_image").on("change", (event) => {
-//         var input = document.getElementById("article_image");
-
-//         if (input.files.length > 0) {
-//             const file = input.files[0];
-//             const validImageTypes = ["image/jpeg", "image/png", "image/gif"];
-
-//             // 檢查檔案類型是否有效
-//             if (!validImageTypes.includes(file.type)) {
-//                 Swal.fire({
-//                     position: "center",
-//                     icon: "error",
-//                     title: "請上傳有效的圖片檔案！",
-//                     showConfirmButton: false,
-//                     timer: 2500,
-//                 });
-//                 // 重置文件輸入框
-//                 input.value = "";
-//                 return;
-//             }
-
-//             // 檢查檔案大小是否超過 3MB
-//             const maxSize = 3 * 1024 * 1024;
-//             if (file.size > maxSize) {
-//                 Swal.fire({
-//                     position: "center",
-//                     icon: "error",
-//                     title: "圖片大小不得超過 3MB！",
-//                     showConfirmButton: false,
-//                     timer: 2500,
-//                 });
-//                 // 重置文件輸入框
-//                 input.value = "";
-//                 return;
-//             }
-
-//             // 顯示模態視窗並初始化 Cropper.js
-//         }
-//     });
-
-//     // 當使用者點擊裁切並上傳按鈕
-//     $("#crop_button").on("click", () => {
-//         if (cropper) {
-//             const croppedCanvas = cropper.getCroppedCanvas({
-//                 width: 200, // 設定裁切後的寬度
-//                 height: 200, // 設定裁切後的高度
-//             });
-
-//             // 將裁切後的圖片轉為 Blob 格式
-//             croppedCanvas.toBlob((blob) => {
-//                 const formdata = new FormData();
-//                 formdata.append("article_image", blob, "image.png");
-
-//                 const apiIP = document
-//                     .getElementById("app")
-//                     .getAttribute("data-api-ip");
-//                 var authorizationId =
-//                     document.getElementsByName("profile_id")[0].value;
-//                 var myHeaders = new Headers();
-//                 myHeaders.append("Authorization", "Bearer " + token);
-
-//                 var requestOptions = {
-//                     method: "PATCH",
-//                     headers: myHeaders,
-//                     body: formdata,
-//                     redirect: "follow",
-//                 };
-
-//                 // 發送圖片至後端
-//                 fetch(
-//                     apiIP + "api/userprofile/profile/" + authorizationId + "/",
-//                     requestOptions
-//                 )
-//                     .then((response) => response.json())
-//                     .then((data) => {
-//                         let article_image =
-//                             data[0] && data[0]["article_image"]
-//                                 ? data[0]["article_image"]
-//                                 : null;
-//                         if (article_image) {
-//                             Swal.fire({
-//                                 position: "center",
-//                                 icon: "success",
-//                                 title: "修改封面成功!",
-//                                 showConfirmButton: false,
-//                                 timer: 2500,
-//                             });
-//                         }
-//                     })
-//                     .catch((error) => {
-//                         console.log("Fetch error: ", error);
-//                         Swal.fire({
-//                             position: "center",
-//                             icon: "error",
-//                             title: "修改封面失敗!",
-//                             showConfirmButton: false,
-//                             timer: 2500,
-//                         });
-//                     });
-//             });
-//         }
-//     });
-
-//     // 當模態視窗關閉時，重置 cropper 並清空圖片
-//     $("#cropModal").on("hidden.bs.modal", function () {
-//         if (cropper) {
-//             cropper.destroy();
-//             cropper = null;
-//         }
-//         $("#image_to_crop").attr("src", ""); // 清空裁切區域的圖片
-//         $("#article_image").val(""); // 重置文件輸入框
-//     });
-
-//     // 當模態視窗取消按鈕被點擊時，手動觸發關閉
-//     $(".btn-secondary").on("click", function () {
-//         $("#cropModal").modal("hide");
-//     });
-
-//     // 手動處理右上角叉叉按鈕的關閉
-//     $(".close").on("click", function () {
-//         $("#cropModal").modal("hide");
-//     });
-
-//     // 模態視窗關閉時，重置 Cropper
-//     $("#cropModal").on("hidden.bs.modal", function () {
-//         if (cropper) {
-//             cropper.destroy();
-//             cropper = null;
-//         }
-//         $("#image_to_crop").attr("src", ""); // 清空圖片
-//         $("#article_image").val(""); // 重置輸入框
-//     });
-// }
 
 // 使用 Day.js
 // const now_today = dayjs().format("YYYY-MM-DD");
@@ -1176,6 +1035,112 @@ function getValue(button, type) {
     }
 }
 
+// function getValue(button, type) {
+//     if (type == "patch") {
+//         // 獲取文章 ID 和 DOM 元素
+//         var id = button.parentNode.parentNode.id.replace("article_id_", "");
+//         var title = document.getElementById("input_patch_title");
+//         var article_id = document.getElementById("article_id");
+//         var selectTreat = document.getElementById("patch_treat_class");
+//         var hashtags = document.getElementById("patch_input_topic");
+//         var selectIdentity = document.getElementById("patch_id_type");
+//         var identity = $(button).parents().eq(2).find("#identity").text().trim();
+
+//         // 設置標題與文章ID
+//         title.value = $(button).parents().eq(2).find("#article_id_title").text().trim();
+//         article_id.value = id;
+
+//         // 設置類別
+//         var subcategory_id = $(button).parents().eq(2).find("#subcategory_id").text().trim();
+//         for (var i = 0; i < selectTreat.options.length; i++) {
+//             if (selectTreat.options[i].value == subcategory_id) {
+//                 selectTreat.selectedIndex = i;
+//                 break;
+//             }
+//         }
+
+//         // 設置話題欄位，移除空值與多餘的標點
+//         var hashtagsText = $(button).parents().eq(2).find("#hashtags").text().trim();
+//         hashtags.value = hashtagsText === "null" || hashtagsText === "" ? "" : hashtagsText.replace(/,\s*$/, '').replace(/\s+/g, ' ');
+
+//         // 使用 Quill 編輯器插入 HTML 內容
+//         patch_quill.clipboard.dangerouslyPasteHTML(
+//             $(button).parents().eq(1).find("#html").text().trim()
+//         );
+//     }
+
+//     if (type == "post") {
+//         // 發佈時使用 Quill 編輯器插入 HTML
+//         quill.clipboard.dangerouslyPasteHTML(
+//             $(button).parents().eq(0).find("#html").text().trim()
+//         );
+//     }
+// }
+
+//修改聊療的資料
+// function getValue(button, type) {
+//     if (type == "patch") {
+//         // 獲取文章 ID 和 DOM 元素
+//         var id = button.parentNode.parentNode.id.replace("article_id_", "");
+//         var title = document.getElementById("input_patch_title");
+//         var article_id = document.getElementById("article_id");
+//         var selectTreat = document.getElementById("patch_treat_class");
+//         var hashtags = document.getElementById("patch_input_topic");
+//         var category = $(button).parents().eq(2).find("#category").text().trim();
+//         var selectIdentity = document.getElementById("patch_id_type");
+//         var identity = $(button).parents().eq(2).find("#identity").text().trim();
+
+//         // 確認 category 是否正確
+//         console.log("Category:", category);
+
+//         // 類別預設值顯示：通過比對選項值來設置
+//         let categoryMatched = false;
+//         for (var i = 0; i < selectTreat.options.length; i++) {
+//             if (selectTreat.options[i].value.trim() === category) {
+//                 selectTreat.selectedIndex = i;
+//                 categoryMatched = true;
+//                 break;
+//             }
+//         }
+//         if (!categoryMatched) {
+//             console.warn("未找到匹配的類別選項");
+//         }
+
+//         // 身份選擇框的預設選項
+//         for (var i = 0; i < selectIdentity.options.length; i++) {
+//             if (selectIdentity.options[i].value === identity) {
+//                 selectIdentity.selectedIndex = i;
+//                 break;
+//             }
+//         }
+
+//         // 設定標題與文章ID
+//         title.value = $(button).parents().eq(2).find("#article_id_title").text().trim();
+//         article_id.value = id;
+
+//         // 設定話題欄位，移除空值與多餘的標點
+//         var hashtagsText = $(button).parents().eq(2).find("#hashtags").text().trim();
+//         if (hashtagsText === "null" || hashtagsText === "") {
+//             hashtags.value = "";  // 若無話題則清空欄位
+//         } else {
+//             hashtags.value = hashtagsText.replace(/,\s*$/, '').replace(/\s+/g, ' '); // 移除多餘逗號和多餘空格
+//         }
+
+//         // 使用 Quill 編輯器插入 HTML 內容
+//         patch_quill.clipboard.dangerouslyPasteHTML(
+//             $(button).parents().eq(1).find("#html").text().trim()
+//         );
+//     }
+
+//     if (type == "post") {
+//         // 發佈時使用 Quill 編輯器插入 HTML
+//         quill.clipboard.dangerouslyPasteHTML(
+//             $(button).parents().eq(0).find("#html").text().trim()
+//         );
+//     }
+// }
+
+//新增聊療
 function postdata(obj, type) {
     const apiIP = document.getElementById("app").getAttribute("data-api-ip");
     var html = quill.root.innerHTML;
@@ -1210,10 +1175,113 @@ function postdata(obj, type) {
     formdata.append("is_official", 0);
     formdata.append("is_temporary", 0);
 
+    if (articleImageFile) {
+        formdata.append("index_image", articleImageFile);
+    } else if (content.ops[0]["insert"]["image"]) {
+        var contentType = content.ops[0]["insert"]["image"]
+            .split(",")[0]
+            .split(":")[1]
+            .split(";")[0];
+        var b64Data = content.ops[0]["insert"]["image"].split(",")[1];
+        var articleImageFile = b64toBlob(b64Data, contentType);
+
+        formdata.append("index_image", articleImageFile, "image.png");
+    }
+
     if (type == "temporary") {
-        // 存草稿邏輯（此處不變）
-        // ...
-    } else {
+        if (title == "") {
+            alert("標題未填");
+        } else {
+            var article_id = $(obj)
+                .parents()
+                .eq(1)
+                .find("#temporary_id")
+                .text();
+            formdata.append("id", article_id);
+            console.log(article_id);
+            console.log(apiIP);
+            console.log(token);
+            console.log(category);
+            console.log(id_type);
+            console.log(content);
+            console.log(html);
+            console.log(Hashtags);
+
+            var requestOptions = {
+                method: "PATCH",
+                headers: myHeaders,
+                body: formdata,
+                redirect: "follow",
+            };
+
+            fetch(
+                apiIP + "api/content/textEditorPost/" + article_id + "/",
+                requestOptions
+            )
+                .then((response) => {
+                    if (response.ok) {
+                        return response.json();
+                    }
+                    Swal.fire({
+                        position: "center",
+                        icon: "error",
+                        title: "新增失敗!",
+                        showConfirmButton: false,
+                        timer: 2500,
+                    });
+                })
+                .then((data) => {
+                    var formdata2 = new FormData();
+                    formdata2.append("post", data["id"]);
+                    if (id_type != "匿名") {
+                        formdata2.append(
+                            "content_subscribe",
+                            "您追蹤的作者 " +
+                                id_type +
+                                " 已發布一則新貼文! 快去看看吧~"
+                        );
+                    }
+                    // 後端會將 # 替換成 #tag名稱
+                    formdata2.append(
+                        "content_hashtag",
+                        "您追蹤的hashtag # 已發布一則新貼文! 快去看看吧~"
+                    );
+                    var requestOptions2 = {
+                        method: "POST",
+                        headers: myHeaders,
+                        body: formdata2,
+                        redirect: "follow",
+                    };
+
+                    fetch(
+                        apiIP + "api/notifications/notifications/",
+                        requestOptions2
+                    );
+                    Swal.fire({
+                        position: "center",
+                        icon: "success",
+                        title: "新增成功!",
+                        showConfirmButton: false,
+                        timer: 2500,
+                    });
+                    window.location =
+                        "/TreatmentArticleGet/" + data["id"] + "/";
+                });
+        }
+    } else if (articleImageFile || content.ops[0]["insert"]["image"]) {
+        if (articleImageFile) {
+            formdata.append("index_image", articleImageFile);
+        } else if (content.ops[0]["insert"]["image"]) {
+            var contentType = content.ops[0]["insert"]["image"]
+                .split(",")[0]
+                .split(":")[1]
+                .split(";")[0];
+            var b64Data = content.ops[0]["insert"]["image"].split(",")[1];
+            var articleImageFile = b64toBlob(b64Data, contentType);
+
+            formdata.append("index_image", blob, "image.png");
+        }
+        
         if (title == "") {
             alert("標題未填");
         } else {
@@ -1225,393 +1293,166 @@ function postdata(obj, type) {
             console.log(html);
             console.log(Hashtags);
 
-            // 優先檢查是否有上傳封面圖片
-            if (articleImageFile) {
-                formdata.append("index_image", articleImageFile);
-            } else if (content.ops[0] && content.ops[0]["insert"]["image"]) {
-                // 從文章內容中提取第一張圖片作為封面圖
-                var contentType = content.ops[0]["insert"]["image"]
-                    .split(",")[0]
-                    .split(":")[1]
-                    .split(";")[0];
-                var b64Data = content.ops[0]["insert"]["image"].split(",")[1];
-                var blob = b64toBlob(b64Data, contentType);
-                formdata.append("index_image", blob, "image.png");
-            } else {
-                // 如果沒有上傳封面圖，且文章中也沒有圖片，則從本地選擇一張默認圖片
-                fetch("/get-image/img_" + randomInteger + ".png")
-                    .then((response) => {
-                        if (response.ok) {
-                            return response.blob();
-                        }
-                        Swal.fire({
-                            position: "center",
-                            icon: "error",
-                            title: "新增失敗!",
-                            showConfirmButton: false,
-                            timer: 2500,
-                        });
-                    })
-                    .then((blob) => {
-                        formdata.append("index_image", blob, "image.png");
-                        postToBackend(apiIP, formdata, myHeaders);
-                    });
-                return; // 由於需要等待 fetch，所以在這裡直接返回，等 fetch 完成後再調用 postToBackend
-            }
+            var requestOptions = {
+                method: "POST",
+                headers: myHeaders,
+                body: formdata,
+                redirect: "follow",
+            };
 
-            // 如果已經有封面圖片（上傳或擷取的圖片），直接進行後端提交
-            postToBackend(apiIP, formdata, myHeaders);
+            fetch(apiIP + "api/content/textEditorPost/", requestOptions)
+                .then((response) => {
+                    if (response.ok) {
+                        return response.json();
+                    }
+                    Swal.fire({
+                        position: "center",
+                        icon: "error",
+                        title: "新增失敗!",
+                        showConfirmButton: false,
+                        timer: 2500,
+                    });
+                })
+                .then((data) => {
+                    var formdata2 = new FormData();
+                    formdata2.append("post", data["id"]);
+                    if (id_type != "匿名") {
+                        formdata2.append(
+                            "content_subscribe",
+                            "您追蹤的作者 " +
+                                id_type +
+                                " 已發布一則新貼文! 快去看看吧~"
+                        );
+                    }
+                    // 後端會將 # 替換成 #tag名稱
+                    formdata2.append(
+                        "content_hashtag",
+                        "您追蹤的hashtag # 已發布一則新貼文! 快去看看吧~"
+                    );
+                    var requestOptions2 = {
+                        method: "POST",
+                        headers: myHeaders,
+                        body: formdata2,
+                        redirect: "follow",
+                    };
+
+                    fetch(
+                        apiIP + "api/notifications/notifications/",
+                        requestOptions2
+                    );
+                    Swal.fire({
+                        position: "center",
+                        icon: "success",
+                        title: "新增成功!",
+                        showConfirmButton: false,
+                        timer: 2500,
+                    });
+                    window.location =
+                        "/TreatmentArticleGet/" + data["id"] + "/";
+                });
+        }
+    } else {
+        fetch("/get-image/img_" + randomInteger + ".png")
+            .then((response) => {
+                if (response.ok) {
+                    return response.blob();
+                }
+                Swal.fire({
+                    position: "center",
+                    icon: "error",
+                    title: "新增失敗!",
+                    showConfirmButton: false,
+                    timer: 2500,
+                });
+            })
+            .then((blob) => {
+                // formdata.append("index_image", blob, 'image.png');
+                articleImage = blob;
+            });
+        if (title == "") {
+            alert("標題未填");
+        } else {
+            console.log(apiIP);
+            console.log(token);
+            console.log(category);
+            console.log(id_type);
+            console.log(content);
+            console.log(html);
+            console.log(Hashtags);
+            var requestOptions = {
+                method: "POST",
+                headers: myHeaders,
+                body: formdata,
+                redirect: "follow",
+            };
+            fetch("/get-image/img_" + randomInteger + ".png")
+                .then((response) => {
+                    if (response.ok) {
+                        return response.blob();
+                    }
+                    Swal.fire({
+                        position: "center",
+                        icon: "error",
+                        title: "新增失敗!",
+                        showConfirmButton: false,
+                        timer: 2500,
+                    });
+                })
+                .then((blob) => {
+                    formdata.append("index_image", blob, "image.png");
+                    fetch(apiIP + "api/content/textEditorPost/", requestOptions)
+                        .then((response) => {
+                            if (response.ok) {
+                                return response.json();
+                            }
+                            Swal.fire({
+                                position: "center",
+                                icon: "error",
+                                title: "新增失敗!",
+                                showConfirmButton: false,
+                                timer: 2500,
+                            });
+                        })
+                        .then((data) => {
+                            var formdata2 = new FormData();
+                            formdata2.append("post", data["id"]);
+                            if (id_type != "匿名") {
+                                formdata2.append(
+                                    "content_subscribe",
+                                    "您追蹤的作者 " +
+                                        id_type +
+                                        " 已發布一則新貼文! 快去看看吧~"
+                                );
+                            }
+                            // 後端會將 # 替換成 #tag名稱
+                            formdata2.append(
+                                "content_hashtag",
+                                "您追蹤的hashtag # 已發布一則新貼文! 快去看看吧~"
+                            );
+                            var requestOptions2 = {
+                                method: "POST",
+                                headers: myHeaders,
+                                body: formdata2,
+                                redirect: "follow",
+                            };
+                            fetch(
+                                apiIP + "api/notifications/notifications/",
+                                requestOptions2
+                            );
+                            Swal.fire({
+                                position: "center",
+                                icon: "success",
+                                title: "新增成功!",
+                                showConfirmButton: false,
+                                timer: 2500,
+                            });
+                            window.location =
+                                "/TreatmentArticleGet/" + data["id"] + "/";
+                        });
+                });
         }
     }
 }
-
-function postToBackend(apiIP, formdata, myHeaders) {
-    var requestOptions = {
-        method: "POST",
-        headers: myHeaders,
-        body: formdata,
-        redirect: "follow",
-    };
-
-    fetch(apiIP + "api/content/textEditorPost/", requestOptions)
-        .then((response) => {
-            if (response.ok) {
-                return response.json();
-            }
-            Swal.fire({
-                position: "center",
-                icon: "error",
-                title: "新增失敗!",
-                showConfirmButton: false,
-                timer: 2500,
-            });
-        })
-        .then((data) => {
-            var formdata2 = new FormData();
-            formdata2.append("post", data["id"]);
-            if (id_type != "匿名") {
-                formdata2.append(
-                    "content_subscribe",
-                    "您追蹤的作者 " + id_type + " 已發布一則新貼文! 快去看看吧~"
-                );
-            }
-            formdata2.append(
-                "content_hashtag",
-                "您追蹤的hashtag # 已發布一則新貼文! 快去看看吧~"
-            );
-            var requestOptions2 = {
-                method: "POST",
-                headers: myHeaders,
-                body: formdata2,
-                redirect: "follow",
-            };
-            fetch(apiIP + "api/notifications/notifications/", requestOptions2);
-
-            Swal.fire({
-                position: "center",
-                icon: "success",
-                title: "新增成功!",
-                showConfirmButton: false,
-                timer: 2500,
-            });
-            window.location = "/TreatmentArticleGet/" + data["id"] + "/";
-        });
-}
-
-//新增聊療
-// function postdata(obj, type) {
-//     const apiIP = document.getElementById("app").getAttribute("data-api-ip");
-//     var html = quill.root.innerHTML;
-//     var content = quill.getContents();
-//     var token = $("#jwt_token").text();
-//     var id_type = document.getElementById("id_type").value;
-//     var title = $("#input_new_title").val();
-//     var category = document.getElementById("treat_class").value;
-//     var articleimage = document.getElementById("article_image").value;
-//     const randomInteger = Math.floor(Math.random() * 4) + 1;
-//     const Hashtags = $("#create_input_topic")
-//         .val()
-//         .match(/#[\u4e00-\u9fa5\w]+/g);
-//     var myHeaders = new Headers();
-
-//     myHeaders.append("Authorization", "Bearer " + token);
-
-//     var formdata = new FormData();
-//     formdata.append("title", title);
-//     formdata.append("category", category);
-//     formdata.append("identity", id_type);
-//     formdata.append(
-//         "content",
-//         JSON.stringify({
-//             delta: content,
-//             html: html,
-//         })
-//     );
-//     if (Hashtags) {
-//         formdata.append("hashtag", Hashtags);
-//     }
-//     formdata.append("is_official", 0);
-//     formdata.append("is_temporary", 0);
-
-//     if (type == "temporary") {
-//         if (title == "") {
-//             alert("標題未填");
-//         } else {
-//             var article_id = $(obj)
-//                 .parents()
-//                 .eq(1)
-//                 .find("#temporary_id")
-//                 .text();
-//             formdata.append("id", article_id);
-//             console.log(article_id);
-//             console.log(apiIP);
-//             console.log(token);
-//             console.log(category);
-//             console.log(id_type);
-//             console.log(content);
-//             console.log(html);
-//             console.log(Hashtags);
-
-//             var requestOptions = {
-//                 method: "PATCH",
-//                 headers: myHeaders,
-//                 body: formdata,
-//                 redirect: "follow",
-//             };
-
-//             fetch(
-//                 apiIP + "api/content/textEditorPost/" + article_id + "/",
-//                 requestOptions
-//             )
-//                 .then((response) => {
-//                     if (response.ok) {
-//                         return response.json();
-//                     }
-//                     Swal.fire({
-//                         position: "center",
-//                         icon: "error",
-//                         title: "新增失敗!",
-//                         showConfirmButton: false,
-//                         timer: 2500,
-//                     });
-//                 })
-//                 .then((data) => {
-//                     var formdata2 = new FormData();
-//                     formdata2.append("post", data["id"]);
-//                     if (id_type != "匿名") {
-//                         formdata2.append(
-//                             "content_subscribe",
-//                             "您追蹤的作者 " +
-//                                 id_type +
-//                                 " 已發布一則新貼文! 快去看看吧~"
-//                         );
-//                     }
-//                     // 後端會將 # 替換成 #tag名稱
-//                     formdata2.append(
-//                         "content_hashtag",
-//                         "您追蹤的hashtag # 已發布一則新貼文! 快去看看吧~"
-//                     );
-//                     var requestOptions2 = {
-//                         method: "POST",
-//                         headers: myHeaders,
-//                         body: formdata2,
-//                         redirect: "follow",
-//                     };
-
-//                     fetch(
-//                         apiIP + "api/notifications/notifications/",
-//                         requestOptions2
-//                     );
-//                     Swal.fire({
-//                         position: "center",
-//                         icon: "success",
-//                         title: "新增成功!",
-//                         showConfirmButton: false,
-//                         timer: 2500,
-//                     });
-//                     window.location =
-//                         "/TreatmentArticleGet/" + data["id"] + "/";
-//                 });
-//         }
-//     } else if (content.ops[0]["insert"]["image"]) {
-//         var contentType = content.ops[0]["insert"]["image"]
-//             .split(",")[0]
-//             .split(":")[1]
-//             .split(";")[0];
-//         var b64Data = content.ops[0]["insert"]["image"].split(",")[1];
-//         var blob = b64toBlob(b64Data, contentType);
-//         if (title == "") {
-//             alert("標題未填");
-//         } else {
-//             console.log(apiIP);
-//             console.log(token);
-//             console.log(category);
-//             console.log(id_type);
-//             console.log(content);
-//             console.log(html);
-//             console.log(Hashtags);
-
-//             formdata.append("index_image", blob, "image.png");
-//             var requestOptions = {
-//                 method: "POST",
-//                 headers: myHeaders,
-//                 body: formdata,
-//                 redirect: "follow",
-//             };
-
-//             fetch(apiIP + "api/content/textEditorPost/", requestOptions)
-//                 .then((response) => {
-//                     if (response.ok) {
-//                         return response.json();
-//                     }
-//                     Swal.fire({
-//                         position: "center",
-//                         icon: "error",
-//                         title: "新增失敗!",
-//                         showConfirmButton: false,
-//                         timer: 2500,
-//                     });
-//                 })
-//                 .then((data) => {
-//                     var formdata2 = new FormData();
-//                     formdata2.append("post", data["id"]);
-//                     if (id_type != "匿名") {
-//                         formdata2.append(
-//                             "content_subscribe",
-//                             "您追蹤的作者 " +
-//                                 id_type +
-//                                 " 已發布一則新貼文! 快去看看吧~"
-//                         );
-//                     }
-//                     // 後端會將 # 替換成 #tag名稱
-//                     formdata2.append(
-//                         "content_hashtag",
-//                         "您追蹤的hashtag # 已發布一則新貼文! 快去看看吧~"
-//                     );
-//                     var requestOptions2 = {
-//                         method: "POST",
-//                         headers: myHeaders,
-//                         body: formdata2,
-//                         redirect: "follow",
-//                     };
-
-//                     fetch(
-//                         apiIP + "api/notifications/notifications/",
-//                         requestOptions2
-//                     );
-//                     Swal.fire({
-//                         position: "center",
-//                         icon: "success",
-//                         title: "新增成功!",
-//                         showConfirmButton: false,
-//                         timer: 2500,
-//                     });
-//                     window.location =
-//                         "/TreatmentArticleGet/" + data["id"] + "/";
-//                 });
-//         }
-//     } else {
-//         fetch("/get-image/img_" + randomInteger + ".png")
-//             .then((response) => {
-//                 if (response.ok) {
-//                     return response.blob();
-//                 }
-//                 Swal.fire({
-//                     position: "center",
-//                     icon: "error",
-//                     title: "新增失敗!",
-//                     showConfirmButton: false,
-//                     timer: 2500,
-//                 });
-//             })
-//             .then((blob) => {
-//                 // formdata.append("index_image", blob, 'image.png');
-//                 articleImage = blob;
-//             });
-//         if (title == "") {
-//             alert("標題未填");
-//         } else {
-//             console.log(apiIP);
-//             console.log(token);
-//             console.log(category);
-//             console.log(id_type);
-//             console.log(content);
-//             console.log(html);
-//             console.log(Hashtags);
-//             var requestOptions = {
-//                 method: "POST",
-//                 headers: myHeaders,
-//                 body: formdata,
-//                 redirect: "follow",
-//             };
-//             fetch("/get-image/img_" + randomInteger + ".png")
-//                 .then((response) => {
-//                     if (response.ok) {
-//                         return response.blob();
-//                     }
-//                     Swal.fire({
-//                         position: "center",
-//                         icon: "error",
-//                         title: "新增失敗!",
-//                         showConfirmButton: false,
-//                         timer: 2500,
-//                     });
-//                 })
-//                 .then((blob) => {
-//                     formdata.append("index_image", blob, "image.png");
-//                     fetch(apiIP + "api/content/textEditorPost/", requestOptions)
-//                         .then((response) => {
-//                             if (response.ok) {
-//                                 return response.json();
-//                             }
-//                             Swal.fire({
-//                                 position: "center",
-//                                 icon: "error",
-//                                 title: "新增失敗!",
-//                                 showConfirmButton: false,
-//                                 timer: 2500,
-//                             });
-//                         })
-//                         .then((data) => {
-//                             var formdata2 = new FormData();
-//                             formdata2.append("post", data["id"]);
-//                             if (id_type != "匿名") {
-//                                 formdata2.append(
-//                                     "content_subscribe",
-//                                     "您追蹤的作者 " +
-//                                         id_type +
-//                                         " 已發布一則新貼文! 快去看看吧~"
-//                                 );
-//                             }
-//                             // 後端會將 # 替換成 #tag名稱
-//                             formdata2.append(
-//                                 "content_hashtag",
-//                                 "您追蹤的hashtag # 已發布一則新貼文! 快去看看吧~"
-//                             );
-//                             var requestOptions2 = {
-//                                 method: "POST",
-//                                 headers: myHeaders,
-//                                 body: formdata2,
-//                                 redirect: "follow",
-//                             };
-//                             fetch(
-//                                 apiIP + "api/notifications/notifications/",
-//                                 requestOptions2
-//                             );
-//                             Swal.fire({
-//                                 position: "center",
-//                                 icon: "success",
-//                                 title: "新增成功!",
-//                                 showConfirmButton: false,
-//                                 timer: 2500,
-//                             });
-//                             window.location =
-//                                 "/TreatmentArticleGet/" + data["id"] + "/";
-//                         });
-//                 });
-//         }
-//     }
-// }
 
 //新增官方文章
 function official_postdata(obj, type) {
@@ -2412,7 +2253,7 @@ function generateHashtag(obj) {
     console.log(Hashtags); //輸出["#ABC", "#qwe"]
 }
 
-//使用者文章留言
+//使用者文章留言=
 function createArticleComment(button) {
     var token = $("#jwt_token").text();
     if (token != "") {
