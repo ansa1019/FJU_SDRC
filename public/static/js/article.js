@@ -233,39 +233,6 @@ $("#crop_button").on("click", () => {
                 body: formdata,
                 redirect: "follow",
             };
-
-            // 發送圖片至後端
-            fetch(
-                apiIP + "api/userprofile/profile/" + authorizationId + "/",
-                requestOptions
-            )
-                .then((response) => response.json())
-                .then((data) => {
-                    if (data[0] && data[0]["article_image"]) {
-                        let userImage = data[0]["article_image"];
-                        // 更新圖片預覽
-                        $("#topbar-nav-tabs img").attr("src", userImage);
-                    }
-                    Swal.fire({
-                        position: "center",
-                        icon: "success",
-                        title: "修改封面成功!",
-                        showConfirmButton: false,
-                        timer: 2500,
-                    });
-                    // 隱藏模態視窗並重整頁面
-                    $("#cropModal").modal("hide");
-                })
-                .catch((error) => {
-                    console.log("Fetch error: ", error);
-                    Swal.fire({
-                        position: "center",
-                        icon: "error",
-                        title: "修改封面失敗!",
-                        showConfirmButton: false,
-                        timer: 2500,
-                    });
-                });
         });
     }
 });
@@ -279,36 +246,7 @@ $("#close_crop_modal").on("click", () => {
     $("#cropModal").modal("hide");
 });
 
-// 清除圖片按鈕的功能
-// 清除圖片按鈕的功能
-$("#clear_image_button").on("click", () => {
-    // 清除圖片預覽
-    const cropImageElement = $("#crop_image");
 
-    if (cropImageElement.attr("src") !== "") {
-        cropImageElement
-            .attr("src", "")
-            .removeClass("d-block")
-            .addClass("d-none");
-    }
-
-    // 重置 input 檔案選擇器
-    $("#article_image").val("");
-
-    // 如果有 Cropper 實例，也需要銷毀它
-    if (cropper) {
-        cropper.destroy();
-        cropper = null;
-    }
-
-    Swal.fire({
-        position: "center",
-        icon: "success",
-        title: "圖片已清除!",
-        showConfirmButton: false,
-        timer: 2500,
-    });
-});
 
 // 使用 Day.js
 // const now_today = dayjs().format("YYYY-MM-DD");
@@ -1271,7 +1209,6 @@ function postdata(obj, type) {
                     });
                 return; // 由於需要等待 fetch，所以在這裡直接返回，等 fetch 完成後再調用 postToBackend
             }
-
             // 如果已經有封面圖片（上傳或擷取的圖片），直接進行後端提交
             postToBackend(apiIP, formdata, myHeaders);
         }
