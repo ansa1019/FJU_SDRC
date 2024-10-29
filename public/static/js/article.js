@@ -223,7 +223,7 @@ $("#crop_button").on("click", () => {
             // 使用已知的用戶授權 ID 和 API IP
             const apiIP = document
                 .getElementById("app")
-                .getAttribute("data-api-ip");     
+                .getAttribute("data-api-ip");
             var myHeaders = new Headers();
             myHeaders.append("Authorization", "Bearer " + token);
 
@@ -245,8 +245,6 @@ $("#close_crop_modal").on("click", () => {
     }
     $("#cropModal").modal("hide");
 });
-
-
 
 // 使用 Day.js
 // const now_today = dayjs().format("YYYY-MM-DD");
@@ -1209,6 +1207,7 @@ function postdata(obj, type) {
                     });
                 return; // 由於需要等待 fetch，所以在這裡直接返回，等 fetch 完成後再調用 postToBackend
             }
+
             // 如果已經有封面圖片（上傳或擷取的圖片），直接進行後端提交
             postToBackend(apiIP, formdata, myHeaders);
         }
