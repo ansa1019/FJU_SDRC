@@ -2235,9 +2235,9 @@ function generateHashtag(obj) {
 
 //使用者文章留言=
 function createArticleComment(button) {
-    if (banlist["comment"] == true) {
-        var token = $("#jwt_token").text();
-        if (token != "") {
+    var token = $("#jwt_token").text();
+    if (token != "") {
+        if (banlist["comment"] == true) {
             var comment = document.getElementById("comment").value;
             var article_id = $("#article_id").text();
             var nickname = $("#nickname").text();
@@ -2305,30 +2305,30 @@ function createArticleComment(button) {
                     window.location.reload();
                 }
             });
-        } else {
+        } else if (banlist["comment"][0] == "禁言24小時") {
             Swal.fire({
-                title: "無法留言",
-                html: "請先登入!",
+                title: "你已被禁言！",
+                html:
+                    "因您於短時間內收到多次檢舉，故系統於 " +
+                    dayjs(banlist["comment"][1]).format("YYYY-MM-DD HH:mm:ss") +
+                    " 起自動禁言24小時<br>我們將同步進行人工審核，若造成不便請見諒，謝謝",
                 icon: "error",
-                showConfirmButton: false,
-                timer: 2500,
+                allowOutsideClick: false, // 禁止點擊外部關閉
+                allowEscapeKey: false, // 禁止按 ESC 鍵關閉
+                confirmButtonText: "確定", // 確認按鈕文字
+                confirmButtonColor: "#d33",
             });
+        } else {
+            banerror(banlist["comment"]);
         }
-    } else if (banlist["comment"][0] == "禁言24小時") {
-        Swal.fire({
-            title: "你已被禁言！",
-            html:
-                "因您於短時間內收到多次檢舉，故系統於 " +
-                dayjs(banlist["comment"][1]).format("YYYY-MM-DD HH:mm:ss") +
-                " 起自動禁言24小時<br>我們將同步進行人工審核，若造成不便請見諒，謝謝",
-            icon: "error",
-            allowOutsideClick: false, // 禁止點擊外部關閉
-            allowEscapeKey: false, // 禁止按 ESC 鍵關閉
-            confirmButtonText: "確定", // 確認按鈕文字
-            confirmButtonColor: "#d33",
-        });
     } else {
-        banerror(banlist["comment"]);
+        Swal.fire({
+            title: "無法留言",
+            html: "請先登入!",
+            icon: "error",
+            showConfirmButton: false,
+            timer: 2500,
+        });
     }
 }
 

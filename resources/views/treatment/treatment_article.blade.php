@@ -245,7 +245,7 @@
                                             <div class="d-flex align-items-end"><img class="comment-uesr-img me-2"
                                                     src={{ env('API_IP') . $comment['userdata']['image'] }}
                                                     style="width: var(--fs-30);" /><span
-                                                    class="cmt_author">{{ $comment['identity'] ? $comment['identity'] : $comment['userdata']['nickname'] }}</span>
+                                                    class="cmt_author">{{ $comment['identity'] }}</span>
                                             </div>
                                             <div class="d-flex align-items-center">
                                                 {{-- <button class="btn btn-sm p-0" onclick="like(this)">

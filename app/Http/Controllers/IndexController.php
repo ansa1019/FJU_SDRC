@@ -37,7 +37,7 @@ class IndexController extends Controller
         if ($response['articles_official'] != []) {
             $response['articles_official'] = array_slice($response['articles_official'], 0, 4);
         } else {
-            $response['articles'] = [];
+            $response['articles_official'] = [];
         }
         if ($response['products'] != []) {
             $response['products'] = array_slice($response['products'], 0, 4);
