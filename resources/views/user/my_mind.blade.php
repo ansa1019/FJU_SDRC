@@ -30,8 +30,14 @@
                                     class="col p-3 d-flex flex-column align-content-between justify-content-center position-static">
                                     </p>
                                     <h5 class="article-title" id="article_id_title">
-                                        <a
-                                            href="{{ route('knowledge_article', ['id' => $article['id']]) }}">{{ $article['title'] }}</a>
+                                        <a href="{{ 
+                                            in_array($article['maincate'], ['備孕調理', '婦科保健', '小產調理', '懷孕知識', '日常保健']) 
+                                                ? route('knowledge_article', ['id' => $article['id']]) 
+                                                : route('TreatmentArticleGet', ['id' => $article['id']]) 
+                                        }}" 
+                                        onclick="console.log('{{ $article['maincate'] }}')">
+                                            {{ $article['title'] }}
+                                        </a>
                                     </h5>
                                     <p style="display: none" id='html'>{{ $article['html'] }}</p>
                                     <div class="mb-3 article-abs" id="article_id_abs"
