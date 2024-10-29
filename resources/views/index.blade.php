@@ -311,13 +311,13 @@
             <div class="row pt-3 px-4 bg-white d-flex justify-content-evenly">
                 @foreach ($recommendUser as $user)
                     <div class="col-auto mb-2 px-md-1">
-                        <div class="card card-temp-3">
+                        <a href="author_article_list/{{ $user['nickname'] }}" class="card card-temp-3">
                             <img src="{{ $user['user_image'] ? $user['user_image'] : 'static/img/' . $user['gender'] . '.png' }}"
                                 class="card-img-top2" alt="..." />
                             <div class="card-body text-center">
                                 <h5 class="card-title ct-title-1">{{ $user['nickname'] }}</h5>
                             </div>
-                        </div>
+                        </a>
                     </div>
                 @endforeach
             </div>

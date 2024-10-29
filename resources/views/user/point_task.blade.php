@@ -47,84 +47,81 @@
                     <!--反之，該任務若未完成，class中則不要有order-last -->
                     <!-- 判斷第一項任務 class沒有border-top 沒有分隔線 -->
                     @foreach ($responseTaskRecord as $record)
-                        @if ($record['is_done'])
-                            <div class="row py-3 order-last">
-                            @else
-                                <div class="row py-3 border-top">
-                        @endif
-                        <div class="col task_title">{{ $record['task'] }}</div>
-                        <div class="col-auto">
-                            <button class="btn" data-bs-toggle="collapse" href="#task_no2">
-                                <i class="fas fa-caret-down" data-bs-toggle="tooltip" data-bs-title="展開更多"></i>
-                            </button>
-                        </div>
-                        <div class="col-12 mb-2">
-                            @if ($record['task_type'] == 'BEGGINER')
-                                <p class="my-2"><span class="task_class">新手任務</span></p>
-                            @elseif ($record['task_type'] == 'DAILY')
-                                <p class="my-2"><span class="task_class">常態任務</span></p>
-                            @elseif ($record['task_type'] == 'EVENT')
-                                <p class="my-2"><span class="task_class">活動任務</span></p>
-                            @endif
-                            @if (is_null($record['task_deadline']))
-                                <p class="my-2">活動期限：<span class="task_deadline">無期限</span></p>
-                            @else
-                                <p class="my-2">活動期限：<span class="task_deadline">{{ $record['task_deadline'] }}</span></p>
-                            @endif
-                            <p class="my-2">獲得點數：<span class="task_get_point">{{ $record['task_point'] }}</span>點</p>
-                            <div class="row d-flex align-items-center">
-                                <div class="col px-0 progress rounded-pill" role="progressbar" aria-valuemin="0"
-                                    aria-valuemax="100">
-                                    <div class="progress-bar rounded-pill"
-                                        style="width:{{ ($record['progress'] / $record['task_progress']) * 100 }}%"></div>
+                        <div class="{{ $record['is_done'] ? 'row py-3 order-last' : 'row py-3 border-top' }}">
+                            <div class="col task_title">{{ $record['task'] }}</div>
+                            <div class="col-auto">
+                                <button class="btn" data-bs-toggle="collapse" href="#task_no2">
+                                    <i class="fas fa-caret-down" data-bs-toggle="tooltip" data-bs-title="展開更多"></i>
+                                </button>
+                            </div>
+                            <div class="col-12 mb-2">
+                                @if ($record['task_type'] == 'BEGGINER')
+                                    <p class="my-2"><span class="task_class">新手任務</span></p>
+                                @elseif ($record['task_type'] == 'DAILY')
+                                    <p class="my-2"><span class="task_class">常態任務</span></p>
+                                @elseif ($record['task_type'] == 'EVENT')
+                                    <p class="my-2"><span class="task_class">活動任務</span></p>
+                                @endif
+                                @if (is_null($record['task_deadline']))
+                                    <p class="my-2">活動期限：<span class="task_deadline">無期限</span></p>
+                                @else
+                                    <p class="my-2">活動期限：<span class="task_deadline">{{ $record['task_deadline'] }}</span>
+                                    </p>
+                                @endif
+                                <p class="my-2">獲得點數：<span class="task_get_point">{{ $record['task_point'] }}</span>點</p>
+                                <div class="row d-flex align-items-center">
+                                    <div class="col px-0 progress rounded-pill" role="progressbar" aria-valuemin="0"
+                                        aria-valuemax="100">
+                                        <div class="progress-bar rounded-pill"
+                                            style="width:{{ ($record['progress'] / $record['task_progress']) * 100 }}%">
+                                        </div>
+                                    </div>
+                                    <div class="col-auto mx-2 progres_value">
+                                        {{ $record['progress'] }}/{{ $record['task_progress'] }}</div>
                                 </div>
-                                <div class="col-auto mx-2 progres_value">
-                                    {{ $record['progress'] }}/{{ $record['task_progress'] }}</div>
+                            </div>
+                            <div class="col-12 my-2 pe-5 collapse" id="task_no2">
+                                @if ($record['task'] == '個人資料')
+                                    @foreach ($personalProgress['profile']['is_null'] as $key => $value)
+                                        @if ($value)
+                                            <p class="my-2">
+                                                未完成：@if ($key == 'phone')
+                                                    手機
+                                                @elseif($key == 'address')
+                                                    地址
+                                                @elseif($key == 'user_image')
+                                                    個人照
+                                                @endif
+                                                <a href="#"><span class="badge">去完成</span></a>
+                                            </p>
+                                        @else
+                                            <p class="my-2">
+                                                已完成：@if ($key == 'phone')
+                                                    手機
+                                                @elseif($key == 'address')
+                                                    地址
+                                                @elseif($key == 'user_image')
+                                                    個人照
+                                                @endif
+                                                <a href="#">
+                                                    <span class="badge finish_badge">已完成</span></a>
+                                            </p>
+                                        @endif
+                                    @endforeach
+                                @endif
+                                <p class="mt-3 mb-1">任務規則：</p>
+                                <div class="task_detail">
+                                    <!-- 任務規則內容 如是html tag資料可直接找task_detail帶入資料-->
+                                    <p class="my-2">
+                                        {{ $record['requirement'] }}
+                                    </p>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-12 my-2 pe-5 collapse" id="task_no2">
-                            @if ($record['task'] == '個人資料')
-                                @foreach ($personalProgress['profile']['is_null'] as $key => $value)
-                                    @if ($value)
-
-                                        <p class="my-2">
-                                            未完成：@if ($key == 'phone')
-                                                手機
-                                            @elseif($key == 'address')
-                                                地址
-                                            @elseif($key == 'user_image')
-                                                個人照
-                                            @endif
-                                            <a href="#"><span class="badge">去完成</span></a>
-                                        </p>        
-                                    @else
-                                                                      
-                                        <p class="my-2">
-                                            已完成：@if ($key == 'phone')
-                                                手機
-                                            @elseif($key == 'address')
-                                                地址
-                                            @elseif($key == 'user_image')
-                                                個人照
-                                            @endif
-                                            <a href="#">
-                                                <span class="badge finish_badge">已完成</span></a>
-                                        </p>                                        
-                                    @endif
-                                @endforeach
-                            @endif
-                            <p class="mt-3 mb-1">任務規則：</p>
-                            <div class="task_detail">
-                                <!-- 任務規則內容 如是html tag資料可直接找task_detail帶入資料-->
-                                <p class="my-2">
-                                    {{ $record['requirement'] }}
-                                </p>
-                            </div>
-                        </div>
+                    @endforeach
                 </div>
-                @endforeach
             </div>
+            @include('layouts.sidebar')
         </div>
-        @include('layouts.sidebar')
     </div>
 @endsection

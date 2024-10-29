@@ -50,9 +50,7 @@
                                                     allowOutsideClick: false, // 禁止點擊外部關閉
                                                     allowEscapeKey: false, // 禁止按 ESC 鍵關閉
                                                     confirmButtonText: '確定', // 確認按鈕文字
-                                                    customClass: {
-                                                        confirmButton: 'btn btn-c2', // 自定義按鈕類別
-                                                    },
+                                                    confirmButtonColor: '#d33',
                                                 });">
                                         <i class="fas fa-pen me-1"></i>建立聊療
                                     </button>
