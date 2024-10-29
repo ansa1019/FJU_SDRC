@@ -1149,7 +1149,7 @@ function postdata(obj, type) {
     var id_type = document.getElementById("id_type").value;
     var title = $("#input_new_title").val();
     var category = document.getElementById("treat_class").value;
-    var articleImageFile = document.getElementById("article_image").files[0]; // 獲取上傳的封面圖片
+    var articleImageFile = document.getElementById("create_article_image").files[0]; // 獲取上傳的封面圖片
     const randomInteger = Math.floor(Math.random() * 4) + 1;
     const Hashtags = $("#create_input_topic")
         .val()
@@ -1281,7 +1281,7 @@ function postdata(obj, type) {
 
             formdata.append("index_image", blob, "image.png");
         }
-        
+
         if (title == "") {
             alert("標題未填");
         } else {
