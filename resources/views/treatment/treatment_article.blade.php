@@ -400,6 +400,7 @@
 
     @include('layouts.bookmark')
 
+    
     <script>
         var token = $("#jwt_token").text();
         var socketIP = document

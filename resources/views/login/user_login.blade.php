@@ -176,7 +176,7 @@
                                 <div class="col">
                                     <input type="password" id="check_password" class="form-control" />
                                     <span class="ct-txt-2 d-none" id="check_pwd_alert"
-                                        style="font-size: var(--fs-16)">＊請重新確認新密碼</span>
+                                        style="font-size: var(--fs-16)">＊需與新密碼相同</span>
                                 </div>
                             </div>
                             <div class="row g-3 my-4 align-items-center">

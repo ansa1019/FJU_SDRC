@@ -14,22 +14,12 @@ class IndexController extends Controller
     {
         $token = Session::get('jwt_token', '');
         $calendarMsg = "";
-        $personalCalendar = ApiHelper::getAuthenticatedRequest($token, env('API_IP') . 'api/userprofile/personalCalendar/')->json();
-        if (empty($subPersonalCalendarJson)) {
-            $calendarMsg = "尚未有任何快到的日子";
-        } else {
-            if ($subPersonalCalendarJson[0]['type'] == 'menstruation') {
-                $calendarMsg = "月經快來囉";
-            } elseif ($subPersonalCalendarJson[0]['type'] == 'miscarriage period') {
-                $calendarMsg = "小產期快到囉";
-            } elseif ($subPersonalCalendarJson[0]['type'] == 'pregnancy') {
-                $calendarMsg = "產期快到囉";
-            } elseif ($subPersonalCalendarJson[0]['type'] == 'menopause') {
-                $calendarMsg = "更年期到囉";
-            } elseif ($subPersonalCalendarJson[0]['type'] == 'postpartum_period') {
-                $calendarMsg = "產後期快到囉";
-            }
-        }
+        $personalCalendar = ApiHelper::getAuthenticatedRequest($token, env('API_IP') . 'api/userprofile/personalCalendar/')->json();        
+        $latestCalendar = !empty($personalCalendar) ? end($personalCalendar) : null;
+        $cycle = $latestCalendar['cycle'] ?? '';
+        $lastMenstrual = $latestCalendar['date'] ?? ''; 
+        $cycle_days = $latestCalendar['cycle_days'] ?? '';
+    
 
         $response = [
             'articles' => Http::asForm()->get(env('API_IP') . 'api/content/textEditorPost/?ordering=-created_at')->json(),
@@ -90,6 +80,9 @@ class IndexController extends Controller
             'user_image' => Session::get('user_image', ''),
             'calendarMsg' => $calendarMsg,
             'personalCalendar' => $personalCalendar,
+            'cycle' => $cycle,
+            'lastMenstrual' => $lastMenstrual,
+            'cycle_days' => $cycle_days,
         ]);
         // dd($response);
         return view('index', $response);
