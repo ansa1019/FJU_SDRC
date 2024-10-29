@@ -30,7 +30,7 @@ class chkmail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: '驗證碼發送信件',
+            subject: '莎莉聊療吧｜驗證碼發送信件',
         );
     }
 
