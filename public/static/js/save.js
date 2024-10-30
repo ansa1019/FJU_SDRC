@@ -45,6 +45,7 @@ $("#add_saved_btn").click(async function () {
     var modalNode = document.querySelector('.modal[tabindex="-1"]');
     modalNode.removeAttribute("tabindex");
     modalNode.classList.add("js-swal-fixed");
+    const randomInteger = Math.floor(Math.random() * 4) + 1;
     const { value: storage_name } = await Swal.fire({
         title: "請輸入收藏分類",
         input: "text",
@@ -111,7 +112,7 @@ $("#add_saved_btn").click(async function () {
                 divElement.className = "col-auto text-center mb-3 postStoraged";
 
                 var imgElement = document.createElement("img");
-                imgElement.src = "https://placehold.co/180x130";
+                imgElement.src = "/get-image/img_" + randomInteger + ".png";
                 imgElement.class = "rounded mx-auto d-block";
                 imgElement.alt = storage_name;
                 divElement.appendChild(imgElement);
@@ -418,6 +419,7 @@ function storaged_delete(storage_id, storage_name) {
                         showConfirmButton: false,
                         timer: 2500,
                     }).then(() => {
+
                         if (
                             postStorageds.length >= 1 &&
                             postStorageds.length < 2
