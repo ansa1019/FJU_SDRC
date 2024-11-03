@@ -48,8 +48,14 @@
                     </div>
                 </div>
                 <div class="row mt-2">
-                    <div class="col-md col-lg-auto px-0 d-flex justify-content-center">
-                        <div id="calendar" class="material-theme mx-auto" tabindex="-1"></div>
+                <div class="col-md col-lg-auto px-0 d-flex flex-column align-items-center">
+                    <div id="calendar" class="material-theme mx-auto" tabindex="-1"></div>
+                        <!-- 顯示下次生理期預測 -->
+                        @if (session('health_type') == 'menstruation' && session('next_menstrual_date') !== null && session('next_menstrual_date') !== '')
+                            <div id="next-menstrual" class="mt-2 align-self-start" style="font-size: var(--fs-16);">
+                                下次生理期預計：{{ \Carbon\Carbon::parse(session('next_menstrual_date'))->format('n月j日') }}
+                            </div>
+                        @endif
                     </div>
                     <div class="col-md-12 col-lg p-4">
                         <h4 class="fw-bold" id="event-title" style="font-size: var(--fs-24)"></h4>
@@ -143,13 +149,6 @@
                             style="font-size: var(--fs-16); line-height: var(--fs-28); text-align: justify">
                             <p class="ct-sub-1" style="line-height: 1.75rem; letter-spacing: 1px">{{ $rdmcalmsg }}
                             </p>
-                            <!-- 顯示下次生理期預測 -->
-                            @if (session('health_type') == 'menstruation' && session('next_menstrual_date') !== null && session('next_menstrual_date') !== '')
-                                <div id="next-menstrual" class="mt-2" style="font-size: var(--fs-16);">
-                                    下次生理期預計：{{ \Carbon\Carbon::parse(session('next_menstrual_date'))->format('n月j日') }}
-                                </div>
-                            @endif
-
                             @if (session('health_type') == 'pregnancy' && session('due_date') !== null)
                                 <div id="pregnancy-countdown" class="mt-2" style="font-size: var(--fs-16);">
                                     懷孕期：倒數 {{ session('remaining_weeks') }} 週 {{ session('remaining_days') }} 天
