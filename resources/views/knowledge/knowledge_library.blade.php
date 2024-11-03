@@ -88,9 +88,10 @@
                                 <button class="btn btn-c2 rounded-pill" data-bs-toggle="modal"
                                     data-bs-target="#create_modal"><i class="fas fa-pen me-1"></i>建立營養師文章</button>
                             @else
-                            <p style="display: none" id='article_title'>{{ $temporary_article[0]['title'] }}</p>
-                            <p style="display:none" id='article_category'>{{ $temporary_article[0]['category'][0]['name'] }}</p>
-                            <p style="display: none" id='html'>{{ $temporary_article[0]['html'] }}</p>
+                                <p style="display: none" id='article_title'>{{ $temporary_article[0]['title'] }}</p>
+                                <p style="display:none" id='article_category'>
+                                    {{ $temporary_article[0]['category'][0]['name'] }}</p>
+                                <p style="display: none" id='html'>{{ $temporary_article[0]['html'] }}</p>
                                 <button class="btn btn-c2 rounded-pill" data-bs-toggle="modal"
                                     data-bs-target="#create_modal" onclick="getValue(this, 'post')"><i
                                         class="fas fa-pen me-1"></i>建立營養師文章</button>
@@ -143,7 +144,8 @@
                                                     @if ($user_mail == $article['author'])
                                                         <!--判斷是否是自己帳號留的言 有則顯示編輯功能-->
                                                         <button class="btn btn-sm p-0" data-bs-toggle="modal"
-                                                            data-bs-target="#patch_modal" onclick="getValue(this, 'patch')">
+                                                            data-bs-target="#patch_modal"
+                                                            onclick="getValue(this, 'patch_list')">
                                                             <i class="fas fa-edit ct-sub-1 me-1"></i>
                                                         </button>
 
@@ -181,8 +183,7 @@
                                             </div>
                                             <div class="col-auto d-none d-lg-block px-0 py-1">
                                                 <!--文章縮圖-->
-                                                <img src={{ $article['index_image'] }}
-                                                    class="article-img" />
+                                                <img src={{ $article['index_image'] }} class="article-img" />
                                             </div>
                                         </div>
                                     @endif
@@ -198,7 +199,7 @@
 
     <!-- 建立營養師文章 Modal -->
     <div class="modal fade" id="create_modal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
             <div class="modal-content">
                 @if ($temporary_article == [])
                     <input type="hidden" id="return_content" name="content">
@@ -208,40 +209,41 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <div class="row mb-1 g-2 align-items-center">
-                            <div class="col-auto">
-                                <img class="me-1" src="{{ asset('static/img/user.png') }}" width="25" />
+                        <div class="row mb-1 g-2 align-items-center justify-content-between">
+                            <div class="col d-flex flex-column ps-0">
+                                <div class="row align-items-center">
+                                    <div class="col-auto ps-0">
+                                        <img class="me-1" src="{{ asset('static/img/user.png') }}" width="25" />
+                                    </div>
+                                    <div class="col-auto ps-0">
+                                        <select class="form-select" id="id_type">
+                                            <option value={{ $nickname }} selected>{{ $nickname }}</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-auto ps-0">
+                                        <select class="form-select" id="post_class" name="post_class">
+                                            @foreach ($subcategorys as $sub)
+                                                <option value="{{ $sub['name'] }}"
+                                                    {{ $subcategory == $sub['name'] ? 'selected' : '' }}>
+                                                    {{ $sub['name'] }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col-auto my-2 my-lg-3 ps-0">
+                                        <!-- 上傳檔案按鈕 -->
+                                        <input type="file" id="create_article_image" style="width: 200px;"
+                                            name="article_image" accept=".jpg, .jpeg, .png" />
+                                    </div>
+                                    <div class="col-12 ps-0">
+                                        <input class="form-control" type="text" id="input_new_title" name="title"
+                                            placeholder="標題：請用簡短的話說明你的提問/分享" />
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-auto">
-                                <select class="form-select" id="id_type">
-                                    <option value={{ $nickname }} selected>{{ $nickname }}</option>
-                                    {{-- <option value="匿名">匿名</option> --}}
-                                </select>
-                            </div>
-                        </div>
-                        <div class="row my-1 g-2 align-items-center justify-content-between">
-                            <div class="col-8">
-                                <input class="form-control" type="text" id="input_new_title" name="title"
-                                    placeholder="標題：請用簡短的話說明你的提問/分享" />
-                            </div>
-                            <div class="col">
-                                <select class="form-select" id="treat_class" name="treat">
-                                    <option value="小產知識" {{ $subcategory == '小產知識' ? 'selected' : '' }}>小產知識</option>
-                                    <option value="小產調理知識" {{ $subcategory == '小產調理知識' ? 'selected' : '' }}>小產調理知識
-                                    </option>
-                                    <option value="婦科保健知識" {{ $subcategory == '婦科保健知識' ? 'selected' : '' }}>婦科保健知識
-                                    </option>
-                                    <option value="婦科保健調理知識" {{ $subcategory == '婦科保健調理知識' ? 'selected' : '' }}>婦科保健調理知識
-                                    </option>
-                                    <option value="備孕知識" {{ $subcategory == '備孕知識' ? 'selected' : '' }}>備孕知識</option>
-                                    <option value="備孕調理知識" {{ $subcategory == '備孕調理知識' ? 'selected' : '' }}>備孕調理知識
-                                    </option>
-                                    <option value="懷孕知識" {{ $subcategory == '懷孕知識' ? 'selected' : '' }}>懷孕知識</option>
-                                    <option value="懷孕調理知識" {{ $subcategory == '懷孕調理知識' ? 'selected' : '' }}>懷孕調理知識
-                                    </option>
-                                    <option value="日常保健知識" {{ $subcategory == '日常保健知識' ? 'selected' : '' }}>日常保健知識
-                                    </option>
-                                </select>
+                            <div id="image_preview" class="col-auto d-flex flex-column align-items-start">
+                                <img id="create_image_preview" src="{{ asset('static/img/image.svg') }}" alt="封面"
+                                    style="width: 110px;height: 90px;">
                             </div>
                         </div>
                         <div class="row my-1 g-2 justify-content-center">
@@ -249,13 +251,14 @@
                             <div class="col-12" id="editor-container" style="height: 300px; font-size: 30px;">
                                 <textarea class="form-control" rows="7" id="editor"></textarea>
                             </div>
-                            
+
                             <div class="col-12">
                                 <input class="form-control" type="text" id="create_input_topic"
                                     placeholder="#話題：可以根據你的文章內容，輸入半形的#，可以新增多個話題喔！" />
                             </div>
                         </div>
                     </div>
+
                     <div class="modal-footer">
                         <button type="button" class="btn btn-c2 rounded-pill px-3 py-1"
                             onclick="official_postdata(this, '')"><i class="fas fa-bullhorn me-1"></i>發文</button>
@@ -266,61 +269,49 @@
                 @else
                     <input type="hidden" id="return_content" name="content">
                     <input type="hidden" id="return_html" name="html">
-                    <p style="display: none" id='temporary_id'>{{ $temporary_article[0]['id'] }}</p>
+                    <p style="display: none" id="temporary_id">{{ $temporary_article[0]['id'] }}</p>
                     <div class="modal-header pb-0 border-bottom-0">
                         <h1 class="modal-title fs-5 ct-txt-2 fw-bold">建立聊療，一起聊聊吧🙂</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <div class="row mb-1 g-2 align-items-center">
-                            <div class="col-auto">
-                                <img class="me-1" src="{{ asset('static/img/user.png') }}" width="25" />
+                        <div class="row mb-1 g-2 align-items-center justify-content-between">
+                            <div class="col d-flex flex-column ps-0">
+                                <div class="row align-items-center">
+                                    <div class="col-auto ps-0">
+                                        <img class="me-1" src="{{ asset('static/img/user.png') }}" width="25" />
+                                    </div>
+                                    <div class="col-auto ps-0">
+                                        <select class="form-select" id="id_type">
+                                            <option value={{ $nickname }}
+                                                {{ $temporary_article[0]['identity'] == $nickname ? 'selected' : '' }}>
+                                                {{ $nickname }}</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-auto ps-0">
+                                        <select class="form-select" id="post_class" name="post_class">
+                                            @foreach ($subcategorys as $sub)
+                                                <option value="{{ $sub['name'] }}"
+                                                    {{ $temporary_article[0]['category'][0]['name'] == $sub['name'] ? 'selected' : '' }}>
+                                                    {{ $sub['name'] }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col-auto my-2 my-lg-3 ps-0">
+                                        <!-- 上傳檔案按鈕 -->
+                                        <input type="file" id="create_article_image" style="width: 200px;"
+                                            name="article_image" accept=".jpg, .jpeg, .png" />
+                                    </div>
+                                    <div class="col-12 ps-0">
+                                        <input class="form-control" type="text" id="input_new_title" name="title"
+                                            placeholder="標題：請用簡短的話說明你的提問/分享" value={{ $temporary_article[0]['title'] }} />
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-auto">
-                                <select class="form-select" id="id_type">
-                                    <option value={{ $nickname }}
-                                        {{ $temporary_article[0]['identity'] == $nickname ? 'selected' : '' }}>
-                                        {{ $nickname }}</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="row my-1 g-2 align-items-center justify-content-between">
-                            <div class="col-8">
-                                <input class="form-control" type="text" id="input_new_title" name="title"
-                                    placeholder="標題：請用簡短的話說明你的提問/分享" value={{ $temporary_article[0]['title'] }} />
-                            </div>
-                            <div class="col">
-                                <select class="form-select" id="treat_class" name="treat">
-                                    <option value="小產知識"
-                                        {{ $temporary_article[0]['category'][0]['name'] == '小產知識' ? 'selected' : '' }}>小產知識
-                                    </option>
-                                    <option value="小產調理知識"
-                                        {{ $temporary_article[0]['category'][0]['name'] == '小產調理知識' ? 'selected' : '' }}>
-                                        小產調理知識</option>
-                                    <option value="婦科保健知識"
-                                        {{ $temporary_article[0]['category'][0]['name'] == '婦科保健知識' ? 'selected' : '' }}>
-                                        婦科保健知識
-                                    </option>
-                                    <option value="婦科保健調理知識"
-                                        {{ $temporary_article[0]['category'][0]['name'] == '婦科保健調理知識' ? 'selected' : '' }}>
-                                        婦科保健調理知識
-                                    </option>
-                                    <option value="備孕知識"
-                                        {{ $temporary_article[0]['category'][0]['name'] == '備孕知識' ? 'selected' : '' }}>
-                                        備孕知識</option>
-                                    <option value="備孕調理知識"
-                                        {{ $temporary_article[0]['category'][0]['name'] == '備孕調理知識' ? 'selected' : '' }}>
-                                        備孕調理知識</option>
-                                    <option value="懷孕知識"
-                                        {{ $temporary_article[0]['category'][0]['name'] == '懷孕知識' ? 'selected' : '' }}>
-                                        懷孕知識</option>
-                                    <option value="懷孕調理知識"
-                                        {{ $temporary_article[0]['category'][0]['name'] == '懷孕調理知識' ? 'selected' : '' }}>
-                                        懷孕調理知識</option>
-                                    <option value="日常保健知識"
-                                        {{ $temporary_article[0]['category'][0]['name'] == '日常保健知識' ? 'selected' : '' }}>
-                                        日常保健知識</option>
-                                </select>
+                            <div id="image_preview" class="col-auto d-flex flex-column align-items-start">
+                                <img id="create_image_preview" src="{{ $temporary_article[0]['index_image'] }}"
+                                    alt="封面" style="width: 110px;height: 90px;">
                             </div>
                         </div>
                         <div class="row my-1 g-2 justify-content-center">
@@ -334,9 +325,9 @@
                                     placeholder='#話題：可以根據你的文章內容，輸入半形的#，可以新增多個話題喔！'
                                     value={{ $temporary_article[0]['hashtag'] != 'null' ? $temporary_article[0]['hashtag'] : '' }}>
                             </div>
-
                         </div>
                     </div>
+
                     <div class="modal-footer">
                         <button type="button" class="btn btn-c2 rounded-pill px-3 py-1"
                             onclick="official_postdata(this, 'temporary')"><i class="fas fa-bullhorn me-1"></i>發文</button>
@@ -350,9 +341,33 @@
         </div>
     </div>
 
+    <!-- 模態視窗部分，用來顯示裁切功能 -->
+    <div class="modal fade" id="cropModal" tabindex="-1" role="dialog" aria-labelledby="cropModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="cropModalLabel">裁切圖片</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="crop_area">
+                        <img id="image_to_crop" src="" alt="Image to crop" style="max-width: 100%;">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                    <button type="button" id="crop_button" class="btn btn-primary">裁切並上傳</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- 建立修改營養師文章 Modal -->
     <div class="modal fade" id="patch_modal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
             <div class="modal-content">
                 <input type="hidden" id="return_content" name="content">
                 <input type="hidden" id="return_html" name="html">
@@ -362,61 +377,66 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="row mb-1 g-2 align-items-center">
-                        <div class="col-auto">
-                            <img class="me-1" src="{{ asset('static/img/user.png') }}" width="25" />
+                    <div class="row mb-1 g-2 align-items-center justify-content-between">
+                        <div class="col d-flex flex-column ps-0">
+                            <div class="row align-items-center">
+                                <div class="col-auto ps-0">
+                                    <img class="me-1" src="{{ asset('static/img/user.png') }}" width="25" />
+                                </div>
+                                <div class="col-auto ps-0">
+                                    <select class="form-select" id="patch_id_type">
+                                        <option value={{ $nickname }} selected>{{ $nickname }}</option>
+                                        <option value="匿名">匿名</option>
+                                    </select>
+                                </div>
+                                <div class="col-auto ps-0">
+                                    <select class="form-select" id="patch_post_class" name="post_class">
+                                        @foreach ($subcategorys as $sub)
+                                            <option value="{{ $sub['name'] }}"
+                                                {{ $subcategory == $sub['name'] ? 'selected' : '' }}>{{ $sub['name'] }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-auto my-2 my-lg-3 ps-0">
+                                    <!-- 上傳檔案按鈕 -->
+                                    <input type="file" id="update_article_image" style="width: 200px;"
+                                        name="article_image" accept=".jpg, .jpeg, .png" />
+                                </div>
+                                <div class="col-12 ps-0">
+                                    <input class="form-control" type="text" id="input_patch_title" name="title"
+                                        placeholder="標題：請用簡短的話說明你的提問/分享" />
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-auto">
-                            <select class="form-select" id="patch_id_type">
-                                <option value={{ $nickname }} selected>{{ $nickname }}</option>
-                                <option value="匿名">匿名</option>
-                            </select>
+                        <div id="image_preview" class="col-auto d-flex flex-column align-items-start">
+                            <img id="update_image_preview" src="{{ asset('static/img/image.svg') }}" alt="封面"
+                                style="width: 110px;height: 90px;">
+                        </div>
+                        <div class="row my-1 g-2 justify-content-center">
+                            <!--文字編輯器套件 editor-->
+                            <div class="col-12" id="patch-editor-container" style="height: 300px; font-size: 30px;">
+                                <textarea class="form-control" rows="7" id="patch_editor" name="patch_editor"></textarea>
+                            </div>
+                            <div class="col-12">
+                                <input class="form-control" type="text" id="patch_input_topic"
+                                    placeholder="#話題：可以根據你的文章內容，輸入半形的#，可以新增多個話題喔！" />
+                            </div>
                         </div>
                     </div>
-                    <div class="row my-1 g-2 align-items-center justify-content-between">
-                        <div class="col-8">
-                            <input class="form-control" type="text" id="input_patch_title" name="title"
-                                placeholder="標題：請用簡短的話說明你的提問/分享" />
-                        </div>
-                        <div class="col">
-                            <select class="form-select" id="patch_treat_class" name="treat">
-                                <option selected>選擇聊療的類別</option>
-                                <option value="小產知識">小產知識</option>
-                                <option value="小產調理知識">小產調理知識</option>
-                                <option value="婦科保健知識">婦科保健知識</option>
-                                <option value="婦科保健調理知識">婦科保健調理知識</option>
-                                <option value="備孕知識">備孕知識</option>
-                                <option value="備孕調理知識">備孕調理知識</option>
-                                <option value="懷孕知識">懷孕知識</option>
-                                <option value="懷孕調理知識">懷孕調理知識</option>
-                                <option value="日常保健知識">日常保健知識</option>
-                            </select>
-                        </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-c2 rounded-pill px-3 py-1"
+                            onclick="official_patchData()"><i class="fas fa-bullhorn me-1"></i>發文</button>
                     </div>
-                    <div class="row my-1 g-2 justify-content-center">
-                        <!--文字編輯器套件 editor-->
-                        <div class="col-12" id="patch-editor-container" style="height: 300px; font-size: 30px;">
-                            <textarea class="form-control" rows="7" id="patch_editor" name="patch_editor"></textarea>
-                        </div>
-                        <div class="col-12">
-                            <input class="form-control" type="text" id="patch_input_topic"
-                                placeholder="#話題：可以根據你的文章內容，輸入半形的#，可以新增多個話題喔！" />
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-c2 rounded-pill px-3 py-1" onclick="official_patchData()"><i
-                            class="fas fa-bullhorn me-1"></i>發文</button>
                 </div>
             </div>
         </div>
-    </div>
 
-    @include('layouts.bookmark')
+        @include('layouts.bookmark')
 
-    <script>
-        var ArticleRoute = "{{ route('knowledge_library') }}";
-        var knowledgeArticleUpdateRoute = "{{ route('KnowledgeArticleUpdate') }}";
-        var searchArticleRoute = "{{ route('searchArticle') }}";
-    </script>
-@endsection
+        <script>
+            var ArticleRoute = "{{ route('knowledge_library') }}";
+            var knowledgeArticleUpdateRoute = "{{ route('KnowledgeArticleUpdate') }}";
+            var searchArticleRoute = "{{ route('searchArticle') }}";
+        </script>
+    @endsection

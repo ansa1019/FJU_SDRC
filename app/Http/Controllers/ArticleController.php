@@ -48,6 +48,7 @@ class ArticleController extends Controller
                 'articles' => ApiHelper::getAuthenticatedRequest($token, env('API_IP') . 'api/content/textEditorPost/?ordering=' . $sort)->json(),
                 'temporary_article' => ApiHelper::getAuthenticatedRequest($token, env('API_IP') . 'api/content/getTmpPost/')->json()
             ];
+            $subcategorys = ApiHelper::getAuthenticatedRequest($token, env('API_IP') . 'api/content/subcategory/')->json();
             $postStorageds = ApiHelper::getAuthenticatedRequest($token, env('API_IP') . 'api/userdetail/postStoraged/')->json();
             $subTopic = ApiHelper::getAuthenticatedRequest($token, env('API_IP') . 'api/userprofile/subTopic/')->json();
         } else {
@@ -131,6 +132,7 @@ class ArticleController extends Controller
             'user_image' => Session::get('user_image', ''),
             'jwt_token' => $token,
             'category' => $category,
+            'subcategorys' => array_slice($subcategorys, 10, 5),
             'sort' => $sort,
             'postStorageds' => $postStorageds
         ]);
@@ -144,6 +146,7 @@ class ArticleController extends Controller
         $token = Session::get('jwt_token', '');
         if ($token != '') {
             $response = ApiHelper::getAuthenticatedRequest($token, env('API_IP') . 'api/content/textEditorPost/' . $id . '/')->json();
+            $subcategorys = ApiHelper::getAuthenticatedRequest($token, env('API_IP') . 'api/content/subcategory/')->json();
             $records = ApiHelper::getAuthenticatedRequest($token, env('API_IP') . 'api/content/getRecords/')->json();
             $postStorageds = ApiHelper::getAuthenticatedRequest($token, env('API_IP') . 'api/userdetail/postStoraged/')->json();
             $subscribe = ApiHelper::getAuthenticatedRequest($token, env('API_IP') . 'api/userprofile/subscribe/')->json();
@@ -229,6 +232,7 @@ class ArticleController extends Controller
             'user_image' => Session::get('user_image', ''),
             'is_rd' => Session::get('is_rd', ''),
             'jwt_token' => $token,
+            'subcategorys' => array_slice($subcategorys, 10, 5),
             'postStorageds' => $postStorageds,
             'record' => $records[$id],
             'update_time' => date("Y-m-d H:i:s"),

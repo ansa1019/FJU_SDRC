@@ -16,6 +16,7 @@ class ApiHelper
 
     public static function getAuthenticatedRequest($token, $url)
     {
+        sleep(0.5);
         return Http::withHeaders([
             'Authorization' => 'Bearer ' . $token,
         ])->get($url);

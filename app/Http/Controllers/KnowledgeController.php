@@ -19,6 +19,7 @@ class KnowledgeController extends Controller
                 'articles' => ApiHelper::getAuthenticatedRequest($token, env('API_IP') . 'api/content/PostGetOfficial/?ordering=' . $sort)->json(),
                 'temporary_article' => ApiHelper::getAuthenticatedRequest($token, env('API_IP') . 'api/content/TempOfficialPostGet/')->json()
             ];
+            $subcategorys = ApiHelper::getAuthenticatedRequest($token, env('API_IP') . 'api/content/subcategory/')->json();
             $postStorageds = ApiHelper::getAuthenticatedRequest($token, env('API_IP') . 'api/userdetail/postStoraged/')->json();
             $subTopic = ApiHelper::getAuthenticatedRequest($token, env('API_IP') . 'api/userprofile/subTopic/')->json();
         } else {
@@ -74,6 +75,7 @@ class KnowledgeController extends Controller
             'is_rd' => Session::get('is_rd', ''),
             'category' => $category,
             'subcategory' => $subcategory,
+            'subcategorys' => array_slice($subcategorys, 0, 10),
             'jwt_token' => $token,
             'sort' => $sort,
             'postStorageds' => $postStorageds
@@ -88,6 +90,7 @@ class KnowledgeController extends Controller
         $token = Session::get('jwt_token', '');
         if ($token != '') {
             $response = ApiHelper::getAuthenticatedRequest($token, env('API_IP') . 'api/content/PostGetOfficial/' . $id . '/')->json();
+            $subcategorys = ApiHelper::getAuthenticatedRequest($token, env('API_IP') . 'api/content/subcategory/')->json();
             $postStorageds = ApiHelper::getAuthenticatedRequest($token, env('API_IP') . 'api/userdetail/postStoraged/')->json();
             $subscribe = ApiHelper::getAuthenticatedRequest($token, env('API_IP') . 'api/userprofile/subscribe/')->json();
         } else {
@@ -177,6 +180,7 @@ class KnowledgeController extends Controller
             'user_image' => Session::get('user_image', ''),
             'is_rd' => Session::get('is_rd', ''),
             'jwt_token' => $token,
+            'subcategorys' => array_slice($subcategorys, 0, 10),
             'postStorageds' => $postStorageds,
             'update_time' => date("Y-m-d H:i:s"),
         ]);

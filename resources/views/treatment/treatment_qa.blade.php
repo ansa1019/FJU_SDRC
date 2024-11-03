@@ -102,7 +102,8 @@
                                                     @if ($user_mail == $article['author'])
                                                         <!--判斷是否是自己帳號留的言 有則顯示編輯功能-->
                                                         <button class="btn btn-sm p-0" data-bs-toggle="modal"
-                                                            data-bs-target="#patch_modal" onclick="getValue(this, 'patch')">
+                                                            data-bs-target="#patch_modal"
+                                                            onclick="getValue(this, 'patch_list')">
                                                             <i class="fas fa-edit ct-sub-1 me-1"></i>
                                                         </button>
 
@@ -159,7 +160,7 @@
     @if ($nickname != '')
         @if (session('banlist')['article'] == true)
             <div class="modal fade" id="create_modal" tabindex="-1" aria-hidden="true">
-                <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-dialog modal-xl modal-dialog-centered">
                     <div class="modal-content">
                         @if ($temporary_article == [])
                             <input type="hidden" id="return_content" name="content">
@@ -171,43 +172,43 @@
                             </div>
                             <div class="modal-body">
                                 <div class="row mb-1 g-2 align-items-center justify-content-between">
-                                    <!-- 左邊部分 -->
-                                    <div class="col-auto d-flex align-items-center">
-                                        <!-- 人物圖片 -->
-                                        <img class="me-1" src="{{ asset('static/img/user.png') }}" width="25" />
-
-                                        <!-- 下拉選擇框 -->
-                                        <select class="form-select ms-2" id="id_type">
-                                            <option value="{{ $nickname }}" selected>{{ $nickname }}
-                                            </option>
-                                            <option value="匿名">匿名</option>
-                                        </select>
+                                    <div class="col d-flex flex-column ps-0">
+                                        <div class="row align-items-center">
+                                            <div class="col-auto ps-0">
+                                                <img class="me-1" src="{{ asset('static/img/user.png') }}"
+                                                    width="25" />
+                                            </div>
+                                            <div class="col-auto ps-0">
+                                                <select class="form-select" id="id_type">
+                                                    <option value="{{ $nickname }}" selected>{{ $nickname }}
+                                                    </option>
+                                                    <option value="匿名">匿名</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-auto ps-0">
+                                                <select class="form-select" id="post_class" name="post_class">
+                                                    @foreach ($subcategorys as $sub)
+                                                        <option value="{{ $sub['name'] }}"
+                                                            {{ $category == $sub['name'] ? 'selected' : '' }}>
+                                                            {{ $sub['name'] }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <div class="col-auto my-2 my-lg-3 ps-0">
+                                                <!-- 上傳檔案按鈕 -->
+                                                <input type="file" id="create_article_image" style="width: 200px;"
+                                                    name="article_image" accept=".jpg, .jpeg, .png" />
+                                            </div>
+                                            <div class="col-12 ps-0">
+                                                <input class="form-control" type="text" id="input_new_title"
+                                                    name="title" placeholder="標題：請用簡短的話說明你的提問/分享" />
+                                            </div>
+                                        </div>
                                     </div>
-                                    <!-- 右邊部分 -->
-                                    <div id="image_preview" class="col-auto d-flex align-items-start">
-                                        <!-- 上傳檔案按鈕 -->
-                                        <input type="file" dir="rtl" id="create_article_image"
-                                            class="article_image" name="article_image" accept=".jpg, .jpeg, .png" />
-                                    </div>
-                                </div>
-                                <div class="row my-1 g-2 align-items-center justify-content-between">
-                                    <div class="col-8">
-                                        <input class="form-control" type="text" id="input_new_title" name="title"
-                                            placeholder="標題：請用簡短的話說明你的提問/分享" />
-                                    </div>
-                                    <div class="col">
-                                        <select class="form-select" id="treat_class" name="treat">
-                                            <option value="聊療小產" {{ $category == '聊療小產' ? 'selected' : '' }}>聊療小產
-                                            </option>
-                                            <option value="聊療婦科保健" {{ $category == '聊療婦科保健' ? 'selected' : '' }}>聊療婦科保健
-                                            </option>
-                                            <option value="聊療備孕" {{ $category == '聊療備孕' ? 'selected' : '' }}>聊療備孕
-                                            </option>
-                                            <option value="聊療懷孕" {{ $category == '聊療懷孕' ? 'selected' : '' }}>聊療懷孕
-                                            </option>
-                                            <option value="聊療日常保健" {{ $category == '聊療日常保健' ? 'selected' : '' }}>聊療日常保健
-                                            </option>
-                                        </select>
+                                    <div id="image_preview" class="col-auto d-flex flex-column align-items-start">
+                                        <img id="create_image_preview" src="{{ asset('static/img/image.svg') }}"
+                                            alt="封面" style="width: 110px;height: 90px;">
                                     </div>
                                 </div>
                                 <div class="row my-1 g-2 justify-content-center">
@@ -231,7 +232,7 @@
                         @else
                             <input type="hidden" id="return_content" name="content">
                             <input type="hidden" id="return_html" name="html">
-                            <p style="display: none" id='temporary_id'>{{ $temporary_article[0]['id'] }}</p>
+                            <p style="display: none" id="temporary_id">{{ $temporary_article[0]['id'] }}</p>
                             <div class="modal-header pb-0 border-bottom-0">
                                 <h1 class="modal-title fs-5 ct-txt-2 fw-bold">建立聊療，一起聊聊吧🙂</h1>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
@@ -239,55 +240,49 @@
                             </div>
                             <div class="modal-body">
                                 <div class="row mb-1 g-2 align-items-center justify-content-between">
-                                    <div class="col-auto d-flex align-items-center">
-                                        <div class="col-auto">
-                                            <img class="me-1" src="{{ asset('static/img/user.png') }}"
-                                                width="25" />
+                                    <div class="col d-flex flex-column ps-0">
+                                        <div class="row align-items-center">
+                                            <div class="col-auto ps-0">
+                                                <img class="me-1" src="{{ asset('static/img/user.png') }}"
+                                                    width="25" />
+                                            </div>
+                                            <div class="col-auto ps-0">
+                                                <select class="form-select" id="id_type">
+                                                    <option value={{ $nickname }}
+                                                        {{ $temporary_article[0]['identity'] == $nickname ? 'selected' : '' }}>
+                                                        {{ $nickname }}</option>
+                                                    <option value="匿名"
+                                                        {{ $temporary_article[0]['identity'] == '匿名' ? 'selected' : '' }}>
+                                                        匿名
+                                                    </option>
+                                                </select>
+                                            </div>
+
+                                            <div class="col-auto ps-0">
+                                                <select class="form-select" id="post_class" name="post_class">
+                                                    @foreach ($subcategorys as $sub)
+                                                        <option value="{{ $sub['name'] }}"
+                                                            {{ $temporary_article[0]['category'][0]['name'] == $sub['name'] ? 'selected' : '' }}>
+                                                            {{ $sub['name'] }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <div class="col-auto my-2 my-lg-3 ps-0">
+                                                <!-- 上傳檔案按鈕 -->
+                                                <input type="file" id="create_article_image" style="width: 200px;"
+                                                    name="article_image" accept=".jpg, .jpeg, .png" />
+                                            </div>
+                                            <div class="col-12 ps-0">
+                                                <input class="form-control" type="text" id="input_new_title"
+                                                    name="title" placeholder="標題：請用簡短的話說明你的提問/分享"
+                                                    value={{ $temporary_article[0]['title'] }} />
+                                            </div>
                                         </div>
-                                        <div class="col-auto">
-                                            <select class="form-select" id="id_type">
-                                                <option value={{ $nickname }}
-                                                    {{ $temporary_article[0]['identity'] == $nickname ? 'selected' : '' }}>
-                                                    {{ $nickname }}</option>
-                                                <option value="匿名"
-                                                    {{ $temporary_article[0]['identity'] == '匿名' ? 'selected' : '' }}>
-                                                    匿名
-                                                </option>
-                                            </select>
-                                        </div>
                                     </div>
-                                    <div id="image_preview" class="col-auto d-flex align-items-start">
-                                        <!-- 上傳檔案按鈕 -->
-                                        <input type="file" dir="rtl" id="create_article_image"
-                                            class="article_image" name="article_image" accept=".jpg, .jpeg, .png" />
-                                    </div>
-                                </div>
-                                <div class="row my-1 g-2 align-items-center justify-content-between">
-                                    <div class="col-8">
-                                        <input class="form-control" type="text" id="input_new_title" name="title"
-                                            placeholder="標題：請用簡短的話說明你的提問/分享" value={{ $temporary_article[0]['title'] }} />
-                                    </div>
-                                    <div class="col">
-                                        <select class="form-select" id="treat_class" name="treat">
-                                            <option value="聊療小產"
-                                                {{ $temporary_article[0]['category'][0]['name'] == '聊療小產' ? 'selected' : '' }}>
-                                                聊療小產
-                                            </option>
-                                            <option value="聊療婦科保健"
-                                                {{ $temporary_article[0]['category'][0]['name'] == '聊療婦科保健' ? 'selected' : '' }}>
-                                                聊療婦科保健</option>
-                                            <option value="聊療備孕"
-                                                {{ $temporary_article[0]['category'][0]['name'] == '聊療備孕' ? 'selected' : '' }}>
-                                                聊療備孕
-                                            </option>
-                                            <option value="聊療懷孕"
-                                                {{ $temporary_article[0]['category'][0]['name'] == '聊療懷孕' ? 'selected' : '' }}>
-                                                聊療懷孕
-                                            </option>
-                                            <option value="聊療日常保健"
-                                                {{ $temporary_article[0]['category'][0]['name'] == '聊療日常保健' ? 'selected' : '' }}>
-                                                聊療日常保健</option>
-                                        </select>
+                                    <div id="image_preview" class="col-auto d-flex flex-column align-items-start">
+                                        <img id="create_image_preview" src="{{ $temporary_article[0]['index_image'] }}"
+                                            alt="封面" style="width: 110px;height: 90px;">
                                     </div>
                                 </div>
                                 <div class="row my-1 g-2 justify-content-center">
@@ -317,45 +312,51 @@
 
         <!-- 建立修改聊療 Modal -->
         <div class="modal fade" id="patch_modal" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-dialog modal-xl modal-dialog-centered">
                 <div class="modal-content">
                     <input type="hidden" id="return_content" name="content">
                     <input type="hidden" id="return_html" name="html">
-                    <input type="hidden" id='article_id'>
+                    <input type="hidden" id="article_id">
                     <div class="modal-header pb-0 border-bottom-0">
                         <h1 class="modal-title fs-5 ct-txt-2 fw-bold">修改聊療，一起聊聊吧🙂</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <div class="row mb-1 g-2 align-items-center">
-                            <div class="col-auto">
-                                <img class="me-1" src="{{ asset('static/img/user.png') }}" width="25" />
+                        <div class="row mb-1 g-2 align-items-center justify-content-between">
+                            <div class="col d-flex flex-column ps-0">
+                                <div class="row align-items-center">
+                                    <div class="col-auto ps-0">
+                                        <img class="me-1" src="{{ asset('static/img/user.png') }}" width="25" />
+                                    </div>
+                                    <div class="col-auto ps-0">
+                                        <select class="form-select" id="patch_id_type">
+                                            <option value={{ $nickname }} selected>{{ $nickname }}</option>
+                                            <option value="匿名">匿名</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-auto ps-0">
+                                        <select class="form-select" id="patch_post_class" name="post_class">
+                                            @foreach ($subcategorys as $sub)
+                                                <option value="{{ $sub['name'] }}"
+                                                    {{ $category == $sub['name'] ? 'selected' : '' }}>{{ $sub['name'] }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col-auto my-2 my-lg-3 ps-0">
+                                        <!-- 上傳檔案按鈕 -->
+                                        <input type="file" id="update_article_image" style="width: 200px;"
+                                            name="article_image" accept=".jpg, .jpeg, .png" />
+                                    </div>
+                                    <div class="col-12 ps-0">
+                                        <input class="form-control" type="text" id="input_patch_title" name="title"
+                                            placeholder="標題：請用簡短的話說明你的提問/分享" />
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-auto">
-                                <select class="form-select" id="patch_id_type">
-                                    <option value={{ $nickname }} selected>{{ $nickname }}</option>
-                                    <option value="匿名">匿名</option>
-                                </select>
-                            </div>
-                            <div id="image_preview" class="col-auto d-flex align-items-start">
-                                <!-- 上傳檔案按鈕 -->
-                                <input type="file" dir="rtl" id="update_article_image" class="article_image"
-                                    name="article_image" accept=".jpg, .jpeg, .png" />
-                            </div>
-                        </div>
-                        <div class="row my-1 g-2 align-items-center justify-content-between">
-                            <div class="col-8">
-                                <input class="form-control" type="text" id="input_patch_title" name="title"
-                                    placeholder="標題：請用簡短的話說明你的提問/分享" />
-                            </div>
-                            <div class="col">
-                                <select class="form-select" id="patch_treat_class" name="treat">
-                                    <option value="聊療小產">聊療小產</option>
-                                    <option value="聊療婦科保健">聊療婦科保健</option>
-                                    <option value="聊療備孕">聊療備孕</option>
-                                    <option value="聊療懷孕">聊療懷孕</option>
-                                    <option value="聊療日常保健">聊療日常保健</option>
-                                </select>
+                            <div id="image_preview" class="col-auto d-flex flex-column align-items-start">
+                                <img id="update_image_preview" src="{{ asset('static/img/image.svg') }}" alt="封面"
+                                    style="width: 110px;height: 90px;">
                             </div>
                         </div>
                         <div class="row my-1 g-2 justify-content-center">
