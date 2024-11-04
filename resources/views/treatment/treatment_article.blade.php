@@ -261,8 +261,8 @@
                                                     </button>
                                                     <!--當使用者正在編輯留言時 顯示提交按鈕-->
                                                     <!-- <button class="btn btn-sm p-0 edit_check_btn" data-bs-toggle="tooltip" data-bs-title="提交">
-                                                                                                                                                        <i class="fas fa-check ct-sub-1 me-1"></i>
-                                                                                                                                                    </button> -->
+                                                                                                                                                            <i class="fas fa-check ct-sub-1 me-1"></i>
+                                                                                                                                                        </button> -->
                                                     <button class="btn btn-primary btn-sm edit_check_btn mx-1">提交</button>
                                                 @endif
                                                 <div class="dropdown d-inline" data-bs-toggle="tooltip"
@@ -304,100 +304,98 @@
             </div>
             @include('layouts.sidebar')
         </div>
+    </div>
 
-        <!-- 建立修改聊療 Modal -->
-        <div class="modal fade" id="patch_modal" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-lg modal-dialog-centered">
-                <div class="modal-content">
-                    <input type="hidden" id="return_content" name="content">
-                    <input type="hidden" id="return_html" name="html">
-                    <input type="hidden" id='return_id'>
-                    <div class="modal-header pb-0 border-bottom-0">
-                        <h1 class="modal-title fs-5 ct-txt-2 fw-bold">修改聊療，一起聊聊吧🙂</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <!-- 建立修改聊療 Modal -->
+    <div class="modal fade" id="patch_modal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <input type="hidden" id="return_content" name="content">
+                <input type="hidden" id="return_html" name="html">
+                <input type="hidden" id='return_id'>
+                <div class="modal-header pb-0 border-bottom-0">
+                    <h1 class="modal-title fs-5 ct-txt-2 fw-bold">修改聊療，一起聊聊吧🙂</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-1 g-2 align-items-center justify-content-between">
+                        <div class="col d-flex flex-column ps-0">
+                            <div class="row align-items-center">
+                                <div class="col-auto ps-0">
+                                    <img class="me-1" src="{{ asset('static/img/user.png') }}" width="25" />
+                                </div>
+                                <div class="col-auto ps-0">
+                                    <select class="form-select" id="patch_id_type">
+                                        <option value={{ $nickname }} selected>{{ $nickname }}</option>
+                                        <option value="匿名">匿名</option>
+                                    </select>
+                                </div>
+                                <div class="col-auto ps-0">
+                                    <select class="form-select" id="patch_post_class" name="patch_post_class">
+                                        @foreach ($subcategorys as $sub)
+                                            <option value="{{ $sub['name'] }}"
+                                                {{ $category == $sub['name'] ? 'selected' : '' }}>{{ $sub['name'] }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-auto my-2 my-lg-3 ps-0">
+                                    <!-- 上傳檔案按鈕 -->
+                                    <input type="file" id="update_article_image" style="width: 200px;"
+                                        name="article_image" accept=".jpg, .jpeg, .png" />
+                                </div>
+                                <div class="col-12 ps-0">
+                                    <input class="form-control" type="text" id="input_patch_title" name="title"
+                                        placeholder="標題：請用簡短的話說明你的提問/分享" />
+                                </div>
+                            </div>
+                        </div>
+                        <div id="image_preview" class="col-auto d-flex flex-column align-items-start">
+                            <img id="update_image_preview" src="{{ asset('static/img/image.svg') }}" alt="封面"
+                                style="width: 110px;height: 90px;">
+                        </div>
+                        <div class="row my-1 g-2 justify-content-center">
+                            <!--文字編輯器套件 editor-->
+                            <div class="col-12" id="patch-editor-container" style="height: 300px; font-size: 30px;">
+                                <textarea class="form-control" rows="7" id="patch_editor" name="patch_editor"></textarea>
+                            </div>
+                            <div class="col-12">
+                                <input class="form-control" type="text" id="patch_input_topic"
+                                    placeholder="#話題：可以根據你的文章內容，輸入半形的#，可以新增多個話題喔！" />
+                            </div>
+                        </div>
                     </div>
-                    <div class="modal-body">
-                        <div class="row mb-1 g-2 align-items-center justify-content-between">
-                            <div class="col d-flex flex-column ps-0">
-                                <div class="row align-items-center">
-                                    <div class="col-auto ps-0">
-                                        <img class="me-1" src="{{ asset('static/img/user.png') }}" width="25" />
-                                    </div>
-                                    <div class="col-auto ps-0">
-                                        <select class="form-select" id="patch_id_type">
-                                            <option value={{ $nickname }} selected>{{ $nickname }}</option>
-                                            <option value="匿名">匿名</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-auto ps-0">
-                                        <select class="form-select" id="patch_post_class" name="patch_post_class">
-                                            @foreach ($subcategorys as $sub)
-                                                <option value="{{ $sub['name'] }}"
-                                                    {{ $category == $sub['name'] ? 'selected' : '' }}>{{ $sub['name'] }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    <div class="col-auto my-2 my-lg-3 ps-0">
-                                        <!-- 上傳檔案按鈕 -->
-                                        <input type="file" id="update_article_image" style="width: 200px;"
-                                            name="article_image" accept=".jpg, .jpeg, .png" />
-                                    </div>
-                                    <div class="col-12 ps-0">
-                                        <input class="form-control" type="text" id="input_patch_title" name="title"
-                                            placeholder="標題：請用簡短的話說明你的提問/分享" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div id="image_preview" class="col-auto d-flex flex-column align-items-start">
-                                <img id="update_image_preview" src="{{ asset('static/img/image.svg') }}" alt="封面"
-                                    style="width: 110px;height: 90px;">
-                            </div>
-                            <div class="row my-1 g-2 justify-content-center">
-                                <!--文字編輯器套件 editor-->
-                                <div class="col-12" id="patch-editor-container" style="height: 300px; font-size: 30px;">
-                                    <textarea class="form-control" rows="7" id="patch_editor" name="patch_editor"></textarea>
-                                </div>
-                                <div class="col-12">
-                                    <input class="form-control" type="text" id="patch_input_topic"
-                                        placeholder="#話題：可以根據你的文章內容，輸入半形的#，可以新增多個話題喔！" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-c2 rounded-pill px-3 py-1" onclick="patchData()"><i
-                                    class="fas fa-bullhorn me-1"></i>發文</button>
-                        </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-c2 rounded-pill px-3 py-1" onclick="patchData()"><i
+                                class="fas fa-bullhorn me-1"></i>發文</button>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <!--分享貼文 modal-->
-            <div class="popup modal fade" id="shareModal" tabindex="-1">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h1 class="modal-title fs-5">分享文章</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body" style="font-size: var(--fs-18)">
-                            <div class="row d-flex justify-content-center py-3 ">
-                                <p>分享至社群平台</p>
-                                <ul class="icons">
-                                    <a target="_blank" href="#" class="fb_share"><i
-                                            class="fab fa-facebook-f"></i></a>
-                                    <a target="_blank" href="#" class="line_share"><i class="bi bi-line"></i></a>
-                                </ul>
-                                <p>或 複製連結</p>
-                                <div class="field">
-                                    <div class="input-group flex-nowrap mb-3">
-                                        <span class="input-group-text"><i class="bi bi-link-45deg"></i></span>
-                                        <input type="text" class="form-control" id="input_link" readonly
-                                            value="https://codepen.io/" />
-                                        <button class="btn btn-outline-c3" type="button" id="copylink_btn"
-                                            onclick="copy_sharelink()">複製連結</button>
-                                    </div>
+        <!--分享貼文 modal-->
+        <div class="popup modal fade" id="shareModal" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5">分享文章</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" style="font-size: var(--fs-18)">
+                        <div class="row d-flex justify-content-center py-3 ">
+                            <p>分享至社群平台</p>
+                            <ul class="icons">
+                                <a target="_blank" href="#" class="fb_share"><i class="fab fa-facebook-f"></i></a>
+                                <a target="_blank" href="#" class="line_share"><i class="bi bi-line"></i></a>
+                            </ul>
+                            <p>或 複製連結</p>
+                            <div class="field">
+                                <div class="input-group flex-nowrap mb-3">
+                                    <span class="input-group-text"><i class="bi bi-link-45deg"></i></span>
+                                    <input type="text" class="form-control" id="input_link" readonly
+                                        value="https://codepen.io/" />
+                                    <button class="btn btn-outline-c3" type="button" id="copylink_btn"
+                                        onclick="copy_sharelink()">複製連結</button>
                                 </div>
                             </div>
                         </div>
@@ -405,34 +403,35 @@
                 </div>
             </div>
         </div>
+    </div>
 
-        @include('layouts.bookmark')
+    @include('layouts.bookmark')
 
 
-        <script>
-            var token = $("#jwt_token").text();
-            var socketIP = document
-                .getElementById("app")
-                .getAttribute("data-api-ip")
-                .split("//")[1];
-            var socket = new WebSocket("ws://" + socketIP + "ws/record/{{ $id }}/?token=" + token);
-            socket.onopen = function() {
-                if (sessionStorage.getItem('previousPageUrl') != window.location.href) {
-                    console.log("connect")
-                    socket.send(
-                        JSON.stringify({
-                            action: "connect",
+    <script>
+        var token = $("#jwt_token").text();
+        var socketIP = document
+            .getElementById("app")
+            .getAttribute("data-api-ip")
+            .split("//")[1];
+        var socket = new WebSocket("ws://" + socketIP + "ws/record/{{ $id }}/?token=" + token);
+        socket.onopen = function() {
+            if (sessionStorage.getItem('previousPageUrl') != window.location.href) {
+                console.log("connect")
+                socket.send(
+                    JSON.stringify({
+                        action: "connect",
 
-                        }));
-                } else {
-                    console.log("reconnect")
-                    socket.send(
-                        JSON.stringify({
-                            action: "reconnect",
-                        }));
-                }
+                    }));
+            } else {
+                console.log("reconnect")
+                socket.send(
+                    JSON.stringify({
+                        action: "reconnect",
+                    }));
             }
-            var ArticleRoute = "{{ route('treatment_qa') }}";
-            var treatmentArticleUpdateRoute = "{{ route('TreatmentArticleUpdate') }}";
-        </script>
-    @endsection
+        }
+        var ArticleRoute = "{{ route('treatment_qa') }}";
+        var treatmentArticleUpdateRoute = "{{ route('TreatmentArticleUpdate') }}";
+    </script>
+@endsection
