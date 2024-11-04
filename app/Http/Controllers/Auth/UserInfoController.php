@@ -422,25 +422,22 @@ class UserInfoController extends Controller
             $articles_official = ApiHelper::getAuthenticatedRequest($token, env('API_IP') . 'api/content/PostGetOfficial/')->json();
             $articles = array_merge($articles, $articles_official); // 合併文章
     
-                $response['article_num'] = []; 
+            $response['article_num'] = [];
+            $response['article_titles'] = []; 
+            
+            foreach ($response['subHashtag'] as $sub) {
+                $response['article_num'][$sub] = 0;
+                $response['article_titles'][$sub] = []; 
                 
-                foreach ($response['subHashtag'] as $sub) {
-                    $response['article_num'][$sub] = 0;
-                
-                    foreach ($articles as $article) {
-                        $article['hashtag'] = array_filter(explode(',', $article['hashtag'] ?? ''), 'strlen');
-                        if (in_array($sub, $article['hashtag'])) {
-                            $response['article_num'][$sub] += 1;
-                        }
-                    }
-                
-                    foreach ($articles_official as $article) {
-                        $article['hashtag'] = array_filter(explode(',', $article['hashtag'] ?? ''), 'strlen');
-                        if (in_array($sub, $article['hashtag'])) {
-                            $response['article_num'][$sub] += 1;
-                        }
+                foreach ($articles as $article) {
+                    $article['hashtag'] = array_filter(explode(',', $article['hashtag'] ?? ''), 'strlen');
+                    if (in_array($sub, $article['hashtag'])) {
+                        $response['article_num'][$sub] += 1;
+                        $response['article_titles'][$sub][] = $article['title']; 
                     }
                 }
+            }
+            // dd($response);
 
             $response = array_merge($response, [
                 'sidebar' => 'user',
@@ -451,13 +448,14 @@ class UserInfoController extends Controller
                 'jwt_token' => $token,
             ]);
             
-            // dd($response); 
             
             return view('user/topic_saved', $response);
         } else {
             return redirect()->route('user_login');
         }
     }
+    
+
     
     public function postStoragedArticleList($name = null)
     {
