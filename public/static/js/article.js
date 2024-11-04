@@ -962,14 +962,11 @@ function getValue(button, type) {
         var selectTreat = document.getElementById("patch_post_class");
         var hashtags = document.getElementById("patch_input_topic");
         var image = document.getElementById("update_image_preview");
-
         image.src = $(button).parents().eq(2).find(".article-img")[0].src;
-        console.log("Subcategory ID:", subcategory_id); // 確認 subcategory_id 的值
 
         // 設置標題與文章ID
         title.value = $(button)
-            .parents()
-            .parents()
+            .parents("div.col")
             .find("#article_id_title")
             .text()
             .trim();
@@ -977,22 +974,14 @@ function getValue(button, type) {
 
         // 設置類別
         var subcategory_id = $(button)
-            .parents()
-            .eq(2)
+            .parents("div.col")
             .find("#article_category")
-            .text();
-        console.log("Subcategory ID:", subcategory_id); // 確認 subcategory_id 的值
-
-        // 將選擇的類別直接設置為 subcategory_id 的值
-        selectTreat.value = subcategory_id; // 直接根據 value 設置選擇項目
-
-        // 確認選擇的類別是否正確
-        console.log("Selected category value:", selectTreat.value);
+            .text()
+            .trim();
 
         // 設置話題欄位，移除空值與多餘的標點
         var hashtagsText = $(button)
-            .parents()
-            .eq(2)
+            .parents("div.col")
             .find("#hashtags")
             .text()
             .trim();
@@ -1014,8 +1003,7 @@ function getValue(button, type) {
         var hashtags = document.getElementById("patch_input_topic");
         var selectIdentity = document.getElementById("patch_id_type");
         var identity = $(button)
-            .parents()
-            .eq(2)
+            .parents("div.col")
             .find("#identity")
             .text()
             .trim();
@@ -1026,13 +1014,7 @@ function getValue(button, type) {
 
         // 設置類別
         var subcategory_id = $("#article_category").text();
-        console.log("Subcategory ID:", subcategory_id); // 確認 subcategory_id 的值
-
-        // 將選擇的類別直接設置為 subcategory_id 的值
         selectTreat.value = subcategory_id; // 直接根據 value 設置選擇項目
-
-        // 確認選擇的類別是否正確
-        console.log("Selected category value:", selectTreat.value);
 
         // 設置話題欄位，移除空值與多餘的標點
         var hashtagsa = $("#article_tabs a");
@@ -1062,8 +1044,7 @@ function getValue(button, type) {
 
         // 設置標題與文章ID
         title.value = $(button)
-            .parents()
-            .parents()
+            .parents("div.col")
             .find("#article_id_title")
             .text()
             .trim();
@@ -1071,22 +1052,15 @@ function getValue(button, type) {
 
         // 設置類別
         var subcategory_id = $(button)
-            .parents()
-            .eq(2)
+            .parents("div.col")
             .find("#article_category")
-            .text();
-        console.log("Subcategory ID:", subcategory_id); // 確認 subcategory_id 的值
-
-        // 將選擇的類別直接設置為 subcategory_id 的值
+            .text()
+            .trim();
         selectTreat.value = subcategory_id; // 直接根據 value 設置選擇項目
-
-        // 確認選擇的類別是否正確
-        console.log("Selected category value:", selectTreat.value);
 
         // 設置話題欄位，移除空值與多餘的標點
         var hashtagsText = $(button)
-            .parents()
-            .eq(2)
+            .parents("div.col")
             .find("#hashtags")
             .text()
             .trim();
@@ -1234,8 +1208,10 @@ function postdata(obj, type) {
                     title: "新增成功!",
                     showConfirmButton: false,
                     timer: 2500,
+                }).then(() => {
+                    window.location =
+                        "/TreatmentArticleGet/" + data["id"] + "/";
                 });
-                window.location = "/TreatmentArticleGet/" + data["id"] + "/";
             });
     } else {
         // console.log(article_id);
@@ -1300,8 +1276,10 @@ function postdata(obj, type) {
                     title: "新增成功!",
                     showConfirmButton: false,
                     timer: 2500,
+                }).then(() => {
+                    window.location =
+                        "/TreatmentArticleGet/" + data["id"] + "/";
                 });
-                window.location = "/TreatmentArticleGet/" + data["id"] + "/";
             });
     }
 }
@@ -1433,8 +1411,9 @@ function official_postdata(obj, type) {
                     title: "新增成功!",
                     showConfirmButton: false,
                     timer: 2500,
+                }).then(() => {
+                    window.location = "/knowledge_article/" + data["id"] + "/";
                 });
-                window.location = "/knowledge_article/" + data["id"] + "/";
             });
     } else {
         // console.log(article_id);
@@ -1500,8 +1479,7 @@ function official_postdata(obj, type) {
                     showConfirmButton: false,
                     timer: 2500,
                 }).then(() => {
-                    window.location =
-                        "/TreatmentArticleGet/" + data["id"] + "/";
+                    window.location = "/knowledge_article/" + data["id"] + "/";
                 });
             });
     }
@@ -2026,8 +2004,24 @@ function delArticle(button) {
         requestOptions
     ).then((response) => {
         if (response.ok) {
-            var category = $("#category").text();
-            window.location.href = ArticleRoute + "/" + category;
+            Swal.fire({
+                position: "center",
+                icon: "success",
+                title: "刪除成功!",
+                showConfirmButton: false,
+                timer: 2500,
+            }).then(() => {
+                var category = $("#category").text();
+                window.location.href = ArticleRoute + "/" + category;
+            });
+        } else {
+            Swal.fire({
+                position: "center",
+                icon: "error",
+                title: "刪除失敗!",
+                showConfirmButton: false,
+                timer: 2500,
+            });
         }
     });
 }
