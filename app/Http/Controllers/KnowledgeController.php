@@ -19,7 +19,6 @@ class KnowledgeController extends Controller
                 'articles' => ApiHelper::getAuthenticatedRequest($token, env('API_IP') . 'api/content/PostGetOfficial/?ordering=' . $sort)->json(),
                 'temporary_article' => ApiHelper::getAuthenticatedRequest($token, env('API_IP') . 'api/content/TempOfficialPostGet/')->json()
             ];
-            $subcategorys = ApiHelper::getAuthenticatedRequest($token, env('API_IP') . 'api/content/subcategory/')->json();
             $postStorageds = ApiHelper::getAuthenticatedRequest($token, env('API_IP') . 'api/userdetail/postStoraged/')->json();
             $subTopic = ApiHelper::getAuthenticatedRequest($token, env('API_IP') . 'api/userprofile/subTopic/')->json();
         } else {
@@ -28,6 +27,7 @@ class KnowledgeController extends Controller
             $subTopic = [];
             $postStorageds = [];
         }
+        $subcategorys = Http::asForm()->get(env('API_IP') . 'api/content/subcategory/')->json();
         // dd($response);
 
         if ($token != '' && $postStorageds == null) {
@@ -90,7 +90,6 @@ class KnowledgeController extends Controller
         $token = Session::get('jwt_token', '');
         if ($token != '') {
             $response = ApiHelper::getAuthenticatedRequest($token, env('API_IP') . 'api/content/PostGetOfficial/' . $id . '/')->json();
-            $subcategorys = ApiHelper::getAuthenticatedRequest($token, env('API_IP') . 'api/content/subcategory/')->json();
             $postStorageds = ApiHelper::getAuthenticatedRequest($token, env('API_IP') . 'api/userdetail/postStoraged/')->json();
             $subscribe = ApiHelper::getAuthenticatedRequest($token, env('API_IP') . 'api/userprofile/subscribe/')->json();
         } else {
@@ -98,6 +97,7 @@ class KnowledgeController extends Controller
             $subscribe = [];
             $postStorageds = [];
         }
+        $subcategorys = Http::asForm()->get(env('API_IP') . 'api/content/subcategory/')->json();
         // dd($response);
 
         if ($token != '' && $postStorageds == null) {
