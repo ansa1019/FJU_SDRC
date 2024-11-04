@@ -1044,57 +1044,6 @@ function getValue(button, type) {
 
         // 使用 Quill 編輯器插入 HTML 內容
         patch_quill.clipboard.dangerouslyPasteHTML($("#content").html().trim());
-    } else if (type == "patch_mind") {
-         // 獲取文章 ID 和 DOM 元素
-         var id = button.parentNode.parentNode.id.replace("article_id_", "");
-         var title = document.getElementById("input_patch_title");
-         var article_id = document.getElementById("article_id");
-         var selectTreat = document.getElementById("patch_post_class");
-         var hashtags = document.getElementById("patch_input_topic");
-         var image = document.getElementById("update_image_preview");
- 
-         image.src = $(button).parents().eq(2).find(".article-img")[0].src;
-         console.log("Subcategory ID:", subcategory_id); // 確認 subcategory_id 的值
- 
-         // 設置標題與文章ID
-         title.value = $(button)
-             .parents()
-             .parents()
-             .find("#article_id_title")
-             .text()
-             .trim();
-         article_id.value = id;
- 
-         // 設置類別
-         var subcategory_id = $(button)
-             .parents()
-             .eq(2)
-             .find("#article_category")
-             .text();
-         console.log("Subcategory ID:", subcategory_id); // 確認 subcategory_id 的值
- 
-         // 將選擇的類別直接設置為 subcategory_id 的值
-         selectTreat.value = subcategory_id; // 直接根據 value 設置選擇項目
- 
-         // 確認選擇的類別是否正確
-         console.log("Selected category value:", selectTreat.value);
- 
-         // 設置話題欄位，移除空值與多餘的標點
-         var hashtagsText = $(button)
-             .parents()
-             .eq(2)
-             .find("#hashtags")
-             .text()
-             .trim();
-         hashtags.value =
-             hashtagsText === "null" || hashtagsText === ""
-                 ? ""
-                 : hashtagsText.replace(/,\s*$/, "").replace(/\s+/g, " ");
- 
-         // 使用 Quill 編輯器插入 HTML 內容
-         patch_quill.clipboard.dangerouslyPasteHTML(
-             $(button).parents().eq(1).find("#html").text().trim()
-         );
     } else {
         // 發佈時使用 Quill 編輯器插入 HTML
         quill.clipboard.dangerouslyPasteHTML(
