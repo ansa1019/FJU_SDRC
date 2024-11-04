@@ -44,7 +44,7 @@
                                 <a class="nav-link rounded-pill {{ $subcategory == '小產調理知識' ? 'active' : '' }}"
                                     href="{{ route('knowledge_library', ['category' => '小產調理', 'subcategory' => '小產調理知識']) }}
                                     "><i
-                                        class="fas fa-tag me-1"></i>小產調理知識</a>           
+                                        class="fas fa-tag me-1"></i>小產調理知識</a>
                             @elseif ($subcategory == '婦科保健知識' || $subcategory == '婦科保健調理知識')
                                 <a class="nav-link rounded-pill {{ $subcategory == '婦科保健知識' ? 'active' : '' }}"
                                     aria-current="page"
@@ -126,10 +126,10 @@
                                             <div id="article_id_{{ $article['id'] }}"
                                                 class="col p-3 d-flex flex-column align-content-between justify-content-center position-static">
                                                 <p style="display:none" id='article_category'>
-                                                    {{ $article['category'][0]['name'] }}
-                                                <p style="display:none" id='identity'>{{ $article['identity'] }}
-                                                <p style="display:none" id='hashtags'>{{ $article['hashtag'] }}
-                                                    <!--文章標題-->
+                                                    {{ $article['category'][0]['name'] }}</p>
+                                                <p style="display:none" id='identity'>{{ $article['identity'] }}</p>
+                                                <p style="display:none" id='hashtags'>{{ $article['hashtag'] }}</p>
+                                                <!--文章標題-->
                                                 <h5 class="article-title" id="article_id_title">
                                                     <a
                                                         href="{{ route('knowledge_article', ['id' => $article['id']]) }}">{{ $article['title'] }}</a>

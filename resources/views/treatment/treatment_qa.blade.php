@@ -85,10 +85,9 @@
                                             <div id="article_id_{{ $article['id'] }}"
                                                 class="col p-3 d-flex flex-column align-content-between justify-content-center position-static">
                                                 <p style="display:none" id='article_category'>
-                                                    {{ $article['category'][0]['name'] }}
-                                                <p style="display:none" id='identity'>{{ $article['identity'] }}
-                                                <p style="display:none" id='hashtags'>{{ $article['hashtag'] }}
-                                                </p>
+                                                    {{ $article['category'][0]['name'] }}</p>
+                                                <p style="display:none" id='identity'>{{ $article['identity'] }}</p>
+                                                <p style="display:none" id='hashtags'>{{ $article['hashtag'] }}</p>
                                                 <h5 class="article-title" id="article_id_title">
                                                     <a
                                                         href="{{ route('TreatmentArticleGet', ['id' => $article['id']]) }}">{{ $article['title'] }}</a>

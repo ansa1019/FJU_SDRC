@@ -28,10 +28,8 @@
                             <div class="row border-bottom">
                                 <div id="article_id_{{ $article['id'] }}"
                                     class="col p-3 d-flex flex-column align-content-between justify-content-center position-static">
-                                    <p style="display:none" id='article_category'>
-                                        {{ $article['category'][0]['name'] }}
-                                    <p style="display:none" id='hashtags'>{{ $article['hashtag'] }}
-                                    </p>
+                                    <p style="display:none" id='article_category'>{{ $article['category'][0]['name'] }}</p>
+                                    <p style="display:none" id='hashtags'>{{ $article['hashtag'] }}</p>
                                     <h5 class="article-title" id="article_id_title">
                                         <a href="{{ in_array($article['maincate'], ['備孕調理', '婦科保健', '小產調理', '懷孕知識', '日常保健'])
                                             ? route('knowledge_article', ['id' => $article['id']])
