@@ -43,6 +43,7 @@ class ArticleController extends Controller
     public function treatment_view($category = null, $sort = '-created_at')
     {
         $token = Session::get('jwt_token', '');
+        $subcategorys = Http::asForm()->get(env('API_IP') . 'api/content/subcategory/')->json();
         if ($token != '') {
             $response = [
                 'articles' => ApiHelper::getAuthenticatedRequest($token, env('API_IP') . 'api/content/textEditorPost/?ordering=' . $sort)->json(),
@@ -56,7 +57,6 @@ class ArticleController extends Controller
             $subTopic = [];
             $postStorageds = [];
         }
-        $subcategorys = Http::asForm()->get(env('API_IP') . 'api/content/subcategory/')->json();
 
         if ($token != '' && empty($postStorageds)) {
             $formdata = [
@@ -144,6 +144,7 @@ class ArticleController extends Controller
     {
         //
         $token = Session::get('jwt_token', '');
+        $subcategorys = Http::asForm()->get(env('API_IP') . 'api/content/subcategory/')->json();
         if ($token != '') {
             $response = ApiHelper::getAuthenticatedRequest($token, env('API_IP') . 'api/content/textEditorPost/' . $id . '/')->json();
             $records = ApiHelper::getAuthenticatedRequest($token, env('API_IP') . 'api/content/getRecords/')->json();
@@ -155,7 +156,6 @@ class ArticleController extends Controller
             $subscribe = [];
             $postStorageds = [];
         }
-        $subcategorys = Http::asForm()->get(env('API_IP') . 'api/content/subcategory/')->json();
 
         if ($token != '' && $postStorageds == null) {
             $formdata = [

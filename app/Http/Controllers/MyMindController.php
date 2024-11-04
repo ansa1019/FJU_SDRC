@@ -12,15 +12,15 @@ class MyMindController extends Controller
     public function myMindView()
     {
         $token = Session::get('jwt_token', '');
+        $subcategorys = Http::asForm()->get(env('API_IP') . 'api/content/subcategory/')->json();
         if ($token != '') {
             $myMindResponse = ['articles' => ApiHelper::getAuthenticatedRequest($token, env('API_IP') . 'api/content/userGetSelfPost/')->json()];
             $postStoraged = ApiHelper::getAuthenticatedRequest($token, env('API_IP') . 'api/userdetail/postStoraged/')->json();
-
             if ($token != '' && $postStoraged == []) {
                 $formdata = [
                     'storage_name' => '不分類收藏',
                 ];
-    
+
                 $addpostStoraged = Http::withHeaders([
                     'Authorization' => 'Bearer ' . $token,
                     'Content-Type' => 'application/json',
@@ -42,7 +42,7 @@ class MyMindController extends Controller
             }
 
             // return view('user/my_mind', ['sidebar' => 'user', 'title' => 'my_mind', 'web_name' => 'None', 'nickname' => Session::get('nickname', ''), 'articles' => $myMindResponse['articles'], 'user_mail' => Session::get('user_email', ''), 'user_image' => Session::get('user_image', ''),]);
-            
+
             $myMindResponse = array_merge($myMindResponse, [
                 'sidebar' => 'user',
                 'title' => 'my_mind',
@@ -51,7 +51,8 @@ class MyMindController extends Controller
                 'user_mail' => Session::get('user_email', ''),
                 'user_image' => Session::get('user_image', ''),
                 'jwt_token' => $token,
-                'postStorageds'=>$postStoraged
+                'postStorageds' => $postStoraged,
+                'subcategorys' => array_slice($subcategorys, 10, 5),
             ]);
             return response()->view('user/my_mind', $myMindResponse)->header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
 

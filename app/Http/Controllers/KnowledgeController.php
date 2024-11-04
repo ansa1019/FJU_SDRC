@@ -14,6 +14,7 @@ class KnowledgeController extends Controller
     {
         //
         $token = Session::get('jwt_token', '');
+        $subcategorys = Http::asForm()->get(env('API_IP') . 'api/content/subcategory/')->json();
         if ($token != '') {
             $response = [
                 'articles' => ApiHelper::getAuthenticatedRequest($token, env('API_IP') . 'api/content/PostGetOfficial/?ordering=' . $sort)->json(),
@@ -27,7 +28,6 @@ class KnowledgeController extends Controller
             $subTopic = [];
             $postStorageds = [];
         }
-        $subcategorys = Http::asForm()->get(env('API_IP') . 'api/content/subcategory/')->json();
         // dd($response);
 
         if ($token != '' && $postStorageds == null) {
@@ -88,6 +88,7 @@ class KnowledgeController extends Controller
     {
         //
         $token = Session::get('jwt_token', '');
+        $subcategorys = Http::asForm()->get(env('API_IP') . 'api/content/subcategory/')->json();
         if ($token != '') {
             $response = ApiHelper::getAuthenticatedRequest($token, env('API_IP') . 'api/content/PostGetOfficial/' . $id . '/')->json();
             $postStorageds = ApiHelper::getAuthenticatedRequest($token, env('API_IP') . 'api/userdetail/postStoraged/')->json();
@@ -97,7 +98,6 @@ class KnowledgeController extends Controller
             $subscribe = [];
             $postStorageds = [];
         }
-        $subcategorys = Http::asForm()->get(env('API_IP') . 'api/content/subcategory/')->json();
         // dd($response);
 
         if ($token != '' && $postStorageds == null) {

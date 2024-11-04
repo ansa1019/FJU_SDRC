@@ -431,12 +431,13 @@
                 </div>
             </div>
         </div>
+    </div>
 
-        @include('layouts.bookmark')
+    @include('layouts.bookmark')
 
-        <script>
-            var ArticleRoute = "{{ route('knowledge_library') }}";
-            var knowledgeArticleUpdateRoute = "{{ route('KnowledgeArticleUpdate') }}";
-            var searchArticleRoute = "{{ route('searchArticle') }}";
-        </script>
-    @endsection
+    <script>
+        var ArticleRoute = "{{ route('knowledge_library') }}";
+        var knowledgeArticleUpdateRoute = "{{ route('KnowledgeArticleUpdate') }}";
+        var searchArticleRoute = "{{ route('searchArticle') }}";
+    </script>
+@endsection
