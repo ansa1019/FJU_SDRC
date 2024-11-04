@@ -46,7 +46,7 @@
                                         @if ($user_mail == $article['author'])
                                             <!--判斷是否是自己帳號留的言 有則顯示編輯功能-->
                                             <button class="btn btn-sm p-0" data-bs-toggle="modal"
-                                                data-bs-target="#patch_modal" onclick="getValue(this, 'patch_mind')">
+                                                data-bs-target="#patch_modal" onclick="getValue(this,'patch_mind')">
                                                 <i class="fas fa-edit ct-sub-1 me-1"></i>
                                             </button>
 
@@ -58,7 +58,7 @@
                                                 </button>
                                                 <ul class="dropdown-menu">
                                                     <li>
-                                                        <button type="button" onclick="delData(this)"
+                                                        <button type="button" onclick="delArticle(this);location.reload();"
                                                             class="dropdown-item">刪除文章</button>
                                                     </li>
                                                 </ul>
