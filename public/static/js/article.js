@@ -115,27 +115,31 @@ var toolbarOptions = [
 ];
 
 // 初始化新增用文字编辑器
-var quill = new Quill("#editor-container", {
-    modules: {
-        toolbar: toolbarOptions,
-    },
-    theme: "snow",
-    formats: { align: "left" }, // 设置默认格式，尽量保持文本靠左
-});
+if ($("#patch-editor-container")) {
+    var quill = new Quill("#editor-container", {
+        modules: {
+            toolbar: toolbarOptions,
+        },
+        theme: "snow",
+        formats: { align: "left" }, // 设置默认格式，尽量保持文本靠左
+    });
+    document.addEventListener("DOMContentLoaded", function () {
+        customizeTooltip(quill);
+    });
+}
 
 // 初始化修改用文字编辑器
-var patch_quill = new Quill("#patch-editor-container", {
-    modules: {
-        toolbar: toolbarOptions,
-    },
-    theme: "snow",
-});
-
-// 確保上述代碼在頁面完全加載後執行
-document.addEventListener("DOMContentLoaded", function () {
-    customizeTooltip(quill);
-    customizeTooltip(patch_quill);
-});
+if ($("#patch-editor-container")) {
+    var patch_quill = new Quill("#patch-editor-container", {
+        modules: {
+            toolbar: toolbarOptions,
+        },
+        theme: "snow",
+    }); // 確保上述代碼在頁面完全加載後執行
+    document.addEventListener("DOMContentLoaded", function () {
+        customizeTooltip(patch_quill);
+    });
+}
 
 // 清除列表中的超链接
 function removeLinksFromLists() {
@@ -1045,56 +1049,56 @@ function getValue(button, type) {
         // 使用 Quill 編輯器插入 HTML 內容
         patch_quill.clipboard.dangerouslyPasteHTML($("#content").html().trim());
     } else if (type == "patch_mind") {
-         // 獲取文章 ID 和 DOM 元素
-         var id = button.parentNode.parentNode.id.replace("article_id_", "");
-         var title = document.getElementById("input_patch_title");
-         var article_id = document.getElementById("article_id");
-         var selectTreat = document.getElementById("patch_post_class");
-         var hashtags = document.getElementById("patch_input_topic");
-         var image = document.getElementById("update_image_preview");
- 
-         image.src = $(button).parents().eq(2).find(".article-img")[0].src;
-         console.log("Subcategory ID:", subcategory_id); // 確認 subcategory_id 的值
- 
-         // 設置標題與文章ID
-         title.value = $(button)
-             .parents()
-             .parents()
-             .find("#article_id_title")
-             .text()
-             .trim();
-         article_id.value = id;
- 
-         // 設置類別
-         var subcategory_id = $(button)
-             .parents()
-             .eq(2)
-             .find("#article_category")
-             .text();
-         console.log("Subcategory ID:", subcategory_id); // 確認 subcategory_id 的值
- 
-         // 將選擇的類別直接設置為 subcategory_id 的值
-         selectTreat.value = subcategory_id; // 直接根據 value 設置選擇項目
- 
-         // 確認選擇的類別是否正確
-         console.log("Selected category value:", selectTreat.value);
- 
-         // 設置話題欄位，移除空值與多餘的標點
-         var hashtagsText = $(button)
-             .parents()
-             .eq(2)
-             .find("#hashtags")
-             .text()
-             .trim();
-         hashtags.value =
-             hashtagsText === "null" || hashtagsText === ""
-                 ? ""
-                 : hashtagsText.replace(/,\s*$/, "").replace(/\s+/g, " ");
- 
-         // 使用 Quill 編輯器插入 HTML 內容
-         patch_quill.clipboard.dangerouslyPasteHTML(
-             $(button).parents().eq(1).find("#html").text().trim()
-         );
+        // 獲取文章 ID 和 DOM 元素
+        var id = button.parentNode.parentNode.id.replace("article_id_", "");
+        var title = document.getElementById("input_patch_title");
+        var article_id = document.getElementById("article_id");
+        var selectTreat = document.getElementById("patch_post_class");
+        var hashtags = document.getElementById("patch_input_topic");
+        var image = document.getElementById("update_image_preview");
+
+        image.src = $(button).parents().eq(2).find(".article-img")[0].src;
+        console.log("Subcategory ID:", subcategory_id); // 確認 subcategory_id 的值
+
+        // 設置標題與文章ID
+        title.value = $(button)
+            .parents()
+            .parents()
+            .find("#article_id_title")
+            .text()
+            .trim();
+        article_id.value = id;
+
+        // 設置類別
+        var subcategory_id = $(button)
+            .parents()
+            .eq(2)
+            .find("#article_category")
+            .text();
+        console.log("Subcategory ID:", subcategory_id); // 確認 subcategory_id 的值
+
+        // 將選擇的類別直接設置為 subcategory_id 的值
+        selectTreat.value = subcategory_id; // 直接根據 value 設置選擇項目
+
+        // 確認選擇的類別是否正確
+        console.log("Selected category value:", selectTreat.value);
+
+        // 設置話題欄位，移除空值與多餘的標點
+        var hashtagsText = $(button)
+            .parents()
+            .eq(2)
+            .find("#hashtags")
+            .text()
+            .trim();
+        hashtags.value =
+            hashtagsText === "null" || hashtagsText === ""
+                ? ""
+                : hashtagsText.replace(/,\s*$/, "").replace(/\s+/g, " ");
+
+        // 使用 Quill 編輯器插入 HTML 內容
+        patch_quill.clipboard.dangerouslyPasteHTML(
+            $(button).parents().eq(1).find("#html").text().trim()
+        );
     } else {
         // 發佈時使用 Quill 編輯器插入 HTML
         quill.clipboard.dangerouslyPasteHTML(
@@ -1139,7 +1143,7 @@ function postdata(obj, type) {
         formdata.append("hashtag", Hashtags);
     }
     if (articleImageFile) {
-        formdata.append("index_image", articleImageFile);
+        formdata.append("index_image", articleImageFile, "image.png");
     } else if (content.ops[0]["insert"]["image"]) {
         var contentType = content.ops[0]["insert"]["image"]
             .split(",")[0]
@@ -1338,7 +1342,7 @@ function official_postdata(obj, type) {
         formdata.append("hashtag", Hashtags);
     }
     if (articleImageFile) {
-        formdata.append("index_image", articleImageFile);
+        formdata.append("index_image", articleImageFile, "image.png");
     } else if (content.ops[0]["insert"]["image"]) {
         var contentType = content.ops[0]["insert"]["image"]
             .split(",")[0]
@@ -1540,7 +1544,7 @@ function patchData() {
         formdata.append("hashtag", Hashtags);
     }
     if (articleImageFile) {
-        formdata.append("index_image", articleImageFile);
+        formdata.append("index_image", articleImageFile, "image.png");
     } else if (content.ops[0]["insert"]["image"]) {
         var contentType = content.ops[0]["insert"]["image"]
             .split(",")[0]
@@ -1548,8 +1552,18 @@ function patchData() {
             .split(";")[0];
         var b64Data = content.ops[0]["insert"]["image"].split(",")[1];
         var articleImageFile = b64toBlob(b64Data, contentType);
-
         formdata.append("index_image", articleImageFile, "image.png");
+    } else {
+        fetch("/get-image/img_" + randomInteger + ".png")
+            .then((response) => {
+                if (response.ok) {
+                    return response.blob();
+                }
+                throw new Error("Network response was not ok.");
+            })
+            .then((blob) => {
+                formdata.append("index_image", blob, "image.png");
+            });
     }
 
     // console.log(article_id);
@@ -1628,7 +1642,7 @@ function official_patchData() {
         formdata.append("hashtag", Hashtags);
     }
     if (articleImageFile) {
-        formdata.append("index_image", articleImageFile);
+        formdata.append("index_image", articleImageFile, "image.png");
     } else if (content.ops[0]["insert"]["image"]) {
         var contentType = content.ops[0]["insert"]["image"]
             .split(",")[0]
@@ -1636,8 +1650,18 @@ function official_patchData() {
             .split(";")[0];
         var b64Data = content.ops[0]["insert"]["image"].split(",")[1];
         var articleImageFile = b64toBlob(b64Data, contentType);
-
         formdata.append("index_image", articleImageFile, "image.png");
+    } else {
+        fetch("/get-image/img_" + randomInteger + ".png")
+            .then((response) => {
+                if (response.ok) {
+                    return response.blob();
+                }
+                throw new Error("Network response was not ok.");
+            })
+            .then((blob) => {
+                formdata.append("index_image", blob, "image.png");
+            });
     }
 
     // console.log(article_id);
@@ -1715,7 +1739,7 @@ function temporaryData(obj, type) {
         formdata.append("hashtag", Hashtags);
     }
     if (articleImageFile) {
-        formdata.append("index_image", articleImageFile);
+        formdata.append("index_image", articleImageFile, "image.png");
     } else if (content.ops[0]["insert"]["image"]) {
         var contentType = content.ops[0]["insert"]["image"]
             .split(",")[0]
@@ -1859,7 +1883,7 @@ function official_temporaryData(obj, type) {
         formdata.append("hashtag", Hashtags);
     }
     if (articleImageFile) {
-        formdata.append("index_image", articleImageFile);
+        formdata.append("index_image", articleImageFile, "image.png");
     } else if (content.ops[0]["insert"]["image"]) {
         var contentType = content.ops[0]["insert"]["image"]
             .split(",")[0]

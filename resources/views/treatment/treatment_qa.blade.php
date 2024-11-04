@@ -125,7 +125,7 @@
                                                         class="fas fa-heart {{ $article['like']['in_user'][0] == 1 ? 'ct-txt-2' : 'ct-sub-1' }} me-1"></i>
                                                     <span class="me-2 like_count"
                                                         id='like_count'>{{ $article['like']['count'] }}</span>
-                                                    <i class="fas fa-comment me-1"></i>
+                                                    <i class="fas fa-comment ct-sub-1 me-1"></i>
                                                     <span class="me-2"
                                                         id='comment_count'>{{ $article['comment_count'] }}</span>
                                                     <i
