@@ -414,30 +414,33 @@ class UserInfoController extends Controller
 
     public function articleTopicSavedView()
     {
-        //
         $token = Session::get('jwt_token', '');
         if ($token != '') {
             $response = ApiHelper::getAuthenticatedRequest($token, env('API_IP') . 'api/userprofile/subscribeHashtag/')->json();
-            // dd($response);
+           
             $articles = ApiHelper::getAuthenticatedRequest($token, env('API_IP') . 'api/content/textEditorPost/')->json();
             $articles_official = ApiHelper::getAuthenticatedRequest($token, env('API_IP') . 'api/content/PostGetOfficial/')->json();
-            $articles = array_merge($articles, $articles_official);
-            // dd($articles);
-            $response['article_num'] = [];
-            foreach ($response['subHashtag'] as $sub) {
-                $response['article_num'][$sub] = 0;
-                $is_click = 0;
-                foreach ($articles as $article) {
-                    $article['hashtag'] = array_filter(explode(',', $article['hashtag']), 'strlen');
-                    if (in_array($sub, $article['hashtag'])) {
-                        $response['article_num'][$sub] += 1;
-                        if ($article['click']['in_user'][0] == true) {
-                            $is_click += 1;
+            $articles = array_merge($articles, $articles_official); // 合併文章
+    
+                $response['article_num'] = []; 
+                
+                foreach ($response['subHashtag'] as $sub) {
+                    $response['article_num'][$sub] = 0;
+                
+                    foreach ($articles as $article) {
+                        $article['hashtag'] = array_filter(explode(',', $article['hashtag'] ?? ''), 'strlen');
+                        if (in_array($sub, $article['hashtag'])) {
+                            $response['article_num'][$sub] += 1;
+                        }
+                    }
+                
+                    foreach ($articles_official as $article) {
+                        $article['hashtag'] = array_filter(explode(',', $article['hashtag'] ?? ''), 'strlen');
+                        if (in_array($sub, $article['hashtag'])) {
+                            $response['article_num'][$sub] += 1;
                         }
                     }
                 }
-                $response['article_num'][$sub . '_new_article'] = $response['article_num'][$sub] - $is_click;
-            }
 
             $response = array_merge($response, [
                 'sidebar' => 'user',
@@ -447,13 +450,15 @@ class UserInfoController extends Controller
                 'web_name' => 'topic_saved',
                 'jwt_token' => $token,
             ]);
-            // dd($response);
+            
+            // dd($response); 
+            
             return view('user/topic_saved', $response);
         } else {
             return redirect()->route('user_login');
         }
     }
-
+    
     public function postStoragedArticleList($name = null)
     {
         //
