@@ -44,7 +44,7 @@
                                 <a class="nav-link rounded-pill {{ $subcategory == '小產調理知識' ? 'active' : '' }}"
                                     href="{{ route('knowledge_library', ['category' => '小產調理', 'subcategory' => '小產調理知識']) }}
                                     "><i
-                                        class="fas fa-tag me-1"></i>小產調理知識</a>
+                                        class="fas fa-tag me-1"></i>小產調理知識</a>           
                             @elseif ($subcategory == '婦科保健知識' || $subcategory == '婦科保健調理知識')
                                 <a class="nav-link rounded-pill {{ $subcategory == '婦科保健知識' ? 'active' : '' }}"
                                     aria-current="page"
