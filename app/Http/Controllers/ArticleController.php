@@ -82,9 +82,6 @@ class ArticleController extends Controller
                 ];
                 $postStoraged['latest_article_image'] = $defaultImages[array_rand($defaultImages)];
 
-                // 獲取該分類夾下的文章
-                $articles = ApiHelper::getAuthenticatedRequest($token, env('API_IP') . 'api/content/getArticlesByStorage/' . $postStoraged['id'] . '/?ordering=-created_at')->json();
-
                 if (!empty($articles) && is_array($articles)) {
                     // 嘗試找到第一個包含自定義圖片的文章
                     foreach ($articles as $article) {
