@@ -18,7 +18,7 @@ usersocket.onmessage = function (e) {
         if (data["notifications"].length > 0) {
             var reddot = document.getElementById("reddot");
             if (!reddot) {
-                document.querySelectorAll(".notify_bell").forEach((x) => {
+                document.querySelectorAll(".notify_bell i").forEach((container) => {
                     var reddot = document.createElement("span");
                     reddot.id = "reddot";
                     reddot.className =

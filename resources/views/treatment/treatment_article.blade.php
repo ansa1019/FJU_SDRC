@@ -57,7 +57,7 @@
             <div class="col-md col-lg-9 px-1 ps-md-0 pe-md-4">
                 <div class="row d-flex justify-content-between align-items-center">
                     <div class="col-12 mt-2 d-flex align-items-center">
-                        <span class="ct-sub-1 mx-2">{{ date('Y-m-d', strtotime($date)) }}</span>
+                        <span class="ct-sub-1 mr-2">{{ date('Y-m-d', strtotime($date)) }}</span>
 
                         <a href="{{ route('author_article_list', $identity) }}" class="ct-title-1 text-decoration-none mx-2"
                             id="article_author">{{ $identity }}</a>
@@ -161,7 +161,7 @@
                                 </button>
                                 <span class="me-2 like_count" id='like_count'>{{ $like['count'] }}</span>
                             </div>
-                            <div class="me-3"><i class="fas fa-comment me-1"></i><span
+                            <div class="me-3"><i class="fas fa-comment ct-sub-1 me-1"></i><span
                                     class="me-2 comment_count">{{ $comment_count }}</span>
                             </div>
                             <div class="me-3">

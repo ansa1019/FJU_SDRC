@@ -57,7 +57,7 @@
                     <br />
                     <div class="col-12 mt-2 d-flex align-items-center">
                         <!-- 顯示文章日期 -->
-                        <span class="ct-sub-1 mx-2">{{ date('Y-m-d', strtotime($date)) }}</span>
+                        <span class="ct-sub-1 mr-2">{{ date('Y-m-d', strtotime($date)) }}</span>
                         <!-- 顯示小編名稱/作者 *帶個人頁面超連結?-->
                         <a href="{{ route('author_article_list', $identity) }}" class="ct-title-1 text-decoration-none mx-2"
                             id="article_author">{{ $identity }}</a>
@@ -162,7 +162,7 @@
                                 </button>
                                 <span class="me-2 like_count" id='like_count'>{{ $like['count'] }}</span>
                             </div>
-                            <div class="me-3"><i class="fas fa-comment me-1"></i><span
+                            <div class="me-3"><i class="fas fa-comment ct-sub-1 me-1"></i><span
                                     class="me-2 comment_count">{{ $comment_count }}</span>
                             </div>
                             <div class="me-3">
