@@ -660,12 +660,20 @@ ul {
     background: none;
 }
 
-.ql-snow .ql-tooltip[data-mode=link]::before {
+.ql-tooltip {
+    display: flex;
+    font-size: 16px;
+}
+.ql-snow .ql-tooltip::before,
+.ql-snow .ql-tooltip[data-mode="link"]::before {
     content: "輸入超連結:";
 }
-.ql-tooltip.ql-editing {
-    font-size: 20px;
-}
 .ql-snow .ql-tooltip.ql-editing a.ql-action::after {
-    content: '保存';
+    content: "保存";
+}
+.ql-snow .ql-tooltip a.ql-action::after {
+    content: "編輯";
+}
+.ql-snow .ql-tooltip a.ql-remove::before {
+    content: "移除";
 }
