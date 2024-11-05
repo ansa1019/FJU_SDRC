@@ -1500,7 +1500,7 @@ function patchData() {
         .match(/#[\u4e00-\u9fa5\w]+/g);
     var category = document.getElementById("patch_post_class").value;
     var id_type = document.getElementById("patch_id_type").value;
-
+    const randomInteger = Math.floor(Math.random() * 4) + 1;
     var myHeaders = new Headers();
     myHeaders.append("Authorization", "Bearer " + token);
 
