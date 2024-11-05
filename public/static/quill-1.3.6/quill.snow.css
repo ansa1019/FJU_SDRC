@@ -883,7 +883,7 @@
   white-space: nowrap;
 }
 .ql-snow .ql-tooltip::before {
-  content: "Visit URL:";
+  content: "請輸入超連結：";
   line-height: 26px;
   margin-right: 8px;
 }
@@ -905,13 +905,15 @@
 }
 .ql-snow .ql-tooltip a.ql-action::after {
   border-right: 1px solid #ccc;
-  content: 'Edit';
+  content: '編輯';
   margin-left: 16px;
   padding-right: 8px;
+  color :#444;
 }
 .ql-snow .ql-tooltip a.ql-remove::before {
-  content: 'Remove';
+  content: '移除超連結';
   margin-left: 8px;
+  color :#444;
 }
 .ql-snow .ql-tooltip a {
   line-height: 26px;
