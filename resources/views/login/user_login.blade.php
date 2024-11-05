@@ -174,7 +174,7 @@
                                     <label for="check_password" class="col-form-label">確認新密碼</label>
                                 </div>
                                 <div class="col">
-                                    <input type="password" id="check_password" placeholder="＊需與新密碼相同"
+                                    <input type="password" id="check_password" placeholder="需與新密碼相同"
                                         class="form-control" />
                                     <span class="ct-txt-2 d-none" id="check_pwd_alert"
                                         style="font-size: var(--fs-16)">＊需與新密碼相同</span>
