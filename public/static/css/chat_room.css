@@ -352,7 +352,10 @@ textarea {
 }
 
 .alert {
-    font-size: var(--fs-18);
+    position: sticky;
+    top: 0.5rem;
+    font-size: var(--fs-16);
+    z-index: 1;
 }
 
 /* tab標籤 聊天室分類切換 */
@@ -495,9 +498,11 @@ textarea {
     padding: 10px 20px;
 }
 
-#denounce button{font-size: var(--fs-18);}
+#denounce button {
+    font-size: var(--fs-18);
+}
 
-.media-body .row > *{
+.media-body .row > * {
     width: auto;
     align-self: center;
 }

@@ -296,6 +296,7 @@ $(document).ready(function () {
     $(".publisher-input").keydown(function (e) {
         // 如果按下的是 Enter 鍵 (key code 13)
         if (e.keyCode == 13) {
+            e.preventDefault();
             let chat_room = "";
             // 判斷當前的聊天室分類
             if (current_chat_tab != "") {
@@ -508,13 +509,15 @@ function user_send_msg(chat_room) {
             html:
                 "因您於短時間內收到多次檢舉，故系統於 " +
                 dayjs(banlist["chat"][1]).format("YYYY-MM-DD HH:mm:ss") +
-                " 起自動禁言24小時<br>我們將同步進行人工審核，若造成不便請見諒，謝謝",
+                " 起自動禁言24小時。我們將同步進行人工審核，若造成不便請見諒，謝謝",
             icon: "error",
-            showConfirmButton: true, // 顯示確認按鈕
             allowOutsideClick: false, // 禁止點擊外部關閉
             allowEscapeKey: false, // 禁止按 ESC 鍵關閉
             confirmButtonText: "確定", // 確認按鈕文字
             confirmButtonColor: "#d33",
+            didOpen: function () {
+                Swal.getConfirmButton().blur();
+            },
         });
     } else {
         banerror(banlist["chat"]);

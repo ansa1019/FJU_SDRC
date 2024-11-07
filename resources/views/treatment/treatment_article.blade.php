@@ -351,7 +351,7 @@
                             </div>
                         </div>
                         <div id="image_preview" class="col-auto d-flex flex-column align-items-start">
-                            <img id="update_image_preview" src="{{ asset('static/img/image.svg') }}" alt="封面"
+                            <img id="update_image_preview" src="{{ $index_image }}" alt="封面"
                                 style="width: 110px;height: 90px;">
                         </div>
                         <div class="row my-1 g-2 justify-content-center">
