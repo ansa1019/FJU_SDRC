@@ -56,6 +56,12 @@
                                 下次生理期預計：{{ \Carbon\Carbon::parse(session('next_menstrual_date'))->format('n月j日') }}
                             </div>
                         @endif
+                        <!-- 倒數懷孕 -->
+                        @if (session('health_type') == 'pregnancy' && session('due_date') !== null)
+                                <div id="pregnancy-countdown" class="mt-2 align-self-start" style="font-size: var(--fs-16);">
+                                    懷孕期：倒數 {{ session('remaining_weeks') }} 週 {{ session('remaining_days') }} 天
+                                </div>
+                        @endif
                     </div>
                     <div class="col-md-12 col-lg p-4">
                         <h4 class="fw-bold" id="event-title" style="font-size: var(--fs-24)"></h4>
@@ -149,11 +155,7 @@
                             style="font-size: var(--fs-16); line-height: var(--fs-28); text-align: justify">
                             <p class="ct-sub-1" style="line-height: 1.75rem; letter-spacing: 1px">{{ $rdmcalmsg }}
                             </p>
-                            @if (session('health_type') == 'pregnancy' && session('due_date') !== null)
-                                <div id="pregnancy-countdown" class="mt-2" style="font-size: var(--fs-16);">
-                                    懷孕期：倒數 {{ session('remaining_weeks') }} 週 {{ session('remaining_days') }} 天
-                                </div>
-                            @endif
+
 
                             <div class="h5 my-3 list px-1" id="event-reminder" style="display: none"></div>
                             <div class="my-3 list px-1" id="event-content">
