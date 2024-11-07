@@ -10,8 +10,8 @@
         };
         var banlist = @json(session('banlist'));
 
-        console.log(banlist);
-        console.log(blacklist);
+        // console.log(banlist);
+        // console.log(blacklist);
     </script>
 @endisset
 

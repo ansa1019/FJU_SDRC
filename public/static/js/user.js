@@ -72,7 +72,7 @@ usersocket.onmessage = function (e) {
         }
     } else if (data["blacklist"]) {
         blacklist = data["blacklist"];
-        console.log(blacklist);
+        // console.log(blacklist);
         $.ajax({
             type: "POST",
             url: "/setBlacklist",
@@ -83,7 +83,7 @@ usersocket.onmessage = function (e) {
         });
     } else if (data["banlist"]) {
         banlist = data["banlist"];
-        console.log(banlist);
+        // console.log(banlist);
         $.ajax({
             type: "POST",
             url: "/setBanlist",
@@ -512,7 +512,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 requestOptions
             )
                 .then((response) => {
-                    console.log(response);
+                    // console.log(response);
                     if (!response.ok) {
                         throw new Error("Network response was not ok");
                     }
