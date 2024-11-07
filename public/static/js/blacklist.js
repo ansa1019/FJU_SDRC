@@ -138,11 +138,14 @@ function banerror(ban) {
             dayjs(ban[1]).format("YYYY-MM-DD HH:mm:ss") +
             " 起 " +
             ban[0] +
-            "<br>若有任何問題，請來信客服信箱，謝謝。",
+            "。若有任何問題，請來信客服信箱，謝謝。",
         icon: "error",
         allowOutsideClick: false, // 禁止點擊外部關閉
         allowEscapeKey: false, // 禁止按 ESC 鍵關閉
         confirmButtonText: "確定", // 確認按鈕文字
         confirmButtonColor: "#d33",
+        didOpen: function () {
+            Swal.getConfirmButton().blur();
+        },
     });
 }
