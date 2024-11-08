@@ -823,15 +823,17 @@
                                     ，不知道未來看到信的你是否還是這樣呢？
                                     <span class="onyly-show-famele">還是你已經邁入人生下一段旅程了呢？</span>
                                 </p>
-                                <p>
+                                <p id="current_status">
                                     現在的我
-                                    <span class="step-tabs" onclick="register_step(this,11)"
-                                        id="disease"></span>
-                                    <span class="step-tabs" onclick="register_step(this,11)"id="other_disease"></span>
+                                    <span class="step-tabs" onclick="register_step(this,11)" id="disease"></span>
+                                    <span class="step-tabs" onclick="register_step(this,11)" id="other_disease"></span>
                                     <span class="step-tabs" onclick="register_step(this,10)" id="allergy_state"></span>
                                     <span class="step-tabs" onclick="register_step(this,12)" id="order"></span>
                                     <span class="step-tabs" onclick="register_step(this,9)" id="drug"></span>
                                     ，不過整體都還可以，希望你也一切都好～
+                                </p>
+                                <p id="fallback_status" style="display:none;">
+                                    現在的我整體都還可以，希望你也一切都好～
                                 </p>
                                 <p>
                                     最後，不要忘記那個充滿熱情和夢想的自己，或許時間會帶來許多變化，但是我希望你能一直保持那份初心和熱情，同時，我相信你現在也一定成為一個更好的人，希望未來的日子裡，你能找到屬於自己的步調，繼續成為一個更好的自己。

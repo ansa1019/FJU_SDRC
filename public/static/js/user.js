@@ -130,6 +130,24 @@ $(document).ready(function () {
         autoclose: true,
         language: "zh-TW",
     });
+    $("input[name='user_drug_state'], input[name='user_allergy_state'], input[name='user_disease_state'], input[name='user_order_state']").on('change', function () {
+        // 檢查選中的值
+        const drugState = $("input[name='user_drug_state']:checked").val();
+        const allergyState = $("input[name='user_allergy_state']:checked").val();
+        const diseaseState = $("input[name='user_disease_state']:checked").val();
+        const orderState = $("input[name='user_order_state']:checked").val();
+
+        // 判斷是否都為 0
+        if (drugState === "0" && allergyState === "0" && diseaseState === "0" && orderState === "0") {
+            // 如果都為0 隱藏 current_status 並顯示 fallback_status
+            $("#current_status").hide();
+            $("#fallback_status").show();
+        } else {
+            // 否則顯示 current_status 並隱藏 fallback_status
+            $("#current_status").show();
+            $("#fallback_status").hide();
+        }
+    });
 });
 /* 會員資料 上傳圖片 */
 if ($("#user_image")) {

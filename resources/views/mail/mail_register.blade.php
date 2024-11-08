@@ -13,8 +13,11 @@
         不知道未來看到信的你是否還是這樣呢？
     </p>
     <p>
-        現在的我 {{ $disease }} {{ $allergy_state }} {{ $order }} {{ $drug }}，
-        不過整體都還可以，希望你也一切都好～
+        @if($disease == 0 && $allergy_state == 0 && $order == 0 && $drug == 0)
+            現在的我整體都還可以，希望你也一切都好～
+        @else
+            現在的我 {{ $disease }} {{ $allergy_state }} {{ $order }} {{ $drug }}，不過整體都還可以，希望你也一切都好～
+        @endif
     </p>
     <p>
         最後，不要忘記那個充滿熱情和夢想的自己……
