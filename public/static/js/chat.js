@@ -433,7 +433,7 @@ function show_msg(
         // 目前預設為營養師諮詢(chat-room1)，如果是其他聊天室 將chat-room1 改成 2 or 3
         var container = $(`#${chat_room} .ps-container`).eq(0);
         container.append(chatMedia);
-        container.scrollTop($("#chat_" + id).position().top);
+        container.scrollTop($(`#${chat_room} .ps-container .media-chat`).eq(-1).position().top);
     }
 }
 
