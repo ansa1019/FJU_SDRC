@@ -14,7 +14,8 @@ class CalendarController extends Controller
     {
         // 檢查是否有 JWT token
         $token = Session::get('jwt_token', '');
-        
+        // session()->forget   (keys: 'next_menstrual_date');
+        // dd(session('next_menstrual_date'));
         if ($token != '') {
             // 嘗試從 API 抓取個人日曆和子日曆資料
             $personalCalendar = ApiHelper::getAuthenticatedRequest($token, env('API_IP') . 'api/userprofile/personalCalendar/')->json();
@@ -81,9 +82,6 @@ class CalendarController extends Controller
         // dd($request->all());
         $token = Session::get('jwt_token', '');
         $error = "";
-        
-        // session()->forget('next_menstrual_date');
-        // dd(session('next_menstrual_date'));
         // session()->forget(['next_menstrual_date', 'remaining_weeks', 'remaining_days', 'due_date', 'health_type', 'pregnancy_data']);
         
         if ($request['health_type'] == 'menstruation') {
@@ -100,30 +98,41 @@ class CalendarController extends Controller
             $sessionMenstrualEndDate = session('menstrual_end_date');
 
             $isFirstRecord = empty($sessionNextMenstrualDate) || empty($sessionMenstrualEndDate);
-
-            // 檢查「有月經」或「無月經」
             if ($request['no_mc'] == '沒有') {
-                // 如果選擇「無月經」，檢查是否在經期內
-                if (!$isFirstRecord && $recordDate->lte($sessionMenstrualEndDate)) {
+                if ($isFirstRecord) {
+                    // 初次紀錄為無月經
+                    $nextMenstrualDate = $lastMenstrual->copy()->addDays($cycle)->toDateString();
+                    $menstrualEndDate = $lastMenstrual->copy()->addDays(10)->toDateString();
+            
+                    session([
+                        'next_menstrual_date' => $nextMenstrualDate,
+                        'menstrual_end_date' => $menstrualEndDate,
+                        'last_menstrual_prediction' => $nextMenstrualDate  
+                    ]);
                 } else {
-                    session()->forget(['next_menstrual_date', 'menstrual_end_date', 'health_type']);
+                    // 非初次紀錄且選擇無月經
+                    if ($recordDate->gt($sessionMenstrualEndDate)) {
+                        $nextMenstrualDate = session('last_menstrual_prediction');
+                        $menstrualEndDate = session('last_valid_menstrual_date')->copy()->addDays(10)->toDateString();
+            
+                        session([
+                            'next_menstrual_date' => $nextMenstrualDate,
+                            'menstrual_end_date' => $menstrualEndDate
+                        ]);
+                    }
                 }
             } else {
                 session(['health_type' => 'menstruation']);
-                
-                $nextMenstrualDate = $isFirstRecord 
-                    ? $recordDate->copy()->addDays($cycle)->toDateString() 
-                    : ($recordDate->gt($sessionMenstrualEndDate) ? $recordDate->copy()->addDays($cycle)->toDateString() : $sessionNextMenstrualDate);
-
+                $nextMenstrualDate = $recordDate->copy()->addDays($cycle)->toDateString();
                 $menstrualEndDate = $recordDate->copy()->addDays(10)->toDateString();
-
-                if ($isFirstRecord || $recordDate->gt($sessionMenstrualEndDate)) {
-                    session([
-                        'next_menstrual_date' => $nextMenstrualDate,
-                        'menstrual_end_date' => $menstrualEndDate
-                    ]);
-                }
-            }
+            
+                session([
+                    'next_menstrual_date' => $nextMenstrualDate,
+                    'menstrual_end_date' => $menstrualEndDate,
+                    'last_valid_menstrual_date' => $recordDate,
+                    'last_menstrual_prediction' => $nextMenstrualDate 
+                ]);
+            }            
 
             // 儲存 personalCalendar 資料到資料庫
             $personalCalendarDataForm = [
