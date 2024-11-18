@@ -297,6 +297,13 @@ $(document).ready(function () {
         // 如果按下的是 Enter 鍵 (key code 13)
         if (e.keyCode == 13) {
             e.preventDefault();
+
+            // 檢查輸入框是否為空
+            let input_value = $(this).val().trim();
+            if (input_value === "") {
+                return; // 如果輸入為空，不發送訊息
+            }
+
             let chat_room = "";
             // 判斷當前的聊天室分類
             if (current_chat_tab != "") {
@@ -433,10 +440,19 @@ function show_msg(
         // 目前預設為營養師諮詢(chat-room1)，如果是其他聊天室 將chat-room1 改成 2 or 3
         var container = $(`#${chat_room} .ps-container`).eq(0);
         container.append(chatMedia);
-        container.scrollTop($(`#${chat_room} .ps-container .media-chat`).eq(-1).position().top);
+        container.scrollTop(container[0].scrollHeight);
+        // container.scrollTop(
+        //     $(`#${chat_room} .ps-container .media-chat`).eq(-1).position().top
+        // );
     }
 }
 
+function scrollToBottom(chat_room) {
+    let chatContent = $("#" + chat_room + " .chat-content");
+    if (chatContent.length > 0) {
+        chatContent.scrollTop(chatContent[0].scrollHeight);
+    }
+}
 // 用戶方(media-chat-reverse) 顯示發送訊息文字
 function user_send_msg(chat_room) {
     if (banlist["chat"] == true) {
@@ -500,7 +516,7 @@ function user_send_msg(chat_room) {
                 })
             );
         }
-
+        scrollToBottom(chat_room);
         //輸入框文字清空
         $(`#${chat_room} .publisher-input`).val("");
     } else if (banlist["chat"][0] == "禁言24小時") {
