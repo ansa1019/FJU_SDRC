@@ -42,11 +42,19 @@ $(document).ready(function () {
 
         previous_chat2 = [getPreviousChat("chat-room2")];
         Promise.all(previous_chat2).then((data) => {
-            data[0].forEach((chat) => {
+            let chatData = data[0];
+            let chat_room = "chat-room2";
+            let chatContainer = $(`#${chat_room} .chat-content`);
+
+            // 清空之前的聊天內容，然後再加載
+            chatContainer.html("");
+
+            // 逐條添加歷史訊息
+            chatData.forEach((chat, index) => {
                 if (chat["is_user"]) {
                     show_msg(
                         "user",
-                        "chat-room2",
+                        chat_room,
                         chat["id"],
                         chat["identity"],
                         chat["message"],
@@ -56,7 +64,7 @@ $(document).ready(function () {
                 } else {
                     show_msg(
                         "other",
-                        "chat-room2",
+                        chat_room,
                         chat["id"],
                         chat["identity"],
                         chat["message"],
@@ -228,12 +236,24 @@ $(document).ready(function () {
             });
         });
     }
-
-    // 取得使用者目前點選的聊天室分類
     $(".chats-nav-tab a").on("shown.bs.tab", function (e) {
         current_chat_tab = e.target;
         previous_chat_tab = e.relatedTarget;
+        let chat_room = $(current_chat_tab).attr("href").replace("#", "");
+        var container = $(`#${chat_room} .ps-container`).eq(0);
+        container.scrollTop(container[0].scrollHeight);
     });
+    // 取得使用者目前點選的聊天室分類
+    // $(".chats-nav-tab a").on("shown.bs.tab", function (e) {
+    //     current_chat_tab = e.target;
+    //     previous_chat_tab = e.relatedTarget;
+    //     let chat_room = $(current_chat_tab).attr("href").replace("#", "");
+
+    //     // 等待一段小時間再滾動，確保訊息加載完成
+    //     setTimeout(function () {
+    //         scrollToBottom(chat_room);
+    //     }, 100); // 100ms 的延遲可以根據實際情況調整
+    // });
 
     $(".chat_name").on("change", function () {
         var name = $(this).val();
@@ -248,7 +268,7 @@ $(document).ready(function () {
         var msg = data["message"];
         var user_image = data["user_image"];
         if (user != data["user"] && !blacklist["chat"].includes(data["user"])) {
-            show_msg("other", "chat-room2", id, identity, msg, user_image); //接收訊息
+            show_msg("other", "chat-room2", id, identity, msg, user_image);
         }
     };
     socket3.onmessage = function (e) {
@@ -447,12 +467,6 @@ function show_msg(
     }
 }
 
-function scrollToBottom(chat_room) {
-    let chatContent = $("#" + chat_room + " .chat-content");
-    if (chatContent.length > 0) {
-        chatContent.scrollTop(chatContent[0].scrollHeight);
-    }
-}
 // 用戶方(media-chat-reverse) 顯示發送訊息文字
 function user_send_msg(chat_room) {
     if (banlist["chat"] == true) {
@@ -516,7 +530,6 @@ function user_send_msg(chat_room) {
                 })
             );
         }
-        scrollToBottom(chat_room);
         //輸入框文字清空
         $(`#${chat_room} .publisher-input`).val("");
     } else if (banlist["chat"][0] == "禁言24小時") {
