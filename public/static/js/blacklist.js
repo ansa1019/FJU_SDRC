@@ -130,11 +130,11 @@ function denounce() {
     }
 }
 
-function banerror(ban) {
+function banerror(cate,ban) {
     Swal.fire({
         title: "你已被禁言！",
         html:
-            "經人工審核，因您之前的檢舉違反社群規範，故系統於 " +
+            "經人工審核，因您之前"+cate+"違反社群規範，故系統於 " +
             dayjs(ban[1]).format("YYYY-MM-DD HH:mm:ss") +
             " 起 " +
             ban[0] +
