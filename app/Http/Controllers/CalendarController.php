@@ -14,7 +14,7 @@ class CalendarController extends Controller
     {
         // 檢查是否有 JWT token
         $token = Session::get('jwt_token', '');
-        session()->forget   (keys: 'next_menstrual_date');
+        // session()->forget   (keys: 'next_menstrual_date');
         // dd(session('next_menstrual_date'));
         if ($token != '') {
             // 嘗試從 API 抓取個人日曆和子日曆資料
