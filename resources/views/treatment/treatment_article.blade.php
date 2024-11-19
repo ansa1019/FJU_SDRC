@@ -261,8 +261,8 @@
                                                     </button>
                                                     <!--當使用者正在編輯留言時 顯示提交按鈕-->
                                                     <!-- <button class="btn btn-sm p-0 edit_check_btn" data-bs-toggle="tooltip" data-bs-title="提交">
-                                                                                                                                                            <i class="fas fa-check ct-sub-1 me-1"></i>
-                                                                                                                                                        </button> -->
+                                                                                                                                                                <i class="fas fa-check ct-sub-1 me-1"></i>
+                                                                                                                                                            </button> -->
                                                     <button class="btn btn-primary btn-sm edit_check_btn mx-1">提交</button>
                                                 @endif
                                                 <div class="dropdown d-inline" data-bs-toggle="tooltip"
@@ -372,31 +372,31 @@
                 </div>
             </div>
         </div>
+    </div>
 
-        <!--分享貼文 modal-->
-        <div class="popup modal fade" id="shareModal" tabindex="-1">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5">分享文章</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body" style="font-size: var(--fs-18)">
-                        <div class="row d-flex justify-content-center py-3 ">
-                            <p>分享至社群平台</p>
-                            <ul class="icons">
-                                <a target="_blank" href="#" class="fb_share"><i class="fab fa-facebook-f"></i></a>
-                                <a target="_blank" href="#" class="line_share"><i class="bi bi-line"></i></a>
-                            </ul>
-                            <p>或 複製連結</p>
-                            <div class="field">
-                                <div class="input-group flex-nowrap mb-3">
-                                    <span class="input-group-text"><i class="bi bi-link-45deg"></i></span>
-                                    <input type="text" class="form-control" id="input_link" readonly
-                                        value="https://codepen.io/" />
-                                    <button class="btn btn-outline-c3" type="button" id="copylink_btn"
-                                        onclick="copy_sharelink()">複製連結</button>
-                                </div>
+    <!--分享貼文 modal-->
+    <div class="popup modal fade" id="shareModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5">分享文章</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="font-size: var(--fs-18)">
+                    <div class="row d-flex justify-content-center py-3 ">
+                        <p>分享至社群平台</p>
+                        <ul class="icons">
+                            <a target="_blank" href="#" class="fb_share"><i class="fab fa-facebook-f"></i></a>
+                            <a target="_blank" href="#" class="line_share"><i class="bi bi-line"></i></a>
+                        </ul>
+                        <p>或 複製連結</p>
+                        <div class="field">
+                            <div class="input-group flex-nowrap mb-3">
+                                <span class="input-group-text"><i class="bi bi-link-45deg"></i></span>
+                                <input type="text" class="form-control" id="input_link" readonly
+                                    value="https://codepen.io/" />
+                                <button class="btn btn-outline-c3" type="button" id="copylink_btn"
+                                    onclick="copy_sharelink()">複製連結</button>
                             </div>
                         </div>
                     </div>
@@ -406,7 +406,6 @@
     </div>
 
     @include('layouts.bookmark')
-
 
     <script>
         var token = $("#jwt_token").text();

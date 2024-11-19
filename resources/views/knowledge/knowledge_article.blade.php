@@ -265,8 +265,8 @@
                                                     </button>
                                                     <!--當使用者正在編輯留言時 顯示提交按鈕-->
                                                     <!-- <button class="btn btn-sm p-0 edit_check_btn" data-bs-toggle="tooltip" data-bs-title="提交">
-                                                                                                                                                                                                    <i class="fas fa-check ct-sub-1 me-1"></i>
-                                                                                                                                                                                                </button> -->
+                                                                                                                                                                                                        <i class="fas fa-check ct-sub-1 me-1"></i>
+                                                                                                                                                                                                    </button> -->
                                                     <button class="btn btn-primary btn-sm edit_check_btn mx-1">提交</button>
                                                 @endif
                                                 <div class="dropdown d-inline" data-bs-toggle="tooltip"
@@ -365,37 +365,37 @@
                                 <textarea class="form-control" rows="7" id="patch_editor" name="patch_editor"></textarea>
                             </div>
                             <!-- <div class="col-12 vote_div">
-                                                                        <div class="mb-2">
-                                                                            <input type="text" class="form-control" id="qa_title" placeholder="投票問題：描述發起投票的問題" />
-                                                                        </div>
-                                                                        <div class="mb-2" id="vote_item_list">
-                                                                            <input type="text" class="form-control my-1" id="vote_item1" placeholder="選項1" />
-                                                                            <input type="text" class="form-control my-1" id="vote_item2" placeholder="選項2" />
-                                                                        </div>
-                                                                        <div class="mb-2">
-                                                                            <button id="add_voteitem_btn" class="col-12 btn btn-secondary text-start"><i class="bi bi-plus-circle-fill me-2"></i>新增選項</button>
-                                                                        </div>
-                                                                        <div class="mb-2 align-items-center">
-                                                                            <div class="col-auto">
-                                                                                <label for="input_vote_type" class="col-form-label">投票方式</label>
+                                                                            <div class="mb-2">
+                                                                                <input type="text" class="form-control" id="qa_title" placeholder="投票問題：描述發起投票的問題" />
                                                                             </div>
-                                                                            <div class="col-auto">
-                                                                                <select class="form-select" id="input_vote_type">
-                                                                                    <option selected>選擇投票方式</option>
-                                                                                    <option value="radio">單選</option>
-                                                                                    <option value="check">複選</option>
-                                                                                </select>
+                                                                            <div class="mb-2" id="vote_item_list">
+                                                                                <input type="text" class="form-control my-1" id="vote_item1" placeholder="選項1" />
+                                                                                <input type="text" class="form-control my-1" id="vote_item2" placeholder="選項2" />
                                                                             </div>
-                                                                        </div>
-                                                                        <div class="mb-2 align-items-center">
-                                                                            <div class="col-auto">
-                                                                                <label for="input_vote_time" class="col-form-label">投票結束時間</label>
+                                                                            <div class="mb-2">
+                                                                                <button id="add_voteitem_btn" class="col-12 btn btn-secondary text-start"><i class="bi bi-plus-circle-fill me-2"></i>新增選項</button>
                                                                             </div>
-                                                                            <div class="col-auto">
-                                                                                <input type="datetime-local" class="form-control" id="input_vote_time" />
+                                                                            <div class="mb-2 align-items-center">
+                                                                                <div class="col-auto">
+                                                                                    <label for="input_vote_type" class="col-form-label">投票方式</label>
+                                                                                </div>
+                                                                                <div class="col-auto">
+                                                                                    <select class="form-select" id="input_vote_type">
+                                                                                        <option selected>選擇投票方式</option>
+                                                                                        <option value="radio">單選</option>
+                                                                                        <option value="check">複選</option>
+                                                                                    </select>
+                                                                                </div>
                                                                             </div>
-                                                                        </div>
-                                                                    </div> -->
+                                                                            <div class="mb-2 align-items-center">
+                                                                                <div class="col-auto">
+                                                                                    <label for="input_vote_time" class="col-form-label">投票結束時間</label>
+                                                                                </div>
+                                                                                <div class="col-auto">
+                                                                                    <input type="datetime-local" class="form-control" id="input_vote_time" />
+                                                                                </div>
+                                                                            </div>
+                                                                        </div> -->
                             <div class="col-12">
                                 <input class="form-control" type="text" id="patch_input_topic"
                                     placeholder="#話題：可以根據你的文章內容，輸入半形的#，可以新增多個話題喔！" />
@@ -412,31 +412,31 @@
                 </div>
             </div>
         </div>
+    </div>
 
-        <!--分享貼文 modal-->
-        <div class="popup modal fade" id="shareModal" tabindex="-1">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5">分享文章</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body" style="font-size: var(--fs-18)">
-                        <div class="row d-flex justify-content-center py-3 ">
-                            <p>分享至社群平台</p>
-                            <ul class="icons">
-                                <a target="_blank" href="#" class="fb_share"><i class="fab fa-facebook-f"></i></a>
-                                <a target="_blank" href="#" class="line_share"><i class="bi bi-line"></i></a>
-                            </ul>
-                            <p>或 複製連結</p>
-                            <div class="field">
-                                <div class="input-group flex-nowrap mb-3">
-                                    <span class="input-group-text"><i class="bi bi-link-45deg"></i></span>
-                                    <input type="text" class="form-control" id="input_link" readonly
-                                        value="https://codepen.io/" />
-                                    <button class="btn btn-outline-c3" type="button" id="copylink_btn"
-                                        onclick="copy_sharelink()">複製連結</button>
-                                </div>
+    <!--分享貼文 modal-->
+    <div class="popup modal fade" id="shareModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5">分享文章</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="font-size: var(--fs-18)">
+                    <div class="row d-flex justify-content-center py-3 ">
+                        <p>分享至社群平台</p>
+                        <ul class="icons">
+                            <a target="_blank" href="#" class="fb_share"><i class="fab fa-facebook-f"></i></a>
+                            <a target="_blank" href="#" class="line_share"><i class="bi bi-line"></i></a>
+                        </ul>
+                        <p>或 複製連結</p>
+                        <div class="field">
+                            <div class="input-group flex-nowrap mb-3">
+                                <span class="input-group-text"><i class="bi bi-link-45deg"></i></span>
+                                <input type="text" class="form-control" id="input_link" readonly
+                                    value="https://codepen.io/" />
+                                <button class="btn btn-outline-c3" type="button" id="copylink_btn"
+                                    onclick="copy_sharelink()">複製連結</button>
                             </div>
                         </div>
                     </div>
@@ -444,6 +444,7 @@
             </div>
         </div>
     </div>
+
     @include('layouts.bookmark')
 
     <script>
