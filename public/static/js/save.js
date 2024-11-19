@@ -113,7 +113,7 @@ $("#add_saved_btn").click(async function () {
 
                 var imgElement = document.createElement("img");
                 imgElement.src = "/get-image/img_" + randomInteger + ".png";
-                imgElement.class = "rounded mx-auto d-block";
+                imgElement.className = "rounded mx-auto d-block";
                 imgElement.alt = storage_name;
                 divElement.appendChild(imgElement);
 
