@@ -56,7 +56,7 @@
                                     </button>
                                 @else
                                     <button class="btn btn-c2 rounded-pill"
-                                        onclick="banerror('的文章',@json(session('banlist.article')))">
+                                        onclick='banerror(@json(session("banlist.article")))'>
                                         <i class="fas fa-pen me-1"></i>建立聊療</button>
                                 @endif
                             @endif

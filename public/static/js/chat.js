@@ -549,6 +549,6 @@ function user_send_msg(chat_room) {
             },
         });
     } else {
-        banerror("在聊天室的發言",banlist["chat"]);
+        banerror(banlist["chat"]);
     }
 }

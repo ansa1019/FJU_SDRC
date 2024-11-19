@@ -1091,7 +1091,7 @@ function postdata(obj, type) {
     var title = $("#input_new_title").val();
     var category = document.getElementById("post_class").value;
     var articleImageFile = document.getElementById("create_article_image")
-        .files[0]; // 獲取上傳的封面圖片
+        .files[0];
     const randomInteger = Math.floor(Math.random() * 4) + 1;
     const Hashtags = $("#create_input_topic")
         .val()
@@ -1117,14 +1117,24 @@ function postdata(obj, type) {
         formdata.append("hashtag", Hashtags);
     }
     if (articleImageFile) {
-        formdata.append("index_image", articleImageFile, "image.png");
+        var reader = new FileReader();
+        reader.onload = function () {
+            var contentType = reader.result
+                .split(",")[0]
+                .split(":")[1]
+                .split(";")[0];
+            var b64Data = reader.result.split(",")[1];
+            articleImageFile = b64toBlob(b64Data, contentType);
+            formdata.append("index_image", articleImageFile, "image.png");
+        };
+        reader.readAsDataURL(articleImageFile);
     } else if (content.ops[0]["insert"]["image"]) {
         var contentType = content.ops[0]["insert"]["image"]
             .split(",")[0]
             .split(":")[1]
             .split(";")[0];
         var b64Data = content.ops[0]["insert"]["image"].split(",")[1];
-        var articleImageFile = b64toBlob(b64Data, contentType);
+        articleImageFile = b64toBlob(b64Data, contentType);
         formdata.append("index_image", articleImageFile, "image.png");
     } else {
         fetch("/get-image/img_" + randomInteger + ".png")
@@ -1244,6 +1254,7 @@ function postdata(obj, type) {
                 });
             })
             .then((data) => {
+                console.log(data);
                 var formdata2 = new FormData();
                 formdata2.append("post", data["id"]);
                 if (id_type != "匿名") {
@@ -1294,7 +1305,7 @@ function official_postdata(obj, type) {
     var title = $("#input_new_title").val();
     var category = document.getElementById("post_class").value;
     var articleImageFile = document.getElementById("create_article_image")
-        .files[0]; // 獲取上傳的封面圖片
+        .files[0];
     const randomInteger = Math.floor(Math.random() * 4) + 1;
     const Hashtags = $("#create_input_topic")
         .val()
@@ -1320,14 +1331,24 @@ function official_postdata(obj, type) {
         formdata.append("hashtag", Hashtags);
     }
     if (articleImageFile) {
-        formdata.append("index_image", articleImageFile, "image.png");
+        var reader = new FileReader();
+        reader.onload = function () {
+            var contentType = reader.result
+                .split(",")[0]
+                .split(":")[1]
+                .split(";")[0];
+            var b64Data = reader.result.split(",")[1];
+            articleImageFile = b64toBlob(b64Data, contentType);
+            formdata.append("index_image", articleImageFile, "image.png");
+        };
+        reader.readAsDataURL(articleImageFile);
     } else if (content.ops[0]["insert"]["image"]) {
         var contentType = content.ops[0]["insert"]["image"]
             .split(",")[0]
             .split(":")[1]
             .split(";")[0];
         var b64Data = content.ops[0]["insert"]["image"].split(",")[1];
-        var articleImageFile = b64toBlob(b64Data, contentType);
+        articleImageFile = b64toBlob(b64Data, contentType);
         formdata.append("index_image", articleImageFile, "image.png");
     } else {
         fetch("/get-image/img_" + randomInteger + ".png")
@@ -1494,7 +1515,7 @@ function patchData() {
     var token = $("#jwt_token").text();
     var title = $("#input_patch_title").val();
     var articleImageFile = document.getElementById("update_article_image")
-        .files[0]; // 獲取上傳的封面圖片
+        .files[0];
     const Hashtags = $("#patch_input_topic")
         .val()
         .match(/#[\u4e00-\u9fa5\w]+/g);
@@ -1522,14 +1543,24 @@ function patchData() {
         formdata.append("hashtag", Hashtags);
     }
     if (articleImageFile) {
-        formdata.append("index_image", articleImageFile, "image.png");
+        var reader = new FileReader();
+        reader.onload = function () {
+            var contentType = reader.result
+                .split(",")[0]
+                .split(":")[1]
+                .split(";")[0];
+            var b64Data = reader.result.split(",")[1];
+            articleImageFile = b64toBlob(b64Data, contentType);
+            formdata.append("index_image", articleImageFile, "image.png");
+        };
+        reader.readAsDataURL(articleImageFile);
     } else if (content.ops[0]["insert"]["image"]) {
         var contentType = content.ops[0]["insert"]["image"]
             .split(",")[0]
             .split(":")[1]
             .split(";")[0];
         var b64Data = content.ops[0]["insert"]["image"].split(",")[1];
-        var articleImageFile = b64toBlob(b64Data, contentType);
+        articleImageFile = b64toBlob(b64Data, contentType);
         formdata.append("index_image", articleImageFile, "image.png");
     } else {
         fetch("/get-image/img_" + randomInteger + ".png")
@@ -1592,7 +1623,7 @@ function official_patchData() {
     var token = $("#jwt_token").text();
     var title = $("#input_patch_title").val();
     var articleImageFile = document.getElementById("update_article_image")
-        .files[0]; // 獲取上傳的封面圖片
+        .files[0];
     const Hashtags = $("#patch_input_topic")
         .val()
         .match(/#[\u4e00-\u9fa5\w]+/g);
@@ -1620,14 +1651,24 @@ function official_patchData() {
         formdata.append("hashtag", Hashtags);
     }
     if (articleImageFile) {
-        formdata.append("index_image", articleImageFile, "image.png");
+        var reader = new FileReader();
+        reader.onload = function () {
+            var contentType = reader.result
+                .split(",")[0]
+                .split(":")[1]
+                .split(";")[0];
+            var b64Data = reader.result.split(",")[1];
+            articleImageFile = b64toBlob(b64Data, contentType);
+            formdata.append("index_image", articleImageFile, "image.png");
+        };
+        reader.readAsDataURL(articleImageFile);
     } else if (content.ops[0]["insert"]["image"]) {
         var contentType = content.ops[0]["insert"]["image"]
             .split(",")[0]
             .split(":")[1]
             .split(";")[0];
         var b64Data = content.ops[0]["insert"]["image"].split(",")[1];
-        var articleImageFile = b64toBlob(b64Data, contentType);
+        articleImageFile = b64toBlob(b64Data, contentType);
         formdata.append("index_image", articleImageFile, "image.png");
     } else {
         fetch("/get-image/img_" + randomInteger + ".png")
@@ -1717,14 +1758,24 @@ function temporaryData(obj, type) {
         formdata.append("hashtag", Hashtags);
     }
     if (articleImageFile) {
-        formdata.append("index_image", articleImageFile, "image.png");
+        var reader = new FileReader();
+        reader.onload = function () {
+            var contentType = reader.result
+                .split(",")[0]
+                .split(":")[1]
+                .split(";")[0];
+            var b64Data = reader.result.split(",")[1];
+            articleImageFile = b64toBlob(b64Data, contentType);
+            formdata.append("index_image", articleImageFile, "image.png");
+        };
+        reader.readAsDataURL(articleImageFile);
     } else if (content.ops[0]["insert"]["image"]) {
         var contentType = content.ops[0]["insert"]["image"]
             .split(",")[0]
             .split(":")[1]
             .split(";")[0];
         var b64Data = content.ops[0]["insert"]["image"].split(",")[1];
-        var articleImageFile = b64toBlob(b64Data, contentType);
+        articleImageFile = b64toBlob(b64Data, contentType);
         formdata.append("index_image", articleImageFile, "image.png");
     } else {
         fetch("/get-image/img_" + randomInteger + ".png")
@@ -1861,14 +1912,24 @@ function official_temporaryData(obj, type) {
         formdata.append("hashtag", Hashtags);
     }
     if (articleImageFile) {
-        formdata.append("index_image", articleImageFile, "image.png");
+        var reader = new FileReader();
+        reader.onload = function () {
+            var contentType = reader.result
+                .split(",")[0]
+                .split(":")[1]
+                .split(";")[0];
+            var b64Data = reader.result.split(",")[1];
+            articleImageFile = b64toBlob(b64Data, contentType);
+            formdata.append("index_image", articleImageFile, "image.png");
+        };
+        reader.readAsDataURL(articleImageFile);
     } else if (content.ops[0]["insert"]["image"]) {
         var contentType = content.ops[0]["insert"]["image"]
             .split(",")[0]
             .split(":")[1]
             .split(";")[0];
         var b64Data = content.ops[0]["insert"]["image"].split(",")[1];
-        var articleImageFile = b64toBlob(b64Data, contentType);
+        articleImageFile = b64toBlob(b64Data, contentType);
         formdata.append("index_image", articleImageFile, "image.png");
     } else {
         fetch("/get-image/img_" + randomInteger + ".png")
@@ -2211,16 +2272,16 @@ function searchArticle(event) {
 //     $("#input_link").val(location.href);
 // });
 
-// //分享文章 複製連結
-// select("#copylink_btn").addEventListener("click", () => {
-//     const select = (DOM) => document.querySelector(DOM);
-//     select("#input_link").select(); //選取連結文字
-//     navigator.clipboard.writeText(select("#input_link").value).then(() => {
-//         //當複製時，顯示'已複製'文字
-//         $("#copylink_btn").html("Copied");
-//         setTimeout(() => {
-//             window.getSelection().removeAllRanges(); //remove selection from page
-//             $("#copylink_btn").html("複製連結");
-//         }, 3000);
-//     });
-// });
+//分享文章 複製連結
+select("#copylink_btn").addEventListener("click", () => {
+    const select = (DOM) => document.querySelector(DOM);
+    select("#input_link").select(); //選取連結文字
+    navigator.clipboard.writeText(select("#input_link").value).then(() => {
+        //當複製時，顯示'已複製'文字
+        $("#copylink_btn").html("Copied");
+        setTimeout(() => {
+            window.getSelection().removeAllRanges(); //remove selection from page
+            $("#copylink_btn").html("複製連結");
+        }, 3000);
+    });
+});

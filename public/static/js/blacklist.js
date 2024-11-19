@@ -130,11 +130,20 @@ function denounce() {
     }
 }
 
-function banerror(cate,ban) {
+function banerror(ban) {
+    if (ban[2] == "article") {
+        cate = "的文章";
+    } else if (ban[2] == "comment") {
+        cate = "的留言";
+    } else {
+        cate = "在聊天室的發言";
+    }
     Swal.fire({
         title: "你已被禁言！",
         html:
-            "經人工審核，因您之前"+cate+"違反社群規範，故系統於 " +
+            "經人工審核，因您之前" +
+            cate +
+            "違反社群規範，故系統於 " +
             dayjs(ban[1]).format("YYYY-MM-DD HH:mm:ss") +
             " 起 " +
             ban[0] +
