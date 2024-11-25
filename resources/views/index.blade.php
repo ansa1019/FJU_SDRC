@@ -269,7 +269,7 @@
                 @endforeach
             </div>
         </div>
-        <!--精選好物-->
+        {{-- <!--精選好物-->
         <div class="row content pb-0 bg-white">
             <div class="col-12 px-5">
                 <h4 class="content-title">精選好物</h4>
@@ -295,7 +295,7 @@
                     </div>
                 @endforeach
             </div>
-        </div>
+        </div> --}}
         <!--人氣創作者-->
         <div class="row content bg-white">
             <div class="col-12 px-5">
