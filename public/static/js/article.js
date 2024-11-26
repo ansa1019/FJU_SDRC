@@ -2171,9 +2171,9 @@ function createArticleComment(button) {
             Swal.fire({
                 title: "你已被禁言！",
                 html:
-                    "因您於短時間內收到多次檢舉，<br>故系統於 " +
+                    "因您發布的留言於短時間內收到多次檢舉，故系統於 " +
                     dayjs(banlist["comment"][1]).format("YYYY-MM-DD HH:mm:ss") +
-                    " 起自動禁言24小時<br>我們將同步進行人工審核，若造成不便請見諒，謝謝",
+                    " 起自動禁言24小時。我們將同步進行人工審核，若造成不便請見諒，謝謝",
                 icon: "error",
                 allowOutsideClick: false, // 禁止點擊外部關閉
                 allowEscapeKey: false, // 禁止按 ESC 鍵關閉

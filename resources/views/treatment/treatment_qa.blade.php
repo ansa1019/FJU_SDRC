@@ -42,9 +42,9 @@
                                         onclick="Swal.fire({
                                                     title: '你已被禁言！',
                                                     html:
-                                                        '因您於短時間內收到多次檢舉，故系統於 ' +
+                                                        '因您發布的文章於短時間內收到多次檢舉，故系統於 ' +
                                                         dayjs(banlist['chat'][1]).format('YYYY-MM-DD HH:mm:ss') +
-                                                        ' 起自動禁言24小時<br>我們將同步進行人工審核，若造成不便請見諒，謝謝',
+                                                        ' 起自動禁言24小時。我們將同步進行人工審核，若造成不便請見諒，謝謝',
                                                     icon: 'error',
                                                     showConfirmButton: true, // 顯示確認按鈕
                                                     allowOutsideClick: false, // 禁止點擊外部關閉
