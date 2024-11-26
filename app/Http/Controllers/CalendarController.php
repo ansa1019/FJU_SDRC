@@ -16,6 +16,21 @@ class CalendarController extends Controller
         $token = Session::get('jwt_token', '');
         // session()->forget   (keys: 'next_menstrual_date');
         // dd(session('next_menstrual_date'));
+        // session()->forget([
+        //     'next_menstrual_date',
+        //     'menstrual_end_date',
+        //     'current_menstrual_prediction',
+        //     'previous_menstrual_prediction',
+        //     'last_menstrual_date',
+        // ]);
+        // dd([
+        //     'next_menstrual_date' => session('next_menstrual_date'),
+        //     'menstrual_end_date' => session('menstrual_end_date'),
+        //     'current_menstrual_prediction' => session('current_menstrual_prediction'),
+        //     'previous_menstrual_prediction' => session('previous_menstrual_prediction'),
+        //     'last_menstrual_date' => session('last_menstrual_date'),
+        // ]);
+
         if ($token != '') {
             // 嘗試從 API 抓取個人日曆和子日曆資料
             $personalCalendar = ApiHelper::getAuthenticatedRequest($token, env('API_IP') . 'api/userprofile/personalCalendar/')->json();
@@ -85,132 +100,114 @@ class CalendarController extends Controller
         // session()->forget(['next_menstrual_date', 'remaining_weeks', 'remaining_days', 'due_date', 'health_type', 'pregnancy_data']);
         
         if ($request['health_type'] == 'menstruation') {
-            // dd($request->all());
+            // 獲取 token 並設置 session health_type
             $token = Session::get('jwt_token', '');
             session(['health_type' => 'menstruation']);
             
-            $lastMenstrual = Carbon::parse($request['lastMenstrual']); 
+            // 解析日期與週期數據
+            $lastMenstrual = Carbon::parse($request['lastMenstrual']);
             $recordDate = Carbon::parse($request['menstrualPeriod']);
-            $cycle = intval($request['menstrualCycle']); 
-            $cycleDays = intval($request['menstruationLast']); 
-
+            $cycle = intval($request['menstrualCycle']);
+            $cycleDays = intval($request['menstruationLast']);
+            
+            // 獲取 session 中的預測日期與結束日期
             $sessionNextMenstrualDate = session('next_menstrual_date');
             $sessionMenstrualEndDate = session('menstrual_end_date');
-
-            $isFirstRecord = empty($sessionNextMenstrualDate) || empty($sessionMenstrualEndDate);  
-            if ($request['no_mc'] == '沒有') {
-                if ($isFirstRecord) {
-                    // 初次填寫為「無月經」
-                    $predictedDate = $lastMenstrual->copy()->addDays($cycle); 
-                    if ($recordDate->gt($predictedDate)) {
-                        // 如果填寫日期超過「上次月經日 + 週期天數」，不顯示預測
-                        session([
-                            'next_menstrual_date' => null,
-                            'menstrual_end_date' => null,
-                            'current_menstrual_prediction' => null,
-                            'previous_menstrual_prediction' => null
-                        ]);
-                    } else {
-                        // 未超過，顯示初次預測
-                        $nextMenstrualDate = $predictedDate->toDateString();
-                        $menstrualEndDate = $lastMenstrual->copy()->addDays(10)->toDateString();
-                
-                        session([
-                            'next_menstrual_date' => $nextMenstrualDate,
-                            'menstrual_end_date' => $menstrualEndDate,
-                            'current_menstrual_prediction' => $nextMenstrualDate,
-                            'previous_menstrual_prediction' => null
-                        ]);
-                    }
-                } else {
-                    // 非初次填寫
-                    if (session('has_mc') == '有' && $request['no_mc'] == '沒有') {
-                        // 如果填寫日期與「有月經」紀錄日期相同，則視為誤填
-                        if ($recordDate->eq(session('last_menstrual_date'))) {
-                            // 顯示上一個有效預測
-                            $previousPrediction = session('previous_menstrual_prediction');
-                            session([
-                                'next_menstrual_date' => $previousPrediction,
-                                'menstrual_end_date' => null,
-                                'is_error_entry' => true 
-                            ]);
-                        } else {
-                            // 正常處理非誤填情況
-                            if ($recordDate->gt($sessionMenstrualEndDate)) {
-                                // 經期外
-                                if ($recordDate->gt(session('current_menstrual_prediction'))) {
-                                    // 如果記錄日期超過當前預測，顯示上一個有效預測
-                                    $previousPrediction = session('current_menstrual_prediction');
-                                    session([
-                                        'next_menstrual_date' => $previousPrediction,
-                                        'menstrual_end_date' => null
-                                    ]);
-                                } else {
-                                    // 維持當前預測
-                                    $nextMenstrualDate = session('current_menstrual_prediction');
-                                    $menstrualEndDate = session('last_valid_menstrual_date')->copy()->addDays(10)->toDateString();
-                                    session([
-                                        'next_menstrual_date' => $nextMenstrualDate,
-                                        'menstrual_end_date' => $menstrualEndDate
-                                    ]);
-                                }
-                            } else {
-                                // 經期內，維持當前預測
-                                $nextMenstrualDate = session('current_menstrual_prediction');
-                                $menstrualEndDate = session('last_valid_menstrual_date')->copy()->addDays(10)->toDateString();
-                                session([
-                                    'next_menstrual_date' => $nextMenstrualDate,
-                                    'menstrual_end_date' => $menstrualEndDate
-                                ]);
-                            }
-                        }
-                    } else {
-                        // 沒有誤填，正常處理
-                        if ($recordDate->gt($sessionMenstrualEndDate)) {
-                            // 經期外
-                            if ($recordDate->gt(session('current_menstrual_prediction'))) {
-                                // 如果記錄日期超過當前預測，顯示上一個有效預測
-                                $previousPrediction = session('current_menstrual_prediction');
-                                session([
-                                    'next_menstrual_date' => $previousPrediction,
-                                    'menstrual_end_date' => null
-                                ]);
-                            } else {
-                                // 維持當前預測
-                                $nextMenstrualDate = session('current_menstrual_prediction');
-                                $menstrualEndDate = session('last_valid_menstrual_date')->copy()->addDays(10)->toDateString();
-                                session([
-                                    'next_menstrual_date' => $nextMenstrualDate,
-                                    'menstrual_end_date' => $menstrualEndDate
-                                ]);
-                            }
-                        } else {
-                            // 經期內，維持當前預測
-                            $nextMenstrualDate = session('current_menstrual_prediction');
-                            $menstrualEndDate = session('last_valid_menstrual_date')->copy()->addDays(10)->toDateString();
-                            session([
-                                'next_menstrual_date' => $nextMenstrualDate,
-                                'menstrual_end_date' => $menstrualEndDate
-                            ]);
-                        }
-                    }
-                }
+            
+            // 判斷是否為第一次記錄
+            $isFirstRecord = empty($sessionNextMenstrualDate) || empty($sessionMenstrualEndDate);
+        //     dd([
+        //     'next_menstrual_date' => session('next_menstrual_date'),
+        //     'menstrual_end_date' => session('menstrual_end_date'),
+        //     'current_menstrual_prediction' => session('current_menstrual_prediction'),
+        //     'previous_menstrual_prediction' => session('previous_menstrual_prediction'),
+        //     'last_menstrual_date' => session('last_menstrual_date'),
+        // ]);
+        if ($isFirstRecord) {
+            // 初次記錄
+            $menstrualEndDate = $lastMenstrual->copy()->addDays(10);  // 生理範圍結束日期
+            $nextPrediction = $lastMenstrual->copy()->addDays($cycle)->toDateString();  // 預測的下一次月經日期
+            
+            session([
+                'last_menstrual_date' => $lastMenstrual,
+                'current_menstrual_prediction' => $nextPrediction,
+                'previous_menstrual_prediction' => null,
+                'menstrual_end_date' => $menstrualEndDate->toDateString(),
+                'next_menstrual_date' => $nextPrediction,
+            ]);
+        }
+        
+        // 重新計算生理範圍結束日期
+        $menstrualEndDate = session('menstrual_end_date') ? Carbon::parse(session('menstrual_end_date')) : null;
+        
+        if ($request['no_mc'] == '沒有') {
+            // 無月經處理
+            $currentPrediction = session('current_menstrual_prediction');
+            $previousPrediction = session('previous_menstrual_prediction');
+            $lastMenstrualDate = session('last_menstrual_date');
+            $menstrualEndDate = session('menstrual_end_date') ? Carbon::parse(session('menstrual_end_date')) : null;
+            
+            // 檢查是否誤填
+            if ($recordDate->eq($lastMenstrualDate)) {
+                // 如果是誤填，回退到上一個有效預測
+                $newPrediction = $previousPrediction ?? $currentPrediction;
+        
+                session([
+                    'next_menstrual_date' => $newPrediction,
+                    'current_menstrual_prediction' => $newPrediction,
+                    'menstrual_end_date' => null, // 清除生理範圍
+                ]);
             } else {
-                // 當選擇「有月經」
+                // 檢查填寫日期是否超過上一個有效預測範圍
+                if ($recordDate->lte($menstrualEndDate)) {
+                    // 在生理範圍內，不更新預測
+                    session([
+                        'next_menstrual_date' => $currentPrediction,
+                        'menstrual_end_date' => $menstrualEndDate->toDateString(),
+                    ]);
+                } else {
+                    // 如果超出生理範圍後，回退到上一個有效預測
+                    // 檢查上一個有效的預測是否為空，若不為空，則使用上一個預測日期
+                    $newPrediction = $previousPrediction ?? $currentPrediction;
+                    if ($previousPrediction) {
+                        // 如果上一個有效預測日期存在且小於等於當前日期，則回退到上一個預測
+                        $newPrediction = $previousPrediction;
+                    }
+        
+                    session([
+                        'next_menstrual_date' => $newPrediction,
+                        'current_menstrual_prediction' => $newPrediction,
+                        'menstrual_end_date' => null, // 生理範圍結束
+                    ]);
+                }
+            }
+        } else {
+            // 有月經處理
+            if ($recordDate->lte($menstrualEndDate)) {
+                // 生理範圍內，不更新預測
+                session([
+                    'next_menstrual_date' => session('current_menstrual_prediction'),
+                    'menstrual_end_date' => $menstrualEndDate->toDateString(),
+                ]);
+            } else {
+                // 生理範圍外重新計算預測
                 $nextMenstrualDate = $recordDate->copy()->addDays($cycle)->toDateString();
-                $menstrualEndDate = $recordDate->copy()->addDays(10)->toDateString();
-                
-                // 儲存當前狀態
+                $newMenstrualEndDate = $recordDate->copy()->addDays(10)->toDateString();
+        
                 session([
                     'next_menstrual_date' => $nextMenstrualDate,
-                    'menstrual_end_date' => $menstrualEndDate,
+                    'menstrual_end_date' => $newMenstrualEndDate,
                     'current_menstrual_prediction' => $nextMenstrualDate,
                     'previous_menstrual_prediction' => session('current_menstrual_prediction'),
-                    'has_mc' => '有', 
-                    'is_error_entry' => false, 
-                    'last_menstrual_date' => $recordDate 
+                    'last_menstrual_date' => $recordDate,
                 ]);
             }
+        }
+        
+        
+        
+        
+                     
             
             // 儲存 personalCalendar 資料到資料庫
             $personalCalendarDataForm = [
@@ -225,29 +222,24 @@ class CalendarController extends Controller
                 'Content-Type' => 'application/json',
             ])->post(env('API_IP') . 'api/userprofile/personalCalendar/', $personalCalendarDataForm);
         
-               
-            // 其他的額外數據處理
-            $requestData = $request->all();
+            // 儲存額外的資料到 subPersonalCalendar
             $dataToInclude = [];
-            
-            // 檢查和儲存額外的數據
             $fieldsToCheck = [
-                'menstrualPeriod', 'has_mc', 'no_mc', 'mc_less', 'mc_normal', 
-                'mc_more', 'pain_no', 'pain_less', 'pain_normal', 'pain_more', 
-                'menstrualPeriodHeadache', 'backache', 'hecticFever', 
-                'breastTenderness', 'OvulationPain', 'menstrualPeriodConstipate', 
-                'diarrhea', 'increasedSecretions', 'spottingHemorrhage', 
-                'menstrualPeriodOther', 'noRoommate', 'roommateContraception', 
+                'menstrualPeriod', 'has_mc', 'no_mc', 'mc_less', 'mc_normal',
+                'mc_more', 'pain_no', 'pain_less', 'pain_normal', 'pain_more',
+                'menstrualPeriodHeadache', 'backache', 'hecticFever',
+                'breastTenderness', 'OvulationPain', 'menstrualPeriodConstipate',
+                'diarrhea', 'increasedSecretions', 'spottingHemorrhage',
+                'menstrualPeriodOther', 'noRoommate', 'roommateContraception',
                 'roommateNoContraception'
             ];
-            
+        
             foreach ($fieldsToCheck as $field) {
-                if (isset($requestData[$field]) && !empty($requestData[$field])) {
-                    $dataToInclude[$field] = $requestData[$field];
+                if (isset($request[$field]) && !empty($request[$field])) {
+                    $dataToInclude[$field] = $request[$field];
                 }
             }
-            
-            // 儲存額外的資料到 subPersonalCalendar
+        
             $subPersonalCalendarDataForm = [
                 'calendar_id' => $personalCalendar->json()['id'],
                 'dict' => $dataToInclude,
@@ -258,10 +250,13 @@ class CalendarController extends Controller
                 'Content-Type' => 'application/json',
             ])->post(env('API_IP') . 'api/userprofile/subPersonalCalendar/', $subPersonalCalendarDataForm);
         
+            // 跳轉回日曆頁面，顯示成功訊息
             return redirect()
                 ->route('Calendar')
                 ->with(['success' => '生理期月曆新增成功']);
-        }                                                                                    
+        }
+        
+                                                                                                    
         elseif ($request['health_type'] == 'miscarriage period') {
             // post小產期personalCalendar
             $personalCalendarDataForm = [
