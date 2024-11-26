@@ -42,19 +42,11 @@ $(document).ready(function () {
 
         previous_chat2 = [getPreviousChat("chat-room2")];
         Promise.all(previous_chat2).then((data) => {
-            let chatData = data[0];
-            let chat_room = "chat-room2";
-            let chatContainer = $(`#${chat_room} .chat-content`);
-
-            // 清空之前的聊天內容，然後再加載
-            chatContainer.html("");
-
-            // 逐條添加歷史訊息
-            chatData.forEach((chat, index) => {
+            data[0].reverse().forEach((chat) => {
                 if (chat["is_user"]) {
                     show_msg(
                         "user",
-                        chat_room,
+                        "chat-room2",
                         chat["id"],
                         chat["identity"],
                         chat["message"],
@@ -64,7 +56,7 @@ $(document).ready(function () {
                 } else {
                     show_msg(
                         "other",
-                        chat_room,
+                        "chat-room2",
                         chat["id"],
                         chat["identity"],
                         chat["message"],
@@ -90,7 +82,7 @@ $(document).ready(function () {
 
         previous_chat3 = [getPreviousChat("chat-room3")];
         Promise.all(previous_chat3).then((data) => {
-            data[0].forEach((chat) => {
+            data[0].reverse().forEach((chat) => {
                 if (chat["is_user"]) {
                     show_msg(
                         "user",
@@ -130,7 +122,7 @@ $(document).ready(function () {
 
         previous_chat4 = [getPreviousChat("chat-room4")];
         Promise.all(previous_chat4).then((data) => {
-            data[0].forEach((chat) => {
+            data[0].reverse().forEach((chat) => {
                 if (chat["is_user"]) {
                     show_msg(
                         "user",
@@ -171,7 +163,7 @@ $(document).ready(function () {
 
         previous_chat5 = [getPreviousChat("chat-room5")];
         Promise.all(previous_chat5).then((data) => {
-            data[0].forEach((chat) => {
+            data[0].reverse().forEach((chat) => {
                 if (chat["is_user"]) {
                     show_msg(
                         "user",
@@ -211,7 +203,7 @@ $(document).ready(function () {
 
         previous_chat6 = [getPreviousChat("chat-room6")];
         Promise.all(previous_chat6).then((data) => {
-            data[0].forEach((chat) => {
+            data[0].reverse().forEach((chat) => {
                 if (chat["is_user"]) {
                     show_msg(
                         "user",
