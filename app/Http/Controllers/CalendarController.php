@@ -16,13 +16,13 @@ class CalendarController extends Controller
         $token = Session::get('jwt_token', '');
         // session()->forget   (keys: 'next_menstrual_date');
         // dd(session('next_menstrual_date'));
-        // session()->forget([
-        //     'next_menstrual_date',
-        //     'menstrual_end_date',
-        //     'current_menstrual_prediction',
-        //     'previous_menstrual_prediction',
-        //     'last_menstrual_date',
-        // ]);
+        session()->forget([
+            'next_menstrual_date',
+            'menstrual_end_date',
+            'current_menstrual_prediction',
+            'previous_menstrual_prediction',
+            'last_menstrual_date',
+        ]);
         // dd([
         //     'next_menstrual_date' => session('next_menstrual_date'),
         //     'menstrual_end_date' => session('menstrual_end_date'),
