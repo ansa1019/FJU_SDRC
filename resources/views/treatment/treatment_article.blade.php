@@ -59,8 +59,8 @@
                     <div class="col-12 mt-2 d-flex align-items-center">
                         <span class="ct-sub-1 mr-2">{{ date('Y-m-d', strtotime($date)) }}</span>
 
-                        <a href="{{ route('author_article_list', $identity) }}" class="ct-title-1 text-decoration-none mx-2"
-                            id="article_author">{{ $identity }}</a>
+                        <a href="{{ route('author_article_list', $identity) }}"
+                            class="ct-title-1 text-decoration-none mx-2" id="article_author">{{ $identity }}</a>
                         @if ($identity != '匿名' and $nickname != '')
                             @if ($subscribe == 0)
                                 <button type="button" class="btn btn-sm rounded-pill btn-outline-c2 col-auto mx-2 px-3"
@@ -261,8 +261,8 @@
                                                     </button>
                                                     <!--當使用者正在編輯留言時 顯示提交按鈕-->
                                                     <!-- <button class="btn btn-sm p-0 edit_check_btn" data-bs-toggle="tooltip" data-bs-title="提交">
-                                                                                                                                                                <i class="fas fa-check ct-sub-1 me-1"></i>
-                                                                                                                                                            </button> -->
+                                                                                                                                                                        <i class="fas fa-check ct-sub-1 me-1"></i>
+                                                                                                                                                                    </button> -->
                                                     <button class="btn btn-primary btn-sm edit_check_btn mx-1">提交</button>
                                                 @endif
                                                 <div class="dropdown d-inline" data-bs-toggle="tooltip"

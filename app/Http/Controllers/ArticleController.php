@@ -137,9 +137,11 @@ class ArticleController extends Controller
         return response()->view('treatment/treatment_qa', $response)->header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
     }
 
-    public function TreatmentArticleGet($id = null)
+    public function TreatmentArticleGet($id)
     {
-        //
+        if (!$id) {
+            abort(404, '文章 ID 未提供');
+        }
         $token = Session::get('jwt_token', '');
         $subcategorys = Http::asForm()->get(env('API_IP') . 'api/content/subcategory/')->json();
         if ($token != '') {
@@ -153,7 +155,9 @@ class ArticleController extends Controller
             $subscribe = [];
             $postStorageds = [];
         }
-
+        $article_title = $response['title'] ?? '預設標題';
+        $description = $response['description'] ?? '文章描述未提供';
+        $cover_image = $response['cover_image'] ?? asset('static/img/default_cover_image.png');
         if ($token != '' && $postStorageds == null) {
             $formdata = [
                 'storage_name' => '不分類收藏',
@@ -166,15 +170,18 @@ class ArticleController extends Controller
             $postStorageds = ApiHelper::getAuthenticatedRequest($token, env('API_IP') . 'api/userdetail/postStoraged/')->json();
         }
 
-        $response['article_title'] = $response['title'];
-        $response['comment_count'] = count($response['comments']);
-        if ($response['click']['in_user'][0] == false) {
+        $response['article_title'] = $response['title'] ?? '未提供標題';
+        $response['cover_image'] = $response['cover_image'] ?? asset('static/img/default_cover_image.png');
+        $response['description'] = $response['description'] ?? '文章描述未提供';
+        $response['comment_count'] = count($response['comments'] ?? []);
+
+        if (isset($response['click']['in_user'][0]) && $response['click']['in_user'][0] == false) {
             $response['is_click'] = 0;
         } else {
             $response['is_click'] = 1;
         }
 
-        if ($response['hashtag']) {
+        if (!empty($response['hashtag'])) {
             $response['hashtag'] = array_filter(explode(',', $response['hashtag']), 'strlen');
             foreach ($response['hashtag'] as $key => $tag) {
                 $response['hashtag'][$key] = str_replace('#', '', $tag);
@@ -184,44 +191,41 @@ class ArticleController extends Controller
         }
 
         $response['subscribe'] = 0;
-        if ($subscribe != []) {
-            foreach ($subscribe as $items) foreach ($items as $sub) {
-                    if ($sub[0]['nickname'] == $response['identity']) {
+        if (!empty($subscribe)) {
+            foreach ($subscribe as $items) {
+                foreach ($items as $sub) {
+                    if (isset($sub[0]['nickname']) && $sub[0]['nickname'] == $response['identity']) {
                         $response['subscribe'] = 1;
                         break;
                     }
                 }
+            }
         }
 
         $latest_articles = [];
         $extend_articles = [];
         $popular_articles = Http::asForm()->get(env('API_IP') . 'api/content/orderByClick/')->json();
         $all_articles = Http::asForm()->get(env('API_IP') . 'api/content/textEditorPost/?ordering=-created_at')->json();
-        if ($all_articles != null) {
+        if (!empty($all_articles)) {
             $latest_articles = array_slice($all_articles, 0, 2);
-            if ($popular_articles != null) {
+            if (!empty($popular_articles)) {
                 $popular_articles = array_slice($popular_articles['data'], 0, 2);
             }
             foreach ($all_articles as $key => $articles) {
-                if ($response['category'][0]['name'] == $articles['category'][0]['name']) {
+                if (isset($response['category'][0]['name']) && $response['category'][0]['name'] == $articles['category'][0]['name']) {
                     $extend_articles[$key] = $articles;
                 }
             }
             $extend_articles = array_slice($extend_articles, 0, 2);
         }
 
-        $date = Carbon::parse($response['created_at']);
-        if ($date->month >= 10) {
-            $response['date'] = $date->year . '-' . $date->month . '-' . $date->day;
-        } else {
-            $response['date'] = $date->year . '-0' . $date->month . '-' . $date->day;
-        }
+        $date = Carbon::parse($response['created_at'] ?? now());
+        $response['date'] = $date->format('Y-m-d');
 
         $response = array_merge($response, [
             'latest_articles' => $latest_articles,
             'extend_articles' => $extend_articles,
             'popular_articles' => $popular_articles,
-            // 'all_articles' => $all_articles,
             'sidebar' => ['article', 'TreatmentArticleGet'],
             'title' => 'None',
             'nickname' => Session::get('nickname', ''),
@@ -233,10 +237,14 @@ class ArticleController extends Controller
             'postStorageds' => $postStorageds,
             'record' => $records[$id],
             'update_time' => date("Y-m-d H:i:s"),
+            'article_title' => $article_title,
+            'cover_image' => $cover_image,
+            'description' => $description,
         ]);
-        // dd($response['category']['0']['name']);
+
         return view('treatment/treatment_article', $response);
     }
+
 
     public function authorarticleview($author = null, $sort = '-created_at')
     {
