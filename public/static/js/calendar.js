@@ -511,6 +511,7 @@ function open_modal(type) {
         $('#type1_q1').val(cycle || '');
         $('#type1_q2').val(lastMenstrual || '');
         $('#type1_q3').val(cycleDays || '');
+        $('#dueDate').val(dueDate || '');
     }
 }
 function toggle_modal() {
@@ -522,6 +523,7 @@ function close_modal() {
     cycle = $('#type1_q1').val();
     lastMenstrual = $('#type1_q2').val();
     cycleDays = $('#type1_q3').val();   
+    dueDate = $('#dueDate').val();
     $(".modal").modal("hide");
     $(".modal-backdrop").remove();
     $("#first_daily_modal input").val("");
