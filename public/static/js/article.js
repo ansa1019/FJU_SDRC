@@ -1117,17 +1117,7 @@ function postdata(obj, type) {
         formdata.append("hashtag", Hashtags);
     }
     if (articleImageFile) {
-        var reader = new FileReader();
-        reader.onload = function () {
-            var contentType = reader.result
-                .split(",")[0]
-                .split(":")[1]
-                .split(";")[0];
-            var b64Data = reader.result.split(",")[1];
-            articleImageFile = b64toBlob(b64Data, contentType);
-            formdata.append("index_image", articleImageFile, "image.png");
-        };
-        reader.readAsDataURL(articleImageFile);
+        formdata.append("index_image", articleImageFile, "image.png");
     } else if (content.ops[0]["insert"]["image"]) {
         var contentType = content.ops[0]["insert"]["image"]
             .split(",")[0]
@@ -1331,17 +1321,7 @@ function official_postdata(obj, type) {
         formdata.append("hashtag", Hashtags);
     }
     if (articleImageFile) {
-        var reader = new FileReader();
-        reader.onload = function () {
-            var contentType = reader.result
-                .split(",")[0]
-                .split(":")[1]
-                .split(";")[0];
-            var b64Data = reader.result.split(",")[1];
-            articleImageFile = b64toBlob(b64Data, contentType);
-            formdata.append("index_image", articleImageFile, "image.png");
-        };
-        reader.readAsDataURL(articleImageFile);
+        formdata.append("index_image", articleImageFile, "image.png");
     } else if (content.ops[0]["insert"]["image"]) {
         var contentType = content.ops[0]["insert"]["image"]
             .split(",")[0]
@@ -1543,17 +1523,7 @@ function patchData() {
         formdata.append("hashtag", Hashtags);
     }
     if (articleImageFile) {
-        var reader = new FileReader();
-        reader.onload = function () {
-            var contentType = reader.result
-                .split(",")[0]
-                .split(":")[1]
-                .split(";")[0];
-            var b64Data = reader.result.split(",")[1];
-            articleImageFile = b64toBlob(b64Data, contentType);
-            formdata.append("index_image", articleImageFile, "image.png");
-        };
-        reader.readAsDataURL(articleImageFile);
+        formdata.append("index_image", articleImageFile, "image.png");
     } else if (content.ops[0]["insert"]["image"]) {
         var contentType = content.ops[0]["insert"]["image"]
             .split(",")[0]
@@ -1651,17 +1621,7 @@ function official_patchData() {
         formdata.append("hashtag", Hashtags);
     }
     if (articleImageFile) {
-        var reader = new FileReader();
-        reader.onload = function () {
-            var contentType = reader.result
-                .split(",")[0]
-                .split(":")[1]
-                .split(";")[0];
-            var b64Data = reader.result.split(",")[1];
-            articleImageFile = b64toBlob(b64Data, contentType);
-            formdata.append("index_image", articleImageFile, "image.png");
-        };
-        reader.readAsDataURL(articleImageFile);
+        formdata.append("index_image", articleImageFile, "image.png");
     } else if (content.ops[0]["insert"]["image"]) {
         var contentType = content.ops[0]["insert"]["image"]
             .split(",")[0]
@@ -1758,17 +1718,7 @@ function temporaryData(obj, type) {
         formdata.append("hashtag", Hashtags);
     }
     if (articleImageFile) {
-        var reader = new FileReader();
-        reader.onload = function () {
-            var contentType = reader.result
-                .split(",")[0]
-                .split(":")[1]
-                .split(";")[0];
-            var b64Data = reader.result.split(",")[1];
-            articleImageFile = b64toBlob(b64Data, contentType);
-            formdata.append("index_image", articleImageFile, "image.png");
-        };
-        reader.readAsDataURL(articleImageFile);
+        formdata.append("index_image", articleImageFile, "image.png");
     } else if (content.ops[0]["insert"]["image"]) {
         var contentType = content.ops[0]["insert"]["image"]
             .split(",")[0]
@@ -1912,17 +1862,7 @@ function official_temporaryData(obj, type) {
         formdata.append("hashtag", Hashtags);
     }
     if (articleImageFile) {
-        var reader = new FileReader();
-        reader.onload = function () {
-            var contentType = reader.result
-                .split(",")[0]
-                .split(":")[1]
-                .split(";")[0];
-            var b64Data = reader.result.split(",")[1];
-            articleImageFile = b64toBlob(b64Data, contentType);
-            formdata.append("index_image", articleImageFile, "image.png");
-        };
-        reader.readAsDataURL(articleImageFile);
+        formdata.append("index_image", articleImageFile, "image.png");
     } else if (content.ops[0]["insert"]["image"]) {
         var contentType = content.ops[0]["insert"]["image"]
             .split(",")[0]
