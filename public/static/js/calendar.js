@@ -507,6 +507,10 @@ function open_modal(type) {
         $("#daily_type_1").addClass("d-none");
         $("#health_type").val(type);
         modal_type(type);
+        // 恢復之前儲存的資料
+        $('#type1_q1').val(cycle || '');
+        $('#type1_q2').val(lastMenstrual || '');
+        $('#type1_q3').val(cycleDays || '');
     }
 }
 function toggle_modal() {
@@ -515,6 +519,9 @@ function toggle_modal() {
 }
 
 function close_modal() {
+    cycle = $('#type1_q1').val();
+    lastMenstrual = $('#type1_q2').val();
+    cycleDays = $('#type1_q3').val();   
     $(".modal").modal("hide");
     $(".modal-backdrop").remove();
     $("#first_daily_modal input").val("");
