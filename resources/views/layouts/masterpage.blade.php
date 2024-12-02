@@ -9,7 +9,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta property="og:title" content="{{ $article_title ?? '預設標題' }}">
     <meta property="og:description" content="{{ $plain ?? '文章描述未提供' }}">
-    <meta property="og:image" content="{{ $cover_image ?? asset('static/img/default_cover_image.png') }}">
+    <meta property="og:image" content="{{ $index_image ?? asset('static/img/default_image.png') }}">
+
     <meta property="og:url" content="{{ url()->current() }}">
     <!--ICON-->
     <link rel="stylesheet" href="{{ asset('static/bootstrap_icons-1.4.1/font/bootstrap-icons.css') }}" />
