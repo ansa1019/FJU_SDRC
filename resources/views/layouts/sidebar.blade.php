@@ -1,6 +1,6 @@
 @if ($sidebar == 'knowledge')
     <!--右邊欄選單-->
-    <div class="col-md-4 col-lg d-flex align-items-start">
+    <div class="col-md-4 col-lg-3 col-lg d-flex align-items-start">
         <div class="row position-sticky" id="right-sidebar">
             <div class="mb-3 px-0 col-12 my-auto">
                 <input type="text" class="form-control rounded-pill search-input" placeholder="搜尋文章"
@@ -69,7 +69,7 @@
 
 @if ($sidebar == 'treatment')
     <!--右邊欄選單-->
-    <div class="col-md-4 col-lg d-flex align-items-start">
+    <div class="col-md-4 col-lg-3 col-lg d-flex align-items-start">
         <div class="row position-sticky" id="right-sidebar">
             <div class="mb-3 px-0 col-12 my-auto">
                 <input type="text" class="form-control rounded-pill search-input" placeholder="搜尋文章"
