@@ -14,14 +14,14 @@ class CalendarController extends Controller
     {
         // 檢查是否有 JWT token
         $token = Session::get('jwt_token', '');
-            // session()->forget([
-            //     'next_menstrual_date',
-            //     'menstrual_end_date',
-            //     'last_menstrual_end_date', 
-            //     'current_menstrual_prediction',
-            //     'previous_menstrual_prediction',
-            //     'last_menstrual_date',
-            // ]);
+        // session()->forget([
+        //     'next_menstrual_date',
+        //     'menstrual_end_date',
+        //     'last_menstrual_end_date', 
+        //     'current_menstrual_prediction',
+        //     'previous_menstrual_prediction',
+        //     'last_menstrual_date',
+        // ]);
         // dd([
         //     'next_menstrual_date' => session('next_menstrual_date'),
         //     'menstrual_end_date' => session('menstrual_end_date'),
@@ -97,7 +97,7 @@ class CalendarController extends Controller
                 } else {
                     $nextPrediction = $lastMenstrual->copy()->addDays($cycle)->toDateString();
                 }
-        
+            
                 session([
                     'last_menstrual_date' => $lastMenstrual->toDateString(),
                     'current_menstrual_prediction' => $nextPrediction,
@@ -110,11 +110,11 @@ class CalendarController extends Controller
                 // 獲取更新後的生理結束日期
                 $menstrualEndDate = session('menstrual_end_date') ? Carbon::parse(session('menstrual_end_date')) : null;
                 $lastMenstrualEndDate = Carbon::parse(session('last_menstrual_end_date'));
-        
+            
                 if ($recordDate->eq(Carbon::parse(session('last_menstrual_date')))) {
                     // 如果記錄日期等於最後一次月經日期，判定為誤填
                     session(['is_misinput' => true]);
-        
+            
                     // 回退到上一個有效記錄
                     session([
                         'next_menstrual_date' => session('previous_menstrual_prediction'),
@@ -127,28 +127,31 @@ class CalendarController extends Controller
                 } elseif ($request['no_mc'] == '沒有') {
                     // 無月經情況處理
                     if ($recordDate->lte($menstrualEndDate)) {
+                        // 生理範圍內（10 天）
                         session([
                             'next_menstrual_date' => session('current_menstrual_prediction'),
                             'menstrual_end_date' => $menstrualEndDate->toDateString(),
                         ]);
                     } else {
+                        // 生理範圍外（保持當前預測，不改變）
                         session([
-                            'next_menstrual_date' => session('previous_menstrual_prediction'),
-                            'current_menstrual_prediction' => session('previous_menstrual_prediction'),
+                            'next_menstrual_date' => session('current_menstrual_prediction'),
                             'menstrual_end_date' => $lastMenstrualEndDate->toDateString(),
                         ]);
                     }
                 } else {
                     // 有月經情況處理
                     if ($recordDate->lte($menstrualEndDate)) {
+                        // 生理範圍內（10 天）
                         session([
                             'next_menstrual_date' => session('current_menstrual_prediction'),
                             'menstrual_end_date' => $menstrualEndDate->toDateString(),
                         ]);
                     } else {
+                        // 生理範圍外（重新計算預測）
                         $nextMenstrualDate = $recordDate->copy()->addDays($cycle)->toDateString();
                         $newMenstrualEndDate = $recordDate->copy()->addDays(10)->toDateString();
-        
+            
                         session([
                             'next_menstrual_date' => $nextMenstrualDate,
                             'menstrual_end_date' => $newMenstrualEndDate,
@@ -160,6 +163,7 @@ class CalendarController extends Controller
                     }
                 }
             }
+            
         
             // 儲存 personalCalendar 資料到資料庫
             $personalCalendarDataForm = [
