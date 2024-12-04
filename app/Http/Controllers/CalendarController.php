@@ -91,13 +91,23 @@ class CalendarController extends Controller
             if ($isFirstRecord) {
                 // 初次記錄，設置預測日期和生理結束日期
                 $menstrualEndDate = $lastMenstrual->copy()->addDays(10);
-                if ($recordDate->gt($lastMenstrual->copy()->addDays(10))) {
-                    $nextPrediction = $recordDate->copy()->addDays($cycle)->toDateString();
-                    $menstrualEndDate = $recordDate->copy()->addDays(10);
+            
+                if ($recordDate->gt($menstrualEndDate)) {
+                    // 若填寫日期超出生理範圍
+                    if ($request['no_mc'] == '沒有') {
+                        // 無月經：保持當前預測，不更新生理範圍
+                        $nextPrediction = $lastMenstrual->copy()->addDays($cycle)->toDateString();
+                    } else {
+                        // 有月經：更新預測和生理範圍
+                        $nextPrediction = $recordDate->copy()->addDays($cycle)->toDateString();
+                        $menstrualEndDate = $recordDate->copy()->addDays(10);
+                    }
                 } else {
+                    // 填寫日期在生理範圍內，保持原有邏輯
                     $nextPrediction = $lastMenstrual->copy()->addDays($cycle)->toDateString();
                 }
             
+                // 更新 session
                 session([
                     'last_menstrual_date' => $lastMenstrual->toDateString(),
                     'current_menstrual_prediction' => $nextPrediction,
@@ -107,12 +117,12 @@ class CalendarController extends Controller
                     'next_menstrual_date' => $nextPrediction,
                 ]);
             } else {
-                // 獲取更新後的生理結束日期
-                $menstrualEndDate = session('menstrual_end_date') ? Carbon::parse(session('menstrual_end_date')) : null;
+                // 後續紀錄的邏輯
+                $menstrualEndDate = Carbon::parse(session('menstrual_end_date'));
                 $lastMenstrualEndDate = Carbon::parse(session('last_menstrual_end_date'));
             
                 if ($recordDate->eq(Carbon::parse(session('last_menstrual_date')))) {
-                    // 如果記錄日期等於最後一次月經日期，判定為誤填
+                    // 誤填處理
                     session(['is_misinput' => true]);
             
                     // 回退到上一個有效記錄
@@ -125,30 +135,30 @@ class CalendarController extends Controller
                         'last_menstrual_end_date' => $lastMenstrualEndDate->toDateString(),
                     ]);
                 } elseif ($request['no_mc'] == '沒有') {
-                    // 無月經情況處理
+                    // 無月經情況
                     if ($recordDate->lte($menstrualEndDate)) {
-                        // 生理範圍內（10 天）
+                        // 生理範圍內：保持當前預測，不變更生理範圍
                         session([
                             'next_menstrual_date' => session('current_menstrual_prediction'),
                             'menstrual_end_date' => $menstrualEndDate->toDateString(),
                         ]);
                     } else {
-                        // 生理範圍外（保持當前預測，不改變）
+                        // 生理範圍外：保持當前預測，但不更新結束範圍
                         session([
                             'next_menstrual_date' => session('current_menstrual_prediction'),
                             'menstrual_end_date' => $lastMenstrualEndDate->toDateString(),
                         ]);
                     }
                 } else {
-                    // 有月經情況處理
+                    // 有月經情況
                     if ($recordDate->lte($menstrualEndDate)) {
-                        // 生理範圍內（10 天）
+                        // 生理範圍內：保持當前預測
                         session([
                             'next_menstrual_date' => session('current_menstrual_prediction'),
                             'menstrual_end_date' => $menstrualEndDate->toDateString(),
                         ]);
                     } else {
-                        // 生理範圍外（重新計算預測）
+                        // 生理範圍外：重新計算預測和範圍
                         $nextMenstrualDate = $recordDate->copy()->addDays($cycle)->toDateString();
                         $newMenstrualEndDate = $recordDate->copy()->addDays(10)->toDateString();
             
@@ -163,6 +173,9 @@ class CalendarController extends Controller
                     }
                 }
             }
+                                  
+            
+            
             
         
             // 儲存 personalCalendar 資料到資料庫
