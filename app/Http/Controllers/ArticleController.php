@@ -157,7 +157,9 @@ class ArticleController extends Controller
         }
         $article_title = $response['title'] ?? '預設標題';
         $description = $response['description'] ?? '文章描述未提供';
-        $index_image = $response['index_image'] ?? asset('static/img/default_cover_image.png'); // 取出封面圖片
+        $cover_image = $response['cover_image'] ?? asset('static/img/default_cover_image.png');
+        $index_image = isset($response['index_image']) ? url($response['index_image']) : asset('static/img/default_cover_image.png');
+
         if ($token != '' && $postStorageds == null) {
             $formdata = [
                 'storage_name' => '不分類收藏',
@@ -240,6 +242,7 @@ class ArticleController extends Controller
             'article_title' => $article_title,
             'description' => $description,
             'index_image' => $index_image,
+            'cover_image' => $cover_image,
         ]);
 
         return view('treatment/treatment_article', $response);
