@@ -66,7 +66,8 @@ class CalendarController extends Controller
             $lastMenstrual = Carbon::parse($request['lastMenstrual']);
             $recordDate = Carbon::parse($request['menstrualPeriod']);
             $cycle = intval($request['menstrualCycle']);
-        
+            $cycleDays = intval($request['menstruationLast']);
+
             // 從 API 獲取個人月經資料
             $personal_menstrual = ApiHelper::getAuthenticatedRequest($token, env('API_IP') . 'api/userprofile/personal_menstrual/')->json();
         
@@ -78,6 +79,7 @@ class CalendarController extends Controller
                     'type' => 'menstruation',
                     'cycle' => $cycle,
                     'date' => $lastMenstrual->toDateString(), 
+                    'cycle_days' => $cycleDays,
                     'menstrual' => true,
                     'next_date' => $nextMenstrualDate->toDateString(),
                 ];
@@ -103,6 +105,7 @@ class CalendarController extends Controller
                             'type' => 'menstruation',
                             'cycle' => $cycle,
                             'date' => $lastMenstrual->toDateString(), 
+                            'cycle_days' => $cycleDays,
                             'menstrual' => true,
                             'next_date' => $nextMenstrualDate->toDateString(),
                         ];
