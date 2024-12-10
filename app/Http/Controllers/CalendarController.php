@@ -28,6 +28,7 @@ class CalendarController extends Controller
             // 找到最新的生理期紀錄
             $cycle = $latestMenstruation ? $latestMenstruation['calendar']['cycle'] : null;
             $lastMenstrual = $latestMenstruation ? $latestMenstruation['start_date'] : null;
+            $next_menstrual_date = $latestMenstruation ? $latestMenstruation['next_date'] : null;
             // 準備回應的資料
             $response = [
                 'personalCalendar' => $personalCalendar,
@@ -35,6 +36,7 @@ class CalendarController extends Controller
                 'personalmenstrual' => $personalmenstrual,
                 'cycle' => $cycle,
                 'lastMenstrual' => $lastMenstrual,
+                'next_menstrual_date' => $next_menstrual_date,
                 'sidebar' => 'user',
                 'title' => 'calendar',
                 'web_name' => 'None',
