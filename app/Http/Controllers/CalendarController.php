@@ -87,28 +87,27 @@ class CalendarController extends Controller
                 $startDate = Carbon::parse($personal_menstrual[0]['start_date']);
                 $endDate = Carbon::parse($personal_menstrual[0]['end_date']);
 
-                // 判斷紀錄日期是否在生理期範圍內
-                if ($recordDate->between($startDate, $endDate)) {
-                    // 生理期範圍內：不更新 next_date
-                    $personalCalendarDataForm = null;
+                // 判斷紀錄日期是否在生理期範圍內或填寫「沒有月經」，保持現有 next_date，不做任何更新
+                if ($recordDate->between($startDate, $endDate) || $request['no_mc'] == '沒有') {
+                    $personalCalendarDataForm = [
+                        'type' => 'menstruation',
+                        'cycle' => $cycle,
+                        'date' => $lastMenstrual->toDateString(),
+                        'cycle_days' => $cycleDays,
+                        'menstrual' => false,
+                    ];
                 } else {
-                    // 生理期範圍外
-                    if ($request['no_mc'] == '沒有') {
-                        // 填寫「沒有月經」，保持現有 next_date，不做任何更新
-                        $personalCalendarDataForm = null;
-                    } else {
-                        // 填寫其他值（例如有月經），更新 next_date
-                        $nextMenstrualDate = $recordDate->copy()->addDays($cycle);
-                        $personalCalendarDataForm = [
-                            'type' => 'menstruation',
-                            'cycle' => $cycle,
-                            'date' => $lastMenstrual->toDateString(),
-                            'cycle_days' => $cycleDays,
-                            'menstrual' => true,
-                            'record_date' => $recordDate->toDateString(),
-                            'next_date' => $nextMenstrualDate->toDateString(),
-                        ];
-                    }
+                    // 填寫其他值（例如有月經），更新 next_date
+                    $nextMenstrualDate = $recordDate->copy()->addDays($cycle);
+                    $personalCalendarDataForm = [
+                        'type' => 'menstruation',
+                        'cycle' => $cycle,
+                        'date' => $lastMenstrual->toDateString(),
+                        'cycle_days' => $cycleDays,
+                        'menstrual' => true,
+                        'record_date' => $recordDate->toDateString(),
+                        'next_date' => $nextMenstrualDate->toDateString(),
+                    ];
                 }
             }
 
