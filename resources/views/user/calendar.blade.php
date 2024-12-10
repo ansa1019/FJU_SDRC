@@ -54,12 +54,12 @@
                             <div id="next-menstrual" class="mt-2 align-self-start" style="font-size: var(--fs-16);">
                                 下次生理期預計：{{ \Carbon\Carbon::parse(session('next_menstrual_date'))->format('n月j日') }}
                             </div>
-                        @else
-                            @if ($next_menstrual_date)
+                        @else                              
+                            @isset ($next_menstrual_date)
                                 <div id="next-menstrual" class="mt-2 align-self-start" style="font-size: var(--fs-16);">
                                     下次生理期預計：{{ \Carbon\Carbon::parse($next_menstrual_date)->format('n月j日') }}
                                 </div>
-                            @endif
+                            @endisset
                         @endif
 
                         <!-- 倒數懷孕 -->
