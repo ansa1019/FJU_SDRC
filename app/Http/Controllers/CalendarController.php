@@ -23,7 +23,7 @@ class CalendarController extends Controller
             $personalmenstrual = ApiHelper::getAuthenticatedRequest($token, env('API_IP') . 'api/userprofile/menstrual/')->json();
 
             // 找出最新的生理期紀錄
-            $latestMenstruation = $personalmenstrual[0];
+            $latestMenstruation = $personalmenstrual ? $personalmenstrual[0] : null;
 
             // 找到最新的生理期紀錄
             $cycle = $latestMenstruation ? $latestMenstruation['calendar']['cycle'] : null;
