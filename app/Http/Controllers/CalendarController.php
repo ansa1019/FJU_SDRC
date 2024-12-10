@@ -28,7 +28,6 @@ class CalendarController extends Controller
             // 找到最新的生理期紀錄
             $cycle = $latestMenstruation ? $latestMenstruation['calendar']['cycle'] : null;
             $lastMenstrual = $latestMenstruation ? $latestMenstruation['start_date'] : null;
-            $next_menstrual_date = $latestMenstruation ? $latestMenstruation['next_date'] : null;
             // 準備回應的資料
             $response = [
                 'personalCalendar' => $personalCalendar,
@@ -36,7 +35,6 @@ class CalendarController extends Controller
                 'personalmenstrual' => $personalmenstrual,
                 'cycle' => $cycle,
                 'lastMenstrual' => $lastMenstrual,
-                'next_menstrual_date' => $next_menstrual_date,
                 'sidebar' => 'user',
                 'title' => 'calendar',
                 'web_name' => 'None',
@@ -167,8 +165,7 @@ class CalendarController extends Controller
             // 跳轉回日曆頁面，顯示成功訊息
             return redirect()
                 ->route('Calendar')
-                ->with(['success' => '生理期月曆新增成功'])
-                ->with('next_menstrual_date', $nextMenstrualDate);
+                ->with(['success' => '生理期月曆新增成功']);
         } elseif ($request['health_type'] == 'miscarriage period') {
             // post小產期personalCalendar
             $personalCalendarDataForm = [
