@@ -164,8 +164,7 @@ class CalendarController extends Controller
             // 跳轉回日曆頁面，顯示成功訊息
             return redirect()
                 ->route('Calendar')
-                ->with(['success' => '生理期月曆新增成功'])
-                ->with('next_menstrual_date', $nextMenstrualDate);
+                ->with(['success' => '生理期月曆新增成功']);
         } elseif ($request['health_type'] == 'miscarriage period') {
             // post小產期personalCalendar
             $personalCalendarDataForm = [

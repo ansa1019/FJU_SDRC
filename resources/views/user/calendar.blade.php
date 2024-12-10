@@ -50,11 +50,7 @@
                 <div class="row mt-2">
                     <div class="col-md col-lg-auto px-0 d-flex flex-column align-items-center">
                         <div id="calendar" class="material-theme mx-auto" tabindex="-1"></div>
-                        @if (session('next_menstrual_date'))
-                            <div id="next-menstrual" class="mt-2 align-self-start" style="font-size: var(--fs-16);">
-                                下次生理期預計：{{ \Carbon\Carbon::parse(session('next_menstrual_date'))->format('n月j日') }}
-                            </div>
-                        @endif
+
                         @if ($lastMenstrual)
                             <div id="next-menstrual" class="mt-2 align-self-start" style="font-size: var(--fs-16);">
                                 下次生理期預計：{{ \Carbon\Carbon::parse($lastMenstrual)->format('n月j日') }}
