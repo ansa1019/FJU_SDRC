@@ -91,6 +91,7 @@ class CalendarController extends Controller
 
                 // 判斷紀錄日期是否在生理期範圍內或填寫「沒有月經」，保持現有 next_date，不做任何更新
                 if ($recordDate->between($startDate, $endDate) || $request['no_mc'] == '沒有') {
+                    $nextMenstrualDate = $personal_menstrual[0]['next_date'];
                     $personalCalendarDataForm = [
                         'type' => 'menstruation',
                         'cycle' => $cycle,
