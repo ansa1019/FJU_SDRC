@@ -395,6 +395,8 @@ function getCalendarEvents() {
         calendarEvents[content["date"]] = {
             name: content["description"],
             type: content["name"],
+            cycle: data.calendar.cycle,
+            cycleDays: data.calendar.cycle_days,
         };
     });
     refreshEvents(calendarEvents);
@@ -426,6 +428,9 @@ function showEvents(eventDate) {
     if (calendarEvents.hasOwnProperty(date)) {
         $(".subtitle").html("1 event"); // 前端badge標籤 顯示事件數量
         $("#event-content").html(calendarEvents[date].name); // 前端事件內文 顯示內容
+        // 恢復之前儲存的資料
+        $("#type1_q1").val(calendarEvents[date].cycle || "");
+        $("#type1_q3").val(calendarEvents[date].cycleDays || "");
         /* 原先事件為list格式 已改成單事件(先保留原始code) */
         // Number of events
         // elements.subtitle.textContent = events[id].length + " " + (events[id].length > 1 ? "events" : "event");
@@ -507,11 +512,6 @@ function open_modal(type) {
         $("#daily_type_1").addClass("d-none");
         $("#health_type").val(type);
         modal_type(type);
-        // 恢復之前儲存的資料
-        $('#type1_q1').val(cycle || '');
-        $('#type1_q2').val(lastMenstrual || '');
-        $('#type1_q3').val(cycleDays || '');
-        $('#dueDate').val(dueDate || '');
     }
 }
 function toggle_modal() {
@@ -520,10 +520,6 @@ function toggle_modal() {
 }
 
 function close_modal() {
-    cycle = $('#type1_q1').val();
-    lastMenstrual = $('#type1_q2').val();
-    cycleDays = $('#type1_q3').val();   
-    dueDate = $('#dueDate').val();
     $(".modal").modal("hide");
     $(".modal-backdrop").remove();
     $("#first_daily_modal input").val("");

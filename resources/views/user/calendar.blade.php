@@ -9,9 +9,9 @@
     <?php
     $json = json_encode($subPersonalCalendar);
     echo "<script>
-                                    var subPersonalCalendar = $json;
-                                    subPersonalCalendar.sort((a,b) => a.last_nom - b.last_nom);
-                                </script>";
+                var subPersonalCalendar = $json;
+                subPersonalCalendar.sort((a,b) => a.last_nom - b.last_nom);
+            </script>";
     ?>
     <div class="container-xxl">
         <div class="row pt-3 px-md-5">

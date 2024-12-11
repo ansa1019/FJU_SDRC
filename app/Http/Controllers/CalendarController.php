@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Http\Client\ConnectionException;
 
 class CalendarController extends Controller
 {
@@ -26,7 +27,8 @@ class CalendarController extends Controller
             $latestMenstruation = $personalmenstrual ? $personalmenstrual[0] : null;
 
             // 找到最新的生理期紀錄
-            $cycle = $latestMenstruation ? $latestMenstruation['calendar']['cycle'] : null;
+            $cycle = $latestMenstruation ? $latestMenstruation['calendar']['cycle'] : ($personalCalendar ? end($personalCalendar)['cycle'] : null);
+            $cycle_days = $latestMenstruation ? $latestMenstruation['calendar']['cycle_days'] : ($personalCalendar ? end($personalCalendar)['cycle'] : null);
             $lastMenstrual = $latestMenstruation ? $latestMenstruation['start_date'] : null;
             $next_menstrual_date = $latestMenstruation ? $latestMenstruation['next_date'] : null;
             // 準備回應的資料
@@ -35,6 +37,7 @@ class CalendarController extends Controller
                 'subPersonalCalendar' => $subPersonalCalendar,
                 'personalmenstrual' => $personalmenstrual,
                 'cycle' => $cycle,
+                'cycle_days' => $cycle_days,
                 'lastMenstrual' => $lastMenstrual,
                 'next_menstrual_date' => $next_menstrual_date,
                 'sidebar' => 'user',
@@ -67,53 +70,12 @@ class CalendarController extends Controller
             $cycle = intval($request['menstrualCycle']);
             $cycleDays = intval($request['menstruationLast']);
 
-            // 從 API 獲取個人月經資料
-            $personal_menstrual = ApiHelper::getAuthenticatedRequest($token, env('API_IP') . 'api/userprofile/menstrual/')->json();
-
-            if (empty($personal_menstrual)) {
-                // 初次記錄，更新 next_date
-                $nextMenstrualDate = $recordDate->copy()->addDays($cycle); // 預測下一次月經日期
-
-                $personalCalendarDataForm = [
-                    'type' => 'menstruation',
-                    'cycle' => $cycle,
-                    'date' => $lastMenstrual->toDateString(),
-                    'cycle_days' => $cycleDays,
-                    'menstrual' => true,
-                    'record_date' => $recordDate->toDateString(),
-                    'next_date' => $nextMenstrualDate->toDateString(),
-                ];
-
-            } else {
-                // 後續記錄
-                $startDate = Carbon::parse($personal_menstrual[0]['start_date']);
-                $endDate = Carbon::parse($personal_menstrual[0]['end_date']);
-
-                // 判斷紀錄日期是否在生理期範圍內或填寫「沒有月經」，保持現有 next_date，不做任何更新
-                if ($recordDate->between($startDate, $endDate) || $request['no_mc'] == '沒有') {
-                    $nextMenstrualDate = $personal_menstrual[0]['next_date'];
-                    $personalCalendarDataForm = [
-                        'type' => 'menstruation',
-                        'cycle' => $cycle,
-                        'date' => $lastMenstrual->toDateString(),
-                        'cycle_days' => $cycleDays,
-                        'menstrual' => false,
-                    ];
-                } else {
-                    // 填寫其他值（例如有月經），更新 next_date
-                    $nextMenstrualDate = $recordDate->copy()->addDays($cycle);
-                    $personalCalendarDataForm = [
-                        'type' => 'menstruation',
-                        'cycle' => $cycle,
-                        'date' => $lastMenstrual->toDateString(),
-                        'cycle_days' => $cycleDays,
-                        'menstrual' => true,
-                        'record_date' => $recordDate->toDateString(),
-                        'next_date' => $nextMenstrualDate->toDateString(),
-                    ];
-                }
-            }
-
+            $personalCalendarDataForm = [
+                'type' => 'menstruation',
+                'cycle' => $cycle,
+                'date' => $recordDate->toDateString(),
+                'cycle_days' => $cycleDays
+            ];
 
             $personalCalendar = Http::withHeaders([
                 'Authorization' => 'Bearer ' . $token,
@@ -154,10 +116,49 @@ class CalendarController extends Controller
                 }
             }
 
-            $subPersonalCalendarDataForm = [
-                'calendar_id' => $personalCalendar->json()['id'],
-                'dict' => $dataToInclude,
-            ];
+            // 從 API 獲取個人月經資料
+            $personal_menstrual = ApiHelper::getAuthenticatedRequest($token, env('API_IP') . 'api/userprofile/menstrual/')->json();
+
+            if (empty($personal_menstrual)) {
+                // 初次記錄，更新 next_date
+                // 判斷紀錄日期是否在生理期範圍內或填寫「沒有月經」，是的話依上次開始日期計算，否則依紀錄日期(有月經)
+                if ($request['no_mc'] == '沒有' || $recordDate->between($lastMenstrual, $lastMenstrual->copy()->addDays($cycleDays))) {
+                    $nextMenstrualDate = $lastMenstrual->copy()->addDays($cycle);
+                } else {
+                    $nextMenstrualDate = $recordDate->copy()->addDays($cycle);
+                }
+
+                $subPersonalCalendarDataForm = [
+                    'calendar_id' => $personalCalendar->json()['id'],
+                    'dict' => $dataToInclude,
+                    'menstrual' => true,
+                    'next_date' => $nextMenstrualDate->toDateString(),
+                ];
+
+            } else {
+                // 後續記錄
+                $startDate = Carbon::parse($personal_menstrual[0]['start_date']);
+                $endDate = Carbon::parse($personal_menstrual[0]['end_date']);
+
+                // 判斷紀錄日期是否在生理期範圍內或填寫「沒有月經」，保持現有 next_date，不做任何更新
+                if ($recordDate->between($startDate, $endDate) || $request['no_mc'] == '沒有') {
+                    $nextMenstrualDate = $personal_menstrual[0]['next_date'];
+                    $subPersonalCalendarDataForm = [
+                        'calendar_id' => $personalCalendar->json()['id'],
+                        'dict' => $dataToInclude,
+                        'menstrual' => false,
+                    ];
+                } else {
+                    // 填寫其他值（例如有月經），更新 next_date
+                    $nextMenstrualDate = $recordDate->copy()->addDays($cycle);
+                    $subPersonalCalendarDataForm = [
+                        'calendar_id' => $personalCalendar->json()['id'],
+                        'dict' => $dataToInclude,
+                        'menstrual' => true,
+                        'next_date' => $nextMenstrualDate->toDateString(),
+                    ];
+                }
+            }
 
             $subPersonalCalendar = Http::withHeaders([
                 'Authorization' => 'Bearer ' . $token,
