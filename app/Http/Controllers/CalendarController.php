@@ -73,7 +73,7 @@ class CalendarController extends Controller
             $personalCalendarDataForm = [
                 'type' => 'menstruation',
                 'cycle' => $cycle,
-                'date' => $recordDate->toDateString(),
+                'date' => $lastMenstrual->toDateString(),
                 'cycle_days' => $cycleDays
             ];
 
@@ -124,17 +124,23 @@ class CalendarController extends Controller
                 // 判斷紀錄日期是否在生理期範圍內或填寫「沒有月經」，是的話依上次開始日期計算，否則依紀錄日期(有月經)
                 if ($request['no_mc'] == '沒有' || $recordDate->between($lastMenstrual, $lastMenstrual->copy()->addDays(10))) {
                     $nextMenstrualDate = $lastMenstrual->copy()->addDays($cycle);
+                    $subPersonalCalendarDataForm = [
+                        'calendar_id' => $personalCalendar->json()['id'],
+                        'dict' => $dataToInclude,
+                        'menstrual' => true,
+                        'start_date' => $lastMenstrual->toDateString(),
+                        'next_date' => $nextMenstrualDate->toDateString(),
+                    ];
                 } else {
                     $nextMenstrualDate = $recordDate->copy()->addDays($cycle);
+                    $subPersonalCalendarDataForm = [
+                        'calendar_id' => $personalCalendar->json()['id'],
+                        'dict' => $dataToInclude,
+                        'menstrual' => true,
+                        'start_date' => $lastMenstrual->toDateString(),
+                        'next_date' => $nextMenstrualDate->toDateString(),
+                    ];
                 }
-
-                $subPersonalCalendarDataForm = [
-                    'calendar_id' => $personalCalendar->json()['id'],
-                    'dict' => $dataToInclude,
-                    'menstrual' => true,
-                    'next_date' => $nextMenstrualDate->toDateString(),
-                ];
-
             } else {
                 // 後續記錄
                 $startDate = Carbon::parse($personal_menstrual[0]['start_date']);
