@@ -55,11 +55,11 @@ class SendMail extends Mailable
         $this->age2 = $age2;
         $this->pregnant_state = $pregnant_state != "0" ? $pregnant_state : '';
         $this->birth_plan = $birth_plan != "0" ? $birth_plan : '';
-        $this->allergy_state = $allergy_state != "0" ? "對" . str_replace("1,", "", $allergy_state) . "過敏" : '';
-        $this->order = $order != "0" ? "醫生有特別說" . str_replace("1,", "", $order) : '';
-        $this->drug = $drug != "0" ? "需要吃" . str_replace("1,", "", $drug) : '';
+        $this->allergy_state = ($allergy_state && $allergy_state != "0") ? "對" . str_replace("1,", "", $allergy_state) . "過敏" : '';
+        $this->order = ($order && $order != "0") ? "醫生有特別說" . str_replace("1,", "", $order) : '';
+        $this->drug = ($drug && $drug != "0") ? "需要吃" . str_replace("1,", "", $drug) : '';
+        $this->disease = ($disease && $disease != "0") ? "有" . $disease : '';        
         $this->married_state = $married_state != "0" ? $married_state : '';
-        $this->disease = $disease != "0" ? "有" . $disease : '';
         $this->user_name = $user_name;
         $this->today = $today;
     }
