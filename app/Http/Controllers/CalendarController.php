@@ -122,7 +122,7 @@ class CalendarController extends Controller
             if (empty($personal_menstrual)) {
                 // 初次記錄，更新 next_date
                 // 判斷紀錄日期是否在生理期範圍內或填寫「沒有月經」，是的話依上次開始日期計算，否則依紀錄日期(有月經)
-                if ($request['no_mc'] == '沒有' || $recordDate->between($lastMenstrual, $lastMenstrual->copy()->addDays($cycleDays))) {
+                if ($request['no_mc'] == '沒有' || $recordDate->between($lastMenstrual, $lastMenstrual->copy()->addDays(10))) {
                     $nextMenstrualDate = $lastMenstrual->copy()->addDays($cycle);
                 } else {
                     $nextMenstrualDate = $recordDate->copy()->addDays($cycle);
