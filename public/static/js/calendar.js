@@ -396,7 +396,7 @@ function getCalendarEvents() {
             name: content["description"],
             type: content["name"],
             cycle: data.calendar.cycle,
-            cycleDays: data.calendar.cycle_days,
+            cycle_days: data.calendar.cycle_days,
         };
     });
     refreshEvents(calendarEvents);
@@ -429,8 +429,8 @@ function showEvents(eventDate) {
         $(".subtitle").html("1 event"); // 前端badge標籤 顯示事件數量
         $("#event-content").html(calendarEvents[date].name); // 前端事件內文 顯示內容
         // 恢復之前儲存的資料
-        $("#type1_q1").val(calendarEvents[date].cycle || "");
-        $("#type1_q3").val(calendarEvents[date].cycleDays || "");
+        $("#type1_q1").val(calendarEvents[date].cycle);
+        $("#type1_q3").val(calendarEvents[date].cycle_days);
         /* 原先事件為list格式 已改成單事件(先保留原始code) */
         // Number of events
         // elements.subtitle.textContent = events[id].length + " " + (events[id].length > 1 ? "events" : "event");
@@ -458,6 +458,9 @@ function showEvents(eventDate) {
         // }
     } else {
         // elements.subtitle.textContent = "No events";
+        // 恢復之前儲存的資料
+        $("#type1_q1").val(cycle);
+        $("#type1_q3").val(cycle_days);
         $(".subtitle").html("No events"); // 若無日期事件資料，則前端badge標籤 顯示事件數量
     }
 }
