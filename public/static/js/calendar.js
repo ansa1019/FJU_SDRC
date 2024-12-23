@@ -397,10 +397,15 @@ function getCalendarEvents() {
             type: content["name"],
             cycle: data.calendar.cycle,
             cycle_days: data.calendar.cycle_days,
+            dueDate: dueDate,
         };
     });
     refreshEvents(calendarEvents);
+    console.log("calendarEvents:", calendarEvents);
+
 }
+
+
 //更新載入月曆事件
 function refreshEvents(events_data) {
     jQuery.each(events_data, function (date, val) {
@@ -425,44 +430,33 @@ function showEvents(eventDate) {
     $("#event-reminder").hide();
     // Add events on list
     // if (events.hasOwnProperty(id) && events[id].length) {
-    if (calendarEvents.hasOwnProperty(date)) {
-        $(".subtitle").html("1 event"); // 前端badge標籤 顯示事件數量
-        $("#event-content").html(calendarEvents[date].name); // 前端事件內文 顯示內容
-        // 恢復之前儲存的資料
-        $("#type1_q1").val(calendarEvents[date].cycle);
-        $("#type1_q3").val(calendarEvents[date].cycle_days);
-        /* 原先事件為list格式 已改成單事件(先保留原始code) */
-        // Number of events
-        // elements.subtitle.textContent = events[id].length + " " + (events[id].length > 1 ? "events" : "event");
-        // var div;
-        // var close;
-        // For each event
-        // for (var i = 0; i < events[id].length; i++) {
-        // div = document.createElement("div");
-        // div.className = "event-item";
-        // div.textContent = i + 1 + ". " + events[id][i].name;
-        // elements.list.appendChild(div);
-        // close = document.createElement("div");
-        // close.className = "close";
-        // close.textContent = "×";
-        // div.appendChild(close);
-        // close.addEventListener(
-        //     "click",
-        //     (function (date, index) {
-        //         return function () {
-        //             removeEvent(date, index);
-        //         };
-        //     })(date, i),
-        //     false
-        // );
-        // }
-    } else {
-        // elements.subtitle.textContent = "No events";
-        // 恢復之前儲存的資料
-        $("#type1_q1").val(cycle);
-        $("#type1_q3").val(cycle_days);
-        $(".subtitle").html("No events"); // 若無日期事件資料，則前端badge標籤 顯示事件數量
-    }
+        if (calendarEvents.hasOwnProperty(date)) {
+            $(".subtitle").html("1 event"); // 顯示事件數量
+            $("#event-content").html(calendarEvents[date].name); 
+            // 根據事件的 type 填充資料
+            if (calendarEvents[date].type === "menstruation") {
+                // 生理期資料
+                $("#type1_q1").val(calendarEvents[date].cycle);
+                $("#type1_q3").val(calendarEvents[date].cycle_days);  
+                $("#type3_q1").val("");  
+                $("#dueDate").val("");  
+            } else if (calendarEvents[date].type === "pregnancy") {
+                $("#type1_q1").val("");
+                $("#type1_q3").val("");  
+                // 懷孕期資料
+                $("#type3_q1").val(calendarEvents[date].cycle); 
+                $("#dueDate").val(calendarEvents[date].dueDate); 
+            }
+        
+        } else {
+            $(".subtitle").html("No events"); 
+            // 恢復預設資料
+            $("#type1_q1").val(cycle); 
+            $("#type1_q3").val(cycle_days);  
+            $("#type3_q1").val(cycle);
+            $("#dueDate").val(dueDate); 
+        }
+        
 }
 function modal_type(type) {
     //記錄會員的身體狀態，預設是"生理期" (ex:生理期=daily_type_1;小產期=daily_type_2...)

@@ -49,7 +49,7 @@
                                 <div class="col-auto">
                                     <div class="input-group">
                                     <input type="date" id="type1_q2" name="lastMenstrual" 
-                                        class="form-control" onkeydown="return false;"  value="{{ $lastMenstrual ?? '' }}"/>
+                                        class="form-control" onkeydown="return false;"  value="{{ $lastMenstrual ?? '' }}"@if($lastMenstrual) disabled @endif />
                                         <!-- <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span> -->
                                     </div>
                                 </div>
@@ -89,7 +89,7 @@
                                 <div class="col-auto">
                                     <div class="input-group">
                                         <input type="number" id="type3_q1" name="weeksPregnancy"
-                                            class="form-control" value="{{ session('pregnancy_data.weeksPregnancy', '') }}" />
+                                            class="form-control" value="{{ $cycle ?? '' }}" />
                                     </div>
                                 </div>
                             </div>
@@ -99,8 +99,8 @@
                                 </div>
                                 <div class="col-auto">
                                     <div class="input-group">
-                                        <input type="date" id="dueDate" name="dueDate" class="form-control" onkeydown="return false;" 
-                                        value="{{ session('pregnancy_data.dueDate', '') }}" />
+                                        <input type="date" id="dueDate" name="dueDate" class="form-control" onkeydown="return false;"
+                                        value="{{ $dueDate ?? '' }}" />
                                     </div>  
                                 </div>
                             </div>
