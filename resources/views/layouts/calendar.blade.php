@@ -49,7 +49,7 @@
                                 <div class="col-auto">
                                     <div class="input-group">
                                     <input type="date" id="type1_q2" name="lastMenstrual" 
-                                        class="form-control" onkeydown="return false;"  value="{{ $lastMenstrual ?? '' }}"@if($lastMenstrual) disabled @endif />
+                                        class="form-control" onkeydown="return false;"  value="{{ $lastMenstrual ?? '' }}"/>
                                         <!-- <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span> -->
                                     </div>
                                 </div>
