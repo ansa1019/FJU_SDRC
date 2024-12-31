@@ -9,6 +9,7 @@
     <script>
         var cycle = "{{ $cycle }}";
         var cycle_days = "{{ $cycle_days }}";
+        var dueDate = "{{ $dueDate }}";
     </script>
     <?php
     $json = json_encode($subPersonalCalendar);
@@ -55,25 +56,20 @@
                     <div class="col-md col-lg-auto px-0 d-flex flex-column align-items-center">
                         <div id="calendar" class="material-theme mx-auto" tabindex="-1"></div>
 
-                        <!-- 倒數懷孕 -->
-                        @if (session('health_type') == 'pregnancy' && session('due_date') !== null)
-                            <div id="pregnancy-countdown" class="mt-2 align-self-lg-start" style="font-size: var(--fs-16);">
-                                懷孕期：倒數 {{ session('remaining_weeks') }} 週 {{ session('remaining_days') }} 天
+                    <!-- 懷孕倒數 -->
+                    @if (isset($remainingWeeks) && isset($remainingDays) && ($remainingWeeks > 0 || $remainingDays > 0))
+                        <p class="mt-2 align-self-lg-start" style="font-size: var(--fs-16);">
+                            懷孕期：倒數 {{ $remainingWeeks }} 週 {{ $remainingDays }} 天
+                        </p>
+                    @else
+                        <!-- 生理期預測 -->
+                        @isset($next_menstrual_date)
+                            <div id="next-menstrual" class="mt-2 align-self-lg-start" style="font-size: var(--fs-16);">
+                                下次生理期預計：{{ \Carbon\Carbon::parse($next_menstrual_date)->format('n月j日') }}
                             </div>
-                        @else
-                            <!-- 預測生理期 -->
-                            @if (session('next_menstrual_date'))
-                                <div id="next-menstrual" class="mt-2 align-self-lg-start" style="font-size: var(--fs-16);">
-                                    下次生理期預計：{{ \Carbon\Carbon::parse(session('next_menstrual_date'))->format('n月j日') }}
-                                </div>
-                            @else
-                                @isset($next_menstrual_date)
-                                    <div id="next-menstrual" class="mt-2 align-self-lg-start" style="font-size: var(--fs-16);">
-                                        下次生理期預計：{{ \Carbon\Carbon::parse($next_menstrual_date)->format('n月j日') }}
-                                    </div>
-                                @endisset
-                            @endif
-                        @endif
+                        @endisset
+                    @endif
+
                     </div>
                     <div class="col-md-12 col-lg p-4">
                         <h4 class="fw-bold" id="event-title" style="font-size: var(--fs-24)"></h4>

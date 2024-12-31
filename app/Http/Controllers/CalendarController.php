@@ -31,6 +31,31 @@ class CalendarController extends Controller
             $cycle_days = $latestMenstruation ? $latestMenstruation['calendar']['cycle_days'] : ($personalCalendar ? end($personalCalendar)['cycle'] : null);
             $lastMenstrual = $latestMenstruation ? $latestMenstruation['start_date'] : null;
             $next_menstrual_date = $latestMenstruation ? $latestMenstruation['next_date'] : null;
+
+            // 懷孕期資料處理
+            $remainingWeeks = 0;
+            $remainingDays = 0;
+            $dueDate = null;
+
+            if (!empty($personalCalendar) && !empty($subPersonalCalendar)) {
+                $latestPersonal = end($personalCalendar); 
+                $latestSubPersonal = end($subPersonalCalendar)['dict']; 
+
+                // 提取懷孕期日期
+                $dueDate = isset($latestPersonal['date']) ? Carbon::parse($latestPersonal['date']) : null;
+                $pregnancyStartDate = isset($latestSubPersonal['pregnancyPeriod']) ? Carbon::parse($latestSubPersonal['pregnancyPeriod']) : null;
+
+                if ($dueDate && $pregnancyStartDate) {
+                    // 計算剩餘天數
+                    $totalDays = $dueDate->diffInDays($pregnancyStartDate);
+                    $remainingDays = $totalDays;
+
+                    // 計算剩餘週數和天數
+                    $remainingWeeks = intval(floor($remainingDays / 7));
+                    $remainingDays = $remainingDays % 7;
+                }
+            }
+            // dd($latestPersonal['date'] );
             // 準備回應的資料
             $response = [
                 'personalCalendar' => $personalCalendar,
@@ -40,6 +65,9 @@ class CalendarController extends Controller
                 'cycle_days' => $cycle_days,
                 'lastMenstrual' => $lastMenstrual,
                 'next_menstrual_date' => $next_menstrual_date,
+                'dueDate' => $dueDate ? $dueDate->toDateString() : null,
+                'remainingWeeks' => $remainingWeeks,
+                'remainingDays' => $remainingDays,
                 'sidebar' => 'user',
                 'title' => 'calendar',
                 'web_name' => 'None',
@@ -215,62 +243,39 @@ class CalendarController extends Controller
                 ->route('Calendar')
                 ->with(['success' => '小產期月曆新增成功']);
 
-        } elseif ($request['health_type'] == 'pregnancy') {
-            // 從請求中獲取填寫的懷孕期日期和預產期
-            $pregnancyPeriodString = $request->input('pregnancyPeriod', $lastPregnancyData['pregnancyPeriod'] ?? null);
-            $dueDateString = $request->input('dueDate', $lastPregnancyData['dueDate'] ?? null);
-
-            // 確保填寫的日期存在且是有效的日期格式
+        }elseif ($request['health_type'] == 'pregnancy') {
+            // 從請求中獲取懷孕期開始日期和預產期
+            $pregnancyPeriodString = $request->input('pregnancyPeriod');
+            $dueDateString = $request->input('dueDate');        
+            // 解析日期
             $pregnancyPeriod = $pregnancyPeriodString ? Carbon::parse($pregnancyPeriodString) : null;
             $dueDate = $dueDateString ? Carbon::parse($dueDateString) : null;
-
-            // 確保日期存在並且預產期比懷孕期晚
+            
+            // 計算剩餘天數
             if ($pregnancyPeriod && $dueDate && $dueDate->greaterThan($pregnancyPeriod)) {
-                // 計算懷孕的總天數
-                $totalPregnancyDays = $dueDate->diffInDays($pregnancyPeriod);
-
-                // 計算已經過去的天數
-                $daysPassed = $pregnancyPeriod->diffInDays(Carbon::now());
-
-                // 計算剩餘的天數
-                $remainingDays = $totalPregnancyDays - $daysPassed;
-                $remainingWeeks = floor(max(0, $remainingDays) / 7);
-                $remainingDays = max(0, $remainingDays % 7);
+                $remainingDays = $dueDate->diffInDays($pregnancyPeriod);        
+                $remainingWeeks = intval(floor($remainingDays / 7));
+                $remainingDays = $remainingDays % 7;
             } else {
-                // 如果日期無效或預產期早於懷孕期，將倒數設為0
                 $remainingWeeks = 0;
                 $remainingDays = 0;
-            }
-
-            // 儲存倒數的週數和天數到 Session
-            session([
-                'remaining_weeks' => $remainingWeeks,
-                'remaining_days' => $remainingDays,
-                'due_date' => optional($dueDate)->toDateString() ?: '', // 如果 dueDate 是 null，則返回空字串
-                'health_type' => 'pregnancy',
-                'pregnancy_data' => [
-                    'pregnancyPeriod' => optional($pregnancyPeriod)->toDateString() ?: '',
-                    'dueDate' => optional($dueDate)->toDateString() ?: '',
-                ],
-            ]);
-
-            // post 懷孕期的 personalCalendar
+            }        
+            
+            // 新增至 personalCalendar
             $personalCalendarDataForm = [
                 'type' => 'pregnancy',
                 'cycle' => $request->has('weeksPregnancy') ? intval($request['weeksPregnancy']) : null,
-                'date' => optional($dueDate)->toDateString() ?: '', // 如果 dueDate 是 null，則返回空字串
-                'cycle_days' => intval($request['menstruationLast']),
+                'date' => optional($dueDate)->toDateString() ?: '',
             ];
-
+        
             $personalCalendar = Http::withHeaders([
                 'Authorization' => 'Bearer ' . $token,
                 'Content-Type' => 'application/json',
             ])->post(env('API_IP') . 'api/userprofile/personalCalendar/', $personalCalendarDataForm);
-
-            // post懷孕期subPersonalCalendar
+            
+            // 處理 subPersonalCalendar
             $requestData = $request->all();
             $dataToInclude = [];
-
             $fieldsToCheck = [
                 'pregnancyPeriod',
                 'has_blood',
@@ -293,28 +298,33 @@ class CalendarController extends Controller
                 'upsetStomach',
                 'pregnancyIndigestion',
                 'pregnancyOther'
-            ];
-
+            ];            
             foreach ($fieldsToCheck as $field) {
                 if (isset($requestData[$field]) && !empty($requestData[$field])) {
                     $dataToInclude[$field] = $requestData[$field];
                 }
             }
-
+        
             $subPersonalCalendarDataForm = [
                 'calendar_id' => $personalCalendar->json()['id'],
                 'dict' => $dataToInclude,
             ];
-
-            // 發送 subPersonalCalendar 的資料
+        
             $subPersonalCalendar = Http::withHeaders([
                 'Authorization' => 'Bearer ' . $token,
                 'Content-Type' => 'application/json',
             ])->post(env('API_IP') . 'api/userprofile/subPersonalCalendar/', $subPersonalCalendarDataForm);
-            // 成功後返回日曆頁面
+        
+            // 更新倒數時間並回傳
             return redirect()
                 ->route('Calendar')
-                ->with(['success' => '懷孕期月曆新增成功']);
+                ->with([
+                    'success' => '懷孕期月曆新增成功',
+                    'remainingWeeks' => $remainingWeeks,
+                    'remainingDays' => $remainingDays,
+                ]);
+        
+        
         } elseif ($request['health_type'] == 'postpartum_period') {
             // post// post產後期personalCalendar
             $personalCalendarDataForm = [
