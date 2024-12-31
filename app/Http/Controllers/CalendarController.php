@@ -121,7 +121,7 @@ class CalendarController extends Controller
 
             if (empty($personal_menstrual)) {
                 // 初次記錄，更新 next_date
-                if ($request['no_mc'] == '沒有' || $recordDate->between($lastMenstrual, $lastMenstrual->copy()->addDays(10))) {
+                if ($request['no_mc'] == '沒有' || $recordDate->between($lastMenstrual, $lastMenstrual->copy()->addDays(10),false)) {
                     $nextMenstrualDate = $lastMenstrual->copy()->addDays($cycle);
                     $subPersonalCalendarDataForm = [
                         'calendar_id' => $personalCalendar->json()['id'],
