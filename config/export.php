@@ -68,5 +68,5 @@ return [
     'after' => [
         // 'deploy' => '/usr/local/bin/netlify deploy --prod',
     ],
-
+    'replace_absolute_paths_with_relative' => true,
 ];
