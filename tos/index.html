@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="en" style="height: 100%">
+
+<head>
+    <link rel="icon" href="http://localhost/static/img/logo.ico" type="image/x-icon" />
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="csrf-token" content="41L6f1M2t2ZSPJaKV2O2eMPQXindLJac32pE2I29">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta property="og:title" content="預設標題">
+    <meta property="og:description" content="文章描述未提供">
+    <meta property="og:image" content="http://localhost/static/img/default_image.png">
+    <meta property="og:url" content="http://localhost/tos">
+    <!--ICON-->
+    <link rel="stylesheet" href="http://localhost/static/bootstrap_icons-1.4.1/font/bootstrap-icons.css" />
+    <link rel="stylesheet" href="http://localhost/static/fontawesome-free-5.15.3-web/css/all.css" />
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
+
+    <!--Bootstrap-->
+    <link rel="stylesheet" href="http://localhost/static/bootstrap-5.1.3-dist/css/bootstrap.min.css" />
+    <!--BootstrapTable-->
+    <link rel="stylesheet" href="http://localhost/static/bootstrap-table-master/dist/bootstrap-table.min.css" />
+    <!-- MultiSelect -->
+    <link rel="stylesheet" href="http://localhost/static/bootstrap-multiselect/dist/css/bootstrap-multiselect.css"
+        type="text/css" />
+    <!-- Datetime picker -->
+    <link rel="stylesheet"
+        href="http://localhost/static/bootstrap-datepicker-master/dist/css/bootstrap-datepicker.min.css" />
+    <!-- Image cropper -->
+    <link href="https://unpkg.com/cropperjs/dist/cropper.min.css" rel="stylesheet" />
+
+    <!-- Sweet Alert -->
+    <link rel="stylesheet" href="http://localhost/static/sweetalert2-11.7.1/dist/sweetalert2.min.css" />
+    <link rel="stylesheet" href="http://localhost/static/quill-1.3.6/quill.snow.css" />
+    <link rel="stylesheet" href="http://localhost/static/quill-1.3.6/quill.core.css" />
+
+    <!-- import self-css -->
+    <link rel="stylesheet" href="http://localhost/static/css/article.css" />
+    <link rel="stylesheet" href="http://localhost/static/css/master_page.css" />
+    <link rel="stylesheet" href="http://localhost/static/css/index.css" />
+    <link rel="stylesheet" href="http://localhost/static/css/forum_list.css" />
+    <link rel="stylesheet" href="http://localhost/static/css/user.css" />
+    <link rel="stylesheet" href="http://localhost/static/css/point.css" />
+    <link rel="stylesheet" href="http://localhost/static/css/saved.css" />
+    <link rel="stylesheet" href="http://localhost/static/css/chat_room.css" />
+    <link rel="stylesheet" href="http://localhost/static/css/share_modal.css" />
+    <link rel="stylesheet" href="http://localhost/static/css/point.css" />
+    <!-- JS -->
+    <script src="http://localhost/static/bootstrap-4.6.0-dist/jquery-3.6.0.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"
+        integrity="sha384-SR1sx49pcuLnqZUnnPwx6FCym0wLsk5JZuNx2bPPENzswTNFaQU1RDvt3wT4gWFG" crossorigin="anonymous">
+    </script>
+    <script src="https://unpkg.com/cropperjs/dist/cropper.min.js"></script>
+    <!-- jsCalendar -->
+    <link rel="stylesheet" type="text/css" href="static/jsCalendar-master/source/jsCalendar.css" />
+    <!-- chat room -->
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"
+        integrity="sha384-2huaZvOR9iDzHqslqwpR87isEmrfxqyWOF7hr7BY6KG0+hVKLoEXMPUJw3ynWuhO" crossorigin="anonymous">
+    </script>
+
+
+    <title>洪豆論壇 - ANSA</title>
+    <style>
+        #calendar {
+            font-size: var(--fs-18);
+        }
+    </style>
+</head>
+
+<body>
+        <div type="hidden" id="app" data-api-ip="127.0.0.1:8001/"></div>
+
+    <div class="container-xxl topbar">
+    <nav class="navbar navbar-expand-lg border-bottom fixed-top">
+        <div class="container-xxl px-md-4">
+            <a class="navbar-brand" href="http://localhost">
+                <img src="http://localhost/static/img/SDRC_logo-02.png" alt="" height="40"
+                    class="d-inline-block align-text-top" />
+            </a>
+            <div class="align-items-center">
+                                <button class="navbar-toggler border" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarNavDropdown">
+                    <i class="fas fa-bars ct-txt-1"></i>
+                </button>
+            </div>
+
+
+            <div class="justify-content-end collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav mb-2 mb-md-0" id="topbar-nav-tabs">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link active" data-bs-toggle="dropdown">知識圖書館</a>
+                        <ul class="dropdown-menu">
+                            <a class="dropdown-item"
+                                href="http://localhost/knowledge_library/%E5%B0%8F%E7%94%A2%E8%AA%BF%E7%90%86/%E5%B0%8F%E7%94%A2%E7%9F%A5%E8%AD%98">小產調理</a>
+                            <a class="dropdown-item"
+                                href="http://localhost/knowledge_library/%E5%A9%A6%E7%A7%91%E4%BF%9D%E5%81%A5/%E5%A9%A6%E7%A7%91%E4%BF%9D%E5%81%A5%E7%9F%A5%E8%AD%98">婦科保健</a>
+                            <a class="dropdown-item"
+                                href="http://localhost/knowledge_library/%E5%82%99%E5%AD%95%E8%AA%BF%E7%90%86/%E5%82%99%E5%AD%95%E7%9F%A5%E8%AD%98">備孕調理</a>
+                            <a class="dropdown-item"
+                                href="http://localhost/knowledge_library/%E6%87%B7%E5%AD%95%E7%9F%A5%E8%AD%98/%E6%87%B7%E5%AD%95%E7%9F%A5%E8%AD%98">懷孕知識</a>
+                            <a class="dropdown-item"
+                                href="http://localhost/knowledge_library/%E6%97%A5%E5%B8%B8%E4%BF%9D%E5%81%A5/%E6%97%A5%E5%B8%B8%E4%BF%9D%E5%81%A5%E7%9F%A5%E8%AD%98">日常保健</a>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link active" data-bs-toggle="dropdown">療心室</a>
+                        <ul class="dropdown-menu">
+                            <a class="dropdown-item" href="http://localhost/treatment_qa/%E8%81%8A%E7%99%82%E5%B0%8F%E7%94%A2">聊療小產</a>
+                            <a class="dropdown-item"
+                                href="http://localhost/treatment_qa/%E8%81%8A%E7%99%82%E5%A9%A6%E7%A7%91%E4%BF%9D%E5%81%A5">聊療婦科保健</a>
+                            <a class="dropdown-item" href="http://localhost/treatment_qa/%E8%81%8A%E7%99%82%E5%82%99%E5%AD%95">聊療備孕</a>
+                            <a class="dropdown-item" href="http://localhost/treatment_qa/%E8%81%8A%E7%99%82%E6%87%B7%E5%AD%95">聊療懷孕</a>
+                            <a class="dropdown-item"
+                                href="http://localhost/treatment_qa/%E8%81%8A%E7%99%82%E6%97%A5%E5%B8%B8%E4%BF%9D%E5%81%A5">聊療日常保健</a>
+                        </ul>
+                    </li>
+                    <li class="nav-item"><a role="button" id="chats-button" class="nav-link active">暢聊咖啡廳</a></li>
+                    <li class="nav-item"><a role="button" id="consult-button" class="nav-link active">營養師諮詢</a></li>
+                                        
+                    <li class="nav-item dropstart order-first order-lg-last">
+                        <!--如有會員登入 顯示會員名稱-->
+                        <a href="#" class="nav-link" data-bs-toggle="dropdown">
+                                                            <i class="fas fa-user-circle"><span
+                                        id="user_nickname">未登入</span></i>
+                                                    </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="http://localhost/user_info">個人資料</a></li>
+                            <li><a class="dropdown-item" href="http://localhost/calendar">專屬月曆</a></li>
+                            <li class="dropdown-submenu">
+                                <a role="button" data-bs-toggle="dropdown" class="dropdown-item">點數錢包</a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="http://localhost/point_task">任務專區</a></li>
+                                    <li><a href="http://localhost/point_exchange" class="dropdown-item">點數兌換</a></li>
+                                    <li><a href="http://localhost/point_gift1" class="dropdown-item">點數轉贈</a></li>
+                                    <li><a href="http://localhost/point_get_record" class="dropdown-item">點數獲得紀錄</a>
+                                    </li>
+                                    <li><a href="http://localhost/point_use_record" class="dropdown-item">點數使用紀錄</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><a class="dropdown-item" href="http://localhost/my_mind">我的心事</a></li>
+                            <li class="dropdown-submenu">
+                                <a role="button" data-bs-toggle="dropdown" class="dropdown-item">收藏與追蹤</a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="http://localhost/article_saved_list">文章收藏</a>
+                                    </li>
+                                    <li><a class="dropdown-item" href="http://localhost/author_saved">作者追蹤</a></li>
+                                    <li><a class="dropdown-item" href="http://localhost/topic_saved">話題追蹤</a></li>
+                                </ul>
+                            </li>
+                                                            <li><a class="dropdown-item" href="http://localhost/user_login">登入</a></li>
+                                                    </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <!--通知欄區塊-->
+                    </div>
+    </nav>
+</div>
+
+<script>
+    $('.notifications-item').on('click', function(e) {
+        e.preventDefault();
+        var id = $(this).attr('id').split("_")[1];
+        var href = this.href;
+        var notifications = null;
+        usersocket.send(
+            JSON.stringify({
+                action: "read",
+                id: id,
+            })
+        );
+        if ($("#notifications_box .rounded-circle").text() == 1) {
+            $("#notifications_box .rounded-circle").remove();
+            $(".notify_bell span").remove();
+        } else {
+            $("#notify_" + id +
+                " .rounded-circle").remove();
+        }
+        notifications.forEach((element, index) => {
+            if (element["id"] == id) {
+                notifications.splice(index, 1);
+            }
+        });
+        console.log(notifications)
+        if (notifications.length > 0) {
+            $.ajax({
+                type: "POST",
+                url: "/setNotifications",
+                dataType: "json",
+                data: {
+                    notifications: notifications,
+                },
+                success: function(result) {
+                    console.log(result);
+                    window.location.replace(href)
+                },
+            });
+        } else {
+            $.ajax({
+                type: "POST",
+                url: "/setNotifications",
+                success: function(result) {
+                    console.log(result);
+                    window.location.replace(href)
+                },
+            });
+        }
+    });
+</script>
+    <div class="container-xxl">
+        <div class="row pt-3 px-md-5">
+            <div class="col-12 my-2">
+                <div class="row d-flex align-items-center">
+                    <h2 class="class-title col-auto ps-0"><i class="fab fa-gratipay me-1 ct-txt-1"></i>服務條款</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row px-md-5">
+            <p class="my-2">歡迎使用洪豆論壇網站！本服務條款為健談股份有限公司營運的洪豆論壇網站（以下簡稱本網站），依其營運本網站與網站使用者間的規範與權利義務事項。</p></br></br>
+            <p class="lh-lg">在您註冊成為本網站的帳號前，請您詳閱並確認您及/或您的法定代理人同意本服務條款的全部內容；當您完成註冊成為本網站會員，即表示您已瞭解且同意遵守本服務條款，條款相關內容如下：</p>
+        </div>
+        <div class="row px-md-5">
+            <h5>一、註冊和帳號使用</h5>
+        </div>
+        <div class="row px-md-5">
+            <div class="col-12 my-2">
+                <p>就本網站會員帳號之註冊與使用，您需聲明並保證下列事項：</p>
+            </div>
+        </div>
+        <div class="row px-md-5">
+            <div class="col-12 my-2">
+                <div class="row d-flex align-items-center">
+                    <ol style="padding-left: 30px;font-family: monospace;" >
+                        <li style="margin-bottom: 10px;">如果您是未滿十八歲之未成年人，或依中華民國法令或依您所在國家/地區法律規定，須事先得第三人同意後始得行使權利或負擔義務者，則您必須取得父母、監護人或該第三人同意後，才可以註冊並使用本網站服務。</li>
+                        <li style="margin-bottom: 10px;">當您完成註冊或開始使用本網站時，即視為您的父母、監護人或該第三人已充分閱讀、瞭解並同意本服務條款，且同意您註冊成為本網站會員及使用相關服務。</li>
+                        <li style="margin-bottom: 10px;">您同意使用本網站之所有內容包括意思表示等，皆以電子文件作為表示方式，且本網站對您的所有通知，皆使用電子郵件或其他電子方式為之。</li>
+                        <li style="margin-bottom: 10px;">於註冊本網站用戶所需要之必要資料，您提供的資訊皆為最新且真實的正確資料，且如有任何變動的話，您會即時更新。若您是使用他人的姓名或資料註冊成為本網站用戶，本網站有權強制變更您的用戶名稱，或停止提供服務予您。</li>
+                        <li style="margin-bottom: 10px;">您並非為其他人註冊帳號。</li>
+                        <li style="margin-bottom: 10px;">您不會於本網站中註冊兩個以上的個人帳號，若您因以不同註冊方式有兩個帳戶以上時，將主動通知並請求本網站協助合併帳號資訊；若本網站發現您有註冊兩個以上的個人帳號時，同意由本網站協助您合併帳號資訊。</li>
+                        <li style="margin-bottom: 10px;">如果您的帳號遭停權，您不會註冊另一個帳號。</li>
+                        <li style="margin-bottom: 10px;">您理解並同意，任何以您的帳號於本網站中所為的行為，均視為您本人所為或經您授權所為，您可能因此必須負擔相應的法律責任，因此您不會將您的帳號密碼透露與他人知悉，亦不會讓他人透過您的帳號使用本網站。</li>
+                        <li style="margin-bottom: 10px;">您理解並同意本網站為一個開放性社群平台，一般使用者均可自由閱覽本網站所有公開頁面，本網站無法防止第三人將用戶內容與您聯想在一起，因此您所揭露的所有諮詢，包括但不限於發表文章、回應或與其他使用者對話，皆可能導致陌生人或您的親友足以辨識您的真實身份，而可能對您的現實生活產生影響，所以您在使用本網站時，應注意切勿將您的相關資料洩漏。</li>
+                        <li style="margin-bottom: 10px;">您理解並同意因違反本服務條款或其他條款，將使您的帳號遭到本網站暫時或永久停權。</li>
+                        <li style="margin-bottom: 10px;">本網站致力於讓所有人都能夠使用，但如果您有下列情況之一者，恕本網站無法提供服務給您：
+                            <ol type="A" style="padding-left: 30px; font-family: monospace;">
+                                <li style="margin-bottom: 5px;">我們曾經因為您違反了本服務條款或相關政策，而停用您的帳號。</li>
+                                <li>依中華民國法律或您所在國家/地區法律規定，您不得使用我們的服務。</li>
+                            </o>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <div class="row px-md-5">
+            <h5>二、帳號設定與使用規則</h5>
+        </div>
+        <div class="row px-md-5">
+            <div class="col-12 my-2">
+                <p>關於本網站帳號的暱稱設定與使用規則，您已詳細瞭解，聲明並保證下列事項：</p>
+            </div>
+        </div>
+        <div class="row px-md-5">
+            <div class="col-12 my-2">
+                <div class="row d-flex align-items-center">
+                    <ol style="padding-left: 30px;font-family: monospace;" >
+                        <li style="margin-bottom: 10px;">若您於本網站帳號與其他網站、通訊軟體使用之帳號、名稱、暱稱相同或類同時，將容易使您的身份被連結、搜尋及勾稽，若有任何問題，您應自行負擔相關責任。</li>
+                        <li style="margin-bottom: 10px;">無論您是出於故意或疏失，您不會以與已註冊商標或他人商品或服務之表徵等相關的任何名稱作為自己的暱稱，就此本網站將有權自行判斷並決定收回您的暱稱並交予權利人使用，您不得有任何異議。</li>
+                        <li style="margin-bottom: 10px;">您不會以任何影射、謾罵、誹謗、冒名等違反網路禮節、社會秩序或違法之文字作為您的暱稱。若有違反行為，本網站有權自行判斷並決定註銷具有前述性質的暱稱，您不得有任何異議。</li>
+                        <li style="margin-bottom: 10px;">您不會以疑似本網站官方的文字、名稱、政府機關名稱作為您的暱稱，若有違反前述行為，或名稱含有特殊字元、空白字元或特殊符號或類似 本網站人員名稱，本網站有權以自己之判斷強制將您更名或停止/暫停對您提供服務，您不得有任何異議。</li>
+                        <li style="margin-bottom: 10px;">您違反相關規定時，本網站有權以自己之判斷做出適當的處置，您同意也會完全遵循本網站之決定。</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <div class="row px-md-5">
+            <h5>三、隱私權政策</h5>
+        </div>
+        <div class="row px-md-5">
+            <p class="lh-lg">為了能更有效地保護您的權利，本網站特別在隱私權政策中詳細說明我們對於隱私權的作法。請您詳閱我們的隱私權政策，以瞭解本網站如何收集並使用有關您的帳戶及/或您使用服務的資訊。如您使用本網站服務，或在本網站服務中提供資訊，即表示您同意讓本網站根據隱私權政策所述的方式收集、使用、揭露及/或處理您的內容和個人資料，並且經未經本網站事前書面同意，您不得直接或間接向第三人揭露您的使用者資訊或允許任何第三人接觸或使用您的使用者資訊。</p>        
+        </div>
+        <div class="row px-md-5">
+            <h5>四、用戶內容授權</h5>
+        </div>
+        <div class="row px-md-5">
+            <div class="col-12 my-2">
+                <p>為了提供您更好的服務與使用體驗，就您利用本網站服務發佈之文章、您使用之大頭貼照、暱稱、在本網站分享、發布或上傳授智慧財產權保護的內容（包括但不限於文字著作、圖片著作、影音著作等）及其他表述內容（以下合稱為「用戶內容」），您得依法享有相關智慧財產權，而我們需要您授予部分內容權限，相關內容如下：</p>
+            </div>
+        </div>
+        <div class="row px-md-5">
+            <div class="col-12 my-2">
+                <div class="row d-flex align-items-center">
+                    <ol style="padding-left: 30px;font-family: monospace;" >
+                        <li style="margin-bottom: 10px;">您給予本網站永久、非專屬、可轉讓、可轉授權、免權利金的授權，授權地區為全世界，本網站依據上述授權，可以重製或其他方式利用用戶內容之全部或一部。您茲此聲明並保證您就用戶內容及其發佈擁有一切必要的權利或授權，足以有效賦予本網站前述之授權。</li>
+                        <li style="margin-bottom: 10px;">本網站保留拒絕接受、張貼、顯示或傳輸用戶內容的權利，並有權依據本網站用以管理用戶行為及用戶內容之規定逕行刪除您發佈的用戶內容。</li>
+                        <li style="margin-bottom: 10px;">您可以主動刪除用戶內容，惟用戶內容業經其他用戶引用部分，不在此限。</li>
+                        <li style="margin-bottom: 10px;">就上述經刪除之用戶內容，本網站有權且可能已留存備份，但本網站並無備份之義務。就您因用戶內容未儲存或刪除所生之一切風險或損失，您應自行採取防護措施，本網站概不負責，亦無義務將本網站內部留存之備份或檔案（縱有）提供給您。 本網站人員名稱，本網站有權以自己之判斷強制將您更名或停止/暫停對您提供服務，您不得有任何異議。</li>
+                        <li style="margin-bottom: 10px;">您所建立和分享的內容，其智慧財產權與所有權均為您所有。在本網站的服務條款與所有政策中，不存在任何條文可剝奪您對前揭內容的權利，您可以自由選擇您想要分享的內容、對象、發布位置。</li>
+                        <li style="margin-bottom: 10px;">本網站尊重所有用戶的智慧財產權，但也要求用戶尊重他人的智慧財產權，若您所建立或分享的內容有侵權的可能時，本網站得於接受他人檢舉與投訴後，做出相關處置。</li>
+                        <li style="margin-bottom: 10px;">當您參加本網站所舉辦的實體活動並完成報名時，代表若活動現場有進行拍攝與訪談（包括但不限於拍照、錄音、錄影等記錄方式），您同意無償授權本網站使用您的受訪內容、影音、肖像、照片等資料，並可將這些資料與您其他個人資料互相結合後利用於前開訪問的目的範圍及本網站服務之中。且前述資料之利用方式包括單不限於以電子或書面形式重製、改作、公開播送、公開傳輸、散布、公開展示、發行、公開發表等。</li>
+                        <li style="margin-bottom: 10px;">本網站服務上所使用的所有軟體、程式及內容，包括但不限文字、圖片、檔案、資訊、資料、網站設計與架構等，均由本網站或其他權利人合法擁有智慧財產權，包括但不限於商標權、專利權、著作權、營業秘密與專有技術等）。</li>
+                        <li style="margin-bottom: 10px;">如果您欲使用本網站的著作，包括但不限於文章、照片、圖片、影音或設計等，或商標或任何相類的標記，您必須事先取得本網站的書面同意書。未取得本網站書面同意前，您不得逕自以任何方法，如修改、重製、公開播送、改作、散佈、發行、公開發表等為利用。</li>
+                        <li style="margin-bottom: 10px;">如果您欲改編、建立衍生作品、反編譯，或以其他方式嘗試擷取本網站的原始程式碼，您必須事先取得本網站的書面同意或者開放原始程式碼授權許可。</li>
+                        <li style="margin-bottom: 10px;">如果您的創作裡面有包含了本網站智慧財產權，無論是否在本網站服務中建立、分享與顯示，本網站都仍保留該內容的所有權利，您理解這樣的利用已經侵害了本網站的權利，您可能要負擔相應的法律責任。</li>
+                        <li style="margin-bottom: 10px;">若您有違反上述情事之行為，本網站可暫時或永久停止您的帳號使用權限與服務，並且無論是否為本網站用戶，您應負相關法律責任。</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <div class="row px-md-5">
+            <h5>五、帳號使用限制</h5>
+        </div>
+        <div class="row px-md-5">
+            <div class="col-12 my-2">
+                <div class="row d-flex align-items-center">
+                    <ol style="padding-left: 30px;font-family: monospace;" >
+                        <li style="margin-bottom: 10px;">發布內容：</li>
+                        <p>用戶內容不得包含下述資訊：</p>
+                        <ol type="A" style="padding-left: 30px; font-family: monospace;">
+                            <li style="margin-bottom: 10px;">違反本服務條款、隱私權政策或其他條款所禁止之內容。</li>
+                            <li style="margin-bottom: 10px;">發布私人或機密資訊（包括但不限於您或其他人的信用卡資訊、銀行帳戶資訊、身分證號碼、護照號碼、社會安全號碼、駕照號碼、非公開之電話號碼或電子信箱）。</li>
+                            <li style="margin-bottom: 10px;">有性交、猥褻行為之圖畫、照片、影片或其他相類物品。</li>
+                            <li style="margin-bottom: 10px;">足以引誘、媒介、暗示或其他促使人為性交易之訊息。</li>
+                            <li style="margin-bottom: 10px;">足以引誘、媒介、暗示或其他使兒童或少年有遭受兒童及少年性剝削防制條例第2條第1項第1款至第3款之虞之訊息。</li>
+                            <li style="margin-bottom: 10px;">發布之內容與兒童或青少年涉刑事案件相關，且記載相關當事人之姓名或其他足以識別其身份之資訊。</li>
+                            <li style="margin-bottom: 10px;">會騷擾、挑逗、不雅、誤導、猥褻、威脅、詐欺、霸凌、歧視或侵害他人權益之內容。</li>
+                            <li style="margin-bottom: 10px;">侵害他人智慧財產權、肖像權、隱私權或其他權利之內容。</li>
+                            <li style="margin-bottom: 10px;">有任何關於色情交易、違法活動或任何有違反法規命令或公序良俗規定之內容。</li>
+                            <li style="margin-bottom: 10px;">任何您依據任何法律、或契約、或信任關係下，無權提供之內容。</li>
+                            <li style="margin-bottom: 10px;">違反法律強制或禁止規定之內容。</li>
+                            <li style="margin-bottom: 10px;">違反公共秩序或社會善良風俗之內容。</li>
+                            <li style="margin-bottom: 10px;">其他本網站認為應刪除，並請您刪除之內容。</li>
+                        </ol>
+                        <li style="margin-bottom: 10px;">行為限制：</li>
+                        <p>您同意不得為下列行為：</p>
+                        <ol type="A" style="padding-left: 30px; font-family: monospace;">
+                            <li style="margin-bottom: 10px;">私下側錄與其他用戶聊天之內容。</li>
+                            <li style="margin-bottom: 10px;">以模擬器、仿真器、機器人或其他類似硬體或軟體使用本網站平台、註冊成為用戶或登入用戶帳號。</li>
+                            <li style="margin-bottom: 10px;">以自動化登入及操作方式蒐集本網站其他用戶的用戶內容，或嘗試存取您無權使用之資料。</li>
+                            <li style="margin-bottom: 10px;">蒐集本網站其他用戶之帳號、密碼或其他帳戶資訊，或使用其他用戶之帳號登入。</li>
+                            <li style="margin-bottom: 10px;">利用本網站服務，以違反《個人資料保護法》之方式蒐集、複製、處理及利用本網站其他用戶的個人資料。</li>
+                            <li style="margin-bottom: 10px;">未經本網站事前書面同意，利用本網站服務從事商業行為或用做商業用途。</li>
+                            <li style="margin-bottom: 10px;">散播電腦病毒或惡意程式，藉由網路流量或傳輸量癱瘓本網站網站或服務或造成系統過大負荷，或任何可能或足以干擾、中斷、癱瘓、影響或損害本網站服務正常提供之行為。</li>
+                            <li style="margin-bottom: 10px;">非經本網站事前書面同意，擅自使用或複製本網站的商標或其他智慧財產權，或移除、遮掩或變動本網站標或智慧財產權之標示或其聲明。</li>
+                            <li style="margin-bottom: 10px;">將您註冊之服務帳號、本網站服務或其使用權限之任何部分，出售、出借、贈與、轉讓或提供給他人使用或與他人共用。</li>
+                            <li style="margin-bottom: 10px;">破解或以各種方式繞過任何本網站所設置用來防止或限制全部或部分使用服務的措施，或以解碼、破譯、反編譯、逆向工程或其他方式，試圖獲得任何本網站服務、其網站或相關程式之原始碼或程式碼。</li>
+                            <li style="margin-bottom: 10px;">發布違反前項第1條之發布內容。</li>
+                            <li style="margin-bottom: 10px;">任何涉及騷擾、猥褻、威脅、詐欺、霸凌、侵害本網站及他人權益或濫用本網站服務之行為。</li>
+                            <li style="margin-bottom: 10px;">任何違反法令、本服務條款、公共秩序或善良風俗之行為，或其他經本網站通知您停止之行為。</li>
+                        </ol>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <div class="row px-md-5">
+            <h5>六、檢舉及申訴</h5>
+        </div>
+        <div class="row px-md-5">
+            <div class="col-12 my-2">
+                <p>您同意本網站可以針對用戶違反本服務條款之行為，按下述機制處置：</p>
+            </div>
+        </div>
+        <div class="row px-md-5">
+            <div class="col-12 my-2">
+                <div class="row d-flex align-items-center">
+                    <ol style="padding-left: 30px;font-family: monospace;" >
+                        <li style="margin-bottom: 10px;">如有任何人依據檢舉機制向本網站檢舉您的用戶內容違反本服務條款、隱私權政策或其他條款所禁止之內容，本網站在收到前述檢舉後，得依據本網站之裁量進行審查，並於確定違反規定後，依相關規則之規定直接刪除您的用戶內容，或依情節暫時停權或永久停權。</li>
+                        <li style="margin-bottom: 10px;">如有任何人依據申訴機制向本網站申訴您的用戶內容侵害其個人權利，本網站不需經您的同意，即得先行將您的用戶內容取下，待您與權利人之間的紛爭解決，本網站始能回復您的用戶內容。</li>
+                        <li style="margin-bottom: 10px;">您理解並同意本網站僅係提供使用者分享與交流的平台，並也不會介入使用者或用戶間的糾紛或爭議，因此您不會因為本網站將您的用戶內容取下、刪除或隱蔽，或本網站無法即時將第三人的用戶內容取下、刪除或隱蔽時，對本網站請求賠償、補償。</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <div class="row px-md-5">
+            <h5>七、行動裝置</h5>
+        </div>
+        <div class="row px-md-5">
+            <div class="col-12 my-2">
+                <div class="row d-flex align-items-center">
+                    <ol style="padding-left: 30px;font-family: monospace;" >
+                        <li style="margin-bottom: 10px;">本網站透過網頁等平台提供相關服務，本服務條款適用於所有平台上的用戶。</li>
+                        <li style="margin-bottom: 10px;">您理解並同意您的用戶內容、帳戶資料及所有您使用本網站服務時建立、輸入、儲存、呈現、提交或以任何方式提供的資訊，將在所有用戶使用的所有平台上同步；本網站為進行前述平台同步，得存取、重製（一部或全部）、公開傳輸、公開播送、公開口述、公開展示、改作、散布、處理及/或以其他方式利用前述內容、資料及資訊。</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <div class="row px-md-5">
+            <h5>八、廣告和其他行銷內容</h5>
+        </div>
+        <div class="row px-md-5">
+            <div class="col-12 my-2">
+                <div class="row d-flex align-items-center">
+                    <ol style="padding-left: 30px;font-family: monospace;" >
+                        <li style="margin-bottom: 10px;">由於本網站是一個免費的開放式平台，為了永續經營，您同意在使用本網站服務時接受ANSA廣告和其他行銷內容。</li>
+                        <li style="margin-bottom: 10px;">我們可能在您存取內含網路信標、開發工具、Cookie 和其他技術資料蒐集資訊。這些資料蒐集技術有助於我們瞭解您的活動情形，以改進我們的服務，並提供您您有興趣的資訊。這些資訊包括所提供、觀看或點選的內容或廣告類型、您的活動頻率與使用持續時間、您是否與特定內容或廣告有所互動，以及您是否接著造訪ANSA的網站、購買廣告中的產品或服務或者採取其他行動。/或以其他方式利用前述內容、資料及資訊。</li>
+                        <li style="margin-bottom: 10px;">為了提供對您而言有價值的廣告和其他行銷內容，您理解並同意本網站可以分析您的個人資料、用戶內容及帳戶資料，予以分類，本網站將提供無法直接辨識您個人資訊或族群類別之資料予ANSA，以便ANSA可以選擇要投放廣告的族群類別。 和其他技術資料蒐集資訊。這些資料蒐集技術有助於我們瞭解您的活動情形，以改進我們的服務，並提供您您有興趣的資訊。這些資訊包括所提供、觀看或點選的內容或廣告類型、您的活動頻率與使用持續時間、您是否與特定內容或廣告有所互動，以及您是否接著造訪ANSA的網站、購買廣告中的產品或服務或者採取其他行動。/或以其他方式利用前述內容、資料及資訊。</li>
+                        <li style="margin-bottom: 10px;">本網站從事上述廣告業務將收取廣告收入，且無須給您任何報酬。 和其他技術資料蒐集資訊。這些資料蒐集技術有助於我們瞭解您的活動情形，以改進我們的服務，並提供您您有興趣的資訊。這些資訊包括所提供、觀看或點選的內容或廣告類型、您的活動頻率與使用持續時間、您是否與特定內容或廣告有所互動，以及您是否接著造訪ANSA的網站、購買廣告中的產品或服務或者採取其他行動。/或以其他方式利用前述內容、資料及資訊。</li>
+                        <li style="margin-bottom: 10px;">本網站可能會與第三方廠商不定期共同辦理行銷活動，並可能邀請您一同參與。您於參加此類行銷活動中，可能必須另外詳閱並同意該活動之活動辦法，也可能必須將您的個人資料提供予該活動之合作伙伴，亦即，您可能因參與活動，而與該第三方廠商間產生獨立的契約關係，因此您應於參加前詳讀參加條款，並瞭解第三方廠商可能如何利用您的個人資料。您理解並同意，本網站無法介入您與第三方廠商間的法律關係。 和其他技術資料蒐集資訊。這些資料蒐集技術有助於我們瞭解您的活動情形，以改進我們的服務，並提供您您有興趣的資訊。這些資訊包括所提供、觀看或點選的內容或廣告類型、您的活動頻率與使用持續時間、您是否與特定內容或廣告有所互動，以及您是否接著造訪ANSA的網站、購買廣告中的產品或服務或者採取其他行動。/或以其他方式利用前述內容、資料及資訊。</li>
+
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <div class="row px-md-5">
+            <h5>九、修訂</h5>
+        </div>
+        <div class="row px-md-5">
+            <div class="col-12 my-2">
+                <div class="row d-flex align-items-center">
+                    <ol style="padding-left: 30px;font-family: monospace;" >
+                        <li style="margin-bottom: 10px;">為了向您和本網站用戶提供更好的服務，本網站保留未來隨時修訂本服務條款及相關本網站規則之權利，而無須另行通知您。本網站得以網頁公告或電子郵件或其他電子方式將前述修訂內容公開、公告或通知各會員。</li>
+                        <li style="margin-bottom: 10px;">您有義務經常檢視本服務條款及相關本網站規則之修（增）訂，如您在上述修訂生效以後，仍繼續使用本網站服務，視為您接受上述（增）修訂。 和其他技術資料蒐集資訊。這些資料蒐集技術有助於我們瞭解您的活動情形，以改進我們的服務，並提供您您有興趣的資訊。這些資訊包括所提供、觀看或點選的內容或廣告類型、您的活動頻率與使用持續時間、您是否與特定內容或廣告有所互動，以及您是否接著造訪ANSA的網站、購買廣告中的產品或服務或者採取其他行動。/或以其他方式利用前述內容、資料及資訊。</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <div class="row px-md-5">
+            <h5>十、免責聲明及賠償</h5>
+        </div>
+        <div class="row px-md-5">
+            <div class="col-12 my-2">
+                <div class="row d-flex align-items-center">
+                    <ol style="padding-left: 30px;font-family: monospace;" >
+                        <li style="margin-bottom: 10px;">如有任何第三人因您利用本網站服務之行為或因您發佈之用戶內容而向 本網站或其關係企業（包括渠等現任或前任受僱人、經理人、董事等）求償，您必須負責賠償並保障本網站及其關係企業（包括渠等現任或前任受僱人、經理人、董事等）免受一切相關損害、損失和費用（包括法律服務費用和其他成本）。</li>
+                        <li style="margin-bottom: 10px;">本網站是一個開放性的網路平台，雖然我們會盡商業上合理努力，依據本服務條款與相關規範管理用戶用戶行為與用戶內容，但您瞭解我們無法完全免除您在本網站上遇到其他用戶或任何第三人侵害您權利的情形，或接觸到其他用戶或第三人所發表，具有冒犯性、或不妥之內容，您理解並同意在任何情況下，本網站均不為任何用戶公開或私下發佈、傳輸、寄送或進行之用戶內容、訊息或任何行為負責，亦不對前述用戶內容或訊息之正確性、完整性或內容品質為任何保證。所有因前述用戶內容或行為所生之損害，包含但不限於任何傳輸錯誤或遺漏，以及經由前述內容所衍生之任何損失等，均由您自行承擔，且本網站無須為上述情形負責。 和其他技術資料蒐集資訊。這些資料蒐集技術有助於我們瞭解您的活動情形，以改進我們的服務，並提供您您有興趣的資訊。這些資訊包括所提供、觀看或點選的內容或廣告類型、您的活動頻率與使用持續時間、您是否與特定內容或廣告有所互動，以及您是否接著造訪ANSA的網站、購買廣告中的產品或服務或者採取其他行動。/或以其他方式利用前述內容、資料及資訊。</li>
+                        <li style="margin-bottom: 10px;">本網站服務是以「現狀」以及「目前可得」狀態提供。除本服務條款明示規定者外，本網站均不對服務做出任何明示或默示的保證，亦不保證服務的安全性、不保證您隨時隨地均可獲得服務、不保證服務中任何缺陷或錯誤都將得到更正，也不保證您使用服務的結果將滿足您的需求。您因使用服務所生之一切利益或損失，均由您自行承擔。您瞭解本網站服務或有因系統故障而遲延、中斷情形，或可能造成您使用不便或資料喪失、錯誤、遭人篡改或其他損失等情形，本網站將盡商業上合理努力修復系統，同時您亦應於使用時自行採取防護措施，本網站對因使用或無法使用本網站服務所生之一切損害不負賠償責任，您亦同意不就上述事件對本網站為任何請求。 和其他技術資料蒐集資訊。這些資料蒐集技術有助於我們瞭解您的活動情形，以改進我們的服務，並提供您您有興趣的資訊。這些資訊包括所提供、觀看或點選的內容或廣告類型、您的活動頻率與使用持續時間、您是否與特定內容或廣告有所互動，以及您是否接著造訪ANSA的網站、購買廣告中的產品或服務或者採取其他行動。/3.	本網站服務是以「現狀」以及「目前可得」狀態提供。除本服務條款明示規定者外，本網站均不對服務做出任何明示或默示的保證，亦不保證服務的安全性、不保證您隨時隨地均可獲得服務、不保證服務中任何缺陷或錯誤都將得到更正，也不保證您使用服務的結果將滿足您的需求。您因使用服務所生之一切利益或損失，均由您自行承擔。您瞭解本網站服務或有因系統故障而遲延、中斷情形，或可能造成您使用不便或資料喪失、錯誤、遭人篡改或其他損失等情形，本網站將盡商業上合理努力修復系統，同時您亦應於使用時自行採取防護措施，本網站對因使用或無法使用本網站服務所生之一切損害不負賠償責任，您亦同意不就上述事件對本網站為任何請求。</li>
+                        <li style="margin-bottom: 10px;">您透過本網站服務瀏覽到的所有廣告及行銷內容，是由各該廣告商、產品與服務的供應商所設計與提出，本網站僅接受前述廠商委託予以刊登，不對前述廣告及行銷內容負任何擔保責任。當您點擊本網站服務或網站中的廣告頁面時，將會連結到第三方網站，該第三方網站有可能蒐集您的資料、IP 位址或以Cookie等技術蒐集您的資料，本網站不負責保障您在第三方網站或使用其服務的隱私權。您於第三方網站或與相關廠商之間一切行為，亦皆與本網站無涉，如因此遭受任何損害，均不得向本網站求償。 和其他技術資料蒐集資訊。這些資料蒐集技術有助於我們瞭解您的活動情形，以改進我們的服務，並提供您您有興趣的資訊。這些資訊包括所提供、觀看或點選的內容或廣告類型、您的活動頻率與使用持續時間、您是否與特定內容或廣告有所互動，以及您是否接著造訪ANSA的網站、購買廣告中的產品或服務或者採取其他行動。/或以其他方式利用前述內容、資料及資訊。</li>
+                        <li style="margin-bottom: 10px;">您應自行負責保管及維護本網站服務帳戶及密碼的機密性，並為您服務帳戶下的所有活動及發表的用戶內容負責。當您密碼或帳戶有遭他人冒用、盜用或其他未經授權使用，或有任何安全性漏洞時，您同意立即通知本網站。若因您無法提供正確資訊、未能保守前述帳戶及密碼機密性或未能及時通知本網站，而遭受任何損害，您應自行承擔，本網站概不負責。 和其他技術資料蒐集資訊。這些資料蒐集技術有助於我們瞭解您的活動情形，以改進我們的服務，並提供您您有興趣的資訊。這些資訊包括所提供、觀看或點選的內容或廣告類型、您的活動頻率與使用持續時間、您是否與特定內容或廣告有所互動，以及您是否接著造訪ANSA的網站、購買廣告中的產品或服務或者採取其他行動。/或以其他方式利用前述內容、資料及資訊。</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <div class="row px-md-5">
+            <h5>十一、終止</h5>
+        </div>
+        <div class="row px-md-5">
+            <div class="col-12 my-2">
+                <div class="row d-flex align-items-center">
+                    <ol style="padding-left: 30px;font-family: monospace;" >
+                        <li style="margin-bottom: 10px;">本網站有權基於任何原因（例如您違反本服務條款或相關規範時，或您使本網站目錄在可能的風險或法律問題時），本網站得隨時暫停您帳號的存取權限，停止向您提供全部或部分本網站服務或終止您的帳戶，終止後，您的帳戶將會關閉，而且您不得再以該帳戶存取、使用或取回本網站服務或該帳戶中的任何檔案或內容。</li>
+                        <li style="margin-bottom: 10px;">您可以隨時申請刪除您在本網站的帳號；當您申請刪除您的帳號時，視為您已向本網站通知終止本服務條款。 和其他技術資料蒐集資訊。這些資料蒐集技術有助於我們瞭解您的活動情形，以改進我們的服務，並提供您您有興趣的資訊。這些資訊包括所提供、觀看或點選的內容或廣告類型、您的活動頻率與使用持續時間、您是否與特定內容或廣告有所互動，以及您是否接著造訪ANSA的網站、購買廣告中的產品或服務或者採取其他行動。/或以其他方式利用前述內容、資料及資訊。</li>
+                            <ol type="A" style="padding-left: 30px; font-family: monospace;">
+                                <li style="margin-bottom: 10px;">您理解並同意，當您申請刪除您在本網站的帳號時，將有一定的緩衝期間，若您希望取消刪除帳號，請在緩衝期間內取消刪除。刪除帳號及終止本服務條款之效力將於緩衝期間屆滿後生效。</li>
+                                <li style="margin-bottom: 10px;">待緩衝期間屆滿後，您的帳號將無法登入本網站。刪除帳號申請不包含移除使用者所發表過的文章、留言、暱稱、私訊對話紀錄…等內容，如需刪除所發表文章、留言，請於提出刪除帳號申請前自行刪除。緩衝期間屆滿後帳號將逕行刪除，而您仍保留的文章、留言等內容將以發文時的名義，如：暱稱、匿名的方式保留在網站上，以避免破壞整體內容的流暢度。</li>
+                                <li style="margin-bottom: 10px;">待緩衝期間屆滿後，本網站仍將以無法直接識別您個人的方式，繼續保留個人的手機、Email等不重複資料，確保不會再次註冊使用。</li>
+                            </ol>
+                        <li style="margin-bottom: 10px;">無論本服務條款因何原因終止，本服務條款下述條款於終止後仍有效力：第 四條及第九至十一條。 和其他技術資料蒐集資訊。這些資料蒐集技術有助於我們瞭解您的活動情形，以改進我們的服務，並提供您您有興趣的資訊。這些資訊包括所提供、觀看或點選的內容或廣告類型、您的活動頻率與使用持續時間、您是否與特定內容或廣告有所互動，以及您是否接著造訪ANSA的網站、購買廣告中的產品或服務或者採取其他行動。/3.	本網站服務是以「現狀」以及「目前可得」狀態提供。除本服務條款明示規定者外，本網站均不對服務做出任何明示或默示的保證，亦不保證服務的安全性、不保證您隨時隨地均可獲得服務、不保證服務中任何缺陷或錯誤都將得到更正，也不保證您使用服務的結果將滿足您的需求。您因使用服務所生之一切利益或損失，均由您自行承擔。您瞭解本網站服務或有因系統故障而遲延、中斷情形，或可能造成您使用不便或資料喪失、錯誤、遭人篡改或其他損失等情形，本網站將盡商業上合理努力修復系統，同時您亦應於使用時自行採取防護措施，本網站對因使用或無法使用本網站服務所生之一切損害不負賠償責任，您亦同意不就上述事件對本網站為任何請求。</li>
+                        <li style="margin-bottom: 10px;">您理解當您刪除您帳號時，或您因故被本網站永久註銷帳號時，即終止有關第四條的相關授權內容，但是已經存在本網站或本網站已經利用者，不受影響，本網站也沒有刪除、銷毀或類似的義務。 位址或以Cookie等技術蒐集您的資料，本網站不負責保障您在第三方網站或使用其服務的隱私權。您於第三方網站或與相關廠商之間一切行為，亦皆與本網站無涉，如因此遭受任何損害，均不得向本網站求償。 和其他技術資料蒐集資訊。這些資料蒐集技術有助於我們瞭解您的活動情形，以改進我們的服務，並提供您您有興趣的資訊。這些資訊包括所提供、觀看或點選的內容或廣告類型、您的活動頻率與使用持續時間、您是否與特定內容或廣告有所互動，以及您是否接著造訪ANSA的網站、購買廣告中的產品或服務或者採取其他行動。/或以其他方式利用前述內容、資料及資訊。</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <div class="row px-md-5">
+            <h5>十二、準據法及管轄法院</h5>
+        </div>
+        <div class="row px-md-5">
+            <div class="col-12 my-2">
+                <div class="row d-flex align-items-center">
+                    <ol style="padding-left: 30px;font-family: monospace;" >
+                        <li style="margin-bottom: 10px;">本服務條款的準據法為中華民國法律。</li>
+                        <li style="margin-bottom: 10px;">雙方就本服務條款之爭議或歧見，應先以誠意協商解決，如無法於合理期間內達成協議，雙方同意專屬由臺灣台北地方法院為第一審管轄法院。 和其他技術資料蒐集資訊。這些資料蒐集技術有助於我們瞭解您的活動情形，以改進我們的服務，並提供您您有興趣的資訊。這些資訊包括所提供、觀看或點選的內容或廣告類型、您的活動頻率與使用持續時間、您是否與特定內容或廣告有所互動，以及您是否接著造訪ANSA的網站、購買廣告中的產品或服務或者採取其他行動。/或以其他方式利用前述內容、資料及資訊。</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <div class="row px-md-5">
+            <h5>十三、其他</h5>
+        </div>
+        <div class="row px-md-5">
+            <div class="col-12 my-2">
+                <div class="row d-flex align-items-center">
+                    <ol style="padding-left: 30px;font-family: monospace;" >
+                        <li style="margin-bottom: 10px;">本服務條款各條文之標題僅係為閱讀方便而使用，並不影響本服務條款之內容及解釋。</li>
+                        <li style="margin-bottom: 10px;">本服務條款為本網站與您之間就使用本網站服務有關事項之完整協議，並取代先前一切書面或口頭合意。 和其他技術資料蒐集資訊。這些資料蒐集技術有助於我們瞭解您的活動情形，以改進我們的服務，並提供您您有興趣的資訊。這些資訊包括所提供、觀看或點選的內容或廣告類型、您的活動頻率與使用持續時間、您是否與特定內容或廣告有所互動，以及您是否接著造訪ANSA的網站、購買廣告中的產品或服務或者採取其他行動。/或以其他方式利用前述內容、資料及資訊。</li>
+                        <li style="margin-bottom: 10px;">本服務條款中之任何規定於任何管轄地區被視為無效、違法、或無法強制執行時，僅該部分為無效、違法或無法強制執行，不影響其他條款之效力、合法性或強制性；且該規定於任何管轄地區之無效、違法或無法強制執行時，不影響其於其他管轄地區之效力、合法性或強制性或使之為無效。 和其他技術資料蒐集資訊。這些資料蒐集技術有助於我們瞭解您的活動情形，以改進我們的服務，並提供您您有興趣的資訊。這些資訊包括所提供、觀看或點選的內容或廣告類型、您的活動頻率與使用持續時間、您是否與特定內容或廣告有所互動，以及您是否接著造訪ANSA的網站、購買廣告中的產品或服務或者採取其他行動。/或以其他方式利用前述內容、資料及資訊。</li>
+                        <li style="margin-bottom: 10px;">非經本網站事前書面同意，您不得轉讓本服務條款之權利義務與任何第三人。 和其他技術資料蒐集資訊。這些資料蒐集技術有助於我們瞭解您的活動情形，以改進我們的服務，並提供您您有興趣的資訊。這些資訊包括所提供、觀看或點選的內容或廣告類型、您的活動頻率與使用持續時間、您是否與特定內容或廣告有所互動，以及您是否接著造訪ANSA的網站、購買廣告中的產品或服務或者採取其他行動。/或以其他方式利用前述內容、資料及資訊。</li>
+                        <li style="margin-bottom: 10px;">本服務條款並非第三人利益契約，並未賦予任何第三人權利或利益。 和其他技術資料蒐集資訊。這些資料蒐集技術有助於我們瞭解您的活動情形，以改進我們的服務，並提供您您有興趣的資訊。這些資訊包括所提供、觀看或點選的內容或廣告類型、您的活動頻率與使用持續時間、您是否與特定內容或廣告有所互動，以及您是否接著造訪ANSA的網站、購買廣告中的產品或服務或者採取其他行動。/或以其他方式利用前述內容、資料及資訊。</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+</div>
+    <footer class="footer-px ct-bg-3 mt-5">
+    <div class="row flex-wrap">
+        <div class="col-12 col-sm-5 col-lg-3">
+            <h6 class="row">關於我們</h6>
+            <a class="row" href="https://www.uterusally.com/" target="_blank">ANSA官網</a>
+            <a class="row" href="http://localhost/tos">服務條款</a>
+            <a class="row" href="http://localhost/privacy">隱私權政策</a>
+            <div class="d-none d-sm-flex d-lg-none row">
+                <a href="https://www.facebook.com/uterusally/" target="_blank" class="mr-3">
+                    <i class="fab fa-facebook-square"></i>
+                </a>
+                <a href="https://www.instagram.com/uterusally/" target="_blank" class="mx-3">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="https://lin.ee/9uEFur8" target="_blank" class="ml-3">
+                    <i class="fab fa-line"></i>
+                </a>
+            </div>
+        </div>
+        <div class="col-12 col-sm-7 col-lg-auto mx-auto">
+            <h6 class="row">聯絡我們</h6>
+            <div class="row">
+                <p class="w-auto m-0 p-0">客服電話：</p>
+                <a href="tel:0900152125" style="text-decoration: none; color: inherit;">0900-152-125</a>
+            </div>
+            <div class="row">
+                <p class="w-auto m-0 p-0">營業時間：AM 9:30 ~ PM 6:00</p>
+            </div>
+            <div class="row">
+                <p class="w-auto m-0 p-0">客服信箱：</p>
+                <a href="mailto:ansa1019@gmail.com"
+                    style="text-decoration: none; color: inherit;">ansa1019@gmail.com</a>
+            </div>
+            <div class="row">
+                <p class="w-auto m-0 p-0">地址：</p>
+                <a href="https://www.google.com/maps/search/?api=1&query=台南市六甲區" target="_blank"
+                    style="text-decoration: none; color: inherit;">台南市六甲區</a>
+            </div>
+        </div>
+        <div class="d-flex d-sm-none d-lg-flex col-lg-3">
+            <div class="row justify-content-center mx-0 mx-sm-auto">
+                <a href="https://www.facebook.com/uterusally/" target="_blank" class="mx-3 mx-md-2">
+                    <i class="fab fa-facebook-square"></i>
+                </a>
+                <a href="https://www.instagram.com/uterusally/" target="_blank" class="mx-3 mx-md-2">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="https://lin.ee/9uEFur8" target="_blank" class="mx-3 mx-md-2">
+                    <i class="fab fa-line"></i>
+                </a>
+            </div>
+        </div>
+</footer>
+    <script>
+        var user = "";
+        var user_image = "";
+        var nickname = "";
+        var blacklist = null || {
+            article: [],
+            comment: [],
+            chat: []
+        };
+        var banlist = null;
+
+        // console.log(banlist);
+        // console.log(blacklist);
+    </script>
+
+
+
+<!-- 建立檢舉 Modal -->
+<div class="modal fade" id="denounce" tabindex="-1" data-bs-focus="false" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-bottom-0">
+                <h3 class="modal-title fs-5 ct-txt-2 fw-bold"><i class="fa fa-exclamation-circle fa-sm"></i> 檢舉原因
+                </h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" style="font-size: var(--fs-18)">
+                <input type="text" style="display: none" id="denounce_cate">
+                <input type="text" style="display: none" id="denounce_id">
+                <input type="text" style="display: none" id="denounce_name">
+                <input type="text" style="display: none" id="denounce_msg">
+                <input type="text" style="display: none" id="denounce_reason">
+                <div>
+                    <input class="form-check-input" type="radio" name="reason" id="reason_1"
+                        value="中傷、歧視、挑釁或謾罵他人" />
+                    <label class="form-check-label" for="reason_1">中傷、歧視、挑釁或謾罵他人</label>
+                </div>
+                <div>
+                    <input class="form-check-input" type="radio" name="reason" id="reason_2" value="惡意洗版、重複張貼" />
+                    <label class="form-check-label" for="reason_2">惡意洗版、重複張貼</label>
+                </div>
+                <div>
+                    <input class="form-check-input" type="radio" name="reason" id="reason_3"
+                        value="發表內容包含色情、性騷擾、恐怖血腥等讓人不舒服之內容" />
+                    <label class="form-check-label" for="reason_3">發表內容包含色情、性騷擾、恐怖血腥等讓人不舒服之內容</label>
+                </div>
+                <div id="denounce_other">
+                    <input class="form-check-input" type="radio" name="reason" id="reason_4" value="其他">
+                    <label class="form-check-label" for="reason_4">其他</label>
+                    <input type="text" id="reason_other" placeholder="請說明檢舉原因"
+                        class="form-control col-auto input_underline" style="display: none;width: auto">
+                </div>
+            </div>
+            <div class="modal-footer" style="border: none;">
+                <button type="button" class="btn btn-c2 rounded-pill px-3 py-1" onclick="denounce()">確定</button>
+                <button type="button" class="btn ct-sub-1" data-bs-dismiss="modal" aria-label="Close">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="position-fixed bottom-0 end-0 m-2">
+    <button class="btn" id="floatButton" data-bs-toggle="tooltip" data-bs-title="營養師諮詢" data-bs-placement="left">
+        <i class="fas fa-comment-dots"></i>
+    </button>
+</div>
+
+<!-- 聊天室介面 -->
+<div class="tab-vertical" style="display: none;">
+    <img src="http://localhost/static/img/female.png" alt="..." style="display: none" />
+    <img src="http://localhost/static/img/male.png" alt="..." style="display: none" />
+    <ul class="nav nav-tabs chats-nav-tab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="room1-vertical-tab" data-bs-toggle="tab" href="#chat-room1" role="tab"
+                aria-controls="home" aria-selected="true">營養師諮詢</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="room2-vertical-tab" data-bs-toggle="tab" href="#chat-room2" role="tab"
+                aria-controls="profile" aria-selected="false">小產咖啡廳</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="room3-vertical-tab" data-bs-toggle="tab" href="#chat-room3" role="tab"
+                aria-controls="contact" aria-selected="false">婦科咖啡廳</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="room4-vertical-tab" data-bs-toggle="tab" href="#chat-room4" role="tab"
+                aria-controls="contact" aria-selected="false">備孕咖啡廳</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="room5-vertical-tab" data-bs-toggle="tab" href="#chat-room5" role="tab"
+                aria-controls="contact" aria-selected="false">懷孕咖啡廳</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="room6-vertical-tab" data-bs-toggle="tab" href="#chat-room6" role="tab"
+                aria-controls="contact" aria-selected="false">保健咖啡廳</a>
+        </li>
+    </ul>
+
+    <ul class="nav nav-tabs chats-nav-tab nav-horizontal-tabs fade show active" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="room1-horizontal-tab" data-bs-toggle="tab" href="#chat-room1" role="tab"
+                aria-controls="home" aria-selected="true">營養師諮詢</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="room2-horizontal-tab" data-bs-toggle="tab" href="#chat-room2" role="tab"
+                aria-controls="profile" aria-selected="false">小產咖啡廳</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="room3-horizontal-tab" data-bs-toggle="tab" href="#chat-room3" role="tab"
+                aria-controls="contact" aria-selected="false">婦科咖啡廳</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="room4-vertical-tab" data-bs-toggle="tab" href="#chat-room4" role="tab"
+                aria-controls="contact" aria-selected="false">備孕咖啡廳</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="room5-vertical-tab" data-bs-toggle="tab" href="#chat-room5" role="tab"
+                aria-controls="contact" aria-selected="false">懷孕咖啡廳</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="room6-vertical-tab" data-bs-toggle="tab" href="#chat-room6" role="tab"
+                aria-controls="contact" aria-selected="false">保健咖啡廳</a>
+        </li>
+    </ul>
+
+    <div class="tab-content card card-bordered chats-card" id="myTabContent3">
+        <!-- <div class="bg-none card card-bordered chats-card" id="myTabContent3"> -->
+        <div class="tab-pane fade show active" id="chat-room1" role="tabpanel" aria-labelledby="chat-room1">
+            <div class="card-header">
+                
+                <!-- 填入標題 -->
+                <h4 class="card-title"><strong>營養師諮詢</strong></h4>
+                
+                <!-- [標題]小產咖啡廳: 顯示該咖啡廳剩餘時間 -->
+                <!-- <p class="card-subtitle"><i class="bi bi-clock-fill pe-1"></i>倒數 2小時 20分鐘</p> -->
+                <button type="button"
+                    class="btn-xs btn-close btn-card-close position-absolute top-0 end-0 p-3"></button>
+            </div>
+
+            <div class="ps-container ps-theme-default ps-active-y" id="chat-content"
+                style="overflow-y: scroll !important; min-height: 427px !important">
+                <div class="alert alert-secondary m-2 p-2 align-items-center d-flex" role="alert">
+                    <i class="bi bi-exclamation-circle float-start px-2"></i>
+                    <!-- 如有置頂標語提醒 請顯示alert，並填入文字 -->
+                    勿洩漏個資，留意聊天室中潛在的詐騙行為
+                </div>
+
+                <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 0px">
+                    <div class="ps-scrollbar-x" tabindex="0" style="left: 0px; width: 0px"></div>
+                </div>
+                <div class="ps-scrollbar-y-rail" style="top: 0px; height: 0px; right: 2px">
+                    <div class="ps-scrollbar-y" tabindex="0" style="top: 0px; height: 2px"></div>
+                </div>
+
+                <!-- 訊息框 -->
+                <div class="line">
+                    <p>掃描 QR code 後，</p>
+                    <p>將可開啟 LINE 進行對話</p>
+                    <img src="http://localhost/static/img/Line.png"></img>
+                    <a href="https://lin.ee/9uEFur8" class="btn btn-c2 rounded-pill me-1">開啟LINE</a>
+                </div>
+
+
+            </div>
+
+            
+        </div>
+
+
+        <div class="tab-pane fade" id="chat-room2" role="tabpanel" aria-labelledby="chat-room2">
+            <div class="card-header">
+                
+                <!-- 填入標題 -->
+                <h4 class="card-title"><strong>小產咖啡廳</strong></h4>
+                <!-- [標題]小產咖啡廳: 顯示該咖啡廳剩餘時間 -->
+                
+                <div class="row">
+                    <p>發言身分：</p>
+                    <select class="form-select chat_name" name="chat_name">
+                                                <option value="匿名">匿名
+                        </option>
+                    </select>
+                </div>
+                <button type="button"
+                    class="btn-xs btn-close btn-card-close position-absolute top-0 end-0 p-3"></button>
+            </div>
+
+                            <div class="ps-container ps-theme-default ps-active-y" id="chat-content"
+                    style="overflow-y: scroll !important; min-height: 399px !important">
+                    <div class="alert alert-secondary m-2 p-2 align-items-center d-flex" role="alert">
+                        <i class="bi bi-exclamation-circle float-start px-2"></i>
+                        <!-- 如有置頂標語提醒 請顯示alert，並填入文字 -->
+                        勿洩漏個資，留意聊天室中潛在的詐騙行為
+                    </div>
+
+                    <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 0px">
+                        <div class="ps-scrollbar-x" tabindex="0" style="left: 0px; width: 0px"></div>
+                    </div>
+                    <div class="ps-scrollbar-y-rail" style="top: 0px; height: 0px; right: 2px">
+                        <div class="ps-scrollbar-y" tabindex="0" style="top: 0px; height: 2px"></div>
+                    </div>
+
+                    <!-- 訊息框 -->
+                    <div class="line">
+                        <a href="http://localhost/user_login">請先登入！</a>
+                    </div>
+                </div>
+                    </div>
+
+
+        <div class="tab-pane fade" id="chat-room3" role="tabpanel" aria-labelledby="chat-room3">
+            <div class="card-header">
+                
+                <!-- 填入標題 -->
+                <h4 class="card-title"><strong>婦科咖啡廳</strong></h4>
+                <!-- [標題]婦科咖啡廳: 顯示該咖啡廳剩餘時間 -->
+                
+                <div class="row">
+                    <p>發言身分：</p>
+                    <select class="form-select chat_name" name="chat_name">
+                                                <option value="匿名">匿名
+                        </option>
+                    </select>
+                </div>
+                <button type="button"
+                    class="btn-xs btn-close btn-card-close position-absolute top-0 end-0 p-3"></button>
+            </div>
+
+                            <div class="ps-container ps-theme-default ps-active-y" id="chat-content"
+                    style="overflow-y: scroll !important; min-height: 399px !important">
+                    <div class="alert alert-secondary m-2 p-2 align-items-center d-flex" role="alert">
+                        <i class="bi bi-exclamation-circle float-start px-2"></i>
+                        <!-- 如有置頂標語提醒 請顯示alert，並填入文字 -->
+                        勿洩漏個資，留意聊天室中潛在的詐騙行為
+                    </div>
+
+                    <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 0px">
+                        <div class="ps-scrollbar-x" tabindex="0" style="left: 0px; width: 0px"></div>
+                    </div>
+                    <div class="ps-scrollbar-y-rail" style="top: 0px; height: 0px; right: 2px">
+                        <div class="ps-scrollbar-y" tabindex="0" style="top: 0px; height: 2px"></div>
+                    </div>
+
+                    <!-- 訊息框 -->
+                    <div class="line">
+                        <a href="http://localhost/user_login">請先登入！</a>
+                    </div>
+                </div>
+                    </div>
+
+        <div class="tab-pane fade" id="chat-room4" role="tabpanel" aria-labelledby="chat-room4">
+            <div class="card-header">
+                
+                <!-- 填入標題 -->
+                <h4 class="card-title"><strong>備孕咖啡廳</strong></h4>
+                <!-- [標題]小產咖啡廳: 顯示該咖啡廳剩餘時間 -->
+                
+                <div class="row">
+                    <p>發言身分：</p>
+                    <select class="form-select chat_name" name="chat_name">
+                                                <option value="匿名">匿名
+                        </option>
+                    </select>
+                </div>
+                <button type="button"
+                    class="btn-xs btn-close btn-card-close position-absolute top-0 end-0 p-3"></button>
+            </div>
+
+                            <div class="ps-container ps-theme-default ps-active-y" id="chat-content"
+                    style="overflow-y: scroll !important; min-height: 399px !important">
+                    <div class="alert alert-secondary m-2 p-2 align-items-center d-flex" role="alert">
+                        <i class="bi bi-exclamation-circle float-start px-2"></i>
+                        <!-- 如有置頂標語提醒 請顯示alert，並填入文字 -->
+                        勿洩漏個資，留意聊天室中潛在的詐騙行為
+                    </div>
+
+                    <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 0px">
+                        <div class="ps-scrollbar-x" tabindex="0" style="left: 0px; width: 0px"></div>
+                    </div>
+                    <div class="ps-scrollbar-y-rail" style="top: 0px; height: 0px; right: 2px">
+                        <div class="ps-scrollbar-y" tabindex="0" style="top: 0px; height: 2px"></div>
+                    </div>
+
+                    <!-- 訊息框 -->
+                    <div class="line">
+                        <a href="http://localhost/user_login">請先登入！</a>
+                    </div>
+                </div>
+                    </div>
+
+        <div class="tab-pane fade" id="chat-room5" role="tabpanel" aria-labelledby="chat-room5">
+            <div class="card-header">
+                
+                <!-- 填入標題 -->
+                <h4 class="card-title"><strong>懷孕咖啡廳</strong></h4>
+                <!-- [標題]小產咖啡廳: 顯示該咖啡廳剩餘時間 -->
+                
+                <div class="row">
+                    <p>發言身分：</p>
+                    <select class="form-select chat_name" name="chat_name">
+                                                <option value="匿名">匿名
+                        </option>
+                    </select>
+                </div>
+                <button type="button"
+                    class="btn-xs btn-close btn-card-close position-absolute top-0 end-0 p-3"></button>
+            </div>
+
+                            <div class="ps-container ps-theme-default ps-active-y" id="chat-content"
+                    style="overflow-y: scroll !important; min-height: 399px !important">
+                    <div class="alert alert-secondary m-2 p-2 align-items-center d-flex" role="alert">
+                        <i class="bi bi-exclamation-circle float-start px-2"></i>
+                        <!-- 如有置頂標語提醒 請顯示alert，並填入文字 -->
+                        勿洩漏個資，留意聊天室中潛在的詐騙行為
+                    </div>
+
+                    <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 0px">
+                        <div class="ps-scrollbar-x" tabindex="0" style="left: 0px; width: 0px"></div>
+                    </div>
+                    <div class="ps-scrollbar-y-rail" style="top: 0px; height: 0px; right: 2px">
+                        <div class="ps-scrollbar-y" tabindex="0" style="top: 0px; height: 2px"></div>
+                    </div>
+
+                    <!-- 訊息框 -->
+                    <div class="line">
+                        <a href="http://localhost/user_login">請先登入！</a>
+                    </div>
+                </div>
+                    </div>
+
+        <div class="tab-pane fade" id="chat-room6" role="tabpanel" aria-labelledby="chat-room6">
+            <div class="card-header">
+                
+                <!-- 填入標題 -->
+                <h4 class="card-title"><strong>保健咖啡廳</strong></h4>
+                <!-- [標題]小產咖啡廳: 顯示該咖啡廳剩餘時間 -->
+                
+                <div class="row">
+                    <p>發言身分：</p>
+                    <select class="form-select chat_name" name="chat_name">
+                                                <option value="匿名">匿名
+                        </option>
+                    </select>
+                </div>
+                <button type="button"
+                    class="btn-xs btn-close btn-card-close position-absolute top-0 end-0 p-3"></button>
+            </div>
+
+                            <div class="ps-container ps-theme-default ps-active-y" id="chat-content"
+                    style="overflow-y: scroll !important; min-height: 399px !important">
+                    <div class="alert alert-secondary m-2 p-2 align-items-center d-flex" role="alert">
+                        <i class="bi bi-exclamation-circle float-start px-2"></i>
+                        <!-- 如有置頂標語提醒 請顯示alert，並填入文字 -->
+                        勿洩漏個資，留意聊天室中潛在的詐騙行為
+                    </div>
+
+                    <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 0px">
+                        <div class="ps-scrollbar-x" tabindex="0" style="left: 0px; width: 0px"></div>
+                    </div>
+                    <div class="ps-scrollbar-y-rail" style="top: 0px; height: 0px; right: 2px">
+                        <div class="ps-scrollbar-y" tabindex="0" style="top: 0px; height: 2px"></div>
+                    </div>
+
+                    <!-- 訊息框 -->
+                    <div class="line">
+                        <a href="http://localhost/user_login">請先登入！</a>
+                    </div>
+                </div>
+                    </div>
+    </div>
+</div>
+
+</body>
+
+<script src="http://localhost/static/bootstrap-5.1.3-dist/js/bootstrap.bundle.min.js"></script>
+<script src="http://localhost/static/bootstrap-table-master/dist/bootstrap-table.min.js"></script>
+<script src="http://localhost/static/bootstrap-multiselect/dist/js/bootstrap-multiselect.js"></script>
+<script src="http://localhost/static/bootstrap-datepicker-master/dist/js/bootstrap-datepicker.min.js"></script>
+<script src="http://localhost/static/bootstrap-datepicker-master/dist/locales/bootstrap-datepicker.zh-TW.min.js">
+</script>
+<script src="http://localhost/static/sweetalert2-11.7.1/dist/sweetalert2.all.min.js"></script>
+<script src="http://localhost/static/jsCalendar-master/source/jsCalendar.js"></script>
+<script src="http://localhost/static/jsCalendar-master/source/jsCalendar.lang.zh.js"></script>
+<script src="http://localhost/static/evo-event-calendar/js/evo-calendar.js"></script>
+<script src="http://localhost/static/dayjs-1.11.8/package/dayjs.min.js"></script>
+<script src="http://localhost/static/dayjs-1.11.8/package/locale/zh-tw.js"></script>
+<script src="http://localhost/static/tinymce/js/tinymce/tinymce.min.js"></script>
+<script src="http://localhost/static/quill-1.3.6/quill.js"></script>
+<script src="http://localhost/static/js/master_page.js"></script>
+<script src="http://localhost/static/js/index.js"></script>
+<script src="http://localhost/static/js/forum_list.js"></script>
+<script src="http://localhost/static/js/user.js"></script>
+<script src="http://localhost/static/js/points.js"></script>
+<script src="http://localhost/static/js/article.js"></script>
+<script src="http://localhost/static/js/calendar.js"></script>
+<script src="http://localhost/static/js/save.js"></script>
+<script src="http://localhost/static/js/blacklist.js"></script>
