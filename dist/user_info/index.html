@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en" style="height: 100%">
+
+<head>
+    <link rel="icon" href="http://localhost/static/img/logo.ico" type="image/x-icon" />
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="csrf-token" content="41L6f1M2t2ZSPJaKV2O2eMPQXindLJac32pE2I29">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta property="og:title" content="預設標題">
+    <meta property="og:description" content="文章描述未提供">
+    <meta property="og:image" content="http://localhost/static/img/default_image.png">
+    <meta property="og:url" content="http://localhost/user_info">
+    <!--ICON-->
+    <link rel="stylesheet" href="http://localhost/static/bootstrap_icons-1.4.1/font/bootstrap-icons.css" />
+    <link rel="stylesheet" href="http://localhost/static/fontawesome-free-5.15.3-web/css/all.css" />
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
+
+    <!--Bootstrap-->
+    <link rel="stylesheet" href="http://localhost/static/bootstrap-5.1.3-dist/css/bootstrap.min.css" />
+    <!--BootstrapTable-->
+    <link rel="stylesheet" href="http://localhost/static/bootstrap-table-master/dist/bootstrap-table.min.css" />
+    <!-- MultiSelect -->
+    <link rel="stylesheet" href="http://localhost/static/bootstrap-multiselect/dist/css/bootstrap-multiselect.css"
+        type="text/css" />
+    <!-- Datetime picker -->
+    <link rel="stylesheet"
+        href="http://localhost/static/bootstrap-datepicker-master/dist/css/bootstrap-datepicker.min.css" />
+    <!-- Image cropper -->
+    <link href="https://unpkg.com/cropperjs/dist/cropper.min.css" rel="stylesheet" />
+
+    <!-- Sweet Alert -->
+    <link rel="stylesheet" href="http://localhost/static/sweetalert2-11.7.1/dist/sweetalert2.min.css" />
+    <link rel="stylesheet" href="http://localhost/static/quill-1.3.6/quill.snow.css" />
+    <link rel="stylesheet" href="http://localhost/static/quill-1.3.6/quill.core.css" />
+
+    <!-- import self-css -->
+    <link rel="stylesheet" href="http://localhost/static/css/article.css" />
+    <link rel="stylesheet" href="http://localhost/static/css/master_page.css" />
+    <link rel="stylesheet" href="http://localhost/static/css/index.css" />
+    <link rel="stylesheet" href="http://localhost/static/css/forum_list.css" />
+    <link rel="stylesheet" href="http://localhost/static/css/user.css" />
+    <link rel="stylesheet" href="http://localhost/static/css/point.css" />
+    <link rel="stylesheet" href="http://localhost/static/css/saved.css" />
+    <link rel="stylesheet" href="http://localhost/static/css/chat_room.css" />
+    <link rel="stylesheet" href="http://localhost/static/css/share_modal.css" />
+    <link rel="stylesheet" href="http://localhost/static/css/point.css" />
+    <!-- JS -->
+    <script src="http://localhost/static/bootstrap-4.6.0-dist/jquery-3.6.0.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"
+        integrity="sha384-SR1sx49pcuLnqZUnnPwx6FCym0wLsk5JZuNx2bPPENzswTNFaQU1RDvt3wT4gWFG" crossorigin="anonymous">
+    </script>
+    <script src="https://unpkg.com/cropperjs/dist/cropper.min.js"></script>
+    <!-- jsCalendar -->
+    <link rel="stylesheet" type="text/css" href="static/jsCalendar-master/source/jsCalendar.css" />
+    <!-- chat room -->
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"
+        integrity="sha384-2huaZvOR9iDzHqslqwpR87isEmrfxqyWOF7hr7BY6KG0+hVKLoEXMPUJw3ynWuhO" crossorigin="anonymous">
+    </script>
+
+
+    <title>洪豆論壇 - ANSA</title>
+    <style>
+        #calendar {
+            font-size: var(--fs-18);
+        }
+    </style>
+</head>
+
+<body>
+        <div type="hidden" id="app" data-api-ip="127.0.0.1:8001/"></div>
+
+    <div class="container-xxl topbar">
+    <nav class="navbar navbar-expand-lg border-bottom fixed-top">
+        <div class="container-xxl px-md-4">
+            <a class="navbar-brand" href="http://localhost">
+                <img src="http://localhost/static/img/SDRC_logo-02.png" alt="" height="40"
+                    class="d-inline-block align-text-top" />
+            </a>
+            <div class="align-items-center">
+                                <button class="navbar-toggler border" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarNavDropdown">
+                    <i class="fas fa-bars ct-txt-1"></i>
+                </button>
+            </div>
+
+
+            <div class="justify-content-end collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav mb-2 mb-md-0" id="topbar-nav-tabs">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link active" data-bs-toggle="dropdown">知識圖書館</a>
+                        <ul class="dropdown-menu">
+                            <a class="dropdown-item"
+                                href="http://localhost/knowledge_library/%E5%B0%8F%E7%94%A2%E8%AA%BF%E7%90%86/%E5%B0%8F%E7%94%A2%E7%9F%A5%E8%AD%98">小產調理</a>
+                            <a class="dropdown-item"
+                                href="http://localhost/knowledge_library/%E5%A9%A6%E7%A7%91%E4%BF%9D%E5%81%A5/%E5%A9%A6%E7%A7%91%E4%BF%9D%E5%81%A5%E7%9F%A5%E8%AD%98">婦科保健</a>
+                            <a class="dropdown-item"
+                                href="http://localhost/knowledge_library/%E5%82%99%E5%AD%95%E8%AA%BF%E7%90%86/%E5%82%99%E5%AD%95%E7%9F%A5%E8%AD%98">備孕調理</a>
+                            <a class="dropdown-item"
+                                href="http://localhost/knowledge_library/%E6%87%B7%E5%AD%95%E7%9F%A5%E8%AD%98/%E6%87%B7%E5%AD%95%E7%9F%A5%E8%AD%98">懷孕知識</a>
+                            <a class="dropdown-item"
+                                href="http://localhost/knowledge_library/%E6%97%A5%E5%B8%B8%E4%BF%9D%E5%81%A5/%E6%97%A5%E5%B8%B8%E4%BF%9D%E5%81%A5%E7%9F%A5%E8%AD%98">日常保健</a>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link active" data-bs-toggle="dropdown">療心室</a>
+                        <ul class="dropdown-menu">
+                            <a class="dropdown-item" href="http://localhost/treatment_qa/%E8%81%8A%E7%99%82%E5%B0%8F%E7%94%A2">聊療小產</a>
+                            <a class="dropdown-item"
+                                href="http://localhost/treatment_qa/%E8%81%8A%E7%99%82%E5%A9%A6%E7%A7%91%E4%BF%9D%E5%81%A5">聊療婦科保健</a>
+                            <a class="dropdown-item" href="http://localhost/treatment_qa/%E8%81%8A%E7%99%82%E5%82%99%E5%AD%95">聊療備孕</a>
+                            <a class="dropdown-item" href="http://localhost/treatment_qa/%E8%81%8A%E7%99%82%E6%87%B7%E5%AD%95">聊療懷孕</a>
+                            <a class="dropdown-item"
+                                href="http://localhost/treatment_qa/%E8%81%8A%E7%99%82%E6%97%A5%E5%B8%B8%E4%BF%9D%E5%81%A5">聊療日常保健</a>
+                        </ul>
+                    </li>
+                    <li class="nav-item"><a role="button" id="chats-button" class="nav-link active">暢聊咖啡廳</a></li>
+                    <li class="nav-item"><a role="button" id="consult-button" class="nav-link active">營養師諮詢</a></li>
+                                        
+                    <li class="nav-item dropstart order-first order-lg-last">
+                        <!--如有會員登入 顯示會員名稱-->
+                        <a href="#" class="nav-link" data-bs-toggle="dropdown">
+                                                            <i class="fas fa-user-circle"><span
+                                        id="user_nickname">未登入</span></i>
+                                                    </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="http://localhost/user_info">個人資料</a></li>
+                            <li><a class="dropdown-item" href="http://localhost/calendar">專屬月曆</a></li>
+                            <li class="dropdown-submenu">
+                                <a role="button" data-bs-toggle="dropdown" class="dropdown-item">點數錢包</a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="http://localhost/point_task">任務專區</a></li>
+                                    <li><a href="http://localhost/point_exchange" class="dropdown-item">點數兌換</a></li>
+                                    <li><a href="http://localhost/point_gift1" class="dropdown-item">點數轉贈</a></li>
+                                    <li><a href="http://localhost/point_get_record" class="dropdown-item">點數獲得紀錄</a>
+                                    </li>
+                                    <li><a href="http://localhost/point_use_record" class="dropdown-item">點數使用紀錄</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><a class="dropdown-item" href="http://localhost/my_mind">我的心事</a></li>
+                            <li class="dropdown-submenu">
+                                <a role="button" data-bs-toggle="dropdown" class="dropdown-item">收藏與追蹤</a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="http://localhost/article_saved_list">文章收藏</a>
+                                    </li>
+                                    <li><a class="dropdown-item" href="http://localhost/author_saved">作者追蹤</a></li>
+                                    <li><a class="dropdown-item" href="http://localhost/topic_saved">話題追蹤</a></li>
+                                </ul>
+                            </li>
+                                                            <li><a class="dropdown-item" href="http://localhost/user_login">登入</a></li>
+                                                    </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <!--通知欄區塊-->
+                    </div>
+    </nav>
+</div>
+
+<script>
+    $('.notifications-item').on('click', function(e) {
+        e.preventDefault();
+        var id = $(this).attr('id').split("_")[1];
+        var href = this.href;
+        var notifications = null;
+        usersocket.send(
+            JSON.stringify({
+                action: "read",
+                id: id,
+            })
+        );
+        if ($("#notifications_box .rounded-circle").text() == 1) {
+            $("#notifications_box .rounded-circle").remove();
+            $(".notify_bell span").remove();
+        } else {
+            $("#notify_" + id +
+                " .rounded-circle").remove();
+        }
+        notifications.forEach((element, index) => {
+            if (element["id"] == id) {
+                notifications.splice(index, 1);
+            }
+        });
+        console.log(notifications)
+        if (notifications.length > 0) {
+            $.ajax({
+                type: "POST",
+                url: "/setNotifications",
+                dataType: "json",
+                data: {
+                    notifications: notifications,
+                },
+                success: function(result) {
+                    console.log(result);
+                    window.location.replace(href)
+                },
+            });
+        } else {
+            $.ajax({
+                type: "POST",
+                url: "/setNotifications",
+                success: function(result) {
+                    console.log(result);
+                    window.location.replace(href)
+                },
+            });
+        }
+    });
+</script>
+            
+    
+    
+    
+    
+    <div class="container-xxl">
+        <div class="row pt-3 px-md-5">
+            <div class="col-12 my-2">
+                <div class="row mt-2 d-flex align-items-center">
+                    <h2 class="class-title col-auto ps-0"><i class="fab fa-gratipay me-1 ct-txt-1"></i>會員登入</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row px-md-5">
+            <div class="col-md col-lg-12 mt-4">
+                <div class="form-signin w-100 m-auto">
+                    <ul class="nav nav-tabs nav-fill" id="user_login_tabs">
+                        <li class="nav-item">
+                            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#user_login">會員登入</button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#user_register">加入會員</button>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content shadow p-3 border-bottom border-start border-end">
+                        <div class="tab-pane fade show active text-center" id="user_login" tabindex="0">
+                            <form method="POST" action="/authenticate">
+                                <input type="hidden" name="_token" value="41L6f1M2t2ZSPJaKV2O2eMPQXindLJac32pE2I29" autocomplete="off">                                <div class="form-floating my-2">
+                                    <input type="text" class="form-control" id="username" name="username"
+                                        placeholder="name@example.com" />
+                                    <label for="username">電子郵件帳號</label>
+                                </div>
+                                <div class="form-floating mb-2">
+                                    <input type="password" class="form-control" id="password" name="password"
+                                        placeholder="Password" />
+                                    <label for="password">密碼</label>
+                                </div>
+
+                                <div class="col">
+                                    <label class="text-decoration-underline" data-bs-toggle="modal"
+                                        data-bs-target="#pwdModal">忘記密碼</label>
+                                </div>
+                                <button class="btn btn-outline-c2 w-75 py-2 my-3" type="submit">登入</button>
+                                <p class="mt-5 mb-3 text-body-secondary"></p>
+                            </form>
+                                                    </div>
+                        <div class="tab-pane fade text-center" id="user_register">
+                            <form action="JumpUserRegister" method="POST">
+                                <input type="hidden" name="_token" value="41L6f1M2t2ZSPJaKV2O2eMPQXindLJac32pE2I29" autocomplete="off">                                <div class="form-floating mt-3 mb-2">
+                                    <input type="email" class="form-control" id="user_mail" name="user_mail"
+                                        placeholder="name@example.com" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" />
+                                    <label for="floatingInput">電子郵件帳號</label>
+                                </div>
+                                <button class="btn btn-outline-c2 w-75 py-2 my-3" type="submit">註冊</button>
+                                <p class="mt-5 mb-3 text-body-secondary"></p>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="pwdModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel"><i class="bi bi-lock-fill ct-txt-1 me-2"></i>設定密碼
+                    </h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="font-size: var(--fs-18)">
+                    <div class="row d-flex justify-content-center py-3">
+                        <div class="col-md col-lg-8">
+                            <div class="row g-3 mb-3 align-items-start">
+                                <div class="col-4">
+                                    <label for="user_email" class="col-form-label">電子郵件帳號</label>
+                                </div>
+                                <div class="col">
+                                    <input type="email" id="user_email" name="user_email" placeholder="電子郵件帳號"
+                                        class="form-control">
+                                    <span class="ct-txt-2 d-none" id="user_email_alert"
+                                        style="font-size: var(--fs-16)">＊電子郵件帳號</span>
+                                </div>
+                            </div>
+                            <div class="row g-3 mb-3 align-items-start">
+                                <div class="col-4">
+                                    <label for="chkmsg" class="col-form-label">驗證碼</label>
+                                </div>
+                                <div class="col">
+                                    <input type="text" id="chkmsg" name="checkmsg" placeholder="驗證碼"
+                                        class="form-control" />
+                                    <span class="ct-txt-2 d-none" id="new_chkmsg_alert"
+                                        style="font-size: var(--fs-16)">＊驗證碼輸入錯誤</span>
+                                </div>
+                                <div class="col">
+                                    <button type="button" id="chk_sub_btn" class="btn btn-primary">發送驗證碼</button>
+                                </div>
+                            </div>
+
+                            <div class="row g-3 mb-3 align-items-start">
+                                <div class="col-4">
+                                    <label for="new_password" class="col-form-label">新密碼</label>
+                                </div>
+                                <div class="col">
+                                    <input type="password" id="new_password" name="new_password"
+                                        placeholder="須包含英文大小寫，至少8個字元" class="form-control" />
+                                    <span class="ct-txt-2 d-none" id="new_pwd_alert"
+                                        style="font-size: var(--fs-16)">＊新密碼須包含英文大小寫，至少8個字元</span>
+                                </div>
+                            </div>
+                            <div class="row g-3 mb-3 align-items-start">
+                                <div class="col-4">
+                                    <label for="check_password" class="col-form-label">確認新密碼</label>
+                                </div>
+                                <div class="col">
+                                    <input type="password" id="check_password" placeholder="需與新密碼相同"
+                                        class="form-control" />
+                                    <span class="ct-txt-2 d-none" id="check_pwd_alert"
+                                        style="font-size: var(--fs-16)">＊需與新密碼相同</span>
+                                </div>
+                            </div>
+                            <div class="row g-3 my-4 align-items-center">
+                                <button type="submit" class="btn btn-c2 rounded-pill px-4 mx-1 col-auto"
+                                    onclick="forget_password()">完成</button>
+                                <button type="button" class="btn col-auto mx-1" data-bs-dismiss="modal">取消</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="footer-px ct-bg-3 mt-5">
+    <div class="row flex-wrap">
+        <div class="col-12 col-sm-5 col-lg-3">
+            <h6 class="row">關於我們</h6>
+            <a class="row" href="https://www.uterusally.com/" target="_blank">ANSA官網</a>
+            <a class="row" href="http://localhost/tos">服務條款</a>
+            <a class="row" href="http://localhost/privacy">隱私權政策</a>
+            <div class="d-none d-sm-flex d-lg-none row">
+                <a href="https://www.facebook.com/uterusally/" target="_blank" class="mr-3">
+                    <i class="fab fa-facebook-square"></i>
+                </a>
+                <a href="https://www.instagram.com/uterusally/" target="_blank" class="mx-3">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="https://lin.ee/9uEFur8" target="_blank" class="ml-3">
+                    <i class="fab fa-line"></i>
+                </a>
+            </div>
+        </div>
+        <div class="col-12 col-sm-7 col-lg-auto mx-auto">
+            <h6 class="row">聯絡我們</h6>
+            <div class="row">
+                <p class="w-auto m-0 p-0">客服電話：</p>
+                <a href="tel:0900152125" style="text-decoration: none; color: inherit;">0900-152-125</a>
+            </div>
+            <div class="row">
+                <p class="w-auto m-0 p-0">營業時間：AM 9:30 ~ PM 6:00</p>
+            </div>
+            <div class="row">
+                <p class="w-auto m-0 p-0">客服信箱：</p>
+                <a href="mailto:ansa1019@gmail.com"
+                    style="text-decoration: none; color: inherit;">ansa1019@gmail.com</a>
+            </div>
+            <div class="row">
+                <p class="w-auto m-0 p-0">地址：</p>
+                <a href="https://www.google.com/maps/search/?api=1&query=台南市六甲區" target="_blank"
+                    style="text-decoration: none; color: inherit;">台南市六甲區</a>
+            </div>
+        </div>
+        <div class="d-flex d-sm-none d-lg-flex col-lg-3">
+            <div class="row justify-content-center mx-0 mx-sm-auto">
+                <a href="https://www.facebook.com/uterusally/" target="_blank" class="mx-3 mx-md-2">
+                    <i class="fab fa-facebook-square"></i>
+                </a>
+                <a href="https://www.instagram.com/uterusally/" target="_blank" class="mx-3 mx-md-2">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="https://lin.ee/9uEFur8" target="_blank" class="mx-3 mx-md-2">
+                    <i class="fab fa-line"></i>
+                </a>
+            </div>
+        </div>
+</footer>
+    <script>
+        var user = "";
+        var user_image = "";
+        var nickname = "";
+        var blacklist = null || {
+            article: [],
+            comment: [],
+            chat: []
+        };
+        var banlist = null;
+
+        // console.log(banlist);
+        // console.log(blacklist);
+    </script>
+
+
+
+<!-- 建立檢舉 Modal -->
+<div class="modal fade" id="denounce" tabindex="-1" data-bs-focus="false" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-bottom-0">
+                <h3 class="modal-title fs-5 ct-txt-2 fw-bold"><i class="fa fa-exclamation-circle fa-sm"></i> 檢舉原因
+                </h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" style="font-size: var(--fs-18)">
+                <input type="text" style="display: none" id="denounce_cate">
+                <input type="text" style="display: none" id="denounce_id">
+                <input type="text" style="display: none" id="denounce_name">
+                <input type="text" style="display: none" id="denounce_msg">
+                <input type="text" style="display: none" id="denounce_reason">
+                <div>
+                    <input class="form-check-input" type="radio" name="reason" id="reason_1"
+                        value="中傷、歧視、挑釁或謾罵他人" />
+                    <label class="form-check-label" for="reason_1">中傷、歧視、挑釁或謾罵他人</label>
+                </div>
+                <div>
+                    <input class="form-check-input" type="radio" name="reason" id="reason_2" value="惡意洗版、重複張貼" />
+                    <label class="form-check-label" for="reason_2">惡意洗版、重複張貼</label>
+                </div>
+                <div>
+                    <input class="form-check-input" type="radio" name="reason" id="reason_3"
+                        value="發表內容包含色情、性騷擾、恐怖血腥等讓人不舒服之內容" />
+                    <label class="form-check-label" for="reason_3">發表內容包含色情、性騷擾、恐怖血腥等讓人不舒服之內容</label>
+                </div>
+                <div id="denounce_other">
+                    <input class="form-check-input" type="radio" name="reason" id="reason_4" value="其他">
+                    <label class="form-check-label" for="reason_4">其他</label>
+                    <input type="text" id="reason_other" placeholder="請說明檢舉原因"
+                        class="form-control col-auto input_underline" style="display: none;width: auto">
+                </div>
+            </div>
+            <div class="modal-footer" style="border: none;">
+                <button type="button" class="btn btn-c2 rounded-pill px-3 py-1" onclick="denounce()">確定</button>
+                <button type="button" class="btn ct-sub-1" data-bs-dismiss="modal" aria-label="Close">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="position-fixed bottom-0 end-0 m-2">
+    <button class="btn" id="floatButton" data-bs-toggle="tooltip" data-bs-title="營養師諮詢" data-bs-placement="left">
+        <i class="fas fa-comment-dots"></i>
+    </button>
+</div>
+
+<!-- 聊天室介面 -->
+<div class="tab-vertical" style="display: none;">
+    <img src="http://localhost/static/img/female.png" alt="..." style="display: none" />
+    <img src="http://localhost/static/img/male.png" alt="..." style="display: none" />
+    <ul class="nav nav-tabs chats-nav-tab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="room1-vertical-tab" data-bs-toggle="tab" href="#chat-room1" role="tab"
+                aria-controls="home" aria-selected="true">營養師諮詢</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="room2-vertical-tab" data-bs-toggle="tab" href="#chat-room2" role="tab"
+                aria-controls="profile" aria-selected="false">小產咖啡廳</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="room3-vertical-tab" data-bs-toggle="tab" href="#chat-room3" role="tab"
+                aria-controls="contact" aria-selected="false">婦科咖啡廳</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="room4-vertical-tab" data-bs-toggle="tab" href="#chat-room4" role="tab"
+                aria-controls="contact" aria-selected="false">備孕咖啡廳</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="room5-vertical-tab" data-bs-toggle="tab" href="#chat-room5" role="tab"
+                aria-controls="contact" aria-selected="false">懷孕咖啡廳</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="room6-vertical-tab" data-bs-toggle="tab" href="#chat-room6" role="tab"
+                aria-controls="contact" aria-selected="false">保健咖啡廳</a>
+        </li>
+    </ul>
+
+    <ul class="nav nav-tabs chats-nav-tab nav-horizontal-tabs fade show active" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="room1-horizontal-tab" data-bs-toggle="tab" href="#chat-room1" role="tab"
+                aria-controls="home" aria-selected="true">營養師諮詢</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="room2-horizontal-tab" data-bs-toggle="tab" href="#chat-room2" role="tab"
+                aria-controls="profile" aria-selected="false">小產咖啡廳</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="room3-horizontal-tab" data-bs-toggle="tab" href="#chat-room3" role="tab"
+                aria-controls="contact" aria-selected="false">婦科咖啡廳</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="room4-vertical-tab" data-bs-toggle="tab" href="#chat-room4" role="tab"
+                aria-controls="contact" aria-selected="false">備孕咖啡廳</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="room5-vertical-tab" data-bs-toggle="tab" href="#chat-room5" role="tab"
+                aria-controls="contact" aria-selected="false">懷孕咖啡廳</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="room6-vertical-tab" data-bs-toggle="tab" href="#chat-room6" role="tab"
+                aria-controls="contact" aria-selected="false">保健咖啡廳</a>
+        </li>
+    </ul>
+
+    <div class="tab-content card card-bordered chats-card" id="myTabContent3">
+        <!-- <div class="bg-none card card-bordered chats-card" id="myTabContent3"> -->
+        <div class="tab-pane fade show active" id="chat-room1" role="tabpanel" aria-labelledby="chat-room1">
+            <div class="card-header">
+                
+                <!-- 填入標題 -->
+                <h4 class="card-title"><strong>營養師諮詢</strong></h4>
+                
+                <!-- [標題]小產咖啡廳: 顯示該咖啡廳剩餘時間 -->
+                <!-- <p class="card-subtitle"><i class="bi bi-clock-fill pe-1"></i>倒數 2小時 20分鐘</p> -->
+                <button type="button"
+                    class="btn-xs btn-close btn-card-close position-absolute top-0 end-0 p-3"></button>
+            </div>
+
+            <div class="ps-container ps-theme-default ps-active-y" id="chat-content"
+                style="overflow-y: scroll !important; min-height: 427px !important">
+                <div class="alert alert-secondary m-2 p-2 align-items-center d-flex" role="alert">
+                    <i class="bi bi-exclamation-circle float-start px-2"></i>
+                    <!-- 如有置頂標語提醒 請顯示alert，並填入文字 -->
+                    勿洩漏個資，留意聊天室中潛在的詐騙行為
+                </div>
+
+                <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 0px">
+                    <div class="ps-scrollbar-x" tabindex="0" style="left: 0px; width: 0px"></div>
+                </div>
+                <div class="ps-scrollbar-y-rail" style="top: 0px; height: 0px; right: 2px">
+                    <div class="ps-scrollbar-y" tabindex="0" style="top: 0px; height: 2px"></div>
+                </div>
+
+                <!-- 訊息框 -->
+                <div class="line">
+                    <p>掃描 QR code 後，</p>
+                    <p>將可開啟 LINE 進行對話</p>
+                    <img src="http://localhost/static/img/Line.png"></img>
+                    <a href="https://lin.ee/9uEFur8" class="btn btn-c2 rounded-pill me-1">開啟LINE</a>
+                </div>
+
+
+            </div>
+
+            
+        </div>
+
+
+        <div class="tab-pane fade" id="chat-room2" role="tabpanel" aria-labelledby="chat-room2">
+            <div class="card-header">
+                
+                <!-- 填入標題 -->
+                <h4 class="card-title"><strong>小產咖啡廳</strong></h4>
+                <!-- [標題]小產咖啡廳: 顯示該咖啡廳剩餘時間 -->
+                
+                <div class="row">
+                    <p>發言身分：</p>
+                    <select class="form-select chat_name" name="chat_name">
+                                                <option value="匿名">匿名
+                        </option>
+                    </select>
+                </div>
+                <button type="button"
+                    class="btn-xs btn-close btn-card-close position-absolute top-0 end-0 p-3"></button>
+            </div>
+
+                            <div class="ps-container ps-theme-default ps-active-y" id="chat-content"
+                    style="overflow-y: scroll !important; min-height: 399px !important">
+                    <div class="alert alert-secondary m-2 p-2 align-items-center d-flex" role="alert">
+                        <i class="bi bi-exclamation-circle float-start px-2"></i>
+                        <!-- 如有置頂標語提醒 請顯示alert，並填入文字 -->
+                        勿洩漏個資，留意聊天室中潛在的詐騙行為
+                    </div>
+
+                    <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 0px">
+                        <div class="ps-scrollbar-x" tabindex="0" style="left: 0px; width: 0px"></div>
+                    </div>
+                    <div class="ps-scrollbar-y-rail" style="top: 0px; height: 0px; right: 2px">
+                        <div class="ps-scrollbar-y" tabindex="0" style="top: 0px; height: 2px"></div>
+                    </div>
+
+                    <!-- 訊息框 -->
+                    <div class="line">
+                        <a href="http://localhost/user_login">請先登入！</a>
+                    </div>
+                </div>
+                    </div>
+
+
+        <div class="tab-pane fade" id="chat-room3" role="tabpanel" aria-labelledby="chat-room3">
+            <div class="card-header">
+                
+                <!-- 填入標題 -->
+                <h4 class="card-title"><strong>婦科咖啡廳</strong></h4>
+                <!-- [標題]婦科咖啡廳: 顯示該咖啡廳剩餘時間 -->
+                
+                <div class="row">
+                    <p>發言身分：</p>
+                    <select class="form-select chat_name" name="chat_name">
+                                                <option value="匿名">匿名
+                        </option>
+                    </select>
+                </div>
+                <button type="button"
+                    class="btn-xs btn-close btn-card-close position-absolute top-0 end-0 p-3"></button>
+            </div>
+
+                            <div class="ps-container ps-theme-default ps-active-y" id="chat-content"
+                    style="overflow-y: scroll !important; min-height: 399px !important">
+                    <div class="alert alert-secondary m-2 p-2 align-items-center d-flex" role="alert">
+                        <i class="bi bi-exclamation-circle float-start px-2"></i>
+                        <!-- 如有置頂標語提醒 請顯示alert，並填入文字 -->
+                        勿洩漏個資，留意聊天室中潛在的詐騙行為
+                    </div>
+
+                    <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 0px">
+                        <div class="ps-scrollbar-x" tabindex="0" style="left: 0px; width: 0px"></div>
+                    </div>
+                    <div class="ps-scrollbar-y-rail" style="top: 0px; height: 0px; right: 2px">
+                        <div class="ps-scrollbar-y" tabindex="0" style="top: 0px; height: 2px"></div>
+                    </div>
+
+                    <!-- 訊息框 -->
+                    <div class="line">
+                        <a href="http://localhost/user_login">請先登入！</a>
+                    </div>
+                </div>
+                    </div>
+
+        <div class="tab-pane fade" id="chat-room4" role="tabpanel" aria-labelledby="chat-room4">
+            <div class="card-header">
+                
+                <!-- 填入標題 -->
+                <h4 class="card-title"><strong>備孕咖啡廳</strong></h4>
+                <!-- [標題]小產咖啡廳: 顯示該咖啡廳剩餘時間 -->
+                
+                <div class="row">
+                    <p>發言身分：</p>
+                    <select class="form-select chat_name" name="chat_name">
+                                                <option value="匿名">匿名
+                        </option>
+                    </select>
+                </div>
+                <button type="button"
+                    class="btn-xs btn-close btn-card-close position-absolute top-0 end-0 p-3"></button>
+            </div>
+
+                            <div class="ps-container ps-theme-default ps-active-y" id="chat-content"
+                    style="overflow-y: scroll !important; min-height: 399px !important">
+                    <div class="alert alert-secondary m-2 p-2 align-items-center d-flex" role="alert">
+                        <i class="bi bi-exclamation-circle float-start px-2"></i>
+                        <!-- 如有置頂標語提醒 請顯示alert，並填入文字 -->
+                        勿洩漏個資，留意聊天室中潛在的詐騙行為
+                    </div>
+
+                    <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 0px">
+                        <div class="ps-scrollbar-x" tabindex="0" style="left: 0px; width: 0px"></div>
+                    </div>
+                    <div class="ps-scrollbar-y-rail" style="top: 0px; height: 0px; right: 2px">
+                        <div class="ps-scrollbar-y" tabindex="0" style="top: 0px; height: 2px"></div>
+                    </div>
+
+                    <!-- 訊息框 -->
+                    <div class="line">
+                        <a href="http://localhost/user_login">請先登入！</a>
+                    </div>
+                </div>
+                    </div>
+
+        <div class="tab-pane fade" id="chat-room5" role="tabpanel" aria-labelledby="chat-room5">
+            <div class="card-header">
+                
+                <!-- 填入標題 -->
+                <h4 class="card-title"><strong>懷孕咖啡廳</strong></h4>
+                <!-- [標題]小產咖啡廳: 顯示該咖啡廳剩餘時間 -->
+                
+                <div class="row">
+                    <p>發言身分：</p>
+                    <select class="form-select chat_name" name="chat_name">
+                                                <option value="匿名">匿名
+                        </option>
+                    </select>
+                </div>
+                <button type="button"
+                    class="btn-xs btn-close btn-card-close position-absolute top-0 end-0 p-3"></button>
+            </div>
+
+                            <div class="ps-container ps-theme-default ps-active-y" id="chat-content"
+                    style="overflow-y: scroll !important; min-height: 399px !important">
+                    <div class="alert alert-secondary m-2 p-2 align-items-center d-flex" role="alert">
+                        <i class="bi bi-exclamation-circle float-start px-2"></i>
+                        <!-- 如有置頂標語提醒 請顯示alert，並填入文字 -->
+                        勿洩漏個資，留意聊天室中潛在的詐騙行為
+                    </div>
+
+                    <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 0px">
+                        <div class="ps-scrollbar-x" tabindex="0" style="left: 0px; width: 0px"></div>
+                    </div>
+                    <div class="ps-scrollbar-y-rail" style="top: 0px; height: 0px; right: 2px">
+                        <div class="ps-scrollbar-y" tabindex="0" style="top: 0px; height: 2px"></div>
+                    </div>
+
+                    <!-- 訊息框 -->
+                    <div class="line">
+                        <a href="http://localhost/user_login">請先登入！</a>
+                    </div>
+                </div>
+                    </div>
+
+        <div class="tab-pane fade" id="chat-room6" role="tabpanel" aria-labelledby="chat-room6">
+            <div class="card-header">
+                
+                <!-- 填入標題 -->
+                <h4 class="card-title"><strong>保健咖啡廳</strong></h4>
+                <!-- [標題]小產咖啡廳: 顯示該咖啡廳剩餘時間 -->
+                
+                <div class="row">
+                    <p>發言身分：</p>
+                    <select class="form-select chat_name" name="chat_name">
+                                                <option value="匿名">匿名
+                        </option>
+                    </select>
+                </div>
+                <button type="button"
+                    class="btn-xs btn-close btn-card-close position-absolute top-0 end-0 p-3"></button>
+            </div>
+
+                            <div class="ps-container ps-theme-default ps-active-y" id="chat-content"
+                    style="overflow-y: scroll !important; min-height: 399px !important">
+                    <div class="alert alert-secondary m-2 p-2 align-items-center d-flex" role="alert">
+                        <i class="bi bi-exclamation-circle float-start px-2"></i>
+                        <!-- 如有置頂標語提醒 請顯示alert，並填入文字 -->
+                        勿洩漏個資，留意聊天室中潛在的詐騙行為
+                    </div>
+
+                    <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 0px">
+                        <div class="ps-scrollbar-x" tabindex="0" style="left: 0px; width: 0px"></div>
+                    </div>
+                    <div class="ps-scrollbar-y-rail" style="top: 0px; height: 0px; right: 2px">
+                        <div class="ps-scrollbar-y" tabindex="0" style="top: 0px; height: 2px"></div>
+                    </div>
+
+                    <!-- 訊息框 -->
+                    <div class="line">
+                        <a href="http://localhost/user_login">請先登入！</a>
+                    </div>
+                </div>
+                    </div>
+    </div>
+</div>
+
+</body>
+
+<script src="http://localhost/static/bootstrap-5.1.3-dist/js/bootstrap.bundle.min.js"></script>
+<script src="http://localhost/static/bootstrap-table-master/dist/bootstrap-table.min.js"></script>
+<script src="http://localhost/static/bootstrap-multiselect/dist/js/bootstrap-multiselect.js"></script>
+<script src="http://localhost/static/bootstrap-datepicker-master/dist/js/bootstrap-datepicker.min.js"></script>
+<script src="http://localhost/static/bootstrap-datepicker-master/dist/locales/bootstrap-datepicker.zh-TW.min.js">
+</script>
+<script src="http://localhost/static/sweetalert2-11.7.1/dist/sweetalert2.all.min.js"></script>
+<script src="http://localhost/static/jsCalendar-master/source/jsCalendar.js"></script>
+<script src="http://localhost/static/jsCalendar-master/source/jsCalendar.lang.zh.js"></script>
+<script src="http://localhost/static/evo-event-calendar/js/evo-calendar.js"></script>
+<script src="http://localhost/static/dayjs-1.11.8/package/dayjs.min.js"></script>
+<script src="http://localhost/static/dayjs-1.11.8/package/locale/zh-tw.js"></script>
+<script src="http://localhost/static/tinymce/js/tinymce/tinymce.min.js"></script>
+<script src="http://localhost/static/quill-1.3.6/quill.js"></script>
+<script src="http://localhost/static/js/master_page.js"></script>
+<script src="http://localhost/static/js/index.js"></script>
+<script src="http://localhost/static/js/forum_list.js"></script>
+<script src="http://localhost/static/js/user.js"></script>
+<script src="http://localhost/static/js/points.js"></script>
+<script src="http://localhost/static/js/article.js"></script>
+<script src="http://localhost/static/js/calendar.js"></script>
+<script src="http://localhost/static/js/save.js"></script>
+<script src="http://localhost/static/js/blacklist.js"></script>

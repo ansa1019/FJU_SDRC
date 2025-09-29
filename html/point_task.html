@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en" style="height: 100%">
+    <head>
+        <link rel="icon" href="static/img/us-icon.ico" type="image/x-icon" />
+        <!-- Required meta tags -->
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <!--ICON-->
+        <link rel="stylesheet" href="static/bootstrap_icons-1.4.1/font/bootstrap-icons.css" />
+        <link rel="stylesheet" href="static/fontawesome-free-5.15.3-web/css/all.css" />
+        <!--Bootstrap-->
+        <link rel="stylesheet" href="static/bootstrap-5.1.3-dist/css/bootstrap.min.css" />
+        <!-- <link rel="stylesheet" href="static/bootstrap-5.0.0-beta3-dist/css/bootstrap.min.css" /> -->
+        <!-- Sweet Alert -->
+        <link rel="stylesheet" href="static/sweetalert2-11.7.1/dist/sweetalert2.min.css" />
+        <script src="static/sweetalert2-11.7.1/dist/sweetalert2.all.min.js"></script>
+        <!-- Datetime picker -->
+        <link rel="stylesheet" href="static/bootstrap-datepicker-master/dist/css/bootstrap-datepicker.min.css" />
+        <!--MultiSelect-->
+        <link rel="stylesheet" href="static/bootstrap-multiselect/dist/css/bootstrap-multiselect.css" type="text/css" />
+
+        <script
+            src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"
+            integrity="sha384-SR1sx49pcuLnqZUnnPwx6FCym0wLsk5JZuNx2bPPENzswTNFaQU1RDvt3wT4gWFG"
+            crossorigin="anonymous"
+        ></script>
+        <!-- import self-css -->
+        <link rel="stylesheet" href="static/css/master_page.css" />
+        <link rel="stylesheet" href="static/css/forum_list.css" />
+        <link rel="stylesheet" href="static/css/point.css" />
+
+        <title>優德莎莉 任務專區</title>
+        <style></style>
+    </head>
+    <body>
+        <div class="container-xxl topbar">
+            <nav class="navbar navbar-expand-lg border-bottom fixed-top">
+                <div class="container-xxl px-md-4">
+                    <a class="navbar-brand" href="#">
+                        <img src="static/img/us-logo.png" alt="" height="40" class="d-inline-block align-text-top" />
+                    </a>
+                    <div class="align-items-center">
+                        <button class="navbar-toggler notfiy_bell" type="button" data-bs-toggle="tooltip" data-bs-title="通知" data-bs-placement="bottom">
+                            <i class="fas fa-bell ct-txt-1"></i>
+                        </button>
+                        <button class="navbar-toggler border" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown">
+                            <i class="fas fa-bars ct-txt-1"></i>
+                        </button>
+                    </div>
+
+                    <div class="justify-content-end collapse navbar-collapse" id="navbarNavDropdown">
+                        <ul class="navbar-nav mb-2 mb-md-0" id="topbar-nav-tabs">
+                            <li class="nav-item">
+                                <a href="#" class="nav-link active" data-bs-toggle="dropdown">知識圖書館</a>
+                                <ul class="dropdown-menu">
+                                    <a class="dropdown-item" href="#">小產調理</a>
+                                    <a class="dropdown-item" href="#">婦科保健</a>
+                                    <a class="dropdown-item" href="#">備孕調理</a>
+                                    <a class="dropdown-item" href="#">懷孕知識</a>
+                                    <a class="dropdown-item" href="#">日常保健</a>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link active" data-bs-toggle="dropdown">療心室</a>
+                                <ul class="dropdown-menu">
+                                    <a class="dropdown-item" href="#">聊療小產</a>
+                                    <a class="dropdown-item" href="#">聊療婦科保健</a>
+                                    <a class="dropdown-item" href="#">聊療備孕</a>
+                                    <a class="dropdown-item" href="#">聊療懷孕</a>
+                                    <a class="dropdown-item" href="#">聊療日常保健</a>
+                                </ul>
+                            </li>
+                            <li class="nav-item"><a href="#" class="nav-link active">暢聊咖啡廳</a></li>
+                            <li class="nav-item"><a href="#" class="nav-link active">營養師諮詢</a></li>
+                            <li class="nav-item notfiy_bell d-none d-lg-block" data-bs-toggle="tooltip" data-bs-title="通知" data-bs-placement="bottom">
+                                <a class="nav-link" style="cursor: pointer">
+                                    <i class="fas fa-bell"></i>
+                                </a>
+                            </li>
+                            <li class="nav-item dropstart order-first order-lg-last">
+                                <a href="#" class="nav-link" data-bs-toggle="dropdown">
+                                    <i class="fas fa-user-circle"></i>
+                                    <span id="account_name" class="d-lg-none">Account Name</span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <a class="dropdown-item" href="#">個人資料</a>
+                                    <a class="dropdown-item" href="#">點數錢包</a>
+                                    <a class="dropdown-item" href="#">文章列表</a>
+                                    <a class="dropdown-item" href="#">收藏與追蹤</a>
+                                    <a class="dropdown-item" href="#">登出</a>
+                                </ul>
+                            </li>
+                        </ul>
+                        <p class="py-1 mb-1 border-top border-bottom d-lg-none" style="letter-spacing: 2px; font-weight: 500; color: var(--ct-color-1); font-size: var(--fs-20)">功能選單</p>
+                        <ul class="nav flex-column d-lg-none">
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="collapse" href="#sub-class-1">會員資料<i class="fas fa-angle-down ms-2"></i></a>
+                                <ul class="collapse" id="sub-class-1">
+                                    <a class="dropdown-item" href="#">會員資料</a>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" href="#">專屬月曆</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="collapse" href="#sub-class-2">點數錢包<i class="fas fa-angle-down ms-2"></i></a>
+                                <ul class="collapse" id="sub-class-2">
+                                    <a class="dropdown-item" href="#">任務專區</a>
+                                    <a class="dropdown-item" href="#">點數兌換</a>
+                                    <a class="dropdown-item" href="#">點數轉贈</a>
+                                    <a class="dropdown-item" href="#">點數獲得紀錄</a>
+                                    <a class="dropdown-item" href="#">點數使用紀錄</a>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">我的心事</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="collapse" href="#sub-class-3">收藏與追蹤<i class="fas fa-angle-down ms-2"></i></a>
+                                <ul class="collapse" id="sub-class-3">
+                                    <a class="dropdown-item" href="#">文章收藏</a>
+                                    <a class="dropdown-item" href="#">作者追蹤</a>
+                                    <a class="dropdown-item" href="#">話題追蹤</a>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!--通知欄區塊-->
+                    <div class="notifications border" id="notifications_box">
+                        <h2>Notifications <span class="badge bg-danger rounded-circle">2</span></h2>
+                        <div class="notifications-item">
+                            <img src="https://i.imgur.com/uIgDDDd.jpg" alt="img" />
+                            <div class="text">
+                                <h4>Samso aliao</h4>
+                                <p>Samso Nagaro Like your home work</p>
+                            </div>
+                        </div>
+                        <div class="notifications-item">
+                            <img src="https://img.icons8.com/flat_round/64/000000/vote-badge.png" alt="img" />
+                            <div class="text">
+                                <h4>John Silvester</h4>
+                                <p>+20 vista badge earned</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </div>
+        <div class="container-xxl">
+            <div class="row pt-3 px-md-5">
+                <div class="col-12 my-2">
+                    <nav class="mb-4">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="{{ route('user_info') }}">個人資料</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('point_task') }}">點數錢包</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">任務專區</li>
+                        </ol>
+                    </nav>
+                    <div class="row d-flex align-items-center">
+                        <h2 class="class-title col-auto ps-0"><i class="fab fa-gratipay me-1 ct-txt-1"></i>任務專區</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row px-1 px-md-5">
+                <div class="col-md col-lg-9 px-1 ps-md-1 pe-md-4">
+                    <div class="row mt-4 justify-content-between align-items-center" id="point_topbar">
+                        <!-- span內 帶入用戶的當前點數-->
+                        <div class="col-sm-11 col-md mx-2 mx-lg-3 mb-2 justify-content-center d-flex align-items-center" id="total_points">聊心點 <span>635</span> 點</div>
+                        <a href="#" class="col-sm-11 col-md mx-2 mx-lg-3 mb-2 justify-content-center d-flex align-items-center" id="point_exchange"> 點數兌換 </a>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-12 my-3">
+                            <ul class="nav" id="task_class_tabs">
+                                <!-- 任務類型篩選器 -->
+                                <a class="nav-link rounded-pill" onclick="task_class_filter('beginner')"><i class="fas fa-hashtag me-1"></i>新手任務</a>
+                                <a class="nav-link rounded-pill" onclick="task_class_filter('activity')"><i class="fas fa-hashtag me-1"></i>活動任務</a>
+                                <a class="nav-link rounded-pill" onclick="task_class_filter('normal')"><i class="fas fa-hashtag me-1"></i>常態任務</a>
+                                <a class="nav-link rounded-pill" onclick="task_class_filter('all')"><i class="fas fa-hashtag me-1"></i>全部任務</a>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- 任務列表 -->
+                    <div class="row mt-2 mt-md-4" id="task_list">
+                        <!--如果該任務已全部完成(進度100%) 下方class內要加 order-last，讓任務強制跑到最下方顯示-->
+                        <!--反之，該任務若未完成，class中則不要有order-last -->
+                        <!-- 判斷第一項任務 class沒有border-top 沒有分隔線 -->
+                        <div class="row py-3 order-last">
+                            <!--任務標題 資料帶入span-->
+                            <div class="col task_title">任務標題1</div>
+                            <div class="col-auto">
+                                <!-- 展開更多按鈕的href需對應task_id-->
+                                <button class="btn" data-bs-toggle="collapse" href="#task_no1">
+                                    <i class="fas fa-caret-down" data-bs-toggle="tooltip" data-bs-title="展開更多"></i>
+                                </button>
+                            </div>
+                            <div class="col-12 mb-2">
+                                <!--任務類型 資料帶入span-->
+                                <p class="my-2"><span class="task_class">新手任務</span></p>
+                                <!--任務期限 資料帶入span-->
+                                <p class="my-2">活動期限：<span class="task_deadline">無期限</span></p>
+                                <!--任務獲得點數 資料帶入span-->
+                                <p class="my-2">獲得點數：<span class="task_get_point">110</span>點</p>
+                                <div class="row d-flex align-items-center">
+                                    <!--任務完成進度條 -->
+                                    <div class="col px-0 progress rounded-pill" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+                                        <!--已完成幾% 就修改以下width-->
+                                        <div class="progress-bar rounded-pill" style="width: 100%"></div>
+                                    </div>
+                                    <!--顯示 已完成幾個步驟/全部步驟數-->
+                                    <div class="col-auto mx-2 progres_value">4/4</div>
+                                </div>
+                            </div>
+                            <!-- 下面的div id 要帶 task_id，展開按鈕才可以依id 打開顯示該div區塊 -->
+                            <div class="col-12 my-2 pe-5 collapse" id="task_no1">
+                                <!--帶入任務步驟項目以及超連結(用戶可跳轉至要完成的頁面)-->
+                                <p class="my-2">
+                                    步驟1：＿＿＿＿＿＿＿
+                                    <!-- 任務步驟已完成 顯示下行-->
+                                    <a href="#"><span class="badge finish_badge">已完成</span></a>
+                                    <!-- 任務步驟未完成 則顯示下行-->
+                                    <!-- <a href="#"><span class="badge">去完成</span></a> -->
+                                </p>
+                                <p class="my-2">
+                                    步驟2：＿＿＿＿＿＿＿<a href="#"><span class="badge">去完成</span></a>
+                                </p>
+                                <p class="my-2">
+                                    步驟3：＿＿＿＿＿＿＿<a href="#"><span class="badge">去完成</span></a>
+                                </p>
+                                <p class="my-2">
+                                    步驟4：＿＿＿＿＿＿＿<a href="#"><span class="badge">去完成</span></a>
+                                </p>
+                                <p class="mt-3 mb-1">任務規則：</p>
+                                <div class="task_detail">
+                                    <!-- 任務規則內容 如是html tag資料可直接找task_detail帶入資料-->
+                                    <p class="my-2">
+                                        規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容
+                                    </p>
+                                    <img src="https://placehold.co/500x200" width="100%" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--下面各任務 內容以此類推-->
+                        <!-- 判斷非為第一則任務後，其餘每個任務class皆有border-top 為了顯示分隔線-->
+                        <div class="row py-3 border-top">
+                            <div class="col task_title">完善會員資料！讓我們更認識你！</div>
+                            <div class="col-auto">
+                                <button class="btn" data-bs-toggle="collapse" href="#task_no2">
+                                    <i class="fas fa-caret-down" data-bs-toggle="tooltip" data-bs-title="展開更多"></i>
+                                </button>
+                            </div>
+                            <div class="col-12 mb-2">
+                                <p class="my-2"><span class="task_class">活動任務</span></p>
+                                <p class="my-2">活動期限：<span class="task_deadline">無期限</span></p>
+                                <p class="my-2">獲得點數：<span class="task_get_point">150</span>點</p>
+                                <div class="row d-flex align-items-center">
+                                    <div class="col px-0 progress rounded-pill" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+                                        <div class="progress-bar rounded-pill w-25"></div>
+                                    </div>
+                                    <div class="col-auto mx-2 progres_value">1/4</div>
+                                </div>
+                            </div>
+                            <div class="col-12 my-2 pe-5 collapse" id="task_no2">
+                                <p class="my-2">
+                                    步驟1：＿＿＿＿＿＿＿<a href="#"><span class="badge finish_badge">已完成</span></a>
+                                </p>
+                                <p class="my-2">
+                                    步驟2：＿＿＿＿＿＿＿<a href="#"><span class="badge">去完成</span></a>
+                                </p>
+                                <p class="my-2">
+                                    步驟3：＿＿＿＿＿＿＿<a href="#"><span class="badge">去完成</span></a>
+                                </p>
+                                <p class="my-2">
+                                    步驟4：＿＿＿＿＿＿＿<a href="#"><span class="badge">去完成</span></a>
+                                </p>
+                                <p class="mt-3 mb-1">任務規則：</p>
+                                <div class="task_detail">
+                                    <!-- 任務規則內容 如是html tag資料可直接找task_detail帶入資料-->
+                                    <p class="my-2">
+                                        規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容
+                                    </p>
+                                    <img src="https://placehold.co/500x200" width="100%" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row py-3 border-top">
+                            <div class="col task_title">常態任務活動來了！！</div>
+                            <div class="col-auto">
+                                <button class="btn" data-bs-toggle="collapse" href="#task_no3">
+                                    <i class="fas fa-caret-down" data-bs-toggle="tooltip" data-bs-title="展開更多"></i>
+                                </button>
+                            </div>
+                            <div class="col-12 mb-2">
+                                <p class="my-2"><span class="task_class">常態任務</span></p>
+                                <p class="my-2">活動期限：<span class="task_deadline">無期限</span></p>
+                                <p class="my-2">獲得點數：<span class="task_get_point">250</span>點</p>
+                                <div class="row d-flex align-items-center">
+                                    <div class="col px-0 progress rounded-pill" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+                                        <div class="progress-bar rounded-pill w-25"></div>
+                                    </div>
+                                    <div class="col-auto mx-2 progres_value">1/4</div>
+                                </div>
+                            </div>
+                            <div class="col-12 my-2 pe-5 collapse" id="task_no3">
+                                <p class="my-2">
+                                    步驟1：＿＿＿＿＿＿＿<a href="#"><span class="badge finish_badge">已完成</span></a>
+                                </p>
+                                <p class="my-2">
+                                    步驟2：＿＿＿＿＿＿＿<a href="#"><span class="badge">去完成</span></a>
+                                </p>
+                                <p class="my-2">
+                                    步驟3：＿＿＿＿＿＿＿<a href="#"><span class="badge">去完成</span></a>
+                                </p>
+                                <p class="my-2">
+                                    步驟4：＿＿＿＿＿＿＿<a href="#"><span class="badge">去完成</span></a>
+                                </p>
+                                <p class="mt-3 mb-1">任務規則：</p>
+                                <div class="task_detail">
+                                    <!-- 任務規則內容 如是html tag資料可直接找task_detail帶入資料-->
+                                    <p class="my-2">
+                                        規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容
+                                    </p>
+                                    <img src="https://placehold.co/500x200" width="100%" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row py-3 border-top">
+                            <div class="col task_title">完善會員資料！讓我們更認識你！</div>
+                            <div class="col-auto">
+                                <button class="btn" data-bs-toggle="collapse" href="#task_no4">
+                                    <i class="fas fa-caret-down" data-bs-toggle="tooltip" data-bs-title="展開更多"></i>
+                                </button>
+                            </div>
+                            <div class="col-12 mb-2">
+                                <p class="my-2"><span class="task_class">新手任務</span></p>
+                                <p class="my-2">活動期限：<span class="task_deadline">無期限</span></p>
+                                <p class="my-2">獲得點數：<span class="task_get_point">150</span>點</p>
+                                <div class="row d-flex align-items-center">
+                                    <div class="col px-0 progress rounded-pill" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+                                        <div class="progress-bar rounded-pill w-25"></div>
+                                    </div>
+                                    <div class="col-auto mx-2 progres_value">1/4</div>
+                                </div>
+                            </div>
+                            <div class="col-12 my-2 pe-5 collapse" id="task_no4">
+                                <p class="my-2">
+                                    步驟1：＿＿＿＿＿＿＿<a href="#"><span class="badge finish_badge">已完成</span></a>
+                                </p>
+                                <p class="my-2">
+                                    步驟2：＿＿＿＿＿＿＿<a href="#"><span class="badge">去完成</span></a>
+                                </p>
+                                <p class="my-2">
+                                    步驟3：＿＿＿＿＿＿＿<a href="#"><span class="badge">去完成</span></a>
+                                </p>
+                                <p class="my-2">
+                                    步驟4：＿＿＿＿＿＿＿<a href="#"><span class="badge">去完成</span></a>
+                                </p>
+                                <div class="task_detail">
+                                    <!-- 任務規則內容 如是html tag資料可直接找task_detail帶入資料-->
+                                    <p class="my-2">
+                                        規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容規則內容
+                                    </p>
+                                    <img src="https://placehold.co/500x200" width="100%" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--右邊文章選單-->
+                <div class="col-md-4 col-lg d-flex align-items-start">
+                    <div class="row position-sticky" id="right-sidebar">
+                        <div class="mb-3 px-0 col-12 my-auto">
+                            <input type="text" class="form-control search-input rounded-pill" placeholder="&#xF52A; 搜尋文章" style="font-family: 'bootstrap-icons'" />
+                        </div>
+                        <div class="col-12 ct-bg-3 ps-2 p-1 rounded">
+                            <p class="ct-title-1 my-auto" style="font-weight: 500">個人資料</p>
+                        </div>
+                        <div class="col-12 px-0">
+                            <ul class="nav flex-column" id="info_class_list">
+                                <li class="nav-item">
+                                    <a class="nav-link" data-bs-toggle="collapse" href="#sub-class-1">會員資料<i class="fas fa-angle-down ms-2"></i></a>
+                                    <ul class="collapse" id="sub-class-1">
+                                        <a class="dropdown-item" href="#">會員資料</a>
+                                    </ul>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">專屬月曆</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-bs-toggle="collapse" href="#sub-class-2">點數錢包<i class="fas fa-angle-down ms-2"></i></a>
+                                    <ul class="collapse show" id="sub-class-2">
+                                        <a class="dropdown-item active" href="#">任務專區</a>
+                                        <a class="dropdown-item" href="#">點數兌換</a>
+                                        <a class="dropdown-item" href="#">點數轉贈</a>
+                                        <a class="dropdown-item" href="#">點數獲得紀錄</a>
+                                        <a class="dropdown-item" href="#">點數使用紀錄</a>
+                                    </ul>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">我的心事</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-bs-toggle="collapse" href="#sub-class-3">收藏與追蹤<i class="fas fa-angle-down ms-2"></i></a>
+                                    <ul class="collapse" id="sub-class-3">
+                                        <a class="dropdown-item" href="#">文章收藏</a>
+                                        <a class="dropdown-item" href="#">作者追蹤</a>
+                                        <a class="dropdown-item" href="#">話題追蹤</a>
+                                    </ul>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">登出</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row py-3 px-5"></div>
+            <div class="position-fixed bottom-0 end-0 m-2">
+                <button class="btn" id="floatButton" data-bs-toggle="tooltip" data-bs-title="營養師諮詢" data-bs-placement="left">
+                    <i class="fas fa-comment-dots"></i>
+                </button>
+            </div>
+
+            <footer class="container-xl mt-5">
+                <div class="row p-xs-2 p-md-4 px-lg-5 text-center justify-content-md-center justify-content-lg-evenly">
+                    <div class="col-4 col-md-2 col-lg-auto mb-2">
+                        <a href="#" class="">關於我們</a>
+                    </div>
+                    <div class="col-4 col-md-2 col-lg-auto mb-2">
+                        <a href="#" class="">聯絡我們</a>
+                    </div>
+                    <div class="col-4 col-md-2 col-lg-auto mb-2">
+                        <a href="#" class="">常見問題</a>
+                    </div>
+                    <div class="col-4 col-md-2 col-lg-auto mb-2">
+                        <a href="#" class="">使用者條款</a>
+                    </div>
+                    <div class="col-4 col-md-2 col-lg-auto mb-2">
+                        <a href="#" class="">隱私權政策</a>
+                    </div>
+                    <div class="col-4 col-md-2 col-lg-auto mb-2">
+                        <a href="#" class="">優德莎莉官網</a>
+                    </div>
+
+                    <div class="col-12 col-md-auto mt-2 mt-lg-0 mb-2">
+                        <a href="#" class="col-12 ct-txt-2 mx-3 mx-md-2"><i class="fab fa-line"></i></a>
+                        <a href="#" class="col-12 ct-txt-2 mx-3 mx-md-2"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="col-12 ct-txt-2 mx-3 mx-md-2"><i class="fab fa-facebook-square"></i></a>
+                    </div>
+                </div>
+            </footer>
+        </div>
+
+        <div class="modal fade" id="pwdModal" tabindex="-1">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel"><i class="bi bi-lock-fill ct-txt-1 me-2"></i>設定密碼</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body fs-18">
+                        <div class="row d-flex justify-content-center py-3">
+                            <div class="col-md col-lg-8">
+                                <form>
+                                    <div class="row g-3 mb-3 align-items-start">
+                                        <div class="col-4">
+                                            <label for="old_password" class="col-form-label">舊密碼</label>
+                                        </div>
+                                        <div class="col">
+                                            <input type="password" id="old_password" placeholder="請輸入舊密碼" class="form-control" />
+                                            <span class="ct-txt-2 fs-16">＊舊密碼輸入錯誤</span>
+                                        </div>
+                                    </div>
+                                    <div class="row g-3 mb-3 align-items-start">
+                                        <div class="col-4">
+                                            <label for="new_password" class="col-form-label">新密碼</label>
+                                        </div>
+                                        <div class="col">
+                                            <input type="password" id="new_password" placeholder="須包含英文大小寫，至少8個字元" class="form-control" />
+                                            <span class="ct-txt-2 fs-16">＊新密碼須包含英文大小寫，至少8個字元</span>
+                                        </div>
+                                    </div>
+                                    <div class="row g-3 mb-3 align-items-start">
+                                        <div class="col-4">
+                                            <label for="check_password" class="col-form-label">確認新密碼</label>
+                                        </div>
+                                        <div class="col">
+                                            <input type="password" id="check_password" class="form-control" />
+                                            <span class="ct-txt-2 fs-16">＊請重新確認新密碼</span>
+                                        </div>
+                                    </div>
+                                    <div class="row g-3 my-4 align-items-center">
+                                        <button class="btn btn-c2 rounded-pill px-4 mx-1 col-auto">完成</button>
+                                        <button type="button" class="btn col-auto mx-1" data-bs-dismiss="modal">取消</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="static/bootstrap-4.6.0-dist/jquery-3.6.0.js"></script>
+        <script src="static/bootstrap-5.1.3-dist/js/bootstrap.bundle.min.js"></script>
+        <script src="static/bootstrap-table-master/dist/bootstrap-table.min.js"></script>
+        <script src="static/dayjs-1.11.8/package/dayjs.min.js"></script>
+        <script src="static/bootstrap-datepicker-master/dist/js/bootstrap-datepicker.min.js"></script>
+
+        <script src="static/bootstrap-multiselect/dist/js/bootstrap-multiselect.js"></script>
+
+        <script src="static/js/master_page.js"></script>
+        <script src="static/js/forum_list.js"></script>
+        <script src="static/js/points.js"></script>
+    </body>
+</html>

@@ -1,0 +1,36 @@
+.filter-control {
+    position: relative;
+    display: inline-block;
+}
+
+.bootstrap-table-filter-control-class {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    appearance: none; /* Remove default styles on Firefox */
+    -webkit-appearance: none; /* Remove default styles on Webkit browsers */
+    -moz-appearance: none; /* Remove default styles on older Firefox browsers */
+    cursor: pointer;
+}
+
+.bootstrap-table-filter-control-class::after {
+    content: "\25BC"; /* Unicode character for downward arrow */
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+}
+
+/* Optional styles for hover and focus states */
+.bootstrap-table-filter-control-class:hover,
+.bootstrap-table-filter-control-class:focus {
+    border-color: #555;
+}
+
+/* Optional styles for active state (when the dropdown is open) */
+.bootstrap-table-filter-control-class:active {
+    border-color: #333;
+}
+
+

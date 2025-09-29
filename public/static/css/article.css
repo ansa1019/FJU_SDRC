@@ -1,0 +1,168 @@
+.breadcrumb,
+.breadcrumb a {
+    text-decoration: none;
+    color: #6c757d;
+    font-size: var(--fs-16);
+}
+
+.ct-title-1 a {
+    text-decoration: none;
+    color: var(--ct-title-1);
+}
+
+#follow_button {
+    padding-top: 0.1rem;
+    padding-bottom: 0.1rem;
+    font-size: var(--fs-15);
+}
+/* 類別標籤 */
+#article_class_tabs .nav-link.active,
+#article_topic_tabs .nav-link.active {
+    background-color: var(--ct-sub-3);
+    color: var(--ct-title-1);
+    border: var(--ct-sub-3) 0.08rem solid;
+    font-size: var(--fs-18);
+}
+#article_class_tabs .nav-link.active > i {
+    color: white;
+}
+
+#article_class_tabs .nav-link,
+#article_topic_tabs .nav-link {
+    color: var(--ct-sub-1);
+    background-color: white;
+    border: var(--ct-sub-3) 0.1rem solid;
+    font-size: var(--fs-18);
+    margin-right: calc(1rem * 0.25);
+    margin-top: calc(1rem * 0.05);
+    margin-bottom: calc(1rem * 0.05);
+    padding-top: 0.15rem;
+    padding-bottom: 0.15rem;
+}
+
+#article_title {
+    font-weight: bold;
+    font-size: var(--fs-32);
+}
+
+#article_date,
+#article_author {
+    font-size: var(--fs-18);
+}
+
+.article_content,
+#article_content {
+    text-align: justify;
+    font-size: var(--fs-18);
+    line-height: var(--fs-30);
+    letter-spacing: 1px;
+    word-break: break-word;
+}
+
+#article_content img,
+.article_content img {
+    width: 100%;
+}
+
+.content-title {
+    font-size: var(--fs-24);
+    font-weight: bold;
+    line-height: var(--fs-30);
+}
+.content_tabs {
+    font-size: var(--fs-18);
+}
+
+#article_tabs a {
+    color: var(--ct-title-1);
+    background-color: white;
+    border: var(--ct-sub-3) 0.15rem solid;
+    font-size: var(--fs-18);
+    margin-right: calc(2.5rem * 0.25);
+    margin-top: calc(1rem * 0.05);
+    margin-bottom: calc(1rem * 0.05);
+    padding-top: 0.15rem;
+    padding-bottom: 0.15rem;
+}
+#article_tabs a i {
+    color: var(--ct-color-1);
+}
+
+textarea {
+    resize: none;
+}
+
+#comments_list .ct-sub-1 {
+    font-size: var(--fs-14);
+}
+
+/* 留言的使用者頭貼 */
+.comment-uesr-img {
+    width: var(--fs-30);
+    height: var(--fs-30);
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+/* 編輯留言時 完成提交按鈕 */
+.edit_check_btn {
+    display: none;
+}
+
+/*療心室-票選活動 倒數計時*/
+.countdown {
+    font-size: var(--fs-28);
+    font-weight: 500;
+    text-align: center;
+    border: 4px var(--ct-color-1) solid;
+    border-radius: 0.75rem;
+    padding: 0.75rem;
+}
+@media screen and (max-width: 425px) {
+    .countdown {
+        font-size: var(--fs-24) !important;
+        padding: 0.75rem 0.5rem !important;
+    }
+}
+
+/* 文章收藏 */
+.saved-title {
+    font-size: var(--fs-16);
+    font-weight: 500;
+    margin: auto;
+}
+
+#article_collection_list a {
+    text-decoration: none;
+    color: var(--ct-title-1);
+}
+
+#article_collection_list img {
+    /* width: 11.25rem; */
+    width: 180px;
+    height: 8.125rem;
+    object-fit: cover;
+}
+
+#report {
+    height: 300px;
+    width: 100%;
+    border: 1px solid #dddddd;
+    border-radius: 5px;
+    overflow: auto;
+}
+
+#report thead {
+    text-align: center;
+}
+#editor-container ol li a,
+#editor-container ul li a {
+    pointer-events: none !important; /* 禁止鼠标事件，使链接不可点击 */
+    color: black !important; /* 设置链接颜色与普通文本一样 */
+    text-decoration: none !important; /* 去掉下划线 */
+    cursor: default !important; /* 更改鼠标光标为默认样式 */
+}
+#editor-container ol,
+#editor-container ul {
+    text-align: left; /* 确保所有列表文本都靠左对齐 */
+}
