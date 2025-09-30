@@ -1,0 +1,963 @@
+<head>
+    <style>
+        div.vote_div input,
+        div.vote_div .form-select {
+            background: #f5f5f5;
+        }
+    </style>
+</head>
+
+<!DOCTYPE html>
+<html lang="en" style="height: 100%">
+
+<head>
+    <link rel="icon" href="http://127.0.0.1:8000/static/img/logo.ico" type="image/x-icon" />
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="csrf-token" content="Kb7NCgK04j3AsrvengZVBXsir3f0xCMaXRZJljLI">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta property="og:title" content="預設標題">
+    <meta property="og:description" content="文章描述未提供">
+    <meta property="og:image" content="http://127.0.0.1:8000/static/img/default_image.png">
+    <meta property="og:url" content="http://127.0.0.1:8000/knowledge_library/%E5%B0%8F%E7%94%A2%E8%AA%BF%E7%90%86/%E5%B0%8F%E7%94%A2%E7%9F%A5%E8%AD%98">
+    <!--ICON-->
+    <link rel="stylesheet" href="http://127.0.0.1:8000/static/bootstrap_icons-1.4.1/font/bootstrap-icons.css" />
+    <link rel="stylesheet" href="http://127.0.0.1:8000/static/fontawesome-free-5.15.3-web/css/all.css" />
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
+
+    <!--Bootstrap-->
+    <link rel="stylesheet" href="http://127.0.0.1:8000/static/bootstrap-5.1.3-dist/css/bootstrap.min.css" />
+    <!--BootstrapTable-->
+    <link rel="stylesheet" href="http://127.0.0.1:8000/static/bootstrap-table-master/dist/bootstrap-table.min.css" />
+    <!-- MultiSelect -->
+    <link rel="stylesheet" href="http://127.0.0.1:8000/static/bootstrap-multiselect/dist/css/bootstrap-multiselect.css"
+        type="text/css" />
+    <!-- Datetime picker -->
+    <link rel="stylesheet"
+        href="http://127.0.0.1:8000/static/bootstrap-datepicker-master/dist/css/bootstrap-datepicker.min.css" />
+    <!-- Image cropper -->
+    <link href="https://unpkg.com/cropperjs/dist/cropper.min.css" rel="stylesheet" />
+
+    <!-- Sweet Alert -->
+    <link rel="stylesheet" href="http://127.0.0.1:8000/static/sweetalert2-11.7.1/dist/sweetalert2.min.css" />
+    <link rel="stylesheet" href="http://127.0.0.1:8000/static/quill-1.3.6/quill.snow.css" />
+    <link rel="stylesheet" href="http://127.0.0.1:8000/static/quill-1.3.6/quill.core.css" />
+
+    <!-- import self-css -->
+    <link rel="stylesheet" href="http://127.0.0.1:8000/static/css/article.css" />
+    <link rel="stylesheet" href="http://127.0.0.1:8000/static/css/master_page.css" />
+    <link rel="stylesheet" href="http://127.0.0.1:8000/static/css/index.css" />
+    <link rel="stylesheet" href="http://127.0.0.1:8000/static/css/forum_list.css" />
+    <link rel="stylesheet" href="http://127.0.0.1:8000/static/css/user.css" />
+    <link rel="stylesheet" href="http://127.0.0.1:8000/static/css/point.css" />
+    <link rel="stylesheet" href="http://127.0.0.1:8000/static/css/saved.css" />
+    <link rel="stylesheet" href="http://127.0.0.1:8000/static/css/chat_room.css" />
+    <link rel="stylesheet" href="http://127.0.0.1:8000/static/css/share_modal.css" />
+    <link rel="stylesheet" href="http://127.0.0.1:8000/static/css/point.css" />
+    <!-- JS -->
+    <script src="http://127.0.0.1:8000/static/bootstrap-4.6.0-dist/jquery-3.6.0.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"
+        integrity="sha384-SR1sx49pcuLnqZUnnPwx6FCym0wLsk5JZuNx2bPPENzswTNFaQU1RDvt3wT4gWFG" crossorigin="anonymous">
+    </script>
+    <script src="https://unpkg.com/cropperjs/dist/cropper.min.js"></script>
+    <!-- jsCalendar -->
+    <link rel="stylesheet" type="text/css" href="static/jsCalendar-master/source/jsCalendar.css" />
+    <!-- chat room -->
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"
+        integrity="sha384-2huaZvOR9iDzHqslqwpR87isEmrfxqyWOF7hr7BY6KG0+hVKLoEXMPUJw3ynWuhO" crossorigin="anonymous">
+    </script>
+
+
+    <title>DNLab論壇 - DNLab</title>
+    <style>
+        #calendar {
+            font-size: var(--fs-18);
+        }
+    </style>
+</head>
+
+<body>
+            <p style="display: none" id="jwt_token"></p>
+        <div type="hidden" id="app" data-api-ip="http://127.0.0.1:8001/"></div>
+
+    <div class="container-xxl topbar">
+    <nav class="navbar navbar-expand-lg border-bottom fixed-top">
+        <div class="container-xxl px-md-4">
+            <a class="navbar-brand" href="http://127.0.0.1:8000">
+                <img src="http://127.0.0.1:8000/static/img/SDRC_logo-02.png" alt="" height="40"
+                    class="d-inline-block align-text-top" />
+            </a>
+            <div class="align-items-center">
+                                <button class="navbar-toggler border" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarNavDropdown">
+                    <i class="fas fa-bars ct-txt-1"></i>
+                </button>
+            </div>
+
+
+            <div class="justify-content-end collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav mb-2 mb-md-0" id="topbar-nav-tabs">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link active" data-bs-toggle="dropdown">知識圖書館</a>
+                        <ul class="dropdown-menu">
+                            <a class="dropdown-item"
+                                href="http://127.0.0.1:8000/knowledge_library/%E5%B0%8F%E7%94%A2%E8%AA%BF%E7%90%86/%E5%B0%8F%E7%94%A2%E7%9F%A5%E8%AD%98">小產調理</a>
+                            <a class="dropdown-item"
+                                href="http://127.0.0.1:8000/knowledge_library/%E5%A9%A6%E7%A7%91%E4%BF%9D%E5%81%A5/%E5%A9%A6%E7%A7%91%E4%BF%9D%E5%81%A5%E7%9F%A5%E8%AD%98">婦科保健</a>
+                            <a class="dropdown-item"
+                                href="http://127.0.0.1:8000/knowledge_library/%E5%82%99%E5%AD%95%E8%AA%BF%E7%90%86/%E5%82%99%E5%AD%95%E7%9F%A5%E8%AD%98">備孕調理</a>
+                            <a class="dropdown-item"
+                                href="http://127.0.0.1:8000/knowledge_library/%E6%87%B7%E5%AD%95%E7%9F%A5%E8%AD%98/%E6%87%B7%E5%AD%95%E7%9F%A5%E8%AD%98">懷孕知識</a>
+                            <a class="dropdown-item"
+                                href="http://127.0.0.1:8000/knowledge_library/%E6%97%A5%E5%B8%B8%E4%BF%9D%E5%81%A5/%E6%97%A5%E5%B8%B8%E4%BF%9D%E5%81%A5%E7%9F%A5%E8%AD%98">日常保健</a>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link active" data-bs-toggle="dropdown">療心室</a>
+                        <ul class="dropdown-menu">
+                            <a class="dropdown-item" href="http://127.0.0.1:8000/treatment_qa/%E8%81%8A%E7%99%82%E5%B0%8F%E7%94%A2">聊療小產</a>
+                            <a class="dropdown-item"
+                                href="http://127.0.0.1:8000/treatment_qa/%E8%81%8A%E7%99%82%E5%A9%A6%E7%A7%91%E4%BF%9D%E5%81%A5">聊療婦科保健</a>
+                            <a class="dropdown-item" href="http://127.0.0.1:8000/treatment_qa/%E8%81%8A%E7%99%82%E5%82%99%E5%AD%95">聊療備孕</a>
+                            <a class="dropdown-item" href="http://127.0.0.1:8000/treatment_qa/%E8%81%8A%E7%99%82%E6%87%B7%E5%AD%95">聊療懷孕</a>
+                            <a class="dropdown-item"
+                                href="http://127.0.0.1:8000/treatment_qa/%E8%81%8A%E7%99%82%E6%97%A5%E5%B8%B8%E4%BF%9D%E5%81%A5">聊療日常保健</a>
+                        </ul>
+                    </li>
+                    <li class="nav-item"><a role="button" id="chats-button" class="nav-link active">暢聊咖啡廳</a></li>
+                    <li class="nav-item"><a role="button" id="consult-button" class="nav-link active">營養師諮詢</a></li>
+                                        
+                    <li class="nav-item dropstart order-first order-lg-last">
+                        <!--如有會員登入 顯示會員名稱-->
+                        <a href="#" class="nav-link" data-bs-toggle="dropdown">
+                                                            <i class="fas fa-user-circle"><span
+                                        id="user_nickname">未登入</span></i>
+                                                    </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="http://127.0.0.1:8000/user_info">個人資料</a></li>
+                            <li><a class="dropdown-item" href="http://127.0.0.1:8000/calendar">專屬月曆</a></li>
+                            <li class="dropdown-submenu">
+                                <a role="button" data-bs-toggle="dropdown" class="dropdown-item">點數錢包</a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="http://127.0.0.1:8000/point_task">任務專區</a></li>
+                                    <li><a href="http://127.0.0.1:8000/point_exchange" class="dropdown-item">點數兌換</a></li>
+                                    <li><a href="http://127.0.0.1:8000/point_gift1" class="dropdown-item">點數轉贈</a></li>
+                                    <li><a href="http://127.0.0.1:8000/point_get_record" class="dropdown-item">點數獲得紀錄</a>
+                                    </li>
+                                    <li><a href="http://127.0.0.1:8000/point_use_record" class="dropdown-item">點數使用紀錄</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><a class="dropdown-item" href="http://127.0.0.1:8000/my_mind">我的心事</a></li>
+                            <li class="dropdown-submenu">
+                                <a role="button" data-bs-toggle="dropdown" class="dropdown-item">收藏與追蹤</a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="http://127.0.0.1:8000/article_saved_list">文章收藏</a>
+                                    </li>
+                                    <li><a class="dropdown-item" href="http://127.0.0.1:8000/author_saved">作者追蹤</a></li>
+                                    <li><a class="dropdown-item" href="http://127.0.0.1:8000/topic_saved">話題追蹤</a></li>
+                                </ul>
+                            </li>
+                                                            <li><a class="dropdown-item" href="http://127.0.0.1:8000/user_login">登入</a></li>
+                                                    </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <!--通知欄區塊-->
+                    </div>
+    </nav>
+</div>
+
+<script>
+    $('.notifications-item').on('click', function(e) {
+        e.preventDefault();
+        var id = $(this).attr('id').split("_")[1];
+        var href = this.href;
+        var notifications = null;
+        usersocket.send(
+            JSON.stringify({
+                action: "read",
+                id: id,
+            })
+        );
+        if ($("#notifications_box .rounded-circle").text() == 1) {
+            $("#notifications_box .rounded-circle").remove();
+            $(".notify_bell span").remove();
+        } else {
+            $("#notify_" + id +
+                " .rounded-circle").remove();
+        }
+        notifications.forEach((element, index) => {
+            if (element["id"] == id) {
+                notifications.splice(index, 1);
+            }
+        });
+        console.log(notifications)
+        if (notifications.length > 0) {
+            $.ajax({
+                type: "POST",
+                url: "/setNotifications",
+                dataType: "json",
+                data: {
+                    notifications: notifications,
+                },
+                success: function(result) {
+                    console.log(result);
+                    window.location.replace(href)
+                },
+            });
+        } else {
+            $.ajax({
+                type: "POST",
+                url: "/setNotifications",
+                success: function(result) {
+                    console.log(result);
+                    window.location.replace(href)
+                },
+            });
+        }
+    });
+</script>
+        <div class="container-xxl">
+        <p style="display: none" id='category'>小產調理/小產知識</p>
+        <div class="row pt-1 px-md-5">
+            <div class="col-12 my-2">
+                <nav class="mb-4">
+                    <!-- 麵包屑 網頁導覽列-->
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">知識圖書館</a></li>
+                        <li class="breadcrumb-item"><a
+                                href="http://127.0.0.1:8000/knowledge_library/小產調理/小產知識">小產調理</a>
+
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">小產知識</li>
+                    </ol>
+                </nav>
+                <div class="row d-flex align-items-center">
+                    <h3 class="class-title col-auto ps-0"><i class="fab fa-gratipay me-1 ct-txt-1"></i>小產調理
+                    </h3>
+                </div>
+            </div>
+        </div>
+        <div class="row px-md-5">
+            <div class="col-md col-lg-9 px-1 ps-md-0 pe-md-4">
+                <div class="row d-flex justify-content-between align-items-end">
+                    <div class="col-auto mb-1">
+                        <ul class="nav" id="article_class_tabs">
+                            <!-- 文章類別標籤 -->
+                                                            <a class="nav-link rounded-pill active"
+                                    aria-current="page"
+                                    href="http://127.0.0.1:8000/knowledge_library/%E5%B0%8F%E7%94%A2%E8%AA%BF%E7%90%86/%E5%B0%8F%E7%94%A2%E7%9F%A5%E8%AD%98"><i
+                                        class="fas fa-tag me-1"></i>小產知識</a>
+                                <a class="nav-link rounded-pill "
+                                    href="http://127.0.0.1:8000/knowledge_library/%E5%B0%8F%E7%94%A2%E8%AA%BF%E7%90%86/%E5%B0%8F%E7%94%A2%E8%AA%BF%E7%90%86%E7%9F%A5%E8%AD%98
+                                    "><i
+                                        class="fas fa-tag me-1"></i>小產調理知識</a>
+                                                    </ul>
+                                            </div>
+                    <div class="col-md-12 col pe-0">
+                        <div class="row g-3 align-items-center float-end">
+                            <div class="col-auto pe-0">
+                                <select class="form-select" id="articleSortKnowledge" style="font-size: var(--fs-16)">
+                                    <option value='-created_at' selected>最新文章
+                                    </option>
+                                    <option value='-click' >熱門文章</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-4">
+                    <!--文章列表-->
+                    <div class="col-lg-12 px-0">
+                        <!-- 文章1 -->
+                                            </div>
+                </div>
+            </div>
+            <!--右邊欄選單-->
+    <div class="col-md-4 col-lg-3 col-lg d-flex align-items-start">
+        <div class="row position-sticky" id="right-sidebar">
+            <div class="mb-3 px-0 col-12 my-auto">
+                <input type="text" class="form-control rounded-pill search-input" placeholder="搜尋文章"
+                    style="font-family: YourFont', sans-serif" onkeydown="searchArticle(event)" />
+            </div>
+            <div class="col-12 ct-bg-3 ps-2 p-1 rounded">
+                <p class="ct-title-1 my-auto" style="font-weight: 500">文章類別</p>
+            </div>
+            <div class="col-12 px-0">
+                <ul class="nav flex-column" id="article_class_list">
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="collapse" href="#sub-class-1">小產調理<i
+                                class="fas fa-angle-down ms-2"></i></a>
+                        <ul class="collapse show" id="sub-class-1">
+                            <a class="dropdown-item active"
+                                href="http://127.0.0.1:8000/knowledge_library/%E5%B0%8F%E7%94%A2%E8%AA%BF%E7%90%86/%E5%B0%8F%E7%94%A2%E7%9F%A5%E8%AD%98">小產知識</a>
+                            <a class="dropdown-item "
+                                href="http://127.0.0.1:8000/knowledge_library/%E5%B0%8F%E7%94%A2%E8%AA%BF%E7%90%86/%E5%B0%8F%E7%94%A2%E8%AA%BF%E7%90%86%E7%9F%A5%E8%AD%98">小產調理知識</a>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="collapse" href="#sub-class-2">婦科保健<i
+                                class="fas fa-angle-down ms-2"></i></a>
+                        <ul class="collapse " id="sub-class-2">
+                            <a class="dropdown-item "
+                                href="http://127.0.0.1:8000/knowledge_library/%E5%A9%A6%E7%A7%91%E4%BF%9D%E5%81%A5/%E5%A9%A6%E7%A7%91%E4%BF%9D%E5%81%A5%E7%9F%A5%E8%AD%98">婦科保健知識</a>
+                            <a class="dropdown-item "
+                                href="http://127.0.0.1:8000/knowledge_library/%E5%A9%A6%E7%A7%91%E4%BF%9D%E5%81%A5/%E5%A9%A6%E7%A7%91%E4%BF%9D%E5%81%A5%E8%AA%BF%E7%90%86%E7%9F%A5%E8%AD%98">婦科保健調理知識</a>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="collapse" href="#sub-class-3">備孕調理<i
+                                class="fas fa-angle-down ms-2"></i></a>
+                        <ul class="collapse " id="sub-class-3">
+                            <a class="dropdown-item "
+                                href="http://127.0.0.1:8000/knowledge_library/%E5%82%99%E5%AD%95%E8%AA%BF%E7%90%86/%E5%82%99%E5%AD%95%E7%9F%A5%E8%AD%98">備孕知識</a>
+                            <a class="dropdown-item "
+                                href="http://127.0.0.1:8000/knowledge_library/%E5%82%99%E5%AD%95%E8%AA%BF%E7%90%86/%E5%82%99%E5%AD%95%E8%AA%BF%E7%90%86%E7%9F%A5%E8%AD%98">備孕調理知識</a>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="collapse" href="#sub-class-4">懷孕知識<i
+                                class="fas fa-angle-down ms-2"></i></a>
+                        <ul class="collapse " id="sub-class-4">
+                            <a class="dropdown-item "
+                                href="http://127.0.0.1:8000/knowledge_library/%E6%87%B7%E5%AD%95%E7%9F%A5%E8%AD%98/%E6%87%B7%E5%AD%95%E7%9F%A5%E8%AD%98">懷孕知識</a>
+                            <a class="dropdown-item "
+                                href="http://127.0.0.1:8000/knowledge_library/%E6%87%B7%E5%AD%95%E7%9F%A5%E8%AD%98/%E6%87%B7%E5%AD%95%E8%AA%BF%E7%90%86%E7%9F%A5%E8%AD%98">懷孕調理知識</a>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="collapse" href="#sub-class-5">日常保健<i
+                                class="fas fa-angle-down ms-2"></i></a>
+                        <ul class="collapse " id="sub-class-5">
+                            <a class="dropdown-item "
+                                href="http://127.0.0.1:8000/knowledge_library/%E6%97%A5%E5%B8%B8%E4%BF%9D%E5%81%A5/%E6%97%A5%E5%B8%B8%E4%BF%9D%E5%81%A5%E7%9F%A5%E8%AD%98">日常保健知識</a>
+                            <a class="dropdown-item "
+                                href="http://127.0.0.1:8000/knowledge_library/%E6%97%A5%E5%B8%B8%E4%BF%9D%E5%81%A5/%E6%97%A5%E5%B8%B8%E4%BF%9D%E5%81%A5%E8%AA%BF%E7%90%86%E7%9F%A5%E8%AD%98">日常保健調理知識</a>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+
+        </div>
+    </div>
+
+    <!-- 建立營養師文章 Modal -->
+    <div class="modal fade" id="create_modal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content">
+                                    <input type="hidden" id="return_content" name="content">
+                    <input type="hidden" id="return_html" name="html">
+                    <div class="modal-header pb-0 border-bottom-0">
+                        <h1 class="modal-title fs-5 ct-txt-2 fw-bold">建立營養師文章🙂</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row mb-1 g-2 align-items-center justify-content-between">
+                            <div class="col d-flex flex-column ps-0">
+                                <div class="row align-items-center">
+                                    <div class="col-auto ps-0">
+                                        <img class="me-1" src="http://127.0.0.1:8000/static/img/user.png" width="25" />
+                                    </div>
+                                    <div class="col-auto ps-0">
+                                        <select class="form-select" id="id_type">
+                                            <option value= selected></option>
+                                        </select>
+                                    </div>
+                                    <div class="col-auto ps-0">
+                                        <select class="form-select" id="post_class" name="post_class">
+                                                                                    </select>
+                                    </div>
+                                    <div class="col-auto my-2 my-lg-3 ps-0">
+                                        <!-- 上傳檔案按鈕 -->
+                                        <input type="file" id="create_article_image" style="width: 200px;"
+                                            name="article_image" accept=".jpg, .jpeg, .png" />
+                                    </div>
+                                    <div class="col-12 ps-0">
+                                        <input class="form-control" type="text" id="input_new_title" name="title"
+                                            placeholder="標題：請用簡短的話說明你的提問/分享" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="image_preview" class="col-auto d-flex flex-column align-items-start">
+                                <img id="create_image_preview" src="http://127.0.0.1:8000/static/img/image.svg" alt="封面"
+                                    style="width: 110px;height: 90px;">
+                            </div>
+                        </div>
+                        <div class="row my-1 g-2 justify-content-center">
+                            <!--文字編輯器套件 editor-->
+                            <div class="col-12" id="editor-container" style="height: 300px; font-size: 30px;">
+                                <textarea class="form-control" rows="7" id="editor"></textarea>
+                            </div>
+
+                            <div class="col-12">
+                                <input class="form-control" type="text" id="create_input_topic"
+                                    placeholder="#話題：可以根據你的文章內容，輸入半形的#，可以新增多個話題喔！" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-c2 rounded-pill px-3 py-1"
+                            onclick="official_postdata(this, '')"><i class="fas fa-bullhorn me-1"></i>發文</button>
+                        <button type="button" class="btn btn-outline-c2 ct-sub-1 rounded-pill px-3 py-1"
+                            onclick="official_temporaryData(this, '')"><i class="bi bi-inbox-fill me-1"></i>暫存</button>
+                        
+                    </div>
+                            </div>
+        </div>
+    </div>
+
+    <!-- 模態視窗部分，用來顯示裁切功能 -->
+    <div class="modal fade" id="cropModal" tabindex="-1" role="dialog" aria-labelledby="cropModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="cropModalLabel">裁切圖片</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="crop_area">
+                        <img id="image_to_crop" src="" alt="Image to crop" style="max-width: 100%;">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                    <button type="button" id="crop_button" class="btn btn-primary">裁切並上傳</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 建立修改營養師文章 Modal -->
+    <div class="modal fade" id="patch_modal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content">
+                <input type="hidden" id="return_content" name="content">
+                <input type="hidden" id="return_html" name="html">
+                <input type="hidden" id="article_id">
+                <div class="modal-header pb-0 border-bottom-0">
+                    <h1 class="modal-title fs-5 ct-txt-2 fw-bold">修改聊療，一起聊聊吧🙂</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-1 g-2 align-items-center justify-content-between">
+                        <div class="col d-flex flex-column ps-0">
+                            <div class="row align-items-center">
+                                <div class="col-auto ps-0">
+                                    <img class="me-1" src="http://127.0.0.1:8000/static/img/user.png" width="25" />
+                                </div>
+                                <div class="col-auto ps-0">
+                                    <select class="form-select" id="patch_id_type">
+                                        <option value= selected></option>
+                                        <option value="匿名">匿名</option>
+                                    </select>
+                                </div>
+                                <div class="col-auto ps-0">
+                                    <select class="form-select" id="patch_post_class" name="post_class">
+                                                                            </select>
+                                </div>
+                                <div class="col-auto my-2 my-lg-3 ps-0">
+                                    <!-- 上傳檔案按鈕 -->
+                                    <input type="file" id="update_article_image" style="width: 200px;"
+                                        name="article_image" accept=".jpg, .jpeg, .png" />
+                                </div>
+                                <div class="col-12 ps-0">
+                                    <input class="form-control" type="text" id="input_patch_title" name="title"
+                                        placeholder="標題：請用簡短的話說明你的提問/分享" />
+                                </div>
+                            </div>
+                        </div>
+                        <div id="image_preview" class="col-auto d-flex flex-column align-items-start">
+                            <img id="update_image_preview" src="http://127.0.0.1:8000/static/img/image.svg" alt="封面"
+                                style="width: 110px;height: 90px;">
+                        </div>
+                        <div class="row my-1 g-2 justify-content-center">
+                            <!--文字編輯器套件 editor-->
+                            <div class="col-12" id="patch-editor-container" style="height: 300px; font-size: 30px;">
+                                <textarea class="form-control" rows="7" id="patch_editor" name="patch_editor"></textarea>
+                            </div>
+                            <div class="col-12">
+                                <input class="form-control" type="text" id="patch_input_topic"
+                                    placeholder="#話題：可以根據你的文章內容，輸入半形的#，可以新增多個話題喔！" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-c2 rounded-pill px-3 py-1"
+                            onclick="official_patchData()"><i class="fas fa-bullhorn me-1"></i>發文</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    var postStorageds = []
+</script>
+<!-- 建立書籤資料夾 Modal -->
+
+    <script>
+        var ArticleRoute = "http://127.0.0.1:8000/knowledge_library";
+        var knowledgeArticleUpdateRoute = "http://127.0.0.1:8000/KnowledgeArticleUpdate";
+        var searchArticleRoute = "http://127.0.0.1:8000/searchArticle";
+    </script>
+    <footer class="footer-px ct-bg-3 mt-5">
+    <div class="row flex-wrap">
+        <div class="col-12 col-sm-5 col-lg-3">
+            <h6 class="row">關於我們</h6>
+            <a class="row" href="#" target="_blank">DNLab官網</a>
+            <a class="row" href="http://127.0.0.1:8000/tos">服務條款</a>
+            <a class="row" href="http://127.0.0.1:8000/privacy">隱私權政策</a>
+            <div class="d-none d-sm-flex d-lg-none row">
+                <a href="https://www.facebook.com/" target="_blank" class="mr-3">
+                    <i class="fab fa-facebook-square"></i>
+                </a>
+                <a href="https://www.instagram.com/" target="_blank" class="mx-3">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="https://www.line.me/tw/" target="_blank" class="ml-3">
+                    <i class="fab fa-line"></i>
+                </a>
+            </div>
+        </div>
+        <div class="col-12 col-sm-7 col-lg-auto mx-auto">
+            <h6 class="row">聯絡我們</h6>
+            <div class="row">
+                <p class="w-auto m-0 p-0">客服電話：</p>
+                <a href="tel:0900000000" style="text-decoration: none; color: inherit;">0900-xxx-xxx</a>
+            </div>
+            <div class="row">
+                <p class="w-auto m-0 p-0">營業時間：AM 9:30 ~ PM 6:00</p>
+            </div>
+            <div class="row">
+                <p class="w-auto m-0 p-0">客服信箱：</p>
+                <a href="mailto:dnlab112@gmail.com"
+                    style="text-decoration: none; color: inherit;">dnlab112@gmail.com</a>
+            </div>
+            <div class="row">
+                <p class="w-auto m-0 p-0">地址：</p>
+                <a href="https://www.google.com/maps/search/?api=1&query=屏東縣內埔鄉" target="_blank"
+                    style="text-decoration: none; color: inherit;">屏東縣內埔鄉</a>
+            </div>
+        </div>
+        <div class="d-flex d-sm-none d-lg-flex col-lg-3">
+            <div class="row justify-content-center mx-0 mx-sm-auto">
+                <a href="https://www.facebook.com/" target="_blank" class="mx-3 mx-md-2">
+                    <i class="fab fa-facebook-square"></i>
+                </a>
+                <a href="https://www.instagram.com/" target="_blank" class="mx-3 mx-md-2">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="https://www.line.me/tw/" target="_blank" class="mx-3 mx-md-2">
+                    <i class="fab fa-line"></i>
+                </a>
+            </div>
+        </div>
+</footer>
+    <script>
+        var user = "";
+        var user_image = "";
+        var nickname = "";
+        var blacklist = null || {
+            article: [],
+            comment: [],
+            chat: []
+        };
+        var banlist = null;
+
+        // console.log(banlist);
+        // console.log(blacklist);
+    </script>
+
+
+
+<!-- 建立檢舉 Modal -->
+<div class="modal fade" id="denounce" tabindex="-1" data-bs-focus="false" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-bottom-0">
+                <h3 class="modal-title fs-5 ct-txt-2 fw-bold"><i class="fa fa-exclamation-circle fa-sm"></i> 檢舉原因
+                </h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" style="font-size: var(--fs-18)">
+                <input type="text" style="display: none" id="denounce_cate">
+                <input type="text" style="display: none" id="denounce_id">
+                <input type="text" style="display: none" id="denounce_name">
+                <input type="text" style="display: none" id="denounce_msg">
+                <input type="text" style="display: none" id="denounce_reason">
+                <div>
+                    <input class="form-check-input" type="radio" name="reason" id="reason_1"
+                        value="中傷、歧視、挑釁或謾罵他人" />
+                    <label class="form-check-label" for="reason_1">中傷、歧視、挑釁或謾罵他人</label>
+                </div>
+                <div>
+                    <input class="form-check-input" type="radio" name="reason" id="reason_2" value="惡意洗版、重複張貼" />
+                    <label class="form-check-label" for="reason_2">惡意洗版、重複張貼</label>
+                </div>
+                <div>
+                    <input class="form-check-input" type="radio" name="reason" id="reason_3"
+                        value="發表內容包含色情、性騷擾、恐怖血腥等讓人不舒服之內容" />
+                    <label class="form-check-label" for="reason_3">發表內容包含色情、性騷擾、恐怖血腥等讓人不舒服之內容</label>
+                </div>
+                <div id="denounce_other">
+                    <input class="form-check-input" type="radio" name="reason" id="reason_4" value="其他">
+                    <label class="form-check-label" for="reason_4">其他</label>
+                    <input type="text" id="reason_other" placeholder="請說明檢舉原因"
+                        class="form-control col-auto input_underline" style="display: none;width: auto">
+                </div>
+            </div>
+            <div class="modal-footer" style="border: none;">
+                <button type="button" class="btn btn-c2 rounded-pill px-3 py-1" onclick="denounce()">確定</button>
+                <button type="button" class="btn ct-sub-1" data-bs-dismiss="modal" aria-label="Close">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="position-fixed bottom-0 end-0 m-2">
+    <button class="btn" id="floatButton" data-bs-toggle="tooltip" data-bs-title="營養師諮詢" data-bs-placement="left">
+        <i class="fas fa-comment-dots"></i>
+    </button>
+</div>
+
+<!-- 聊天室介面 -->
+<div class="tab-vertical" style="display: none;">
+    <img src="http://127.0.0.1:8000/static/img/female.png" alt="..." style="display: none" />
+    <img src="http://127.0.0.1:8000/static/img/male.png" alt="..." style="display: none" />
+    <ul class="nav nav-tabs chats-nav-tab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="room1-vertical-tab" data-bs-toggle="tab" href="#chat-room1" role="tab"
+                aria-controls="home" aria-selected="true">營養師諮詢</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="room2-vertical-tab" data-bs-toggle="tab" href="#chat-room2" role="tab"
+                aria-controls="profile" aria-selected="false">小產咖啡廳</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="room3-vertical-tab" data-bs-toggle="tab" href="#chat-room3" role="tab"
+                aria-controls="contact" aria-selected="false">婦科咖啡廳</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="room4-vertical-tab" data-bs-toggle="tab" href="#chat-room4" role="tab"
+                aria-controls="contact" aria-selected="false">備孕咖啡廳</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="room5-vertical-tab" data-bs-toggle="tab" href="#chat-room5" role="tab"
+                aria-controls="contact" aria-selected="false">懷孕咖啡廳</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="room6-vertical-tab" data-bs-toggle="tab" href="#chat-room6" role="tab"
+                aria-controls="contact" aria-selected="false">保健咖啡廳</a>
+        </li>
+    </ul>
+
+    <ul class="nav nav-tabs chats-nav-tab nav-horizontal-tabs fade show active" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="room1-horizontal-tab" data-bs-toggle="tab" href="#chat-room1" role="tab"
+                aria-controls="home" aria-selected="true">營養師諮詢</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="room2-horizontal-tab" data-bs-toggle="tab" href="#chat-room2" role="tab"
+                aria-controls="profile" aria-selected="false">小產咖啡廳</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="room3-horizontal-tab" data-bs-toggle="tab" href="#chat-room3" role="tab"
+                aria-controls="contact" aria-selected="false">婦科咖啡廳</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="room4-vertical-tab" data-bs-toggle="tab" href="#chat-room4" role="tab"
+                aria-controls="contact" aria-selected="false">備孕咖啡廳</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="room5-vertical-tab" data-bs-toggle="tab" href="#chat-room5" role="tab"
+                aria-controls="contact" aria-selected="false">懷孕咖啡廳</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="room6-vertical-tab" data-bs-toggle="tab" href="#chat-room6" role="tab"
+                aria-controls="contact" aria-selected="false">保健咖啡廳</a>
+        </li>
+    </ul>
+
+    <div class="tab-content card card-bordered chats-card" id="myTabContent3">
+        <!-- <div class="bg-none card card-bordered chats-card" id="myTabContent3"> -->
+        <div class="tab-pane fade show active" id="chat-room1" role="tabpanel" aria-labelledby="chat-room1">
+            <div class="card-header">
+                
+                <!-- 填入標題 -->
+                <h4 class="card-title"><strong>營養師諮詢</strong></h4>
+                
+                <!-- [標題]小產咖啡廳: 顯示該咖啡廳剩餘時間 -->
+                <!-- <p class="card-subtitle"><i class="bi bi-clock-fill pe-1"></i>倒數 2小時 20分鐘</p> -->
+                <button type="button"
+                    class="btn-xs btn-close btn-card-close position-absolute top-0 end-0 p-3"></button>
+            </div>
+
+            <div class="ps-container ps-theme-default ps-active-y" id="chat-content"
+                style="overflow-y: scroll !important; min-height: 427px !important">
+                <div class="alert alert-secondary m-2 p-2 align-items-center d-flex" role="alert">
+                    <i class="bi bi-exclamation-circle float-start px-2"></i>
+                    <!-- 如有置頂標語提醒 請顯示alert，並填入文字 -->
+                    勿洩漏個資，留意聊天室中潛在的詐騙行為
+                </div>
+
+                <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 0px">
+                    <div class="ps-scrollbar-x" tabindex="0" style="left: 0px; width: 0px"></div>
+                </div>
+                <div class="ps-scrollbar-y-rail" style="top: 0px; height: 0px; right: 2px">
+                    <div class="ps-scrollbar-y" tabindex="0" style="top: 0px; height: 2px"></div>
+                </div>
+
+                <!-- 訊息框 -->
+                <div class="line">
+                    <p>掃描 QR code 後，</p>
+                    <p>將可開啟 LINE 進行對話</p>
+                    <img src="http://127.0.0.1:8000/static/img/Line.png"></img>
+                    <a href="https://lin.ee/9uEFur8" class="btn btn-c2 rounded-pill me-1">開啟LINE</a>
+                </div>
+
+
+            </div>
+
+            
+        </div>
+
+
+        <div class="tab-pane fade" id="chat-room2" role="tabpanel" aria-labelledby="chat-room2">
+            <div class="card-header">
+                
+                <!-- 填入標題 -->
+                <h4 class="card-title"><strong>小產咖啡廳</strong></h4>
+                <!-- [標題]小產咖啡廳: 顯示該咖啡廳剩餘時間 -->
+                
+                <div class="row">
+                    <p>發言身分：</p>
+                    <select class="form-select chat_name" name="chat_name">
+                                                <option value="匿名">匿名
+                        </option>
+                    </select>
+                </div>
+                <button type="button"
+                    class="btn-xs btn-close btn-card-close position-absolute top-0 end-0 p-3"></button>
+            </div>
+
+                            <div class="ps-container ps-theme-default ps-active-y" id="chat-content"
+                    style="overflow-y: scroll !important; min-height: 399px !important">
+                    <div class="alert alert-secondary m-2 p-2 align-items-center d-flex" role="alert">
+                        <i class="bi bi-exclamation-circle float-start px-2"></i>
+                        <!-- 如有置頂標語提醒 請顯示alert，並填入文字 -->
+                        勿洩漏個資，留意聊天室中潛在的詐騙行為
+                    </div>
+
+                    <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 0px">
+                        <div class="ps-scrollbar-x" tabindex="0" style="left: 0px; width: 0px"></div>
+                    </div>
+                    <div class="ps-scrollbar-y-rail" style="top: 0px; height: 0px; right: 2px">
+                        <div class="ps-scrollbar-y" tabindex="0" style="top: 0px; height: 2px"></div>
+                    </div>
+
+                    <!-- 訊息框 -->
+                    <div class="line">
+                        <a href="http://127.0.0.1:8000/user_login">請先登入！</a>
+                    </div>
+                </div>
+                    </div>
+
+
+        <div class="tab-pane fade" id="chat-room3" role="tabpanel" aria-labelledby="chat-room3">
+            <div class="card-header">
+                
+                <!-- 填入標題 -->
+                <h4 class="card-title"><strong>婦科咖啡廳</strong></h4>
+                <!-- [標題]婦科咖啡廳: 顯示該咖啡廳剩餘時間 -->
+                
+                <div class="row">
+                    <p>發言身分：</p>
+                    <select class="form-select chat_name" name="chat_name">
+                                                <option value="匿名">匿名
+                        </option>
+                    </select>
+                </div>
+                <button type="button"
+                    class="btn-xs btn-close btn-card-close position-absolute top-0 end-0 p-3"></button>
+            </div>
+
+                            <div class="ps-container ps-theme-default ps-active-y" id="chat-content"
+                    style="overflow-y: scroll !important; min-height: 399px !important">
+                    <div class="alert alert-secondary m-2 p-2 align-items-center d-flex" role="alert">
+                        <i class="bi bi-exclamation-circle float-start px-2"></i>
+                        <!-- 如有置頂標語提醒 請顯示alert，並填入文字 -->
+                        勿洩漏個資，留意聊天室中潛在的詐騙行為
+                    </div>
+
+                    <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 0px">
+                        <div class="ps-scrollbar-x" tabindex="0" style="left: 0px; width: 0px"></div>
+                    </div>
+                    <div class="ps-scrollbar-y-rail" style="top: 0px; height: 0px; right: 2px">
+                        <div class="ps-scrollbar-y" tabindex="0" style="top: 0px; height: 2px"></div>
+                    </div>
+
+                    <!-- 訊息框 -->
+                    <div class="line">
+                        <a href="http://127.0.0.1:8000/user_login">請先登入！</a>
+                    </div>
+                </div>
+                    </div>
+
+        <div class="tab-pane fade" id="chat-room4" role="tabpanel" aria-labelledby="chat-room4">
+            <div class="card-header">
+                
+                <!-- 填入標題 -->
+                <h4 class="card-title"><strong>備孕咖啡廳</strong></h4>
+                <!-- [標題]小產咖啡廳: 顯示該咖啡廳剩餘時間 -->
+                
+                <div class="row">
+                    <p>發言身分：</p>
+                    <select class="form-select chat_name" name="chat_name">
+                                                <option value="匿名">匿名
+                        </option>
+                    </select>
+                </div>
+                <button type="button"
+                    class="btn-xs btn-close btn-card-close position-absolute top-0 end-0 p-3"></button>
+            </div>
+
+                            <div class="ps-container ps-theme-default ps-active-y" id="chat-content"
+                    style="overflow-y: scroll !important; min-height: 399px !important">
+                    <div class="alert alert-secondary m-2 p-2 align-items-center d-flex" role="alert">
+                        <i class="bi bi-exclamation-circle float-start px-2"></i>
+                        <!-- 如有置頂標語提醒 請顯示alert，並填入文字 -->
+                        勿洩漏個資，留意聊天室中潛在的詐騙行為
+                    </div>
+
+                    <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 0px">
+                        <div class="ps-scrollbar-x" tabindex="0" style="left: 0px; width: 0px"></div>
+                    </div>
+                    <div class="ps-scrollbar-y-rail" style="top: 0px; height: 0px; right: 2px">
+                        <div class="ps-scrollbar-y" tabindex="0" style="top: 0px; height: 2px"></div>
+                    </div>
+
+                    <!-- 訊息框 -->
+                    <div class="line">
+                        <a href="http://127.0.0.1:8000/user_login">請先登入！</a>
+                    </div>
+                </div>
+                    </div>
+
+        <div class="tab-pane fade" id="chat-room5" role="tabpanel" aria-labelledby="chat-room5">
+            <div class="card-header">
+                
+                <!-- 填入標題 -->
+                <h4 class="card-title"><strong>懷孕咖啡廳</strong></h4>
+                <!-- [標題]小產咖啡廳: 顯示該咖啡廳剩餘時間 -->
+                
+                <div class="row">
+                    <p>發言身分：</p>
+                    <select class="form-select chat_name" name="chat_name">
+                                                <option value="匿名">匿名
+                        </option>
+                    </select>
+                </div>
+                <button type="button"
+                    class="btn-xs btn-close btn-card-close position-absolute top-0 end-0 p-3"></button>
+            </div>
+
+                            <div class="ps-container ps-theme-default ps-active-y" id="chat-content"
+                    style="overflow-y: scroll !important; min-height: 399px !important">
+                    <div class="alert alert-secondary m-2 p-2 align-items-center d-flex" role="alert">
+                        <i class="bi bi-exclamation-circle float-start px-2"></i>
+                        <!-- 如有置頂標語提醒 請顯示alert，並填入文字 -->
+                        勿洩漏個資，留意聊天室中潛在的詐騙行為
+                    </div>
+
+                    <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 0px">
+                        <div class="ps-scrollbar-x" tabindex="0" style="left: 0px; width: 0px"></div>
+                    </div>
+                    <div class="ps-scrollbar-y-rail" style="top: 0px; height: 0px; right: 2px">
+                        <div class="ps-scrollbar-y" tabindex="0" style="top: 0px; height: 2px"></div>
+                    </div>
+
+                    <!-- 訊息框 -->
+                    <div class="line">
+                        <a href="http://127.0.0.1:8000/user_login">請先登入！</a>
+                    </div>
+                </div>
+                    </div>
+
+        <div class="tab-pane fade" id="chat-room6" role="tabpanel" aria-labelledby="chat-room6">
+            <div class="card-header">
+                
+                <!-- 填入標題 -->
+                <h4 class="card-title"><strong>保健咖啡廳</strong></h4>
+                <!-- [標題]小產咖啡廳: 顯示該咖啡廳剩餘時間 -->
+                
+                <div class="row">
+                    <p>發言身分：</p>
+                    <select class="form-select chat_name" name="chat_name">
+                                                <option value="匿名">匿名
+                        </option>
+                    </select>
+                </div>
+                <button type="button"
+                    class="btn-xs btn-close btn-card-close position-absolute top-0 end-0 p-3"></button>
+            </div>
+
+                            <div class="ps-container ps-theme-default ps-active-y" id="chat-content"
+                    style="overflow-y: scroll !important; min-height: 399px !important">
+                    <div class="alert alert-secondary m-2 p-2 align-items-center d-flex" role="alert">
+                        <i class="bi bi-exclamation-circle float-start px-2"></i>
+                        <!-- 如有置頂標語提醒 請顯示alert，並填入文字 -->
+                        勿洩漏個資，留意聊天室中潛在的詐騙行為
+                    </div>
+
+                    <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 0px">
+                        <div class="ps-scrollbar-x" tabindex="0" style="left: 0px; width: 0px"></div>
+                    </div>
+                    <div class="ps-scrollbar-y-rail" style="top: 0px; height: 0px; right: 2px">
+                        <div class="ps-scrollbar-y" tabindex="0" style="top: 0px; height: 2px"></div>
+                    </div>
+
+                    <!-- 訊息框 -->
+                    <div class="line">
+                        <a href="http://127.0.0.1:8000/user_login">請先登入！</a>
+                    </div>
+                </div>
+                    </div>
+    </div>
+</div>
+
+</body>
+
+<script src="http://127.0.0.1:8000/static/bootstrap-5.1.3-dist/js/bootstrap.bundle.min.js"></script>
+<script src="http://127.0.0.1:8000/static/bootstrap-table-master/dist/bootstrap-table.min.js"></script>
+<script src="http://127.0.0.1:8000/static/bootstrap-multiselect/dist/js/bootstrap-multiselect.js"></script>
+<script src="http://127.0.0.1:8000/static/bootstrap-datepicker-master/dist/js/bootstrap-datepicker.min.js"></script>
+<script src="http://127.0.0.1:8000/static/bootstrap-datepicker-master/dist/locales/bootstrap-datepicker.zh-TW.min.js">
+</script>
+<script src="http://127.0.0.1:8000/static/sweetalert2-11.7.1/dist/sweetalert2.all.min.js"></script>
+<script src="http://127.0.0.1:8000/static/jsCalendar-master/source/jsCalendar.js"></script>
+<script src="http://127.0.0.1:8000/static/jsCalendar-master/source/jsCalendar.lang.zh.js"></script>
+<script src="http://127.0.0.1:8000/static/evo-event-calendar/js/evo-calendar.js"></script>
+<script src="http://127.0.0.1:8000/static/dayjs-1.11.8/package/dayjs.min.js"></script>
+<script src="http://127.0.0.1:8000/static/dayjs-1.11.8/package/locale/zh-tw.js"></script>
+<script src="http://127.0.0.1:8000/static/tinymce/js/tinymce/tinymce.min.js"></script>
+<script src="http://127.0.0.1:8000/static/quill-1.3.6/quill.js"></script>
+<script src="http://127.0.0.1:8000/static/js/master_page.js"></script>
+<script src="http://127.0.0.1:8000/static/js/index.js"></script>
+<script src="http://127.0.0.1:8000/static/js/forum_list.js"></script>
+<script src="http://127.0.0.1:8000/static/js/user.js"></script>
+<script src="http://127.0.0.1:8000/static/js/points.js"></script>
+<script src="http://127.0.0.1:8000/static/js/article.js"></script>
+<script src="http://127.0.0.1:8000/static/js/calendar.js"></script>
+<script src="http://127.0.0.1:8000/static/js/save.js"></script>
+<script src="http://127.0.0.1:8000/static/js/blacklist.js"></script>
