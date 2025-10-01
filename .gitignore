@@ -16,6 +16,7 @@ npm-debug.log
 yarn-error.log
 /.fleet
 /.idea
+/dist
 /.vscode
 /config/database.php
 .github/workflows/deploy.yml
